@@ -51,7 +51,7 @@ function StoryPage() {
         <h2>Special Services & Events</h2>
         <div className="services-grid">
           <div className="service-card">
-            <div className="service-icon">🍽️</div>
+            <div className="service-icon">🥂</div>
             <h3>Private Dining</h3>
             <p>Celebrate special moments in our intimate private dining spaces. Perfect for intimate gatherings.</p>
             <button className="service-link" onClick={() => alert("Contact us at (404) 892-5731 to reserve your private event!")}>Learn More →</button>

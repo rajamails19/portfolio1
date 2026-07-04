@@ -32,10 +32,10 @@ function ControlCenter() {
               Home
             </Link>
             <Link
-              to="/app"
+              to="/"
               className="rounded-md bg-black px-3 py-2 font-medium text-white transition hover:bg-black/80"
             >
-              Continuum
+              Portal
             </Link>
           </div>
         </div>
