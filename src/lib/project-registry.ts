@@ -1,4 +1,4 @@
-import { BookOpenCheck, BrainCircuit, ChefHat, Dumbbell, Infinity, NotebookPen, Palette, RefreshCcw } from "lucide-react";
+import { BookOpenCheck, BrainCircuit, CalendarHeart, ChefHat, Dumbbell, GraduationCap, Infinity, Languages, Lightbulb, Newspaper, NotebookPen, Palette, RefreshCcw } from "lucide-react";
 
 export const projectRegistry = [
   {
@@ -80,5 +80,55 @@ export const projectRegistry = [
     icon: BookOpenCheck,
     tone: "bg-[#4b6fbf]",
     path: "/Users/rajav/Documents/Coding/CGPT-help/portfolioraja/apps/ai-ascend-academy",
+  },
+  {
+    name: "Capture Thoughts",
+    label: "Thought capture app",
+    status: "Running on localhost:8094",
+    href: "http://localhost:8094/",
+    external: true,
+    icon: Lightbulb,
+    tone: "bg-[#b45a6f]",
+    path: "/Users/rajav/Documents/Coding/CGPT-help/portfolioraja/apps/capture-thoughts",
+  },
+  {
+    name: "Guide Learn AI",
+    label: "AI learning guide",
+    status: "Running on localhost:8095",
+    href: "http://localhost:8095/",
+    external: true,
+    icon: GraduationCap,
+    tone: "bg-[#2f7c9d]",
+    path: "/Users/rajav/Documents/Coding/CGPT-help/portfolioraja/apps/guide-learn-ai",
+  },
+  {
+    name: "Speak Practice Tamil",
+    label: "Tamil speaking practice",
+    status: "Running on localhost:8096",
+    href: "http://localhost:8096/",
+    external: true,
+    icon: Languages,
+    tone: "bg-[#8d4eb8]",
+    path: "/Users/rajav/Documents/Coding/CGPT-help/portfolioraja/apps/speakpracticetamil",
+  },
+  {
+    name: "Desi Events",
+    label: "Events app",
+    status: "Running on localhost:8097",
+    href: "http://localhost:8097/",
+    external: true,
+    icon: CalendarHeart,
+    tone: "bg-[#c66b32]",
+    path: "/Users/rajav/Documents/Coding/CGPT-help/portfolioraja/apps/desievents",
+  },
+  {
+    name: "Tech Blog Raja",
+    label: "Tech blog",
+    status: "Running on localhost:8098",
+    href: "http://localhost:8098/",
+    external: true,
+    icon: Newspaper,
+    tone: "bg-[#5262b8]",
+    path: "/Users/rajav/Documents/Coding/CGPT-help/portfolioraja/apps/techblograja",
   },
 ] as const;

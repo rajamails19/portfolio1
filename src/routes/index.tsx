@@ -17,12 +17,17 @@ import {
 import aiAscendAcademyThumb from "@/assets/ai-ascend-academy-thumb.png";
 import aiLearnRajaThumb from "@/assets/ailearnraja-thumb.png";
 import appleNotesCloneThumb from "@/assets/apple-notes-clone-thumb.png";
+import captureThoughtsThumb from "@/assets/capture-thoughts-thumb.png";
+import desiEventsThumb from "@/assets/desievents-thumb.png";
 import formaFitnessThumb from "@/assets/forma-fitness-thumb.png";
 import genZStyleLearnThumb from "@/assets/genzstylelearn-thumb.png";
+import guideLearnAiThumb from "@/assets/guide-learn-ai-thumb.png";
 import heroBg from "@/assets/hero-bg.jpg";
 import jagsRajKitchenThumb from "@/assets/jagsrajkitchen-thumb.png";
 import resetMindProjThumb from "@/assets/resetmindproj-thumb.png";
 import shadowBg from "@/assets/shadow-bg.jpg";
+import speakPracticeTamilThumb from "@/assets/speakpracticetamil-thumb.png";
+import techBlogRajaThumb from "@/assets/techblograja-thumb.png";
 
 const projectPreviews = [
   {
@@ -67,7 +72,40 @@ const projectPreviews = [
     image: aiAscendAcademyThumb,
     alt: "AI Ascend Academy homepage preview",
   },
+  {
+    name: "Capture Thoughts",
+    href: "http://localhost:8094/",
+    image: captureThoughtsThumb,
+    alt: "Capture Thoughts homepage preview",
+  },
+  {
+    name: "Guide Learn AI",
+    href: "http://localhost:8095/",
+    image: guideLearnAiThumb,
+    alt: "Guide Learn AI homepage preview",
+  },
+  {
+    name: "Speak Practice Tamil",
+    href: "http://localhost:8096/",
+    image: speakPracticeTamilThumb,
+    alt: "Speak Practice Tamil homepage preview",
+  },
+  {
+    name: "Desi Events",
+    href: "http://localhost:8097/",
+    image: desiEventsThumb,
+    alt: "Desi Events homepage preview",
+  },
+  {
+    name: "Tech Blog Raja",
+    href: "http://localhost:8098/",
+    image: techBlogRajaThumb,
+    alt: "Tech Blog Raja homepage preview",
+  },
 ];
+
+const heroProjects = projectPreviews.slice(0, 3);
+const secondaryProjects = projectPreviews.slice(3);
 
 export const Route = createFileRoute("/")({
   component: LandingPage,
@@ -86,6 +124,7 @@ function LandingPage() {
   return (
     <div className="min-h-screen bg-background text-foreground">
       <Hero />
+      <ProjectShowcase />
       <Features />
       <HowItWorks />
       <Reviews />
@@ -98,7 +137,7 @@ function LandingPage() {
 function Hero() {
   return (
     <section
-      className="relative overflow-hidden pb-24 pt-0 lg:pb-32 lg:pt-8 xl:pb-40 xl:pt-12"
+      className="relative overflow-hidden pb-24 pt-0 lg:pb-28 lg:pt-8 xl:pt-12"
       style={{ background: "#050d0a" }}
     >
       <img
@@ -124,13 +163,7 @@ function Hero() {
         }}
       />
 
-      <div className="absolute right-[max(1.25rem,calc((100vw-66rem)/2))] top-24 z-30 hidden max-h-[34rem] w-[min(18rem,28vw)] flex-col gap-2 overflow-y-auto pr-1 xl:flex">
-        {projectPreviews.map((project) => (
-          <ProjectPreview key={project.name} project={project} />
-        ))}
-      </div>
-
-      <nav className="relative z-20 mx-auto flex h-16 max-w-5xl items-center justify-between px-5">
+      <nav className="relative z-20 mx-auto flex h-16 max-w-6xl items-center justify-between px-5">
         <Link to="/" className="flex items-center gap-2.5">
           <InfinityIcon className="h-7 w-7 text-white" strokeWidth={2.5} />
           <span className="text-xl font-semibold tracking-normal text-white/90">
@@ -151,8 +184,8 @@ function Hero() {
         </div>
       </nav>
 
-      <div className="relative z-10 mx-auto max-w-5xl px-5 pb-12 pt-24">
-        <div className="max-w-xl">
+      <div className="relative z-10 mx-auto max-w-6xl px-5 pb-10 pt-24">
+        <div className="max-w-2xl">
           <ScrollReveal delay={80}>
             <h1
               className="text-left text-4xl font-bold tracking-normal text-white sm:text-5xl md:text-6xl"
@@ -184,6 +217,12 @@ function Hero() {
             </div>
           </ScrollReveal>
         </div>
+
+        <div className="mt-16 grid gap-5 md:grid-cols-3">
+          {heroProjects.map((project) => (
+            <ProjectPreview key={project.name} project={project} />
+          ))}
+        </div>
       </div>
     </section>
   );
@@ -196,15 +235,79 @@ function ProjectPreview({ project }: { project: (typeof projectPreviews)[number]
       target="_blank"
       rel="noopener noreferrer"
       aria-label={`Open ${project.name}`}
-      className="group block overflow-hidden rounded-lg border border-white/30 bg-white/10 shadow-2xl shadow-black/20 backdrop-blur-sm transition duration-200 hover:-translate-y-0.5 hover:border-white/60 hover:bg-white/15"
+      className="group block overflow-hidden rounded-2xl border border-white/30 bg-white/10 shadow-2xl shadow-black/25 backdrop-blur-sm transition duration-200 hover:-translate-y-1 hover:border-white/60 hover:bg-white/15"
     >
-      <img src={project.image} alt={project.alt} className="aspect-[16/5] w-full object-cover" />
-      <span className="flex items-center justify-between px-3 py-2 text-xs font-semibold text-white">
+      <img src={project.image} alt={project.alt} className="aspect-[16/9] w-full object-cover" />
+      <span className="flex items-center justify-between px-5 py-4 text-sm font-semibold text-white">
         <span>{project.name}</span>
-        <ArrowRight className="h-4 w-4 transition group-hover:translate-x-0.5" />
+        <ArrowRight className="h-5 w-5 transition group-hover:translate-x-0.5" />
       </span>
     </a>
   );
+}
+
+function ProjectShowcase() {
+  return (
+    <section className="relative overflow-hidden py-24" style={{ background: "#050d0a" }}>
+      <img
+        src={heroBg}
+        alt=""
+        width={1920}
+        height={1080}
+        loading="lazy"
+        className="pointer-events-none absolute inset-0 h-full w-full select-none object-cover object-right opacity-45"
+        aria-hidden="true"
+      />
+      <div className="pointer-events-none absolute inset-0 bg-[#050d0a]/55" />
+
+      <div className="relative z-10 mx-auto max-w-6xl px-5">
+        <ScrollReveal>
+          <div className="mb-10 max-w-2xl">
+            <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-[#FDAA3E]">
+              Project rooms
+            </p>
+            <h2
+              className="text-3xl font-bold tracking-normal text-white sm:text-4xl"
+              style={{ lineHeight: "1.15" }}
+            >
+              More apps, same clean workspace
+            </h2>
+            <p className="mt-4 text-base leading-relaxed text-white/85">
+              Keep adding projects without squeezing them into one corner. Each
+              card stays big enough to recognize, and each app still opens in
+              its own tab.
+            </p>
+          </div>
+        </ScrollReveal>
+
+        <div className="grid gap-5 md:grid-cols-6">
+          {secondaryProjects.map((project, index) => (
+            <div
+              key={project.name}
+              className={getProjectGridClass(index)}
+            >
+              <ProjectPreview project={project} />
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function getProjectGridClass(index: number) {
+  const lastRowCount = secondaryProjects.length % 3;
+  const firstLastRowIndex = secondaryProjects.length - lastRowCount;
+
+  if (lastRowCount === 1 && index === firstLastRowIndex) {
+    return "md:col-span-2 md:col-start-3";
+  }
+
+  if (lastRowCount === 2 && index === firstLastRowIndex) {
+    return "md:col-span-2 md:col-start-2";
+  }
+
+  return "md:col-span-2";
 }
 
 const features = [
