@@ -161,7 +161,8 @@ function devServerFnErrorLogger() {
 }
 
 export default defineConfig(({ command, mode }) => {
-  const useCloudflare = command === "build";
+  const isVercel = process.env.VERCEL === "1";
+  const useCloudflare = command === "build" && !isVercel;
 
   // Load VITE_ env vars and define them for SSR
   const env = loadEnv(mode, process.cwd(), "VITE_");
@@ -190,7 +191,12 @@ export default defineConfig(({ command, mode }) => {
       devClientErrorLogger(),
       devServerFnErrorLogger(),
       ...(useCloudflare ? [cloudflare({ viteEnvironment: { name: "ssr" } })] : []),
-      tanstackStart(),
+      tanstackStart({
+        prerender: {
+          enabled: true,
+          crawlLinks: true,
+        },
+      }),
       viteReact(),
       mode === "development" && componentTagger(),
     ].filter(Boolean),
