@@ -18,16 +18,38 @@ import aiAscendAcademyThumb from "@/assets/ai-ascend-academy-thumb.png";
 import aiLearnRajaThumb from "@/assets/ailearnraja-thumb.png";
 import appleNotesCloneThumb from "@/assets/apple-notes-clone-thumb.png";
 import captureThoughtsThumb from "@/assets/capture-thoughts-thumb.png";
+import chessForFunThumb from "@/assets/external/chess-for-fun-thumb.png";
+import dadQuizKidsThumb from "@/assets/external/dad-quiz-kids-thumb.png";
 import desiEventsThumb from "@/assets/desievents-thumb.png";
+import drawArrtThumb from "@/assets/external/draw-arrt-thumb.png";
+import gptTeluguThumb from "@/assets/external/gpttelugu-thumb.png";
+import gptOmniAgentsThumb from "@/assets/external/gptomniagents-thumb.png";
 import formaFitnessThumb from "@/assets/forma-fitness-thumb.png";
 import genZStyleLearnThumb from "@/assets/genzstylelearn-thumb.png";
 import guideLearnAiThumb from "@/assets/guide-learn-ai-thumb.png";
 import heroBg from "@/assets/hero-bg.jpg";
 import jagsRajKitchenThumb from "@/assets/jagsrajkitchen-thumb.png";
+import kidshloMainThumb from "@/assets/external/kidshlo-main-thumb.png";
+import kidsTypingThumb from "@/assets/external/kidstyping-thumb.png";
+import kudosCloneThumb from "@/assets/external/kudosclone-thumb.png";
+import learnComicsThumb from "@/assets/external/learncomics-thumb.png";
+import learnPoojaThumb from "@/assets/external/learnpooja-thumb.png";
+import mathRajaThumb from "@/assets/mathraja-thumb.png";
+import pianoWithRajaThumb from "@/assets/external/pianowithraja-thumb.png";
+import pokeChessGameThumb from "@/assets/external/pokechessgame-thumb.png";
 import resetMindProjThumb from "@/assets/resetmindproj-thumb.png";
+import schoolOsAgentThumb from "@/assets/schoolosagent-thumb.png";
 import shadowBg from "@/assets/shadow-bg.jpg";
 import speakPracticeTamilThumb from "@/assets/speakpracticetamil-thumb.png";
+import storyBuddyAiThumb from "@/assets/external/story-buddy-ai-thumb.png";
 import techBlogRajaThumb from "@/assets/techblograja-thumb.png";
+import teluguTalesThumb from "@/assets/external/telugu-tales-thumb.png";
+import teluguTraceKidsThumb from "@/assets/external/telugu-trace-kids-thumb.png";
+import ticTacToeThumb from "@/assets/external/tic-tac-toe-thumb.png";
+import typingKidsAppThumb from "@/assets/external/typing-kids-app-thumb.png";
+import serverDashboardThumb from "@/assets/serverdashboard-thumb.png";
+import wheelsAndMachinesThumb from "@/assets/external/wheelsandmachines-thumb.png";
+import wingsDemoMainThumb from "@/assets/external/wingsdemo-main-thumb.png";
 
 const projectPreviews = [
   {
@@ -102,10 +124,167 @@ const projectPreviews = [
     image: techBlogRajaThumb,
     alt: "Tech Blog Raja homepage preview",
   },
+  {
+    name: "MathDreams",
+    href: "http://localhost:8118/",
+    image: mathRajaThumb,
+    alt: "MathDreams magical math app homepage preview",
+  },
+  {
+    name: "Campus AI",
+    href: "http://localhost:8119/",
+    image: schoolOsAgentThumb,
+    alt: "Campus AI school operating system dashboard preview",
+  },
+  {
+    name: "Stage",
+    href: "http://localhost:8120/",
+    image: serverDashboardThumb,
+    alt: "Stage server dashboard homepage preview",
+  },
 ];
 
 const heroProjects = projectPreviews.slice(0, 3);
 const secondaryProjects = projectPreviews.slice(3);
+
+const externalProjectPreviews = [
+  {
+    name: "GPT Omni Agents",
+    href: "http://localhost:8099/",
+    image: gptOmniAgentsThumb,
+    alt: "GPT Omni Agents dashboard preview",
+    path: "/Users/rajav/Documents/Coding/CGPT-help/gptomniagents",
+  },
+  {
+    name: "GPT Telugu",
+    href: "http://localhost:8100/",
+    image: gptTeluguThumb,
+    alt: "GPT Telugu homepage preview",
+    path: "/Users/rajav/Documents/Coding/CGPT-help/gpttelugu",
+  },
+];
+
+const kidsProjectPreviews = [
+  {
+    name: "QuestKid",
+    href: "http://localhost:8101/",
+    image: dadQuizKidsThumb,
+    alt: "QuestKid quiz app homepage preview",
+    path: "/Users/rajav/Documents/Coding/Claude-help/dad-quiz-kids",
+  },
+  {
+    name: "Wonder Workshop",
+    href: "http://localhost:8102/",
+    image: drawArrtThumb,
+    alt: "Wonder Workshop creative app homepage preview",
+    path: "/Users/rajav/Documents/Coding/Claude-help/draw-arrt",
+  },
+  {
+    name: "Chess for Fun",
+    href: "http://localhost:8103/",
+    image: chessForFunThumb,
+    alt: "Chess for Fun app homepage preview",
+    path: "/Users/rajav/Documents/Coding/Claude-help/chess-for-fun",
+  },
+  {
+    name: "Meenu's Bow World",
+    href: "http://localhost:8104/",
+    image: kidshloMainThumb,
+    alt: "Meenu's Bow World homepage preview",
+    path: "/Users/rajav/Documents/Coding/Claude-help/kidshlo-main",
+  },
+  {
+    name: "Shruti",
+    href: "http://localhost:8105/",
+    image: learnPoojaThumb,
+    alt: "Shruti shloka learning app homepage preview",
+    path: "/Users/rajav/Documents/Coding/Claude-help/learnpooja",
+  },
+  {
+    name: "Story Buddy AI",
+    href: "http://localhost:8106/",
+    image: storyBuddyAiThumb,
+    alt: "Story Buddy AI homepage preview",
+    path: "/Users/rajav/Documents/Coding/Claude-help/story-buddy-ai",
+  },
+  {
+    name: "Telugu Tales",
+    href: "http://localhost:8107/",
+    image: teluguTalesThumb,
+    alt: "Telugu Tales story library homepage preview",
+    path: "/Users/rajav/Documents/Coding/Claude-help/telugu-tales",
+  },
+  {
+    name: "Telugu Trace Kids",
+    href: "http://localhost:8108/",
+    image: teluguTraceKidsThumb,
+    alt: "Telugu Trace Kids homepage preview",
+    path: "/Users/rajav/Documents/Coding/Claude-help/telugu-trace-kids",
+  },
+  {
+    name: "Tic Tac Toe",
+    href: "http://localhost:8109/",
+    image: ticTacToeThumb,
+    alt: "Tic Tac Toe game homepage preview",
+    path: "/Users/rajav/Documents/Coding/Claude-help/tic-tac-toe",
+  },
+  {
+    name: "KeyQuest",
+    href: "http://localhost:8110/",
+    image: typingKidsAppThumb,
+    alt: "KeyQuest typing app homepage preview",
+    path: "/Users/rajav/Documents/Coding/Claude-help/typing-kids-app",
+  },
+  {
+    name: "DragonHub",
+    href: "http://localhost:8111/",
+    image: wingsDemoMainThumb,
+    alt: "DragonHub homepage preview",
+    path: "/Users/rajav/Documents/Coding/Claude-help/wingsdemo-main",
+  },
+  {
+    name: "Kudos",
+    href: "http://localhost:8112/",
+    image: kudosCloneThumb,
+    alt: "Kudos child development app homepage preview",
+    path: "/Users/rajav/Documents/Coding/CGPT-help/kudosclone",
+  },
+  {
+    name: "DragonDex",
+    href: "http://localhost:8113/",
+    image: learnComicsThumb,
+    alt: "DragonDex learning comics app homepage preview",
+    path: "/Users/rajav/Documents/Coding/CGPT-help/learncomics",
+  },
+  {
+    name: "Tappy",
+    href: "http://localhost:8114/",
+    image: kidsTypingThumb,
+    alt: "Tappy typing playground homepage preview",
+    path: "/Users/rajav/Documents/Coding/CGPT-help/kidstyping",
+  },
+  {
+    name: "Ocean Symphony",
+    href: "http://localhost:8115/",
+    image: pianoWithRajaThumb,
+    alt: "Ocean Symphony piano learning app homepage preview",
+    path: "/Users/rajav/Documents/Coding/CGPT-help/pianowithraja",
+  },
+  {
+    name: "PokéChess",
+    href: "http://localhost:8116/",
+    image: pokeChessGameThumb,
+    alt: "PokéChess chess learning game homepage preview",
+    path: "/Users/rajav/Documents/Coding/CGPT-help/pokechessgame-main",
+  },
+  {
+    name: "VroomVerse",
+    href: "http://localhost:8117/",
+    image: wheelsAndMachinesThumb,
+    alt: "VroomVerse machines learning app homepage preview",
+    path: "/Users/rajav/Documents/Coding/CGPT-help/wheelsandmachines-main",
+  },
+];
 
 export const Route = createFileRoute("/")({
   component: LandingPage,
@@ -127,7 +306,9 @@ function LandingPage() {
       <ProjectShowcase />
       <Features />
       <HowItWorks />
+      <ExternalProjects />
       <Reviews />
+      <KidsProjects />
       <FinalCTA />
       <Footer />
     </div>
@@ -308,6 +489,107 @@ function getProjectGridClass(index: number) {
   }
 
   return "md:col-span-2";
+}
+
+function ExternalProjects() {
+  return (
+    <section className="bg-[#f5f0e8] py-24">
+      <div className="mx-auto max-w-6xl px-5">
+        <ScrollReveal>
+          <div className="mb-10 max-w-2xl">
+            <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-primary">
+              External ready projects
+            </p>
+            <h2
+              className="text-3xl font-bold tracking-normal text-foreground sm:text-4xl"
+              style={{ lineHeight: "1.15" }}
+            >
+              Visible here, owned elsewhere
+            </h2>
+            <p className="mt-4 text-base leading-relaxed text-muted-foreground">
+              These projects stay in their own repos. The portal only keeps a
+              visual doorway so they remain easy to find.
+            </p>
+          </div>
+        </ScrollReveal>
+
+        <div className="grid gap-6 md:grid-cols-3">
+          {externalProjectPreviews.map((project) => (
+            <ExternalProjectCard
+              key={project.name}
+              project={project}
+              badge="External repo"
+            />
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function KidsProjects() {
+  return (
+    <section className="bg-white py-24">
+      <div className="mx-auto max-w-6xl px-5">
+        <ScrollReveal>
+          <div className="mb-10 max-w-2xl">
+            <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-primary">
+              Kids apps
+            </p>
+            <h2
+              className="text-3xl font-bold tracking-normal text-foreground sm:text-4xl"
+              style={{ lineHeight: "1.15" }}
+            >
+              Playful apps, living elsewhere
+            </h2>
+            <p className="mt-4 text-base leading-relaxed text-muted-foreground">
+              A separate shelf for kid-focused projects that stay in their own
+              repos while remaining easy to open from the same home base.
+            </p>
+          </div>
+        </ScrollReveal>
+
+        <div className="grid gap-6 md:grid-cols-3">
+          {kidsProjectPreviews.map((project) => (
+            <ExternalProjectCard
+              key={project.name}
+              project={project}
+              badge="Kids repo"
+            />
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function ExternalProjectCard({
+  project,
+  badge,
+}: {
+  project: (typeof externalProjectPreviews)[number] | (typeof kidsProjectPreviews)[number];
+  badge: string;
+}) {
+  return (
+    <a
+      href={project.href}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label={`Open external project ${project.name}`}
+      className="group block overflow-hidden rounded-2xl border border-black/10 bg-white shadow-xl shadow-black/5 transition duration-200 hover:-translate-y-1 hover:border-black/20"
+    >
+      <img src={project.image} alt={project.alt} className="aspect-[16/9] w-full object-cover" />
+      <span className="block px-5 py-4">
+        <span className="mb-2 inline-flex rounded-full bg-black/[0.06] px-3 py-1 text-[0.68rem] font-semibold uppercase tracking-widest text-black/55">
+          {badge}
+        </span>
+        <span className="flex items-center justify-between text-sm font-semibold text-foreground">
+          <span>{project.name}</span>
+          <ArrowRight className="h-5 w-5 transition group-hover:translate-x-0.5" />
+        </span>
+      </span>
+    </a>
+  );
 }
 
 const features = [
