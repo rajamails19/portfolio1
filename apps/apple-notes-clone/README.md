@@ -1,36 +1,43 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Notes & Folders App
 
-## Getting Started
+This is the Apple Notes-style notes and folders app used in Raja's portfolio.
 
-First, run the development server:
+## Source Of Truth
+
+Canonical local folder:
+
+```bash
+/Users/rajav/Documents/Coding/CGPT-help/portfolioraja/apps/apple-notes-clone
+```
+
+Old standalone folder, kept only until Vercel is repointed and verified:
+
+```bash
+/Users/rajav/Documents/Coding/Claude-help/inport-apple-notes-clone
+```
+
+Current production URL:
+
+```text
+https://apple-notes-clone-pi.vercel.app/
+```
+
+Important: production still deploys from the standalone Git repository until the Vercel project is reconnected to `rajamails19/portfolio1` with root directory `apps/apple-notes-clone` and the same environment variables.
+
+## Local Development
+
+From the portfolio root:
+
+```bash
+npm run dev:apple-notes-clone
+npm run lint:apple-notes-clone
+npm run build:apple-notes-clone
+```
+
+Or from this app folder:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm run lint
+npm run build
 ```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.

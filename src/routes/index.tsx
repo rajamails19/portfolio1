@@ -66,7 +66,7 @@ const projectPreviews = [
   },
   {
     name: "Forma Fitness",
-    href: "http://localhost:8088/",
+    href: "https://formafitness-nine.vercel.app/",
     image: formaFitnessThumb,
     alt: "Forma Fitness homepage preview",
   },
@@ -83,10 +83,10 @@ const projectPreviews = [
     alt: "Reset Mind homepage preview",
   },
   {
-    name: "Apple Notes Clone",
-    href: "http://localhost:8092/",
+    name: "Notes & Folders App",
+    href: "https://apple-notes-clone-pi.vercel.app/",
     image: appleNotesCloneThumb,
-    alt: "Apple Notes Clone homepage preview",
+    alt: "Notes & Folders App preview",
   },
   {
     name: "AI Ascend Academy",
@@ -150,14 +150,14 @@ const secondaryProjects = projectPreviews.slice(3);
 const externalProjectPreviews = [
   {
     name: "GPT Omni Agents",
-    href: "http://localhost:8099/",
+    href: "https://gptomniagentswithraja.vercel.app/",
     image: gptOmniAgentsThumb,
     alt: "GPT Omni Agents dashboard preview",
     path: "/Users/rajav/Documents/Coding/CGPT-help/gptomniagents",
   },
   {
     name: "GPT Telugu",
-    href: "http://localhost:8100/",
+    href: "https://gptteluguwithraja.vercel.app/",
     image: gptTeluguThumb,
     alt: "GPT Telugu homepage preview",
     path: "/Users/rajav/Documents/Coding/CGPT-help/gpttelugu",
@@ -167,7 +167,7 @@ const externalProjectPreviews = [
 const kidsProjectPreviews = [
   {
     name: "QuestKid",
-    href: "http://localhost:8101/",
+    href: "https://dadquizkids.vercel.app/",
     image: dadQuizKidsThumb,
     alt: "QuestKid quiz app homepage preview",
     path: "/Users/rajav/Documents/Coding/Claude-help/dad-quiz-kids",
@@ -195,7 +195,7 @@ const kidsProjectPreviews = [
   },
   {
     name: "Shruti",
-    href: "http://localhost:8105/",
+    href: "https://god-pooja-songs.vercel.app/",
     image: learnPoojaThumb,
     alt: "Shruti shloka learning app homepage preview",
     path: "/Users/rajav/Documents/Coding/Claude-help/learnpooja",
@@ -230,28 +230,28 @@ const kidsProjectPreviews = [
   },
   {
     name: "KeyQuest",
-    href: "http://localhost:8110/",
+    href: "https://typing-kids-app.vercel.app/",
     image: typingKidsAppThumb,
     alt: "KeyQuest typing app homepage preview",
     path: "/Users/rajav/Documents/Coding/Claude-help/typing-kids-app",
   },
   {
     name: "DragonHub",
-    href: "http://localhost:8111/",
+    href: "https://wofirekids.vercel.app/",
     image: wingsDemoMainThumb,
     alt: "DragonHub homepage preview",
     path: "/Users/rajav/Documents/Coding/Claude-help/wingsdemo-main",
   },
   {
     name: "Kudos",
-    href: "http://localhost:8112/",
+    href: "https://kidshabits-tan.vercel.app/",
     image: kudosCloneThumb,
     alt: "Kudos child development app homepage preview",
     path: "/Users/rajav/Documents/Coding/CGPT-help/kudosclone",
   },
   {
     name: "DragonDex",
-    href: "http://localhost:8113/",
+    href: "https://learncomics.vercel.app/",
     image: learnComicsThumb,
     alt: "DragonDex learning comics app homepage preview",
     path: "/Users/rajav/Documents/Coding/CGPT-help/learncomics",
