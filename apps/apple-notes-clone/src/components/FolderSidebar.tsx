@@ -456,7 +456,7 @@ function BrandCard() {
         fontSize: 13, fontWeight: 700,
         color: 'var(--text-primary)', lineHeight: 1.3,
       }}>
-        Made with <span style={{ color: '#e8402a', fontSize: 14 }}>♥</span> by Raja
+        Made with <span style={{ color: '#e8402a', fontSize: 14 }}>♥</span> by Rajasekhar
       </p>
 
       {/* Divider */}
