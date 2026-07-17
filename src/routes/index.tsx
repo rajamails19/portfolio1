@@ -28,7 +28,9 @@ import formaFitnessThumb from "@/assets/forma-fitness-thumb.png";
 import genZStyleLearnThumb from "@/assets/genzstylelearn-thumb.png";
 import guideLearnAiThumb from "@/assets/guide-learn-ai-thumb.png";
 import heroBg from "@/assets/hero-bg.jpg";
+import intervQansThumb from "@/assets/intervqans-thumb.png";
 import jagsRajKitchenThumb from "@/assets/jagsrajkitchen-thumb.png";
+import jobsOpsWithRajaThumb from "@/assets/jobsopswithraja-thumb.png";
 import kidshloMainThumb from "@/assets/external/kidshlo-main-thumb.png";
 import kidsTypingThumb from "@/assets/external/kidstyping-thumb.png";
 import kudosCloneThumb from "@/assets/external/kudosclone-thumb.png";
@@ -141,6 +143,18 @@ const projectPreviews = [
     href: "http://localhost:8120/",
     image: serverDashboardThumb,
     alt: "Stage server dashboard homepage preview",
+  },
+  {
+    name: "JobOps",
+    href: "http://localhost:8121/",
+    image: jobsOpsWithRajaThumb,
+    alt: "JobOps job application command center homepage preview",
+  },
+  {
+    name: "StudyDeck",
+    href: "http://localhost:8122/",
+    image: intervQansThumb,
+    alt: "StudyDeck interview question and answer prep homepage preview",
   },
 ];
 

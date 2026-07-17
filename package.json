@@ -21,6 +21,8 @@
     "dev:mathraja": "npm --prefix apps/mathraja run dev -- --port 8118",
     "dev:schoolosagent": "npm --prefix apps/schoolosagent run dev -- --port 8119",
     "dev:serverdashboard": "npm --prefix apps/serverdashboard run dev -- --port 8120",
+    "dev:jobsopswithraja": "npm --prefix apps/jobsopswithraja run dev -- --port 8121",
+    "dev:intervqans": "npm --prefix apps/intervqans run dev -- --port 8122",
     "dev:telugu-trace-kids": "npm --prefix /Users/rajav/Documents/Coding/Claude-help/telugu-trace-kids run dev:portal",
     "dev:kudosclone": "npm --prefix /Users/rajav/Documents/Coding/CGPT-help/kudosclone run dev -- --port 8112",
     "dev:learncomics": "npm --prefix /Users/rajav/Documents/Coding/CGPT-help/learncomics run dev -- --port 8113",
@@ -45,6 +47,8 @@
     "build:mathraja": "npm --prefix apps/mathraja run build",
     "build:schoolosagent": "npm --prefix apps/schoolosagent run build",
     "build:serverdashboard": "npm --prefix apps/serverdashboard run build",
+    "build:jobsopswithraja": "npm --prefix apps/jobsopswithraja run build",
+    "build:intervqans": "npm --prefix apps/intervqans run build",
     "build:dev": "vite build --mode development",
     "preview": "vite preview",
     "lint": "eslint .",
@@ -62,7 +66,9 @@
     "lint:techblograja": "npm --prefix apps/techblograja run lint",
     "lint:mathraja": "npm --prefix apps/mathraja run lint",
     "lint:schoolosagent": "npm --prefix apps/schoolosagent run lint",
-    "lint:serverdashboard": "npm --prefix apps/serverdashboard run lint"
+    "lint:serverdashboard": "npm --prefix apps/serverdashboard run lint",
+    "lint:jobsopswithraja": "npm --prefix apps/jobsopswithraja run lint",
+    "lint:intervqans": "npm --prefix apps/intervqans run lint"
   },
   "dependencies": {
     "@cloudflare/vite-plugin": "^1.25.5",

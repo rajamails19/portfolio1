@@ -17,6 +17,7 @@ import { Route as PuzzlesRouteImport } from './routes/puzzles'
 import { Route as GradesRouteImport } from './routes/grades'
 import { Route as GamesRouteImport } from './routes/games'
 import { Route as FormulasRouteImport } from './routes/formulas'
+import { Route as EasyTricksRouteImport } from './routes/easy-tricks'
 import { Route as DictionaryRouteImport } from './routes/dictionary'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as TopicsIndexRouteImport } from './routes/topics.index'
@@ -64,6 +65,11 @@ const FormulasRoute = FormulasRouteImport.update({
   path: '/formulas',
   getParentRoute: () => rootRouteImport,
 } as any)
+const EasyTricksRoute = EasyTricksRouteImport.update({
+  id: '/easy-tricks',
+  path: '/easy-tricks',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const DictionaryRoute = DictionaryRouteImport.update({
   id: '/dictionary',
   path: '/dictionary',
@@ -98,6 +104,7 @@ const GradesGradeRoute = GradesGradeRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/dictionary': typeof DictionaryRoute
+  '/easy-tricks': typeof EasyTricksRoute
   '/formulas': typeof FormulasRoute
   '/games': typeof GamesRoute
   '/grades': typeof GradesRouteWithChildren
@@ -114,6 +121,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/dictionary': typeof DictionaryRoute
+  '/easy-tricks': typeof EasyTricksRoute
   '/formulas': typeof FormulasRoute
   '/games': typeof GamesRoute
   '/puzzles': typeof PuzzlesRoute
@@ -129,6 +137,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/dictionary': typeof DictionaryRoute
+  '/easy-tricks': typeof EasyTricksRoute
   '/formulas': typeof FormulasRoute
   '/games': typeof GamesRoute
   '/grades': typeof GradesRouteWithChildren
@@ -147,6 +156,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/dictionary'
+    | '/easy-tricks'
     | '/formulas'
     | '/games'
     | '/grades'
@@ -163,6 +173,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/dictionary'
+    | '/easy-tricks'
     | '/formulas'
     | '/games'
     | '/puzzles'
@@ -177,6 +188,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/dictionary'
+    | '/easy-tricks'
     | '/formulas'
     | '/games'
     | '/grades'
@@ -194,6 +206,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   DictionaryRoute: typeof DictionaryRoute
+  EasyTricksRoute: typeof EasyTricksRoute
   FormulasRoute: typeof FormulasRoute
   GamesRoute: typeof GamesRoute
   GradesRoute: typeof GradesRouteWithChildren
@@ -260,6 +273,13 @@ declare module '@tanstack/react-router' {
       path: '/formulas'
       fullPath: '/formulas'
       preLoaderRoute: typeof FormulasRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/easy-tricks': {
+      id: '/easy-tricks'
+      path: '/easy-tricks'
+      fullPath: '/easy-tricks'
+      preLoaderRoute: typeof EasyTricksRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/dictionary': {
@@ -336,6 +356,7 @@ const TopicsRouteWithChildren =
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   DictionaryRoute: DictionaryRoute,
+  EasyTricksRoute: EasyTricksRoute,
   FormulasRoute: FormulasRoute,
   GamesRoute: GamesRoute,
   GradesRoute: GradesRouteWithChildren,

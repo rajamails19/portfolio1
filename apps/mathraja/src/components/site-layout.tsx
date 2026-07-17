@@ -13,6 +13,7 @@ const NAV = [
   { to: "/times-tables", label: "Times Tables" },
   { to: "/dictionary", label: "Dictionary" },
   { to: "/tips", label: "Tips" },
+  { to: "/easy-tricks", label: "Easy-Tricks" },
 ] as const;
 
 export function SiteHeader() {
