@@ -106,6 +106,21 @@ ALTER TABLE public.folders  ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.notes    ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.images   ENABLE ROW LEVEL SECURITY;
 
+-- Drop existing policies before recreating them so this file can be rerun safely.
+DROP POLICY IF EXISTS "profiles: own read" ON public.profiles;
+DROP POLICY IF EXISTS "profiles: own update" ON public.profiles;
+DROP POLICY IF EXISTS "folders: own read" ON public.folders;
+DROP POLICY IF EXISTS "folders: own insert" ON public.folders;
+DROP POLICY IF EXISTS "folders: own update" ON public.folders;
+DROP POLICY IF EXISTS "folders: own delete" ON public.folders;
+DROP POLICY IF EXISTS "notes: own read" ON public.notes;
+DROP POLICY IF EXISTS "notes: own insert" ON public.notes;
+DROP POLICY IF EXISTS "notes: own update" ON public.notes;
+DROP POLICY IF EXISTS "notes: own delete" ON public.notes;
+DROP POLICY IF EXISTS "images: own read" ON public.images;
+DROP POLICY IF EXISTS "images: own insert" ON public.images;
+DROP POLICY IF EXISTS "images: own delete" ON public.images;
+
 -- Profiles
 CREATE POLICY "profiles: own read"   ON public.profiles FOR SELECT USING (auth.uid() = id);
 CREATE POLICY "profiles: own update" ON public.profiles FOR UPDATE USING (auth.uid() = id);
@@ -118,27 +133,47 @@ CREATE POLICY "folders: own delete" ON public.folders FOR DELETE USING (auth.uid
 
 -- Notes
 CREATE POLICY "notes: own read"   ON public.notes FOR SELECT USING (auth.uid() = user_id);
-CREATE POLICY "notes: own insert" ON public.notes FOR INSERT WITH CHECK (auth.uid() = user_id);
-CREATE POLICY "notes: own update" ON public.notes FOR UPDATE USING (auth.uid() = user_id);
+CREATE POLICY "notes: own insert" ON public.notes FOR INSERT WITH CHECK (
+  auth.uid() = user_id
+  AND EXISTS (SELECT 1 FROM public.folders f WHERE f.id = folder_id AND f.user_id = auth.uid())
+);
+CREATE POLICY "notes: own update" ON public.notes FOR UPDATE USING (auth.uid() = user_id) WITH CHECK (
+  auth.uid() = user_id
+  AND EXISTS (SELECT 1 FROM public.folders f WHERE f.id = folder_id AND f.user_id = auth.uid())
+);
 CREATE POLICY "notes: own delete" ON public.notes FOR DELETE USING (auth.uid() = user_id);
 
 -- Images
 CREATE POLICY "images: own read"   ON public.images FOR SELECT USING (auth.uid() = user_id);
-CREATE POLICY "images: own insert" ON public.images FOR INSERT WITH CHECK (auth.uid() = user_id);
+CREATE POLICY "images: own insert" ON public.images FOR INSERT WITH CHECK (
+  auth.uid() = user_id
+  AND EXISTS (SELECT 1 FROM public.notes n WHERE n.id = note_id AND n.user_id = auth.uid())
+);
 CREATE POLICY "images: own delete" ON public.images FOR DELETE USING (auth.uid() = user_id);
 
 -- ─── Storage bucket ───────────────────────────────────────────────────────────
 INSERT INTO storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
-VALUES ('note-images', 'note-images', true, 10485760, ARRAY['image/jpeg','image/png','image/gif','image/webp'])
+VALUES ('note-images', 'note-images', false, 10485760, ARRAY['image/jpeg','image/png','image/gif','image/webp'])
 ON CONFLICT (id) DO NOTHING;
+
+UPDATE storage.buckets
+SET public = false,
+    file_size_limit = 10485760,
+    allowed_mime_types = ARRAY['image/jpeg','image/png','image/gif','image/webp']
+WHERE id = 'note-images';
+
+DROP POLICY IF EXISTS "note-images: authenticated upload" ON storage.objects;
+DROP POLICY IF EXISTS "note-images: public read" ON storage.objects;
+DROP POLICY IF EXISTS "note-images: own read" ON storage.objects;
+DROP POLICY IF EXISTS "note-images: own delete" ON storage.objects;
 
 CREATE POLICY "note-images: authenticated upload"
   ON storage.objects FOR INSERT TO authenticated
   WITH CHECK (bucket_id = 'note-images' AND auth.uid()::text = (storage.foldername(name))[1]);
 
-CREATE POLICY "note-images: public read"
-  ON storage.objects FOR SELECT
-  USING (bucket_id = 'note-images');
+CREATE POLICY "note-images: own read"
+  ON storage.objects FOR SELECT TO authenticated
+  USING (bucket_id = 'note-images' AND auth.uid()::text = (storage.foldername(name))[1]);
 
 CREATE POLICY "note-images: own delete"
   ON storage.objects FOR DELETE TO authenticated

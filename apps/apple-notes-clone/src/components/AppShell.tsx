@@ -383,7 +383,7 @@ export default function AppShell() {
         <label style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: 44, minWidth: 36, cursor: 'pointer' }}>
           <input
             type="file"
-            accept="image/*"
+            accept="image/jpeg,image/png,image/gif,image/webp"
             style={{ display: 'none' }}
             onChange={async (e) => {
               const file = e.target.files?.[0];

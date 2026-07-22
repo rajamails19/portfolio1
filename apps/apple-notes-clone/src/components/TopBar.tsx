@@ -418,7 +418,7 @@ export default function TopBar({ mobile }: { mobile?: boolean }) {
         style={{ display: 'contents', cursor: editor && selectedNoteId ? 'pointer' : 'default' }}
       >
         <input
-          type="file" accept="image/*" style={{ display: 'none' }}
+          type="file" accept="image/jpeg,image/png,image/gif,image/webp" style={{ display: 'none' }}
           disabled={!editor || !selectedNoteId}
           onChange={(e) => {
             const file = e.target.files?.[0];

@@ -155,7 +155,7 @@ export default function NoteEditor({ mobile }: { mobile?: boolean } = {}) {
         disabled: !note?.id,
         action: () => {
           const inp = document.createElement('input');
-          inp.type = 'file'; inp.accept = 'image/*';
+          inp.type = 'file'; inp.accept = 'image/jpeg,image/png,image/gif,image/webp';
           inp.onchange = () => {
             const file = inp.files?.[0];
             if (!file || !note?.id) return;

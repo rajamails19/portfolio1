@@ -263,7 +263,7 @@ export default function EditorToolbar() {
       <div style={{ width: 1, height: 16, background: 'var(--border)', margin: '0 4px' }} />
 
       {/* Image */}
-      <input ref={fileInputRef} type="file" accept="image/*" style={{ display: 'none' }}
+      <input ref={fileInputRef} type="file" accept="image/jpeg,image/png,image/gif,image/webp" style={{ display: 'none' }}
         onChange={handleImageInsert}
       />
       <TBtn title="Insert Image" disabled={!editor || !selectedNoteId}

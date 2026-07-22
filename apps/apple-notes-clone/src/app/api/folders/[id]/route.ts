@@ -3,6 +3,7 @@ import { createClient } from '@/lib/supabase/server';
 import { mapFolder } from '@/lib/supabase/types';
 
 const isSupabaseConfigured = () => !!(process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY);
+const missingSupabase = () => NextResponse.json({ error: 'Supabase is required in production.' }, { status: 503 });
 
 export async function PATCH(req: Request, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -29,6 +30,8 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
     return NextResponse.json(mapFolder(data));
   }
 
+  if (process.env.NODE_ENV === 'production') return missingSupabase();
+
   const { getDb } = await import('@/lib/db');
   const db = getDb();
   db.prepare('UPDATE folders SET name = ? WHERE id = ?').run(name.trim(), id);
@@ -50,6 +53,8 @@ export async function DELETE(_req: Request, { params }: { params: Promise<{ id: 
     }
     return NextResponse.json({ success: true });
   }
+
+  if (process.env.NODE_ENV === 'production') return missingSupabase();
 
   const { getDb } = await import('@/lib/db');
   getDb().prepare('DELETE FROM folders WHERE id = ?').run(id);

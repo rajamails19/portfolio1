@@ -3,6 +3,7 @@ import { createClient } from '@/lib/supabase/server';
 import { mapNote } from '@/lib/supabase/types';
 
 const isSupabaseConfigured = () => !!(process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY);
+const missingSupabase = () => NextResponse.json({ error: 'Supabase is required in production.' }, { status: 503 });
 
 export async function GET(_req: Request, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -17,7 +18,7 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
     return NextResponse.json(mapNote(data));
   }
 
-  if (process.env.NODE_ENV === 'production') return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  if (process.env.NODE_ENV === 'production') return missingSupabase();
   const { getDb } = await import('@/lib/db');
   const note = getDb().prepare('SELECT * FROM notes WHERE id = ?').get(id);
   if (!note) return NextResponse.json({ error: 'Not found' }, { status: 404 });
@@ -36,7 +37,17 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
     const update: Record<string, unknown> = {};
     if (body.title    !== undefined) update.title     = body.title;
     if (body.content  !== undefined) update.content   = body.content;
-    if (body.folderId !== undefined) update.folder_id = body.folderId;
+    if (body.folderId !== undefined) {
+      const { data: folder, error: folderError } = await supabase
+        .from('folders')
+        .select('id')
+        .eq('id', body.folderId)
+        .eq('user_id', user.id)
+        .single();
+
+      if (folderError || !folder) return NextResponse.json({ error: 'Folder not found' }, { status: 404 });
+      update.folder_id = body.folderId;
+    }
     if (body.pinned   !== undefined) update.pinned    = body.pinned === 1;
     if (body.trashed  !== undefined) {
       update.trashed   = body.trashed === 1;
@@ -59,7 +70,7 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
   }
 
   // Local-only
-  if (process.env.NODE_ENV === 'production') return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  if (process.env.NODE_ENV === 'production') return missingSupabase();
   const { getDb } = await import('@/lib/db');
   const db  = getDb();
   const now = new Date().toISOString();
@@ -104,7 +115,7 @@ export async function DELETE(req: Request, { params }: { params: Promise<{ id: s
     return NextResponse.json({ success: true });
   }
 
-  if (process.env.NODE_ENV === 'production') return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  if (process.env.NODE_ENV === 'production') return missingSupabase();
   const { getDb } = await import('@/lib/db');
   if (permanent) {
     getDb().prepare('DELETE FROM notes WHERE id = ?').run(id);

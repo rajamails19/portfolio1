@@ -5,6 +5,7 @@ import { mapNote } from '@/lib/supabase/types';
 import { VIRTUAL_FOLDER_ALL, VIRTUAL_FOLDER_TRASH } from '@/types';
 
 const isSupabaseConfigured = () => !!(process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY);
+const missingSupabase = () => NextResponse.json({ error: 'Supabase is required in production.' }, { status: 503 });
 
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
@@ -38,7 +39,7 @@ export async function GET(req: Request) {
     return NextResponse.json((data ?? []).map(mapNote));
   }
 
-  if (process.env.NODE_ENV === 'production') return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  if (process.env.NODE_ENV === 'production') return missingSupabase();
   const { getDb } = await import('@/lib/db');
   const db = getDb();
   let sql = 'SELECT * FROM notes WHERE 1=1';
@@ -63,6 +64,15 @@ export async function POST(req: Request) {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
+    const { data: folder, error: folderError } = await supabase
+      .from('folders')
+      .select('id')
+      .eq('id', folderId)
+      .eq('user_id', user.id)
+      .single();
+
+    if (folderError || !folder) return NextResponse.json({ error: 'Folder not found' }, { status: 404 });
+
     const { data, error } = await supabase
       .from('notes')
       .insert({ id: uuidv4(), folder_id: folderId, title, content, pinned: pinned === 1, user_id: user.id, trashed: false })
@@ -73,7 +83,7 @@ export async function POST(req: Request) {
     return NextResponse.json(mapNote(data));
   }
 
-  if (process.env.NODE_ENV === 'production') return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  if (process.env.NODE_ENV === 'production') return missingSupabase();
   const { getDb } = await import('@/lib/db');
   const db = getDb();
   const now = new Date().toISOString();

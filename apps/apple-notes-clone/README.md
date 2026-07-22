@@ -55,4 +55,6 @@ NEXT_PUBLIC_ENABLE_MIGRATION_TOOLS=false
 
 Only enable them temporarily from a trusted session if old local notes need to be migrated into Supabase.
 
-Image uploads accept only JPEG, PNG, GIF, and WebP files up to 10 MB. SVG uploads are intentionally disabled for public launch.
+Image uploads accept only JPEG, PNG, GIF, and WebP files up to 10 MB. SVG uploads are intentionally disabled for public launch. New uploaded images use authenticated app URLs (`/api/images/:id`) instead of public Supabase Storage URLs. The `note-images` bucket should be private in Supabase.
+
+Production API routes fail closed when Supabase environment variables are missing, instead of falling back to local SQLite. Note create/move operations verify that the target folder belongs to the signed-in user before writing.

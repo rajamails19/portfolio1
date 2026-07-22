@@ -13,6 +13,7 @@ const EXT_BY_TYPE: Record<string, string> = {
 };
 
 const isSupabaseConfigured = () => !!(process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY);
+const missingSupabase = () => NextResponse.json({ error: 'Supabase is required in production.' }, { status: 503 });
 
 function validateImage(file: File) {
   if (!ALLOWED_IMAGE_TYPES.has(file.type)) {
@@ -60,8 +61,7 @@ export async function POST(req: Request) {
 
     if (uploadError) return NextResponse.json({ error: uploadError.message }, { status: 500 });
 
-    const { data: urlData } = supabase.storage.from('note-images').getPublicUrl(storagePath);
-    const url = urlData.publicUrl;
+    const url = `/api/images/${id}`;
     const { error: insertError } = await supabase
       .from('images')
       .insert({ id, note_id: noteId, filename, url, user_id: user.id });
@@ -70,9 +70,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ id, noteId, filename, url });
   }
 
-  if (process.env.NODE_ENV === 'production') {
-    return NextResponse.json({ error: 'Image uploads require Supabase in production.' }, { status: 503 });
-  }
+  if (process.env.NODE_ENV === 'production') return missingSupabase();
 
   // Local file fallback for development only.
   const { getDb, UPLOADS_DIR } = await import('@/lib/db');

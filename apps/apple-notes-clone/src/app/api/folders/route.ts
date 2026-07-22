@@ -4,6 +4,7 @@ import { createClient } from '@/lib/supabase/server';
 import { mapFolder } from '@/lib/supabase/types';
 
 const isSupabaseConfigured = () => !!(process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY);
+const missingSupabase = () => NextResponse.json({ error: 'Supabase is required in production.' }, { status: 503 });
 
 export async function GET() {
   if (isSupabaseConfigured()) {
@@ -42,6 +43,8 @@ export async function GET() {
     );
   }
 
+  if (process.env.NODE_ENV === 'production') return missingSupabase();
+
   // Local-only
   const { getDb } = await import('@/lib/db');
   const db = getDb();
@@ -75,6 +78,8 @@ export async function POST(req: Request) {
     }
     return NextResponse.json({ ...mapFolder(data), noteCount: 0 });
   }
+
+  if (process.env.NODE_ENV === 'production') return missingSupabase();
 
   // Local-only
   const { getDb } = await import('@/lib/db');

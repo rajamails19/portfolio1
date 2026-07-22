@@ -163,7 +163,7 @@ export default function Toolbar({ editor, noteId, onImageInsert }: ToolbarProps)
 
       {/* Insert image */}
       <label style={{ cursor: 'pointer' }} title="Insert Image">
-        <input type="file" accept="image/*" style={{ display: 'none' }} onChange={handleImageFile} />
+        <input type="file" accept="image/jpeg,image/png,image/gif,image/webp" style={{ display: 'none' }} onChange={handleImageFile} />
         <div
           style={{
             padding: '3px 7px', borderRadius: 5,

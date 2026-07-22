@@ -21,7 +21,7 @@ export default function PrivacyPage() {
             Notes, folders, and image records are scoped to your signed-in account. The database uses Supabase row-level security so users can only access their own rows.
           </InfoBlock>
           <InfoBlock title="Where data is stored">
-            Signed-in account data is stored in Supabase. Uploaded note images are stored in the app&apos;s Supabase Storage bucket and linked to your notes.
+            Signed-in account data is stored in Supabase. Uploaded note images are stored in a private Supabase Storage bucket and loaded through authenticated app routes tied to your account.
           </InfoBlock>
           <InfoBlock title="Guest mode">
             Guest mode is for trying the app quickly. Guest notes are session-based and can be lost when you sign out, clear browser data, or switch devices.
