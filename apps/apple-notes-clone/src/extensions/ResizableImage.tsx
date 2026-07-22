@@ -103,6 +103,7 @@ function ResizableImageView({ node, updateAttributes, selected, deleteNode }: No
   return (
     <NodeViewWrapper style={wrapStyle} data-drag-handle>
       <span style={{ position: 'relative', display: 'inline-block' }}>
+        {/* eslint-disable-next-line @next/next/no-img-element -- TipTap NodeView needs a raw img ref for resize gestures. */}
         <img
           ref={imgRef}
           src={node.attrs.src}
@@ -250,7 +251,6 @@ export const ResizableImage = Node.create({
           return ml ? parseInt(ml, 10) : 0;
         },
       },
-      align: { default: 'left' },
     };
   },
 
@@ -259,7 +259,7 @@ export const ResizableImage = Node.create({
   },
 
   renderHTML({ HTMLAttributes }) {
-    const { width, align, marginLeft, ...rest } = HTMLAttributes;
+    const { width, marginLeft, ...rest } = HTMLAttributes;
     const style = [
       width      ? `width:${width}px`            : '',
       marginLeft ? `margin-left:${marginLeft}px`  : '',

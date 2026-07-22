@@ -21,7 +21,7 @@ function stripHtml(html: string | undefined | null) {
   return html.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
 }
 
-function EmptyState({ icon, title, sub }: { icon: string; title: string; sub?: string }) {
+function EmptyState({ icon, title, sub, actionLabel, onAction }: { icon: string; title: string; sub?: string; actionLabel?: string; onAction?: () => void }) {
   return (
     <div style={{
       flex: 1, display: 'flex', flexDirection: 'column',
@@ -30,7 +30,15 @@ function EmptyState({ icon, title, sub }: { icon: string; title: string; sub?: s
     }}>
       <span style={{ fontSize: 36, opacity: 0.4 }}>{icon}</span>
       <p style={{ margin: 0, fontSize: 13, fontWeight: 500, color: 'var(--text-muted)', textAlign: 'center' }}>{title}</p>
-      {sub && <p style={{ margin: 0, fontSize: 12, color: 'var(--text-faint)', textAlign: 'center' }}>{sub}</p>}
+      {sub && <p style={{ margin: 0, fontSize: 12, color: 'var(--text-faint)', textAlign: 'center', maxWidth: 220, lineHeight: 1.45 }}>{sub}</p>}
+      {actionLabel && onAction && (
+        <button
+          onClick={onAction}
+          style={{ marginTop: 6, border: 'none', borderRadius: 7, background: 'var(--accent)', color: 'white', padding: '7px 12px', fontSize: 12, fontWeight: 600, cursor: 'pointer' }}
+        >
+          {actionLabel}
+        </button>
+      )}
     </div>
   );
 }
@@ -234,7 +242,7 @@ export default function NotesSidebar({ onSelectNote }: { mobile?: boolean; onSel
       background: 'var(--bg-notes)', borderRight: '1px solid var(--border)',
       overflow: 'hidden',
     }}>
-      {/* Header — Apple Notes style: view toggle | spacer | trash | new note */}
+      {/* Header — ABC Notes: view toggle | spacer | trash | new note */}
       <div style={{ flexShrink: 0 }}>
         <div style={{
           display: 'flex', alignItems: 'center', gap: 2,
@@ -390,7 +398,7 @@ export default function NotesSidebar({ onSelectNote }: { mobile?: boolean; onSel
             ? <EmptyState icon="🔍" title="No results" sub={`Nothing matched "${searchQuery}"`} />
             : isTrashView
               ? <EmptyState icon="🗑" title="Recently Deleted is Empty" sub="Notes you delete will appear here" />
-              : <EmptyState icon="📝" title="No notes yet" sub="Press ⌘N or tap + to create your first note" />
+              : <EmptyState icon="📝" title="Create your first note" sub="Capture a thought, paste an image, or start a quick list." actionLabel="New Note" onAction={createNote} />
         ) : viewMode === 'gallery' ? (
           <GalleryNotes
             notes={filtered}

@@ -1,7 +1,7 @@
 import { createServerClient } from '@supabase/ssr';
 import { type NextRequest, NextResponse } from 'next/server';
 
-const PUBLIC_PATHS = ['/login', '/auth/callback', '/_next', '/favicon', '/uploads'];
+const PUBLIC_PATHS = ['/login', '/privacy', '/auth/callback', '/_next', '/favicon', '/uploads'];
 
 export async function middleware(request: NextRequest) {
   // Skip if Supabase is not configured (allows running without cloud sync)

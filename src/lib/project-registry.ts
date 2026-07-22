@@ -62,7 +62,7 @@ export const projectRegistry = [
     path: "/Users/rajav/Documents/Coding/CGPT-help/portfolioraja/apps/resetmindproj",
   },
   {
-    name: "Notes & Folders App",
+    name: "ABC Notes",
     label: "Notes and folders",
     status: "Live on Vercel",
     href: "https://apple-notes-clone-pi.vercel.app/",

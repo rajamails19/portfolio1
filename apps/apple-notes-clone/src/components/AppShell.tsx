@@ -120,10 +120,13 @@ export default function AppShell() {
         }
 
         const trashRes = await fetch('/api/notes?folderId=__recently_deleted__');
-        if (trashRes.status === 401) return;
-        if (!trashRes.ok) throw new Error('Unable to load recently deleted notes.');
-        const trash = await trashRes.json() as unknown[];
-        setTrashCount(Array.isArray(trash) ? trash.length : 0);
+        if (trashRes.status !== 401 && trashRes.ok) {
+          const trash = await trashRes.json() as unknown[];
+          setTrashCount(Array.isArray(trash) ? trash.length : 0);
+        } else if (trashRes.status !== 401) {
+          console.warn('Could not load recently deleted notes count.');
+          setTrashCount(0);
+        }
       } catch (error) {
         console.error(error);
         showToast('Could not load your notes. Please refresh or sign in again.', 'error');

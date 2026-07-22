@@ -3,7 +3,7 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/ThemeProvider";
 
 export const metadata: Metadata = {
-  title: "Notes & Folders App",
+  title: "ABC Notes",
   description: "A focused notes and folders app for organizing ideas.",
 };
 

@@ -4,6 +4,10 @@ import fs from 'fs';
 import { createClient } from '@/lib/supabase/server';
 
 export async function POST() {
+  if (process.env.ENABLE_MIGRATION_TOOLS !== 'true') {
+    return NextResponse.json({ message: 'Migration tools are disabled.' }, { status: 404 });
+  }
+
   if (!process.env.NEXT_PUBLIC_SUPABASE_URL) {
     return NextResponse.json({ message: 'Supabase not configured.' }, { status: 400 });
   }

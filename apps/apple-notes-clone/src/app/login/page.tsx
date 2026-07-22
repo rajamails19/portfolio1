@@ -1,8 +1,32 @@
+'use client';
+
+import { useSyncExternalStore } from 'react';
 import LoginPage from '@/components/auth/LoginPage';
 
-// Never statically prerender — Supabase client requires env vars at runtime
-export const dynamic = 'force-dynamic';
+function LoadingScreen() {
+  return (
+    <div style={{
+      minHeight: '100vh',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      background: 'var(--bg-editor)',
+      color: 'var(--text-muted)',
+      fontFamily: 'BlinkMacSystemFont, \"SF Pro Text\", sans-serif',
+      fontSize: 14,
+    }}>
+      Opening ABC Notes...
+    </div>
+  );
+}
+
+const subscribe = () => () => {};
+const getClientSnapshot = () => true;
+const getServerSnapshot = () => false;
 
 export default function Page() {
+  const mounted = useSyncExternalStore(subscribe, getClientSnapshot, getServerSnapshot);
+
+  if (!mounted) return <LoadingScreen />;
   return <LoginPage />;
 }

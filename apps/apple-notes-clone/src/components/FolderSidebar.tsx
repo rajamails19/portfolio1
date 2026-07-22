@@ -178,7 +178,16 @@ export default function FolderSidebar({ mobile, onSelectFolder }: { mobile?: boo
         <div style={{ height: 1, background: 'var(--border-light)', margin: '2px 4px 4px' }} />
 
         {folders.length === 0 && (
-          <p style={{ fontSize: 12, color: 'var(--text-faint)', textAlign: 'center', marginTop: 24 }}>No folders yet</p>
+          <div style={{ padding: '18px 10px', textAlign: 'center', color: 'var(--text-muted)' }}>
+            <p style={{ margin: '0 0 8px', fontSize: 13, fontWeight: 600 }}>Create your first folder</p>
+            <p style={{ margin: '0 0 12px', fontSize: 12, color: 'var(--text-faint)', lineHeight: 1.4 }}>Folders keep your notes tidy as your ideas grow.</p>
+            <button
+              onClick={createFolder}
+              style={{ border: 'none', borderRadius: 7, background: 'var(--accent)', color: 'white', padding: '6px 10px', fontSize: 12, fontWeight: 600, cursor: 'pointer' }}
+            >
+              New Folder
+            </button>
+          </div>
         )}
         {folders.map((folder) => {
           const selected = folder.id === selectedFolderId;
@@ -312,6 +321,7 @@ function PhotoAvatar({ size }: { size: number }) {
         onHoverEnd={() => setHovered(false)}
       >
         <div style={{ width: '100%', height: '100%', borderRadius: '50%', overflow: 'hidden', position: 'relative' }}>
+          {/* eslint-disable-next-line @next/next/no-img-element -- Local avatar image in an animated hover surface. */}
           <img src="/raja.jpeg" alt="Raja"
             style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top', display: 'block' }} />
           <AnimatePresence>
@@ -357,6 +367,7 @@ function PhotoAvatar({ size }: { size: number }) {
               zIndex: 9999,
             }}
           >
+            {/* eslint-disable-next-line @next/next/no-img-element -- Local avatar preview in a fixed-position hover card. */}
             <img src="/raja.jpeg" alt="Raja preview"
               style={{ width: '100%', height: 160, objectFit: 'cover', objectPosition: 'top', display: 'block' }} />
             <div style={{ background: '#1a1a1a', padding: '8px 12px 10px' }}>
@@ -396,7 +407,7 @@ function BrandCard() {
       >
         <PhotoAvatar size={26} />
         <span style={{ fontSize: 11, fontWeight: 600, color: 'var(--text-primary)', whiteSpace: 'nowrap' }}>
-          NOTES-APP <span style={{ color: '#e8402a' }}>♥</span> Raja
+          ABC NOTES <span style={{ color: '#e8402a' }}>♥</span> Raja
         </span>
         {/* Expand chevron */}
         <svg style={{ marginLeft: 'auto' }} width="10" height="10" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round" color="var(--text-muted)">
@@ -447,7 +458,7 @@ function BrandCard() {
         fontSize: 9, fontWeight: 800, letterSpacing: '0.12em',
         textTransform: 'uppercase', color: 'var(--accent)',
       }}>
-        ✦ NOTES-APP
+        ✦ ABC NOTES
       </p>
 
       {/* Credit */}

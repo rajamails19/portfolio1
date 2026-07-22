@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useMemo, useRef } from 'react';
 import { createClient } from '@/lib/supabase/client';
 import type { User } from '@supabase/supabase-js';
 
@@ -10,13 +10,14 @@ export default function UserMenu() {
   const [migrating, setMigrating] = useState(false);
   const [migrateMsg, setMigrateMsg] = useState('');
   const ref = useRef<HTMLDivElement>(null);
-  const supabase = createClient();
+  const supabase = useMemo(() => createClient(), []);
+  const migrationToolsEnabled = process.env.NEXT_PUBLIC_ENABLE_MIGRATION_TOOLS === 'true';
 
   useEffect(() => {
     supabase.auth.getUser().then(({ data }) => setUser(data.user));
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_e, s) => setUser(s?.user ?? null));
     return () => subscription.unsubscribe();
-  }, []);
+  }, [supabase]);
 
   useEffect(() => {
     if (!open) return;
@@ -63,7 +64,10 @@ export default function UserMenu() {
         }}
       >
         {!isGuest && user.user_metadata?.avatar_url
-          ? <img src={user.user_metadata.avatar_url} alt={initial} style={{ width: '100%', height: '100%', borderRadius: '50%', objectFit: 'cover' }} />
+          ? (
+            // eslint-disable-next-line @next/next/no-img-element -- Supabase OAuth avatars are dynamic provider URLs.
+            <img src={user.user_metadata.avatar_url} alt={initial} style={{ width: '100%', height: '100%', borderRadius: '50%', objectFit: 'cover' }} />
+          )
           : initial}
       </button>
 
@@ -106,7 +110,7 @@ export default function UserMenu() {
           )}
 
           {/* Migrate local notes — only for signed-in users */}
-          {!isGuest && (
+          {!isGuest && migrationToolsEnabled && (
             <div style={{ padding: '4px 0' }}>
               <button
                 onClick={migrateLocal}
@@ -129,6 +133,19 @@ export default function UserMenu() {
           )}
 
           <div style={{ borderTop: '1px solid var(--border)', margin: '2px 0' }} />
+
+          <button
+            onClick={() => { window.location.href = '/privacy'; }}
+            style={{
+              width: '100%', textAlign: 'left', padding: '7px 14px',
+              background: 'none', border: 'none', cursor: 'pointer',
+              fontSize: 13, color: 'var(--text-primary)', display: 'flex', alignItems: 'center', gap: 8,
+            }}
+            onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.background = 'var(--bg-hover)'; }}
+            onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.background = 'none'; }}
+          >
+            <span>ⓘ</span> About & Privacy
+          </button>
 
           <button
             onClick={signOut}

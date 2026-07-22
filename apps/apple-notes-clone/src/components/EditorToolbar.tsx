@@ -77,7 +77,7 @@ function FontSizeDropdown({ editor }: { editor: Editor | null }) {
         onMouseEnter={(e) => { if (editor) (e.currentTarget as HTMLElement).style.background = 'rgba(128,128,128,0.12)'; }}
         onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.background = open ? 'rgba(128,128,128,0.18)' : 'transparent'; }}
       >
-        <span style={{ fontSize: 13, fontWeight: 600, letterSpacing: '-0.3px', fontFamily: '-apple-system,sans-serif' }}>Aa</span>
+        <span style={{ fontSize: 13, fontWeight: 600, letterSpacing: '-0.3px', fontFamily: 'BlinkMacSystemFont, sans-serif' }}>Aa</span>
         <svg width="7" height="4" viewBox="0 0 8 5" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round">
           <path d="M1 1l3 3 3-3" />
         </svg>

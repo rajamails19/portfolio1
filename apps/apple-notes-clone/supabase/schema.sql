@@ -1,5 +1,5 @@
 -- ═══════════════════════════════════════════════════════════════════════════
--- Notes & Folders App — Supabase Schema
+-- ABC Notes — Supabase Schema
 -- Run this in: Supabase Dashboard → SQL Editor → New Query
 -- ═══════════════════════════════════════════════════════════════════════════
 
@@ -129,7 +129,7 @@ CREATE POLICY "images: own delete" ON public.images FOR DELETE USING (auth.uid()
 
 -- ─── Storage bucket ───────────────────────────────────────────────────────────
 INSERT INTO storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
-VALUES ('note-images', 'note-images', true, 10485760, ARRAY['image/jpeg','image/png','image/gif','image/webp','image/svg+xml'])
+VALUES ('note-images', 'note-images', true, 10485760, ARRAY['image/jpeg','image/png','image/gif','image/webp'])
 ON CONFLICT (id) DO NOTHING;
 
 CREATE POLICY "note-images: authenticated upload"

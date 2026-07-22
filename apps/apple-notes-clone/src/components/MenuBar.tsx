@@ -221,7 +221,7 @@ export default function MenuBar() {
     },
     {
       label: 'Help', items: [
-        { label: 'About Notes', action: () => alert('Notes & Folders App\nNext.js · TipTap · Supabase') },
+        { label: 'About Notes', action: () => alert('ABC Notes\nNext.js · TipTap · Supabase') },
       ],
     },
   ];

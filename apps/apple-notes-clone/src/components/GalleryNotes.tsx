@@ -58,6 +58,7 @@ export default function GalleryNotes({ notes, selectedId, onSelect, onContextMen
             {/* Thumbnail */}
             {thumb && (
               <div style={{ height: 100, overflow: 'hidden', background: 'var(--bg-hover)' }}>
+                {/* eslint-disable-next-line @next/next/no-img-element -- Note thumbnails may be Supabase/user-provided dynamic URLs. */}
                 <img
                   src={thumb}
                   alt=""

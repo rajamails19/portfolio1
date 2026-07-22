@@ -5,6 +5,10 @@ import { NextResponse } from 'next/server';
  * Run the returned SQL in: Supabase Dashboard → SQL Editor
  */
 export async function POST() {
+  if (process.env.ENABLE_MIGRATION_TOOLS !== 'true') {
+    return NextResponse.json({ message: 'Migration tools are disabled.' }, { status: 404 });
+  }
+
   const sql = [
     'ALTER TABLE public.notes ADD COLUMN IF NOT EXISTS trashed BOOLEAN NOT NULL DEFAULT FALSE;',
     'ALTER TABLE public.notes ADD COLUMN IF NOT EXISTS trashed_at TIMESTAMPTZ;',

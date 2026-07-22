@@ -64,7 +64,7 @@ body {
   height: 100%;
   overflow: clip;   /* clip without creating a scroll container — lets inner divs scroll on iOS */
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', sans-serif;
+  font-family: BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', sans-serif;
   background: var(--bg-editor);
   color: var(--text-primary);
   -webkit-font-smoothing: antialiased;

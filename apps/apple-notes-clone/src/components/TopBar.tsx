@@ -129,7 +129,7 @@ function FontSizeDropdown({ editor }: { editor: Editor | null }) {
         onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.background = open ? 'rgba(0,0,0,0.10)' : 'transparent'; }}
       >
         {/* "Aa" lettermark */}
-        <span style={{ fontSize: 12, fontWeight: 700, letterSpacing: '-0.5px', lineHeight: 1, fontFamily: '-apple-system,sans-serif' }}>Aa</span>
+        <span style={{ fontSize: 12, fontWeight: 700, letterSpacing: '-0.5px', lineHeight: 1, fontFamily: 'BlinkMacSystemFont, sans-serif' }}>Aa</span>
         {/* Chevron */}
         <svg width="7" height="4" viewBox="0 0 8 5" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round">
           <path d="M1 1l3 3 3-3" />
@@ -233,7 +233,7 @@ function TextStylePopover({ editor }: { editor: Editor | null }) {
         disabled={!editor}
         onClick={() => { if (editor) setOpen((o) => !o); }}
       >
-        {/* Bold "B" with an underline dot — the Apple Notes "Aa" text-format icon */}
+        {/* Bold "B" with an underline dot — the ABC Notes "Aa" text-format icon */}
         <svg width="14" height="14" viewBox="0 0 20 20" fill="currentColor">
           <path d="M3 5.5A1.5 1.5 0 014.5 4h5a3.5 3.5 0 012.852 5.53A3.5 3.5 0 0110 16H4.5A1.5 1.5 0 013 14.5v-9zm3 1v3h3.5a1.5 1.5 0 000-3H6zm0 5v3H10a1.5 1.5 0 000-3H6z" />
         </svg>

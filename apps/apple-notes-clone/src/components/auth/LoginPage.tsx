@@ -72,7 +72,7 @@ export default function LoginPage() {
     return (
       <div style={{
         minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center',
-        background: 'var(--bg-editor)', fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif',
+        background: 'var(--bg-editor)', fontFamily: 'BlinkMacSystemFont, "SF Pro Text", sans-serif',
         flexDirection: 'column', gap: 12,
       }}>
         <div style={{
@@ -104,7 +104,7 @@ export default function LoginPage() {
   return (
     <div style={{
       minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center',
-      background: 'var(--bg-editor)', fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif',
+      background: 'var(--bg-editor)', fontFamily: 'BlinkMacSystemFont, "SF Pro Text", sans-serif',
     }}>
       <div style={{
         width: 360, padding: '40px 36px',
@@ -225,6 +225,13 @@ export default function LoginPage() {
             style={{ background: 'none', border: 'none', color: 'var(--text-faint)', cursor: 'pointer', fontSize: 12, padding: 0 }}
           >
             ← Back to app
+          </button>
+          <span style={{ margin: '0 8px', color: 'var(--border)' }}>•</span>
+          <button
+            onClick={() => window.location.href = '/privacy'}
+            style={{ background: 'none', border: 'none', color: 'var(--text-faint)', cursor: 'pointer', fontSize: 12, padding: 0 }}
+          >
+            About & Privacy
           </button>
         </p>
       </div>

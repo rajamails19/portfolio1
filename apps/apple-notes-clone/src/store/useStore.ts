@@ -104,7 +104,7 @@ export const useStore = create<AppState>((set, get) => ({
   }),
 
   trashNote: (id) => {
-    const { notes, selectedFolderId } = get();
+    const { notes } = get();
     const note = notes.find((n) => n.id === id);
     if (!note) return;
     set((s) => ({
@@ -126,16 +126,16 @@ export const useStore = create<AppState>((set, get) => ({
   },
 
   moveNote: (noteId, toFolderId) => {
-    const { notes, selectedFolderId } = get();
+    const { notes } = get();
     const note = notes.find((n) => n.id === noteId);
     if (!note) return;
     const fromFolderId = note.folderId;
     set((s) => ({
       // Remove from current view if moving out of selected folder
-      notes: selectedFolderId === fromFolderId
+      notes: s.selectedFolderId === fromFolderId
         ? s.notes.filter((n) => n.id !== noteId)
         : s.notes.map((n) => n.id === noteId ? { ...n, folderId: toFolderId } : n),
-      selectedNoteId: s.selectedNoteId === noteId && selectedFolderId === fromFolderId
+      selectedNoteId: s.selectedNoteId === noteId && s.selectedFolderId === fromFolderId
         ? null
         : s.selectedNoteId,
       folders: s.folders.map((f) => {

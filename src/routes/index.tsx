@@ -16,7 +16,7 @@ import {
 } from "lucide-react";
 import aiAscendAcademyThumb from "@/assets/ai-ascend-academy-thumb.png";
 import aiLearnRajaThumb from "@/assets/ailearnraja-thumb.png";
-import appleNotesCloneThumb from "@/assets/apple-notes-clone-thumb.png";
+import abcNotesThumb from "@/assets/abc-notes-thumb.png";
 import captureThoughtsThumb from "@/assets/capture-thoughts-thumb.png";
 import chessForFunThumb from "@/assets/external/chess-for-fun-thumb.png";
 import dadQuizKidsThumb from "@/assets/external/dad-quiz-kids-thumb.png";
@@ -85,10 +85,10 @@ const projectPreviews = [
     alt: "Reset Mind homepage preview",
   },
   {
-    name: "Notes & Folders App",
+    name: "ABC Notes",
     href: "https://apple-notes-clone-pi.vercel.app/",
-    image: appleNotesCloneThumb,
-    alt: "Notes & Folders App preview",
+    image: abcNotesThumb,
+    alt: "ABC Notes preview",
   },
   {
     name: "AI Ascend Academy",

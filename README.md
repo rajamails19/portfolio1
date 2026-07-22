@@ -132,21 +132,17 @@ Local URL:
 http://localhost:8091/
 ```
 
-### Apple Notes Clone
+### ABC Notes
 
-Notes app inspired by Apple Notes. Useful for experimenting with writing, organization, and clean productivity UI.
+Private notes and folders app for writing, organizing, syncing, and safely managing personal notes.
 
 Run it with:
 
 ```bash
-npm run dev:apple-notes-clone
+npm run dev:abc-notes
 ```
 
-Local URL:
-
-```bash
-http://localhost:8092/
-```
+The command prints the active local URL and automatically moves to another port if the first one is busy.
 
 ### AI Ascend Academy
 
@@ -460,6 +456,16 @@ Lint one integrated app:
 npm run lint:mathraja
 ```
 
+ABC Notes uses these app-specific commands:
+
+```bash
+npm run dev:abc-notes
+npm run lint:abc-notes
+npm run build:abc-notes
+```
+
+`npm run dev:abc-notes` reuses the existing ABC Notes dev server when one is already running and responding. It removes stale local dev locks, then starts at port `8092` and automatically moves upward until it finds an open port.
+
 Replace `mathraja` with the app script name you need.
 
 ## Deployment Notes
@@ -483,6 +489,10 @@ and serve:
 ```bash
 dist/client
 ```
+
+## Documentation Rule
+
+Always update the relevant README when making meaningful project changes. For ABC Notes, update `apps/apple-notes-clone/README.md` whenever behavior, commands, deployment settings, environment flags, data-safety assumptions, or security posture changes.
 
 ## Repo Organization
 
