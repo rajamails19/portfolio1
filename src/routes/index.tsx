@@ -55,6 +55,42 @@ import wingsDemoMainThumb from "@/assets/external/wingsdemo-main-thumb.png";
 
 const projectPreviews = [
   {
+    name: "ABC Notes",
+    href: "https://apple-notes-clone-pi.vercel.app/",
+    image: abcNotesThumb,
+    alt: "ABC Notes preview",
+  },
+  {
+    name: "Capture Thoughts",
+    href: "https://capturethoughts.vercel.app/",
+    image: captureThoughtsThumb,
+    alt: "Capture Thoughts homepage preview",
+  },
+  {
+    name: "Guide Learn AI",
+    href: "https://guide-learn-ai.vercel.app/",
+    image: guideLearnAiThumb,
+    alt: "Guide Learn AI homepage preview",
+  },
+  {
+    name: "MathDreams",
+    href: "http://localhost:8118/",
+    image: mathRajaThumb,
+    alt: "MathDreams magical math app homepage preview",
+  },
+  {
+    name: "JobOps",
+    href: "http://localhost:8121/",
+    image: jobsOpsWithRajaThumb,
+    alt: "JobOps job application command center homepage preview",
+  },
+  {
+    name: "StudyDeck",
+    href: "http://localhost:8122/",
+    image: intervQansThumb,
+    alt: "StudyDeck interview question and answer prep homepage preview",
+  },
+  {
     name: "JagsRajKitchen",
     href: "http://localhost:8086/",
     image: jagsRajKitchenThumb,
@@ -85,28 +121,10 @@ const projectPreviews = [
     alt: "Reset Mind homepage preview",
   },
   {
-    name: "ABC Notes",
-    href: "https://apple-notes-clone-pi.vercel.app/",
-    image: abcNotesThumb,
-    alt: "ABC Notes preview",
-  },
-  {
     name: "AI Ascend Academy",
     href: "http://localhost:8093/",
     image: aiAscendAcademyThumb,
     alt: "AI Ascend Academy homepage preview",
-  },
-  {
-    name: "Capture Thoughts",
-    href: "http://localhost:8094/",
-    image: captureThoughtsThumb,
-    alt: "Capture Thoughts homepage preview",
-  },
-  {
-    name: "Guide Learn AI",
-    href: "http://localhost:8095/",
-    image: guideLearnAiThumb,
-    alt: "Guide Learn AI homepage preview",
   },
   {
     name: "Speak Practice Tamil",
@@ -127,12 +145,6 @@ const projectPreviews = [
     alt: "Tech Blog Raja homepage preview",
   },
   {
-    name: "MathDreams",
-    href: "http://localhost:8118/",
-    image: mathRajaThumb,
-    alt: "MathDreams magical math app homepage preview",
-  },
-  {
     name: "Campus AI",
     href: "http://localhost:8119/",
     image: schoolOsAgentThumb,
@@ -143,18 +155,6 @@ const projectPreviews = [
     href: "http://localhost:8120/",
     image: serverDashboardThumb,
     alt: "Stage server dashboard homepage preview",
-  },
-  {
-    name: "JobOps",
-    href: "http://localhost:8121/",
-    image: jobsOpsWithRajaThumb,
-    alt: "JobOps job application command center homepage preview",
-  },
-  {
-    name: "StudyDeck",
-    href: "http://localhost:8122/",
-    image: intervQansThumb,
-    alt: "StudyDeck interview question and answer prep homepage preview",
   },
 ];
 
