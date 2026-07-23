@@ -53,8 +53,13 @@ ENABLE_MIGRATION_TOOLS=false
 NEXT_PUBLIC_ENABLE_MIGRATION_TOOLS=false
 ```
 
-Only enable them temporarily from a trusted session if old local notes need to be migrated into Supabase.
+Only enable them temporarily from a trusted session if old local folders/notes need to be migrated into Supabase. The migration endpoint intentionally does not migrate images because new public launches serve uploaded images through authenticated `/api/images/:id` URLs.
 
 Image uploads accept only JPEG, PNG, GIF, and WebP files up to 10 MB. SVG uploads are intentionally disabled for public launch. New uploaded images use authenticated app URLs (`/api/images/:id`) instead of public Supabase Storage URLs. The `note-images` bucket should be private in Supabase.
 
-Production API routes fail closed when Supabase environment variables are missing, instead of falling back to local SQLite. Note create/move operations verify that the target folder belongs to the signed-in user before writing.
+Local development uploads under `public/uploads/` are ignored by Git and must not be deployed as static public files.
+Local SQLite fallback data under `data/` is ignored by Git and must not be committed or deployed. Production data lives in Supabase.
+
+Production API routes and middleware fail closed when Supabase environment variables are missing, instead of falling back to local SQLite. Note create/move operations verify that the target folder belongs to the signed-in user before writing.
+
+Before sharing publicly, confirm Vercel has `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `ENABLE_MIGRATION_TOOLS=false`, and `NEXT_PUBLIC_ENABLE_MIGRATION_TOOLS=false`. Also confirm the Supabase `note-images` bucket is private before relying on private image access in production.
