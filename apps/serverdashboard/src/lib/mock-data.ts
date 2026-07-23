@@ -17,7 +17,7 @@ export interface LocalApp {
   port: number;
   uptimeSec: number;
   pid: number;
-  source: "claude" | "codex" | "manual" | "lovable";
+  source: "claude" | "codex" | "manual" | "prototype";
   about: string;
   features: string[];
   readmePath?: string;
@@ -142,7 +142,7 @@ export interface DeployedSite {
   id: string;
   name: string;
   url: string;
-  host: "vercel" | "cloudflare" | "namecheap" | "lovable" | "netlify";
+  host: "vercel" | "cloudflare" | "namecheap" | "prototype" | "netlify";
   stack: string;
   tag: "production" | "staging" | "personal" | "client";
   about: string;
@@ -194,20 +194,20 @@ const domains: DeployedSite[] = ([
   ...s,
 }));
 
-const lovableSites: DeployedSite[] = [
+const prototypeSites: DeployedSite[] = [
   "stage-dashboard", "kid-stories", "design-system-kit", "habit-orbit", "scribble-pad",
 ].map((slug, i) => ({
   id: `l${i}`,
-  name: `${slug}.lovable.app`,
-  url: `https://${slug}.lovable.app`,
-  host: "lovable" as const,
+  name: `${slug}.prototype.local`,
+  url: `https://${slug}.prototype.local`,
+  host: "prototype" as const,
   stack: "TanStack Start",
   tag: "personal" as const,
-  about: "Built with Lovable.",
+  about: "Archived prototype build.",
 }));
 
 export const DEPLOYED_SITES: DeployedSite[] = [
-  ...vercelSites, ...cloudflareSites, ...domains, ...lovableSites,
+  ...vercelSites, ...cloudflareSites, ...domains, ...prototypeSites,
 ];
 
 export const formatUptime = (sec: number) => {

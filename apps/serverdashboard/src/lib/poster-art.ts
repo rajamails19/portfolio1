@@ -8,7 +8,7 @@ import design from "@/assets/poster-design.jpg";
 import vercel from "@/assets/host-vercel.jpg";
 import cloudflare from "@/assets/host-cloudflare.jpg";
 import domains from "@/assets/host-domains.jpg";
-import lovable from "@/assets/host-lovable.jpg";
+import prototypeArt from "@/assets/host-lovable.jpg";
 
 export const APP_ART: Record<string, string> = {
   "apple-notes-clone": appleNotes,
@@ -24,7 +24,7 @@ export const HOST_ART: Record<string, string> = {
   vercel,
   cloudflare,
   namecheap: domains,
-  lovable,
+  prototype: prototypeArt,
   netlify: cloudflare,
 };
 

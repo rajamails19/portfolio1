@@ -12,7 +12,7 @@ interface Props {
 const SOURCE_LABEL: Record<LocalApp["source"], string> = {
   claude: "Claude",
   codex: "Codex",
-  lovable: "Lovable",
+  prototype: "Prototype",
   manual: "Manual",
 };
 

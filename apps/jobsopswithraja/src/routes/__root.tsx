@@ -72,8 +72,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: "JobOps — Job Application Command Center" },
       { name: "twitter:description", content: "Search, filter, rank, tailor, and track full-time job applications across LinkedIn, Indeed, Greenhouse, and more — in one focused workspace." },
-      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/850759b7-8f6e-4470-b268-7390272a41cf/id-preview-7a3b09e4--84a21d45-7cbf-44f9-a1cb-69f4569f950c.lovable.app-1784258108202.png" },
-      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/850759b7-8f6e-4470-b268-7390272a41cf/id-preview-7a3b09e4--84a21d45-7cbf-44f9-a1cb-69f4569f950c.lovable.app-1784258108202.png" },
+      { property: "og:image", content: "/og-preview.png" },
+      { name: "twitter:image", content: "/og-preview.png" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },

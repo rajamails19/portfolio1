@@ -85,8 +85,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: "My Capture Vault" },
       { name: "twitter:description", content: "Save every image, idea, voice note, and reel before it disappears." },
-      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/734fe175-40c3-47ba-904f-3b03d0d88f6d/id-preview-3604ee7c--2cc48289-7b6f-4fae-9ccd-a400646e58a4.lovable.app-1781809041908.png" },
-      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/734fe175-40c3-47ba-904f-3b03d0d88f6d/id-preview-3604ee7c--2cc48289-7b6f-4fae-9ccd-a400646e58a4.lovable.app-1781809041908.png" },
+      { property: "og:image", content: "/og-preview.png" },
+      { name: "twitter:image", content: "/og-preview.png" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },

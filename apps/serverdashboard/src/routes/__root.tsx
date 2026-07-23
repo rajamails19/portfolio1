@@ -87,8 +87,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "twitter:title", content: "Stage · your localhost, but make it cinema" },
       { property: "og:description", content: "A playful, cinematic command center for every dev server, port, and deployed site you run." },
       { name: "twitter:description", content: "A playful, cinematic command center for every dev server, port, and deployed site you run." },
-      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/97310ad8-6802-448d-8048-0d348f278ce5/id-preview-df50d791--3e73df2a-a3a7-4d7c-a594-f91bc1dd76f5.lovable.app-1781469538747.png" },
-      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/97310ad8-6802-448d-8048-0d348f278ce5/id-preview-df50d791--3e73df2a-a3a7-4d7c-a594-f91bc1dd76f5.lovable.app-1781469538747.png" },
+      { property: "og:image", content: "/og-preview.png" },
+      { name: "twitter:image", content: "/og-preview.png" },
     ],
     links: [
       { rel: "preconnect", href: "https://fonts.googleapis.com" },

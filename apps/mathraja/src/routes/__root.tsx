@@ -95,8 +95,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "description", content: "A dreamy, kid-friendly math playground: grades 1–6, tips, quizzes, puzzles, games, formulas and a math dictionary." },
       { property: "og:description", content: "A dreamy, kid-friendly math playground: grades 1–6, tips, quizzes, puzzles, games, formulas and a math dictionary." },
       { name: "twitter:description", content: "A dreamy, kid-friendly math playground: grades 1–6, tips, quizzes, puzzles, games, formulas and a math dictionary." },
-      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/3ee50207-2681-4999-a0a7-0a6f79891da7/id-preview-97c9a907--099772ad-ceec-49b9-94f3-a8e16f88d800.lovable.app-1783193269281.png" },
-      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/3ee50207-2681-4999-a0a7-0a6f79891da7/id-preview-97c9a907--099772ad-ceec-49b9-94f3-a8e16f88d800.lovable.app-1783193269281.png" },
+      { property: "og:image", content: "/og-preview.png" },
+      { name: "twitter:image", content: "/og-preview.png" },
     ],
     links: [
       {

@@ -59,8 +59,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: "Aetheria — AI Career Codex" },
       { name: "twitter:description", content: "A cinematic reference codex for an AI Engineering & Data Science career — notes, topics, interview prep, diagrams, and curated videos." },
-      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/4cf9e285-50b8-467e-bad0-62340f8b1f78/id-preview-91130525--d67bc003-2a3e-40b7-9c63-f835b72a1a5f.lovable.app-1781475795613.png" },
-      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/4cf9e285-50b8-467e-bad0-62340f8b1f78/id-preview-91130525--d67bc003-2a3e-40b7-9c63-f835b72a1a5f.lovable.app-1781475795613.png" },
+      { property: "og:image", content: "/og-preview.png" },
+      { name: "twitter:image", content: "/og-preview.png" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },

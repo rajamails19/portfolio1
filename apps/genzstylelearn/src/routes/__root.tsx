@@ -92,7 +92,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
-      { name: "twitter:site", content: "@Lovable" },
+      { name: "twitter:site", content: "@NuvRajLabs" },
       { name: "twitter:title", content: "Lumen — Scroll. Learn. Build AI." },
       {
         name: "twitter:description",
@@ -102,12 +102,12 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       {
         property: "og:image",
         content:
-          "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/16e0e1cb-8c15-4b5d-80a4-79c0fddb1bad/id-preview-13589275--e1ddb3df-c753-4d54-9deb-5e9ef10758f9.lovable.app-1781891876383.png",
+          "/og-preview.png",
       },
       {
         name: "twitter:image",
         content:
-          "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/16e0e1cb-8c15-4b5d-80a4-79c0fddb1bad/id-preview-13589275--e1ddb3df-c753-4d54-9deb-5e9ef10758f9.lovable.app-1781891876383.png",
+          "/og-preview.png",
       },
     ],
     links: [

@@ -74,19 +74,19 @@ const projectPreviews = [
   },
   {
     name: "MathDreams",
-    href: "http://localhost:8118/",
+    href: "https://mathraja.vercel.app/",
     image: mathRajaThumb,
     alt: "MathDreams magical math app homepage preview",
   },
   {
     name: "JobOps",
-    href: "http://localhost:8121/",
+    href: "https://jobopsraja.vercel.app/",
     image: jobsOpsWithRajaThumb,
     alt: "JobOps job application command center homepage preview",
   },
   {
     name: "StudyDeck",
-    href: "http://localhost:8122/",
+    href: "https://qansinterview.vercel.app/",
     image: intervQansThumb,
     alt: "StudyDeck interview question and answer prep homepage preview",
   },
@@ -128,7 +128,7 @@ const projectPreviews = [
   },
   {
     name: "Speak Practice Tamil",
-    href: "http://localhost:8096/",
+    href: "https://tamilpracticespeak.vercel.app/",
     image: speakPracticeTamilThumb,
     alt: "Speak Practice Tamil homepage preview",
   },

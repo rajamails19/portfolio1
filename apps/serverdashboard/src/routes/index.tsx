@@ -28,14 +28,14 @@ export const Route = createFileRoute("/")({
   component: Index,
 });
 
-type TabId = "local" | "vercel" | "cloudflare" | "domains" | "lovable";
+type TabId = "local" | "vercel" | "cloudflare" | "domains" | "prototype";
 
 const TABS: { id: TabId; label: string; emoji: string; accent: string }[] = [
   { id: "local",      label: "Local",      emoji: "💻", accent: "var(--gradient-coral)" },
   { id: "vercel",     label: "Vercel",     emoji: "▲",  accent: "var(--gradient-grape)" },
   { id: "cloudflare", label: "Cloudflare", emoji: "🟠", accent: "var(--gradient-sunset)" },
   { id: "domains",    label: "Domains",    emoji: "🌐", accent: "var(--gradient-sky)" },
-  { id: "lovable",    label: "Lovable",    emoji: "💖", accent: "var(--gradient-magenta)" },
+  { id: "prototype", label: "Prototype", emoji: "✨", accent: "var(--gradient-magenta)" },
 ];
 
 function Index() {
@@ -51,7 +51,7 @@ function Index() {
     if (tab === "local") return;
     const hostMap: Record<TabId, DeployedSite["host"] | null> = {
       local: null, vercel: "vercel", cloudflare: "cloudflare",
-      domains: "namecheap", lovable: "lovable",
+      domains: "namecheap", prototype: "prototype",
     };
     const host = hostMap[tab];
     if (!host) return;
@@ -91,7 +91,7 @@ function Index() {
       vercel: filter("vercel"),
       cloudflare: filter("cloudflare"),
       domains: filter("namecheap"),
-      lovable: filter("lovable"),
+      prototype: filter("prototype"),
     };
   }, [query]);
 

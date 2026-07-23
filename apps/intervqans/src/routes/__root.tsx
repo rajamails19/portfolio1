@@ -79,8 +79,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: "StudyDeck — Prep. Practice. Ship." },
       { name: "twitter:description", content: "A cinematic study companion for React, AI engineering, and system design — Q&A, programs, real-time scenarios, and portfolio projects." },
-      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/5143169b-41b6-4727-a567-eb7af303a266/id-preview-93ddb96d--0ac61ac5-6fc0-4d1c-8ca4-d46121a56a90.lovable.app-1783832012264.png" },
-      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/5143169b-41b6-4727-a567-eb7af303a266/id-preview-93ddb96d--0ac61ac5-6fc0-4d1c-8ca4-d46121a56a90.lovable.app-1783832012264.png" },
+      { property: "og:image", content: "/og-preview.png" },
+      { name: "twitter:image", content: "/og-preview.png" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },

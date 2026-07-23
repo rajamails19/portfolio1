@@ -7,7 +7,7 @@ const HOST_STYLE: Record<DeployedSite["host"], { label: string; color: string }>
   vercel: { label: "Vercel", color: "oklch(0.95 0.01 250)" },
   cloudflare: { label: "Cloudflare", color: "oklch(0.82 0.17 75)" },
   namecheap: { label: "Namecheap", color: "oklch(0.7 0.18 30)" },
-  lovable: { label: "Lovable", color: "oklch(0.7 0.2 25)" },
+  prototype: { label: "Prototype", color: "oklch(0.7 0.2 25)" },
   netlify: { label: "Netlify", color: "oklch(0.78 0.18 195)" },
 };
 

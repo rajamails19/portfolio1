@@ -63,8 +63,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: "Campus AI Mission Control" },
       { name: "twitter:description", content: "AI-first operating system for modern schools — agents, orchestration, RAG, MLOps, observability." },
-      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/80a5c6d6-0e13-4c57-b62a-ef423a0c8641/id-preview-5324667f--80735db0-1cb7-44a4-9fa4-5e7b9bf9c451.lovable.app-1782669980232.png" },
-      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/80a5c6d6-0e13-4c57-b62a-ef423a0c8641/id-preview-5324667f--80735db0-1cb7-44a4-9fa4-5e7b9bf9c451.lovable.app-1782669980232.png" },
+      { property: "og:image", content: "/og-preview.png" },
+      { name: "twitter:image", content: "/og-preview.png" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },

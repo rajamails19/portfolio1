@@ -84,11 +84,11 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:description", content: "A cinematic language acquisition platform built on listening, repetition and speaking. Enter the world of Aura." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
-      { name: "twitter:site", content: "@Lovable" },
+      { name: "twitter:site", content: "@NuvRajLabs" },
       { name: "twitter:title", content: "Aura — Speak the world before you read it" },
       { name: "twitter:description", content: "A cinematic language acquisition platform built on listening, repetition and speaking. Enter the world of Aura." },
-      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/58ab19e8-62dc-41ff-965c-18c6881b63b7/id-preview-b77b39de--89738bfd-06aa-4dcf-9a78-777d74c36c10.lovable.app-1781709627122.png" },
-      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/58ab19e8-62dc-41ff-965c-18c6881b63b7/id-preview-b77b39de--89738bfd-06aa-4dcf-9a78-777d74c36c10.lovable.app-1781709627122.png" },
+      { property: "og:image", content: "/og-preview.png" },
+      { name: "twitter:image", content: "/og-preview.png" },
     ],
     links: [
       {

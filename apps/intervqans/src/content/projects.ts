@@ -20,9 +20,9 @@ export const projectsSection: Section = {
           type: "list",
           items: [
             "React + TanStack Router (frontend)",
-            "Lovable Cloud (Postgres + auth + edge functions)",
+            "Hosted cloud backend (Postgres + auth + server functions)",
             "pgvector for embeddings",
-            "Lovable AI Gateway (embeddings + chat)",
+            "LLM gateway (embeddings + chat)",
           ],
         },
         { type: "heading", content: "Data model" },

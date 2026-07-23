@@ -95,7 +95,7 @@ print(fib(50))  # 12586269025`,
       tags: ["AI", "RAG", "Python"],
       difficulty: "Hard",
       answer: [
-        { type: "text", content: "A skeleton retrieval-augmented generation loop. Swap the fake embedder & LLM with OpenAI, Anthropic, or your Lovable AI Gateway calls." },
+        { type: "text", content: "A skeleton retrieval-augmented generation loop. Swap the fake embedder & LLM with OpenAI, Anthropic, or your LLM gateway calls." },
         {
           type: "code",
           language: "python",

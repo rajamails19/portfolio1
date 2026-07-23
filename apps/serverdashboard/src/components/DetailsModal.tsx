@@ -13,7 +13,7 @@ interface Props {
 const SOURCE_LABEL: Record<LocalApp["source"], { label: string; color: string }> = {
   claude: { label: "Claude Code", color: "oklch(0.82 0.16 45)" },
   codex: { label: "Codex", color: "oklch(0.78 0.18 165)" },
-  lovable: { label: "Lovable", color: "oklch(0.72 0.22 25)" },
+  prototype: { label: "Prototype", color: "oklch(0.72 0.22 25)" },
   manual: { label: "You", color: "oklch(0.85 0.17 85)" },
 };
 

@@ -7,7 +7,7 @@ const HOST_LABEL: Record<DeployedSite["host"], { label: string; emoji: string }>
   vercel: { label: "Vercel", emoji: "▲" },
   cloudflare: { label: "Cloudflare", emoji: "🔥" },
   namecheap: { label: "Domains", emoji: "🌐" },
-  lovable: { label: "Lovable", emoji: "💖" },
+  prototype: { label: "Prototype", emoji: "💖" },
   netlify: { label: "Netlify", emoji: "🟢" },
 };
 

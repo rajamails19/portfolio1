@@ -105,7 +105,7 @@ export const projectRegistry = [
     name: "Speak Practice Tamil",
     label: "Tamil speaking practice",
     status: "Running on localhost:8096",
-    href: "http://localhost:8096/",
+    href: "https://tamilpracticespeak.vercel.app/",
     external: true,
     icon: Languages,
     tone: "bg-[#8d4eb8]",
