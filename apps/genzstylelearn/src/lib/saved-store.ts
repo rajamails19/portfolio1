@@ -7,7 +7,7 @@
  */
 
 import { useState, useEffect, useCallback } from "react";
-import { supabase } from "./supabase-client";
+import { isSupabaseConfigured, supabase } from "./supabase-client";
 
 /* ── types ── */
 
@@ -31,6 +31,9 @@ export type SavedItem = {
   kind: "image" | "reel" | "carousel" | "quote";
   savedAt: string;
 };
+
+const LOCAL_FOLDERS_KEY = "lumen.localFolders";
+const LOCAL_ITEMS_KEY = "lumen.localSavedItems";
 
 /* ── default built-in folders ── */
 
@@ -86,6 +89,45 @@ export const GRADIENT_OPTIONS = [
   { label: "Sky", value: "from-sky-300 to-blue-400" },
 ];
 
+function createId(prefix: string) {
+  return `${prefix}-${globalThis.crypto?.randomUUID?.() ?? Date.now().toString(36)}`;
+}
+
+function builtInFolders(): Folder[] {
+  return DEFAULT_FOLDERS.map((f) => ({ ...f, createdAt: new Date(0).toISOString() }));
+}
+
+function readStoredFolders(): Folder[] {
+  if (typeof window === "undefined") return builtInFolders();
+
+  try {
+    const custom = JSON.parse(window.localStorage.getItem(LOCAL_FOLDERS_KEY) ?? "[]") as Folder[];
+    return [...builtInFolders(), ...custom];
+  } catch {
+    return builtInFolders();
+  }
+}
+
+function persistCustomFolders(folders: Folder[]) {
+  if (typeof window === "undefined") return;
+  window.localStorage.setItem(LOCAL_FOLDERS_KEY, JSON.stringify(folders.filter((f) => !f.builtIn)));
+}
+
+function readStoredItems(): SavedItem[] {
+  if (typeof window === "undefined") return [];
+
+  try {
+    return JSON.parse(window.localStorage.getItem(LOCAL_ITEMS_KEY) ?? "[]") as SavedItem[];
+  } catch {
+    return [];
+  }
+}
+
+function persistItems(items: SavedItem[]) {
+  if (typeof window === "undefined") return;
+  window.localStorage.setItem(LOCAL_ITEMS_KEY, JSON.stringify(items));
+}
+
 /* ── helpers: map Supabase rows → app types ── */
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -128,6 +170,13 @@ export function useSavedStore() {
   /* ── 1. ensure anonymous session on mount ── */
   useEffect(() => {
     async function init() {
+      if (!isSupabaseConfigured || !supabase) {
+        setFolders(readStoredFolders());
+        setItems(readStoredItems());
+        setLoading(false);
+        return;
+      }
+
       const { data: sessionData } = await supabase.auth.getSession();
       let uid = sessionData.session?.user?.id ?? null;
 
@@ -147,6 +196,8 @@ export function useSavedStore() {
   }, []);
 
   async function loadAll(uid: string) {
+    if (!supabase) return;
+
     // load custom folders from Supabase
     const { data: folderRows } = await supabase
       .from("lumen_folders")
@@ -171,7 +222,7 @@ export function useSavedStore() {
 
   /* ── 2. ensure built-in folders exist in Supabase for this user ── */
   useEffect(() => {
-    if (!userId) return;
+    if (!userId || !supabase) return;
 
     async function seedBuiltIns() {
       for (const f of DEFAULT_FOLDERS) {
@@ -195,6 +246,22 @@ export function useSavedStore() {
 
   const createFolder = useCallback(
     async (name: string, gradient: string, emoji: string): Promise<Folder | null> => {
+      if (!supabase) {
+        const folder: Folder = {
+          id: createId("folder"),
+          name,
+          gradient,
+          emoji,
+          createdAt: new Date().toISOString(),
+        };
+        setFolders((prev) => {
+          const next = [...prev, folder];
+          persistCustomFolders(next);
+          return next;
+        });
+        return folder;
+      }
+
       if (!userId) return null;
       const { data, error } = await supabase
         .from("lumen_folders")
@@ -211,6 +278,20 @@ export function useSavedStore() {
 
   const deleteFolder = useCallback(
     async (id: string) => {
+      if (!supabase) {
+        setFolders((prev) => {
+          const next = prev.filter((f) => f.id !== id || f.builtIn);
+          persistCustomFolders(next);
+          return next;
+        });
+        setItems((prev) => {
+          const next = prev.filter((i) => i.folderId !== id);
+          persistItems(next);
+          return next;
+        });
+        return;
+      }
+
       if (!userId) return;
       await supabase.from("lumen_folders").delete().eq("id", id).eq("user_id", userId);
       setFolders((prev) => prev.filter((f) => f.id !== id || f.builtIn));
@@ -224,6 +305,21 @@ export function useSavedStore() {
       folderId: string,
       post: Omit<SavedItem, "id" | "folderId" | "savedAt">,
     ): Promise<void> => {
+      if (!supabase) {
+        const item: SavedItem = {
+          ...post,
+          id: createId("item"),
+          folderId,
+          savedAt: new Date().toISOString(),
+        };
+        setItems((prev) => {
+          const next = [item, ...prev];
+          persistItems(next);
+          return next;
+        });
+        return;
+      }
+
       if (!userId) return;
 
       // For built-in folders (UUID conflict): resolve folder UUID from Supabase
@@ -274,6 +370,15 @@ export function useSavedStore() {
 
   const removeFromFolder = useCallback(
     async (itemId: string) => {
+      if (!supabase) {
+        setItems((prev) => {
+          const next = prev.filter((i) => i.id !== itemId);
+          persistItems(next);
+          return next;
+        });
+        return;
+      }
+
       if (!userId) return;
       await supabase.from("lumen_saved_items").delete().eq("id", itemId).eq("user_id", userId);
       setItems((prev) => prev.filter((i) => i.id !== itemId));
