@@ -202,7 +202,7 @@ const kidsProjectPreviews = [
   },
   {
     name: "Meenu's Bow World",
-    href: "http://localhost:8104/",
+    href: "https://meenuworld.vercel.app/",
     image: kidshloMainThumb,
     alt: "Meenu's Bow World homepage preview",
     path: "/Users/rajav/Documents/Coding/Claude-help/kidshlo-main",
@@ -230,7 +230,7 @@ const kidsProjectPreviews = [
   },
   {
     name: "Telugu Trace Kids",
-    href: "http://localhost:8108/",
+    href: "https://telugutraceraja.vercel.app/",
     image: teluguTraceKidsThumb,
     alt: "Telugu Trace Kids homepage preview",
     path: "/Users/rajav/Documents/Coding/Claude-help/telugu-trace-kids",
