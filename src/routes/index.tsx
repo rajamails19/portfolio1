@@ -188,7 +188,7 @@ const kidsProjectPreviews = [
   },
   {
     name: "Wonder Workshop",
-    href: "http://localhost:8102/",
+    href: "https://funartwithraja.vercel.app/",
     image: drawArrtThumb,
     alt: "Wonder Workshop creative app homepage preview",
     path: "/Users/rajav/Documents/Coding/Claude-help/draw-arrt",
@@ -272,7 +272,7 @@ const kidsProjectPreviews = [
   },
   {
     name: "Tappy",
-    href: "http://localhost:8114/",
+    href: "https://kidstypingraja-eight.vercel.app/",
     image: kidsTypingThumb,
     alt: "Tappy typing playground homepage preview",
     path: "/Users/rajav/Documents/Coding/CGPT-help/kidstyping",
@@ -293,7 +293,7 @@ const kidsProjectPreviews = [
   },
   {
     name: "VroomVerse",
-    href: "http://localhost:8117/",
+    href: "https://wheelsmachineswithraja.vercel.app/",
     image: wheelsAndMachinesThumb,
     alt: "VroomVerse machines learning app homepage preview",
     path: "/Users/rajav/Documents/Coding/CGPT-help/wheelsandmachines-main",
