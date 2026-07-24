@@ -205,7 +205,7 @@ const kidsProjectPreviews = [
     href: "https://meenuworld.vercel.app/",
     image: kidshloMainThumb,
     alt: "Meenu's Bow World homepage preview",
-    path: "/Users/rajav/Documents/Coding/Claude-help/kidshlo-main",
+    path: "/Users/rajav/Documents/Coding/CGPT-help/kidshlo",
   },
   {
     name: "Shruti",
