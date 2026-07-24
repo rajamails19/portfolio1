@@ -45,7 +45,7 @@ export const projectRegistry = [
     name: "GenZ Style Learn",
     label: "Style learning app",
     status: "Running on localhost:8089",
-    href: "http://localhost:8089/",
+    href: "https://genzstylelearn.vercel.app/",
     external: true,
     icon: Palette,
     tone: "bg-[#c45f8c]",

@@ -110,7 +110,7 @@ const projectPreviews = [
   },
   {
     name: "GenZ Style Learn",
-    href: "http://localhost:8089/",
+    href: "https://genzstylelearn.vercel.app/",
     image: genZStyleLearnThumb,
     alt: "GenZ Style Learn homepage preview",
   },
