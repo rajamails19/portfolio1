@@ -216,7 +216,7 @@ const kidsProjectPreviews = [
   },
   {
     name: "Story Buddy AI",
-    href: "http://localhost:8106/",
+    href: "https://story-buddy-books.vercel.app/",
     image: storyBuddyAiThumb,
     alt: "Story Buddy AI homepage preview",
     path: "/Users/rajav/Documents/Coding/Claude-help/story-buddy-ai",
