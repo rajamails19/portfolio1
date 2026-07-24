@@ -279,14 +279,14 @@ const kidsProjectPreviews = [
   },
   {
     name: "Ocean Symphony",
-    href: "http://localhost:8115/",
+    href: "https://pianowithraja.vercel.app/",
     image: pianoWithRajaThumb,
     alt: "Ocean Symphony piano learning app homepage preview",
     path: "/Users/rajav/Documents/Coding/CGPT-help/pianowithraja",
   },
   {
     name: "PokéChess",
-    href: "http://localhost:8116/",
+    href: "https://pokemanchessraja.vercel.app/",
     image: pokeChessGameThumb,
     alt: "PokéChess chess learning game homepage preview",
     path: "/Users/rajav/Documents/Coding/CGPT-help/pokechessgame-main",
