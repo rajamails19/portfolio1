@@ -98,7 +98,7 @@ const projectPreviews = [
   },
   {
     name: "AI Learn Raja",
-    href: "http://localhost:8087/",
+    href: "https://learncodewithraja.vercel.app/",
     image: aiLearnRajaThumb,
     alt: "AI Learn Raja homepage preview",
   },
@@ -122,7 +122,7 @@ const projectPreviews = [
   },
   {
     name: "AI Ascend Academy",
-    href: "http://localhost:8093/",
+    href: "https://bloglearnraja.vercel.app/",
     image: aiAscendAcademyThumb,
     alt: "AI Ascend Academy homepage preview",
   },
@@ -146,7 +146,7 @@ const projectPreviews = [
   },
   {
     name: "Campus AI",
-    href: "http://localhost:8119/",
+    href: "https://schoolosraja.vercel.app/",
     image: schoolOsAgentThumb,
     alt: "Campus AI school operating system dashboard preview",
   },
