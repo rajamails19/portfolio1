@@ -116,7 +116,7 @@ const projectPreviews = [
   },
   {
     name: "Reset Mind",
-    href: "http://localhost:8091/",
+    href: "https://resetmindproj.vercel.app/",
     image: resetMindProjThumb,
     alt: "Reset Mind homepage preview",
   },
