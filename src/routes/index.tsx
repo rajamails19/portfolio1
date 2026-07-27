@@ -42,7 +42,10 @@ import pokeChessGameThumb from "@/assets/external/pokechessgame-thumb.png";
 import resetMindProjThumb from "@/assets/resetmindproj-thumb.png";
 import schoolOsAgentThumb from "@/assets/schoolosagent-thumb.png";
 import shadowBg from "@/assets/shadow-bg.jpg";
+import sheelTechLearnThumb from "@/assets/sheeltechlearn-thumb.png";
+import seminarTeachThumb from "@/assets/seminarteach-thumb.png";
 import speakPracticeTamilThumb from "@/assets/speakpracticetamil-thumb.png";
+import spellBeeQuizThumb from "@/assets/external/spellbeequiz-thumb.png";
 import storyBuddyAiThumb from "@/assets/external/story-buddy-ai-thumb.png";
 import techBlogRajaThumb from "@/assets/techblograja-thumb.png";
 import teluguTalesThumb from "@/assets/external/telugu-tales-thumb.png";
@@ -71,6 +74,18 @@ const projectPreviews = [
     href: "https://guide-learn-ai.vercel.app/",
     image: guideLearnAiThumb,
     alt: "Guide Learn AI homepage preview",
+  },
+  {
+    name: "Sheel Tech Learn",
+    href: "http://localhost:8123/",
+    image: sheelTechLearnThumb,
+    alt: "Sheel Tech Learn homepage preview",
+  },
+  {
+    name: "Lumen",
+    href: "http://localhost:8124/",
+    image: seminarTeachThumb,
+    alt: "Lumen tutorial platform homepage preview",
   },
   {
     name: "MathDreams",
@@ -158,8 +173,8 @@ const projectPreviews = [
   },
 ];
 
-const heroProjects = projectPreviews.slice(0, 3);
-const secondaryProjects = projectPreviews.slice(3);
+const heroProjects = projectPreviews.slice(0, 4);
+const secondaryProjects = projectPreviews.slice(4);
 
 const externalProjectPreviews = [
   {
@@ -297,6 +312,13 @@ const kidsProjectPreviews = [
     image: wheelsAndMachinesThumb,
     alt: "VroomVerse machines learning app homepage preview",
     path: "/Users/rajav/Documents/Coding/CGPT-help/wheelsandmachines-main",
+  },
+  {
+    name: "Spellwing",
+    href: "http://localhost:8125/",
+    image: spellBeeQuizThumb,
+    alt: "Spellwing spelling bee trainer homepage preview",
+    path: "/Users/rajav/Documents/Coding/CGPT-help/spellbeequiz",
   },
 ];
 

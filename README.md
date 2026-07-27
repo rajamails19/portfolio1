@@ -320,6 +320,38 @@ Local URL:
 http://localhost:8122/
 ```
 
+### Sheel Tech Learn
+
+Learning and presentation-style app for tech education content.
+
+Run it with:
+
+```bash
+npm run dev:sheeltechlearn
+```
+
+Local URL:
+
+```bash
+http://localhost:8123/
+```
+
+### Lumen
+
+Tutorial platform for clean, cinematic lessons, guided learning paths, and readable technical education.
+
+Run it with:
+
+```bash
+npm run dev:seminarteach
+```
+
+Local URL:
+
+```bash
+http://localhost:8124/
+```
+
 ## Linked External Apps
 
 These projects are not fully stored inside this repo. Their code lives in their own folders, but Portfolio Raja can still show them and launch them locally. If you ask Codex to change these projects, changes should happen in their own respective repo/folder.
@@ -428,6 +460,22 @@ Local URL:
 
 ```bash
 http://localhost:8117/
+```
+
+### Spellwing
+
+Kids spelling bee trainer with word vaults, practice rounds, and a magical learning style.
+
+Run it with:
+
+```bash
+npm run dev:spellbeequiz
+```
+
+Local URL:
+
+```bash
+http://localhost:8125/
 ```
 
 ## Build And Check Commands
