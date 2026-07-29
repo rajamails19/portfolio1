@@ -155,13 +155,13 @@ const projectPreviews = [
   },
   {
     name: "Desi Events",
-    href: "http://localhost:8097/",
+    href: "https://desieventsraja.vercel.app/",
     image: desiEventsThumb,
     alt: "Desi Events homepage preview",
   },
   {
     name: "Tech Blog Raja",
-    href: "http://localhost:8098/",
+    href: "https://techblograja.vercel.app/",
     image: techBlogRajaThumb,
     alt: "Tech Blog Raja homepage preview",
   },
@@ -321,7 +321,7 @@ const kidsProjectPreviews = [
   },
   {
     name: "Spellwing",
-    href: "http://localhost:8125/",
+    href: "https://spellbeequiz.vercel.app/",
     image: spellBeeQuizThumb,
     alt: "Spellwing spelling bee trainer homepage preview",
     path: "/Users/rajav/Documents/Coding/CGPT-help/spellbeequiz",
