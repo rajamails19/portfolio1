@@ -14,15 +14,19 @@ export const projectsSection: Section = {
       difficulty: "Medium",
       answer: [
         { type: "heading", content: "What it does" },
-        { type: "text", content: "Write notes in markdown. Every save embeds the note and stores the vector. A search bar retrieves by **meaning**, not keywords." },
+        {
+          type: "text",
+          content:
+            "Write notes in markdown. Every save embeds the note and stores the vector. A search bar retrieves by **meaning**, not keywords.",
+        },
         { type: "heading", content: "Stack" },
         {
           type: "list",
           items: [
             "React + TanStack Router (frontend)",
-            "Lovable Cloud (Postgres + auth + edge functions)",
+            "Hosted cloud backend (Postgres + auth + server functions)",
             "pgvector for embeddings",
-            "Lovable AI Gateway (embeddings + chat)",
+            "LLM gateway (embeddings + chat)",
           ],
         },
         { type: "heading", content: "Data model" },
@@ -40,7 +44,11 @@ export const projectsSection: Section = {
 
 create index on notes using ivfflat (embedding vector_cosine_ops);`,
         },
-        { type: "callout", variant: "tip", content: "Debounce the embed-on-save (2–3s) — otherwise every keystroke burns tokens." },
+        {
+          type: "callout",
+          variant: "tip",
+          content: "Debounce the embed-on-save (2–3s) — otherwise every keystroke burns tokens.",
+        },
       ],
     },
     {

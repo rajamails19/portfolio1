@@ -322,6 +322,12 @@ const kidsProjectPreviews = [
   },
 ];
 
+function isLocalUrl(href: string) {
+  return (
+    href.startsWith("http://localhost") || href.startsWith("http://127.0.0.1")
+  );
+}
+
 export const Route = createFileRoute("/")({
   component: LandingPage,
   head: () => ({
@@ -392,7 +398,10 @@ function Hero() {
           <a href="#features" className="transition-colors hover:text-white/70">
             Features
           </a>
-          <a href="#how-it-works" className="transition-colors hover:text-white/70">
+          <a
+            href="#how-it-works"
+            className="transition-colors hover:text-white/70"
+          >
             How it works
           </a>
           <a href="#reviews" className="transition-colors hover:text-white/70">
@@ -415,7 +424,10 @@ function Hero() {
           </ScrollReveal>
 
           <ScrollReveal delay={160}>
-            <p className="mt-6 text-left text-lg text-white" style={{ textWrap: "pretty", lineHeight: "1.6" }}>
+            <p
+              className="mt-6 text-left text-lg text-white"
+              style={{ textWrap: "pretty", lineHeight: "1.6" }}
+            >
               Keep each app cleanly separated, switch between them from one
               place, and let this repo stay the home base until a project is
               ready to become its own product.
@@ -445,27 +457,59 @@ function Hero() {
   );
 }
 
-function ProjectPreview({ project }: { project: (typeof projectPreviews)[number] }) {
+function ProjectPreview({
+  project,
+}: {
+  project: (typeof projectPreviews)[number];
+}) {
+  const localOnly = isLocalUrl(project.href);
+  const className =
+    "group block overflow-hidden rounded-2xl border border-white/30 bg-white/10 shadow-2xl shadow-black/25 backdrop-blur-sm transition duration-200 hover:border-white/60 hover:bg-white/15";
+  const content = (
+    <>
+      <img
+        src={project.image}
+        alt={project.alt}
+        className="aspect-[16/9] w-full object-cover"
+      />
+      <span className="flex items-center justify-between gap-3 px-5 py-4 text-sm font-semibold text-white">
+        <span>{project.name}</span>
+        {localOnly ? (
+          <span className="rounded-full bg-white/15 px-2.5 py-1 text-[0.65rem] font-bold uppercase tracking-widest text-white/80">
+            Local only
+          </span>
+        ) : (
+          <ArrowRight className="h-5 w-5 transition group-hover:translate-x-0.5" />
+        )}
+      </span>
+    </>
+  );
+
+  if (localOnly) {
+    return (
+      <div className={`${className} cursor-default opacity-90`}>{content}</div>
+    );
+  }
+
   return (
     <a
       href={project.href}
       target="_blank"
       rel="noopener noreferrer"
       aria-label={`Open ${project.name}`}
-      className="group block overflow-hidden rounded-2xl border border-white/30 bg-white/10 shadow-2xl shadow-black/25 backdrop-blur-sm transition duration-200 hover:-translate-y-1 hover:border-white/60 hover:bg-white/15"
+      className={`${className} hover:-translate-y-1`}
     >
-      <img src={project.image} alt={project.alt} className="aspect-[16/9] w-full object-cover" />
-      <span className="flex items-center justify-between px-5 py-4 text-sm font-semibold text-white">
-        <span>{project.name}</span>
-        <ArrowRight className="h-5 w-5 transition group-hover:translate-x-0.5" />
-      </span>
+      {content}
     </a>
   );
 }
 
 function ProjectShowcase() {
   return (
-    <section className="relative overflow-hidden py-24" style={{ background: "#050d0a" }}>
+    <section
+      className="relative overflow-hidden py-24"
+      style={{ background: "#050d0a" }}
+    >
       <img
         src={heroBg}
         alt=""
@@ -499,10 +543,7 @@ function ProjectShowcase() {
 
         <div className="grid gap-5 md:grid-cols-6">
           {secondaryProjects.map((project, index) => (
-            <div
-              key={project.name}
-              className={getProjectGridClass(index)}
-            >
+            <div key={project.name} className={getProjectGridClass(index)}>
               <ProjectPreview project={project} />
             </div>
           ))}
@@ -603,27 +644,55 @@ function ExternalProjectCard({
   project,
   badge,
 }: {
-  project: (typeof externalProjectPreviews)[number] | (typeof kidsProjectPreviews)[number];
+  project:
+    | (typeof externalProjectPreviews)[number]
+    | (typeof kidsProjectPreviews)[number];
   badge: string;
 }) {
+  const localOnly = isLocalUrl(project.href);
+  const visibleBadge = localOnly ? "Local only" : badge;
+  const className =
+    "group block overflow-hidden rounded-2xl border border-black/10 bg-white shadow-xl shadow-black/5 transition duration-200 hover:border-black/20";
+  const content = (
+    <>
+      <img
+        src={project.image}
+        alt={project.alt}
+        className="aspect-[16/9] w-full object-cover"
+      />
+      <span className="block px-5 py-4">
+        <span className="mb-2 inline-flex rounded-full bg-black/[0.06] px-3 py-1 text-[0.68rem] font-semibold uppercase tracking-widest text-black/55">
+          {visibleBadge}
+        </span>
+        <span className="flex items-center justify-between gap-3 text-sm font-semibold text-foreground">
+          <span>{project.name}</span>
+          {localOnly ? (
+            <span className="text-xs font-medium text-muted-foreground">
+              Not deployed yet
+            </span>
+          ) : (
+            <ArrowRight className="h-5 w-5 transition group-hover:translate-x-0.5" />
+          )}
+        </span>
+      </span>
+    </>
+  );
+
+  if (localOnly) {
+    return (
+      <div className={`${className} cursor-default opacity-90`}>{content}</div>
+    );
+  }
+
   return (
     <a
       href={project.href}
       target="_blank"
       rel="noopener noreferrer"
       aria-label={`Open external project ${project.name}`}
-      className="group block overflow-hidden rounded-2xl border border-black/10 bg-white shadow-xl shadow-black/5 transition duration-200 hover:-translate-y-1 hover:border-black/20"
+      className={`${className} hover:-translate-y-1`}
     >
-      <img src={project.image} alt={project.alt} className="aspect-[16/9] w-full object-cover" />
-      <span className="block px-5 py-4">
-        <span className="mb-2 inline-flex rounded-full bg-black/[0.06] px-3 py-1 text-[0.68rem] font-semibold uppercase tracking-widest text-black/55">
-          {badge}
-        </span>
-        <span className="flex items-center justify-between text-sm font-semibold text-foreground">
-          <span>{project.name}</span>
-          <ArrowRight className="h-5 w-5 transition group-hover:translate-x-0.5" />
-        </span>
-      </span>
+      {content}
     </a>
   );
 }
@@ -703,7 +772,10 @@ function Features() {
 
                   <div className="flex justify-center py-3">
                     <div className="relative flex h-20 w-20 items-center justify-center rounded-full border-[4px] border-black/[0.06]">
-                      <svg className="absolute inset-0 h-full w-full -rotate-90" viewBox="0 0 80 80">
+                      <svg
+                        className="absolute inset-0 h-full w-full -rotate-90"
+                        viewBox="0 0 80 80"
+                      >
                         <circle
                           cx="40"
                           cy="40"
@@ -716,15 +788,29 @@ function Features() {
                           strokeWidth="4"
                         />
                       </svg>
-                      <span className="text-lg font-bold text-black/80">58%</span>
+                      <span className="text-lg font-bold text-black/80">
+                        58%
+                      </span>
                     </div>
                   </div>
 
                   {[
                     { name: "Portfolio Raja", color: "#FDAA3E", done: true },
-                    { name: "JagsRajKitchen", color: "hsl(84, 30%, 35%)", done: true },
-                    { name: "Next idea space", color: "hsl(217, 91%, 60%)", done: false },
-                    { name: "Future mobile build", color: "hsl(270, 95%, 75%)", done: false },
+                    {
+                      name: "JagsRajKitchen",
+                      color: "hsl(84, 30%, 35%)",
+                      done: true,
+                    },
+                    {
+                      name: "Next idea space",
+                      color: "hsl(217, 91%, 60%)",
+                      done: false,
+                    },
+                    {
+                      name: "Future mobile build",
+                      color: "hsl(270, 95%, 75%)",
+                      done: false,
+                    },
                   ].map((item) => (
                     <div
                       key={item.name}
@@ -734,15 +820,21 @@ function Features() {
                         className="h-2 w-2 flex-shrink-0 rounded-full"
                         style={{ backgroundColor: item.color }}
                       />
-                      <span className={`flex-1 text-sm ${item.done ? "text-black/70" : "text-black/45"}`}>
+                      <span
+                        className={`flex-1 text-sm ${item.done ? "text-black/70" : "text-black/45"}`}
+                      >
                         {item.name}
                       </span>
                       <div
                         className={`flex h-5 w-5 items-center justify-center rounded-full border-2 ${
-                          item.done ? "border-primary bg-primary" : "border-black/15"
+                          item.done
+                            ? "border-primary bg-primary"
+                            : "border-black/15"
                         }`}
                       >
-                        {item.done && <CheckCircle2 className="h-3.5 w-3.5 text-white" />}
+                        {item.done && (
+                          <CheckCircle2 className="h-3.5 w-3.5 text-white" />
+                        )}
                       </div>
                     </div>
                   ))}
@@ -775,7 +867,9 @@ function Features() {
                     <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-primary/15 to-primary/5 transition-transform duration-300 group-hover:scale-105">
                       <feature.icon className="h-5 w-5 text-primary" />
                     </div>
-                    <h3 className="mb-1 font-semibold text-foreground">{feature.title}</h3>
+                    <h3 className="mb-1 font-semibold text-foreground">
+                      {feature.title}
+                    </h3>
                     <p className="text-sm leading-relaxed text-muted-foreground">
                       {feature.desc}
                     </p>
@@ -813,7 +907,10 @@ const steps = [
 
 function HowItWorks() {
   return (
-    <section id="how-it-works" className="border-y border-border/30 bg-white py-28">
+    <section
+      id="how-it-works"
+      className="border-y border-border/30 bg-white py-28"
+    >
       <div className="mx-auto max-w-4xl px-5">
         <ScrollReveal>
           <div className="mb-16 text-center">
@@ -838,7 +935,9 @@ function HowItWorks() {
                 <div className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-2xl bg-primary text-lg font-bold text-primary-foreground shadow-lg shadow-primary/15">
                   {step.num}
                 </div>
-                <h3 className="mb-2 text-lg font-semibold text-foreground">{step.title}</h3>
+                <h3 className="mb-2 text-lg font-semibold text-foreground">
+                  {step.title}
+                </h3>
                 <p className="mx-auto max-w-xs text-sm leading-relaxed text-muted-foreground">
                   {step.desc}
                 </p>
@@ -857,7 +956,8 @@ const reviews = [
     role: "Builder",
     initials: "RJ",
     tone: "bg-[#FDAA3E]",
-    quote: "I can switch projects without reopening folders, terminals, and new chats.",
+    quote:
+      "I can switch projects without reopening folders, terminals, and new chats.",
     rating: 5,
   },
   {
@@ -865,7 +965,8 @@ const reviews = [
     role: "Restaurant site",
     initials: "JK",
     tone: "bg-[#5c6b3a]",
-    quote: "The app can live inside the workspace now and still become its own product later.",
+    quote:
+      "The app can live inside the workspace now and still become its own product later.",
     rating: 5,
   },
   {
@@ -873,7 +974,8 @@ const reviews = [
     role: "Weekly ideas",
     initials: "FA",
     tone: "bg-[#3f6ea5]",
-    quote: "New projects can be added without turning one src folder into a mess.",
+    quote:
+      "New projects can be added without turning one src folder into a mess.",
     rating: 5,
   },
   {
@@ -881,7 +983,8 @@ const reviews = [
     role: "Workspace partner",
     initials: "CX",
     tone: "bg-[#8a6bb3]",
-    quote: "One repo gives the conversation enough context to help across every active build.",
+    quote:
+      "One repo gives the conversation enough context to help across every active build.",
     rating: 5,
   },
 ];
@@ -912,7 +1015,10 @@ function Reviews() {
 
                 <div className="mb-4 flex gap-0.5">
                   {Array.from({ length: review.rating }).map((_, starIndex) => (
-                    <Star key={starIndex} className="h-4 w-4 fill-primary text-primary" />
+                    <Star
+                      key={starIndex}
+                      className="h-4 w-4 fill-primary text-primary"
+                    />
                   ))}
                 </div>
                 <p className="relative mb-5 text-sm leading-relaxed text-foreground">
@@ -926,8 +1032,12 @@ function Reviews() {
                     {review.initials}
                   </div>
                   <div>
-                    <p className="text-sm font-medium text-foreground">{review.name}</p>
-                    <p className="text-xs text-muted-foreground">{review.role}</p>
+                    <p className="text-sm font-medium text-foreground">
+                      {review.name}
+                    </p>
+                    <p className="text-xs text-muted-foreground">
+                      {review.role}
+                    </p>
                   </div>
                 </div>
               </div>
@@ -941,7 +1051,10 @@ function Reviews() {
 
 function FinalCTA() {
   return (
-    <section className="relative overflow-hidden py-28" style={{ background: "#050d0a" }}>
+    <section
+      className="relative overflow-hidden py-28"
+      style={{ background: "#050d0a" }}
+    >
       <img
         src={heroBg}
         alt=""
@@ -961,7 +1074,10 @@ function FinalCTA() {
           >
             Ready for the next project?
           </h2>
-          <p className="mx-auto mt-4 max-w-md text-white" style={{ textWrap: "pretty" }}>
+          <p
+            className="mx-auto mt-4 max-w-md text-white"
+            style={{ textWrap: "pretty" }}
+          >
             Add it cleanly, keep it visible, and only separate it when it is
             ready for the real world.
           </p>
@@ -984,18 +1100,32 @@ function Footer() {
       <div className="mx-auto max-w-5xl px-5">
         <div className="flex flex-col items-center justify-between gap-6 sm:flex-row">
           <div className="flex items-center gap-2">
-            <InfinityIcon className="h-6 w-6 text-foreground" strokeWidth={2.5} />
-            <span className="text-sm font-semibold text-foreground">Portfolio Raja</span>
+            <InfinityIcon
+              className="h-6 w-6 text-foreground"
+              strokeWidth={2.5}
+            />
+            <span className="text-sm font-semibold text-foreground">
+              Portfolio Raja
+            </span>
           </div>
 
           <div className="flex items-center gap-6 text-sm text-muted-foreground">
-            <a href="#features" className="transition-colors hover:text-foreground">
+            <a
+              href="#features"
+              className="transition-colors hover:text-foreground"
+            >
               Features
             </a>
-            <a href="#how-it-works" className="transition-colors hover:text-foreground">
+            <a
+              href="#how-it-works"
+              className="transition-colors hover:text-foreground"
+            >
               How it works
             </a>
-            <a href="#reviews" className="transition-colors hover:text-foreground">
+            <a
+              href="#reviews"
+              className="transition-colors hover:text-foreground"
+            >
               Reviews
             </a>
           </div>
@@ -1009,6 +1139,11 @@ function Footer() {
   );
 }
 
-function ScrollReveal({ children }: { children: React.ReactNode; delay?: number }) {
+function ScrollReveal({
+  children,
+}: {
+  children: React.ReactNode;
+  delay?: number;
+}) {
   return <>{children}</>;
 }
