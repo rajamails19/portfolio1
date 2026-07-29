@@ -1,7 +1,8 @@
-import { marqueeQuotes } from "@/content/founders";
+import { useTheme } from "@/themes/ThemeContext";
 
 export function QuotesTicker() {
-  const loop = [...marqueeQuotes, ...marqueeQuotes];
+  const { theme } = useTheme();
+  const loop = [...theme.marquee, ...theme.marquee];
   return (
     <div className="glass relative overflow-hidden rounded-full px-1 py-2">
       <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-16 bg-gradient-to-r from-background to-transparent" />
@@ -11,7 +12,9 @@ export function QuotesTicker() {
           <span key={i} className="inline-flex items-center gap-3 text-sm">
             <span className="text-gold">★</span>
             <span className="font-display italic text-foreground/90">"{q.text}"</span>
-            <span className="text-xs uppercase tracking-widest text-muted-foreground">— {q.author}</span>
+            <span className="text-xs uppercase tracking-widest text-muted-foreground">
+              — {q.author}
+            </span>
           </span>
         ))}
       </div>

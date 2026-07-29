@@ -32,7 +32,12 @@ export function FlowDiagram({ block }: { block: FlowBlock }) {
         {block.nodes.map((n, i) => {
           const tone = tones[n.tone ?? "gold"];
           return (
-            <div key={i} className={horizontal ? "flex items-center gap-3" : "flex flex-col items-center gap-2"}>
+            <div
+              key={i}
+              className={
+                horizontal ? "flex items-center gap-3" : "flex flex-col items-center gap-2"
+              }
+            >
               <div
                 className={[
                   "relative min-w-[140px] rounded-2xl border bg-gradient-to-br p-3 text-center shadow-[0_4px_20px_-8px_oklch(0.82_0.15_85/0.4)]",

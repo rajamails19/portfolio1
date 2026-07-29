@@ -35,12 +35,17 @@ export function QuestionCard({ item, index }: { item: QAItem; index: number }) {
           </h3>
           <div className="mt-2 flex flex-wrap items-center gap-1.5">
             {item.difficulty && (
-              <span className={`rounded-full px-2 py-0.5 text-[11px] font-semibold ${diffColors[item.difficulty]}`}>
+              <span
+                className={`rounded-full px-2 py-0.5 text-[11px] font-semibold ${diffColors[item.difficulty]}`}
+              >
                 {item.difficulty}
               </span>
             )}
             {item.tags?.map((t) => (
-              <span key={t} className="rounded-full border border-gold/20 bg-noir/60 px-2 py-0.5 text-[11px] font-medium text-foreground/75">
+              <span
+                key={t}
+                className="rounded-full border border-gold/20 bg-noir/60 px-2 py-0.5 text-[11px] font-medium text-foreground/75"
+              >
                 {t}
               </span>
             ))}
@@ -50,7 +55,9 @@ export function QuestionCard({ item, index }: { item: QAItem; index: number }) {
         <span
           className={[
             "mt-1 flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-gold/25 bg-noir/60 text-foreground/70 transition-transform duration-300",
-            open ? "rotate-180 border-transparent bg-gradient-to-br from-gold to-ember text-primary-foreground" : "group-hover:bg-noir",
+            open
+              ? "rotate-180 border-transparent bg-gradient-to-br from-gold to-ember text-primary-foreground"
+              : "group-hover:bg-noir",
           ].join(" ")}
         >
           <ChevronDown className="h-5 w-5" />

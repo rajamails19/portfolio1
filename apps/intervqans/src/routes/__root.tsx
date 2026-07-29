@@ -12,6 +12,8 @@ import { useEffect, type ReactNode } from "react";
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { SideNav } from "../components/SideNav";
+import { ThemeProvider } from "../themes/ThemeContext";
+import { ThemeSwitcher } from "../components/ThemeSwitcher";
 
 function NotFoundComponent() {
   return (
@@ -51,12 +53,18 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
         </p>
         <div className="mt-6 flex flex-wrap justify-center gap-2">
           <button
-            onClick={() => { router.invalidate(); reset(); }}
+            onClick={() => {
+              router.invalidate();
+              reset();
+            }}
             className="rounded-full bg-gradient-to-r from-primary to-[oklch(0.7_0.2_340)] px-5 py-2.5 text-sm font-medium text-primary-foreground shadow-glow"
           >
             Try again
           </button>
-          <a href="/" className="rounded-full border border-input bg-white/60 px-5 py-2.5 text-sm font-medium">
+          <a
+            href="/"
+            className="rounded-full border border-input bg-white/60 px-5 py-2.5 text-sm font-medium"
+          >
             Go home
           </a>
         </div>
@@ -71,16 +79,36 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { title: "StudyDeck — Prep. Practice. Ship." },
-      { name: "description", content: "A cinematic study companion for React, AI engineering, and system design — Q&A, programs, real-time scenarios, and portfolio projects." },
+      {
+        name: "description",
+        content:
+          "A cinematic study companion for React, AI engineering, and system design — Q&A, programs, real-time scenarios, and portfolio projects.",
+      },
       { name: "author", content: "StudyDeck" },
       { property: "og:title", content: "StudyDeck — Prep. Practice. Ship." },
-      { property: "og:description", content: "A cinematic study companion for React, AI engineering, and system design — Q&A, programs, real-time scenarios, and portfolio projects." },
+      {
+        property: "og:description",
+        content:
+          "A cinematic study companion for React, AI engineering, and system design — Q&A, programs, real-time scenarios, and portfolio projects.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: "StudyDeck — Prep. Practice. Ship." },
-      { name: "twitter:description", content: "A cinematic study companion for React, AI engineering, and system design — Q&A, programs, real-time scenarios, and portfolio projects." },
-      { property: "og:image", content: "/og-preview.png" },
-      { name: "twitter:image", content: "/og-preview.png" },
+      {
+        name: "twitter:description",
+        content:
+          "A cinematic study companion for React, AI engineering, and system design — Q&A, programs, real-time scenarios, and portfolio projects.",
+      },
+      {
+        property: "og:image",
+        content:
+          "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/5143169b-41b6-4727-a567-eb7af303a266/id-preview-93ddb96d--0ac61ac5-6fc0-4d1c-8ca4-d46121a56a90.lovable.app-1783832012264.png",
+      },
+      {
+        name: "twitter:image",
+        content:
+          "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/5143169b-41b6-4727-a567-eb7af303a266/id-preview-93ddb96d--0ac61ac5-6fc0-4d1c-8ca4-d46121a56a90.lovable.app-1783832012264.png",
+      },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
@@ -118,14 +146,17 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <div className="flex min-h-screen">
-        <div className="hidden lg:block">
-          <SideNav />
+      <ThemeProvider>
+        <ThemeSwitcher />
+        <div className="flex min-h-screen">
+          <div className="hidden lg:block">
+            <SideNav />
+          </div>
+          <main className="flex-1 min-w-0">
+            <Outlet />
+          </main>
         </div>
-        <main className="flex-1 min-w-0">
-          <Outlet />
-        </main>
-      </div>
+      </ThemeProvider>
     </QueryClientProvider>
   );
 }

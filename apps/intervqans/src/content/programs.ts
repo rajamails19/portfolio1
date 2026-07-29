@@ -13,7 +13,11 @@ export const programsSection: Section = {
       tags: ["React", "Hooks", "Performance"],
       difficulty: "Medium",
       answer: [
-        { type: "text", content: "A reusable useDebouncedValue hook — perfect for search boxes, autosave, and expensive filters." },
+        {
+          type: "text",
+          content:
+            "A reusable useDebouncedValue hook — perfect for search boxes, autosave, and expensive filters.",
+        },
         {
           type: "code",
           language: "tsx",
@@ -41,7 +45,12 @@ function SearchBox() {
   return <input value={q} onChange={(e) => setQ(e.target.value)} />;
 }`,
         },
-        { type: "callout", variant: "tip", content: "Return the cleanup from useEffect — that's what cancels the pending timeout when the user keeps typing." },
+        {
+          type: "callout",
+          variant: "tip",
+          content:
+            "Return the cleanup from useEffect — that's what cancels the pending timeout when the user keeps typing.",
+        },
       ],
     },
     {
@@ -95,7 +104,11 @@ print(fib(50))  # 12586269025`,
       tags: ["AI", "RAG", "Python"],
       difficulty: "Hard",
       answer: [
-        { type: "text", content: "A skeleton retrieval-augmented generation loop. Swap the fake embedder & LLM with OpenAI, Anthropic, or your LLM gateway calls." },
+        {
+          type: "text",
+          content:
+            "A skeleton retrieval-augmented generation loop. Swap the fake embedder & LLM with OpenAI, Anthropic, or your Lovable AI Gateway calls.",
+        },
         {
           type: "code",
           language: "python",
@@ -135,7 +148,12 @@ def answer(query: str, store: TinyVectorStore) -> str:
 def call_llm(prompt: str) -> str:
     return "…"  # wire to your provider`,
         },
-        { type: "callout", variant: "info", content: "Real RAG needs chunking, hybrid search (BM25 + vectors), and a rerank step before the LLM. This is the mental model." },
+        {
+          type: "callout",
+          variant: "info",
+          content:
+            "Real RAG needs chunking, hybrid search (BM25 + vectors), and a rerank step before the LLM. This is the mental model.",
+        },
       ],
     },
   ],

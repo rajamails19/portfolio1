@@ -82,8 +82,14 @@ const projectPreviews = [
     alt: "Sheel Tech Learn homepage preview",
   },
   {
+    name: "Jotify",
+    href: "http://localhost:8080/",
+    image: captureThoughtsThumb,
+    alt: "Jotify daily learning tracker homepage preview",
+  },
+  {
     name: "Lumen",
-    href: "http://localhost:8124/",
+    href: "https://seminarteachraja.vercel.app/",
     image: seminarTeachThumb,
     alt: "Lumen tutorial platform homepage preview",
   },
@@ -485,12 +491,6 @@ function ProjectPreview({
     </>
   );
 
-  if (localOnly) {
-    return (
-      <div className={`${className} cursor-default opacity-90`}>{content}</div>
-    );
-  }
-
   return (
     <a
       href={project.href}
@@ -677,12 +677,6 @@ function ExternalProjectCard({
       </span>
     </>
   );
-
-  if (localOnly) {
-    return (
-      <div className={`${className} cursor-default opacity-90`}>{content}</div>
-    );
-  }
 
   return (
     <a

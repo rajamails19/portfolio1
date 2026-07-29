@@ -91,7 +91,11 @@ export const qansSection: Section = {
           rows: [
             ["Timing", "==After paint== (async)", "==Before paint== (sync)"],
             ["Blocks paint?", "No", "**Yes**"],
-            ["Typical use", "Data fetch, subscriptions, logging", "Measure DOM, sync layout, prevent flicker"],
+            [
+              "Typical use",
+              "Data fetch, subscriptions, logging",
+              "Measure DOM, sync layout, prevent flicker",
+            ],
             ["SSR", "Safe", "Warns — no DOM to measure"],
           ],
         },

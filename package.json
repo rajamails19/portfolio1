@@ -30,6 +30,7 @@
     "dev:pianowithraja": "npm --prefix /Users/rajav/Documents/Coding/CGPT-help/pianowithraja run dev -- --port 8115",
     "dev:pokechessgame": "npm --prefix /Users/rajav/Documents/Coding/CGPT-help/pokechessgame-main run dev -- --port 8116",
     "dev:wheelsandmachines": "npm --prefix /Users/rajav/Documents/Coding/CGPT-help/wheelsandmachines-main run dev -- --port 8117",
+    "dev:jotandgleam": "npm --prefix /Users/rajav/Documents/Coding/CGPT-help/jotandgleam run dev -- --port 8080",
     "build": "vite build",
     "build:portal": "vite build",
     "build:jagsrajkitchen": "npm --prefix apps/jagsrajkitchen run build",

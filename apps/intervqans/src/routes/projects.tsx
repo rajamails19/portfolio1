@@ -6,9 +6,15 @@ export const Route = createFileRoute("/projects")({
   head: () => ({
     meta: [
       { title: "Projects — StudyDeck" },
-      { name: "description", content: "Portfolio-worthy project ideas with stack, schema, and gotchas." },
+      {
+        name: "description",
+        content: "Portfolio-worthy project ideas with stack, schema, and gotchas.",
+      },
       { property: "og:title", content: "Projects — StudyDeck" },
-      { property: "og:description", content: "Portfolio-worthy project ideas with stack, schema, and gotchas." },
+      {
+        property: "og:description",
+        content: "Portfolio-worthy project ideas with stack, schema, and gotchas.",
+      },
     ],
   }),
   component: () => {

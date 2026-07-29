@@ -6,9 +6,15 @@ export const Route = createFileRoute("/qans")({
   head: () => ({
     meta: [
       { title: "Q & Answers — StudyDeck" },
-      { name: "description", content: "Interview-grade React and engineering questions with crisp, memorable answers." },
+      {
+        name: "description",
+        content: "Interview-grade React and engineering questions with crisp, memorable answers.",
+      },
       { property: "og:title", content: "Q & Answers — StudyDeck" },
-      { property: "og:description", content: "Interview-grade React and engineering questions with crisp, memorable answers." },
+      {
+        property: "og:description",
+        content: "Interview-grade React and engineering questions with crisp, memorable answers.",
+      },
     ],
   }),
   component: () => {

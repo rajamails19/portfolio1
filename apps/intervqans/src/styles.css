@@ -63,14 +63,14 @@
   --popover: oklch(0.19 0.015 60);
   --popover-foreground: oklch(0.94 0.02 80);
 
-  --primary: oklch(0.78 0.14 82);            /* rich gold */
+  --primary: oklch(0.78 0.14 82); /* rich gold */
   --primary-foreground: oklch(0.14 0.012 60);
   --secondary: oklch(0.24 0.02 60);
   --secondary-foreground: oklch(0.94 0.02 80);
 
   --muted: oklch(0.22 0.015 60);
   --muted-foreground: oklch(0.7 0.02 80);
-  --accent: oklch(0.65 0.19 40);             /* ember */
+  --accent: oklch(0.65 0.19 40); /* ember */
   --accent-foreground: oklch(0.14 0.012 60);
 
   --destructive: oklch(0.62 0.22 25);
@@ -86,7 +86,12 @@
   --ember: oklch(0.65 0.19 40);
 
   --gradient-primary: linear-gradient(135deg, oklch(0.82 0.15 85), oklch(0.65 0.19 40));
-  --gradient-gold: linear-gradient(135deg, oklch(0.88 0.12 88) 0%, oklch(0.72 0.15 78) 50%, oklch(0.6 0.16 50) 100%);
+  --gradient-gold: linear-gradient(
+    135deg,
+    oklch(0.88 0.12 88) 0%,
+    oklch(0.72 0.15 78) 50%,
+    oklch(0.6 0.16 50) 100%
+  );
   --gradient-noir: linear-gradient(180deg, oklch(0.14 0.012 60) 0%, oklch(0.11 0.01 60) 100%);
   --gradient-mesh:
     radial-gradient(at 15% 10%, oklch(0.35 0.08 60 / 0.55) 0px, transparent 55%),
@@ -108,9 +113,154 @@
   --sidebar-ring: oklch(0.78 0.14 82);
 }
 
+/* ─── Chaat — Indian street-food warmth ─── */
+[data-theme="chaat"] {
+  --background: oklch(0.16 0.03 55);
+  --foreground: oklch(0.96 0.03 80);
+  --card: oklch(0.22 0.035 50);
+  --card-foreground: oklch(0.96 0.03 80);
+  --popover: oklch(0.22 0.035 50);
+  --popover-foreground: oklch(0.96 0.03 80);
+  --primary: oklch(0.75 0.18 55);
+  --primary-foreground: oklch(0.14 0.02 40);
+  --secondary: oklch(0.26 0.04 50);
+  --secondary-foreground: oklch(0.96 0.03 80);
+  --muted: oklch(0.24 0.03 50);
+  --muted-foreground: oklch(0.75 0.03 70);
+  --accent: oklch(0.62 0.22 28);
+  --accent-foreground: oklch(0.14 0.02 40);
+  --border: oklch(0.32 0.05 50);
+  --input: oklch(0.26 0.04 50);
+  --ring: oklch(0.75 0.18 55);
+  --gold: oklch(0.82 0.17 68);
+  --gold-soft: oklch(0.72 0.14 55);
+  --noir: oklch(0.13 0.025 45);
+  --ember: oklch(0.62 0.22 28);
+  --gradient-primary: linear-gradient(135deg, oklch(0.82 0.17 68), oklch(0.62 0.22 28));
+  --gradient-gold: linear-gradient(
+    135deg,
+    oklch(0.88 0.15 75) 0%,
+    oklch(0.72 0.19 55) 50%,
+    oklch(0.58 0.22 25) 100%
+  );
+  --gradient-noir: linear-gradient(180deg, oklch(0.18 0.03 50) 0%, oklch(0.13 0.025 45) 100%);
+  --gradient-mesh:
+    radial-gradient(at 15% 10%, oklch(0.55 0.19 55 / 0.35) 0px, transparent 55%),
+    radial-gradient(at 85% 0%, oklch(0.48 0.22 25 / 0.4) 0px, transparent 55%),
+    radial-gradient(at 90% 90%, oklch(0.5 0.15 80 / 0.35) 0px, transparent 55%),
+    radial-gradient(at 0% 90%, oklch(0.24 0.05 50 / 0.6) 0px, transparent 55%);
+  --shadow-glow: 0 20px 60px -20px oklch(0.72 0.2 45 / 0.5);
+  --sidebar: oklch(0.14 0.025 45);
+  --sidebar-foreground: oklch(0.96 0.03 80);
+  --sidebar-primary: oklch(0.75 0.18 55);
+  --sidebar-primary-foreground: oklch(0.14 0.02 40);
+  --sidebar-accent: oklch(0.24 0.03 50);
+  --sidebar-accent-foreground: oklch(0.96 0.03 80);
+  --sidebar-border: oklch(0.28 0.04 50);
+  --sidebar-ring: oklch(0.75 0.18 55);
+}
+
+/* ─── FIFA — stadium emerald + neon night ─── */
+[data-theme="fifa"] {
+  --background: oklch(0.13 0.04 250);
+  --foreground: oklch(0.96 0.02 200);
+  --card: oklch(0.18 0.045 250);
+  --card-foreground: oklch(0.96 0.02 200);
+  --popover: oklch(0.18 0.045 250);
+  --popover-foreground: oklch(0.96 0.02 200);
+  --primary: oklch(0.78 0.2 150);
+  --primary-foreground: oklch(0.12 0.03 250);
+  --secondary: oklch(0.22 0.05 250);
+  --secondary-foreground: oklch(0.96 0.02 200);
+  --muted: oklch(0.2 0.04 250);
+  --muted-foreground: oklch(0.75 0.03 220);
+  --accent: oklch(0.86 0.19 95);
+  --accent-foreground: oklch(0.12 0.03 250);
+  --border: oklch(0.3 0.05 240);
+  --input: oklch(0.22 0.05 250);
+  --ring: oklch(0.78 0.2 150);
+  --gold: oklch(0.82 0.2 148);
+  --gold-soft: oklch(0.7 0.16 155);
+  --noir: oklch(0.1 0.035 250);
+  --ember: oklch(0.86 0.19 95);
+  --gradient-primary: linear-gradient(135deg, oklch(0.82 0.2 148), oklch(0.86 0.19 95));
+  --gradient-gold: linear-gradient(
+    135deg,
+    oklch(0.85 0.2 150) 0%,
+    oklch(0.9 0.18 110) 50%,
+    oklch(0.85 0.2 60) 100%
+  );
+  --gradient-noir: linear-gradient(180deg, oklch(0.15 0.045 250) 0%, oklch(0.1 0.035 250) 100%);
+  --gradient-mesh:
+    radial-gradient(at 15% 10%, oklch(0.5 0.2 150 / 0.35) 0px, transparent 55%),
+    radial-gradient(at 85% 0%, oklch(0.55 0.15 240 / 0.45) 0px, transparent 55%),
+    radial-gradient(at 90% 90%, oklch(0.5 0.18 95 / 0.3) 0px, transparent 55%),
+    radial-gradient(at 0% 90%, oklch(0.2 0.05 250 / 0.6) 0px, transparent 55%);
+  --shadow-glow: 0 20px 60px -20px oklch(0.78 0.2 150 / 0.5);
+  --sidebar: oklch(0.11 0.035 250);
+  --sidebar-foreground: oklch(0.96 0.02 200);
+  --sidebar-primary: oklch(0.78 0.2 150);
+  --sidebar-primary-foreground: oklch(0.12 0.03 250);
+  --sidebar-accent: oklch(0.2 0.04 250);
+  --sidebar-accent-foreground: oklch(0.96 0.02 200);
+  --sidebar-border: oklch(0.26 0.05 240);
+  --sidebar-ring: oklch(0.78 0.2 150);
+}
+
+/* ─── Rocky — crimson steel gym grit ─── */
+[data-theme="rocky"] {
+  --background: oklch(0.13 0.015 20);
+  --foreground: oklch(0.95 0.015 40);
+  --card: oklch(0.18 0.02 20);
+  --card-foreground: oklch(0.95 0.015 40);
+  --popover: oklch(0.18 0.02 20);
+  --popover-foreground: oklch(0.95 0.015 40);
+  --primary: oklch(0.58 0.22 25);
+  --primary-foreground: oklch(0.98 0.01 40);
+  --secondary: oklch(0.22 0.02 20);
+  --secondary-foreground: oklch(0.95 0.015 40);
+  --muted: oklch(0.2 0.015 20);
+  --muted-foreground: oklch(0.72 0.02 30);
+  --accent: oklch(0.75 0.02 260);
+  --accent-foreground: oklch(0.14 0.015 20);
+  --border: oklch(0.28 0.025 25);
+  --input: oklch(0.22 0.02 20);
+  --ring: oklch(0.58 0.22 25);
+  --gold: oklch(0.62 0.22 25);
+  --gold-soft: oklch(0.55 0.18 25);
+  --noir: oklch(0.1 0.01 20);
+  --ember: oklch(0.75 0.02 260);
+  --gradient-primary: linear-gradient(135deg, oklch(0.62 0.22 25), oklch(0.75 0.02 260));
+  --gradient-gold: linear-gradient(
+    135deg,
+    oklch(0.72 0.22 30) 0%,
+    oklch(0.55 0.2 22) 50%,
+    oklch(0.4 0.15 20) 100%
+  );
+  --gradient-noir: linear-gradient(180deg, oklch(0.15 0.015 20) 0%, oklch(0.1 0.01 20) 100%);
+  --gradient-mesh:
+    radial-gradient(at 15% 10%, oklch(0.4 0.2 25 / 0.4) 0px, transparent 55%),
+    radial-gradient(at 85% 0%, oklch(0.35 0.05 260 / 0.35) 0px, transparent 55%),
+    radial-gradient(at 90% 90%, oklch(0.3 0.15 20 / 0.4) 0px, transparent 55%),
+    radial-gradient(at 0% 90%, oklch(0.18 0.01 20 / 0.6) 0px, transparent 55%);
+  --shadow-glow: 0 20px 60px -20px oklch(0.58 0.22 25 / 0.55);
+  --sidebar: oklch(0.11 0.01 20);
+  --sidebar-foreground: oklch(0.95 0.015 40);
+  --sidebar-primary: oklch(0.58 0.22 25);
+  --sidebar-primary-foreground: oklch(0.98 0.01 40);
+  --sidebar-accent: oklch(0.2 0.015 20);
+  --sidebar-accent-foreground: oklch(0.95 0.015 40);
+  --sidebar-border: oklch(0.26 0.02 25);
+  --sidebar-ring: oklch(0.58 0.22 25);
+}
+
 @layer base {
-  * { border-color: var(--color-border); }
-  html { font-family: var(--font-sans); }
+  * {
+    border-color: var(--color-border);
+  }
+  html {
+    font-family: var(--font-sans);
+  }
   body {
     background-color: var(--color-background);
     background-image: var(--gradient-mesh);
@@ -119,7 +269,13 @@
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
   }
-  h1, h2, h3, h4 { font-family: var(--font-display); letter-spacing: -0.02em; }
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    letter-spacing: -0.02em;
+  }
 }
 
 @utility glass {
@@ -159,31 +315,70 @@
 }
 
 @keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-8px); }
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
 }
 @keyframes wiggle {
-  0%, 100% { transform: rotate(-2deg); }
-  50% { transform: rotate(2deg); }
+  0%,
+  100% {
+    transform: rotate(-2deg);
+  }
+  50% {
+    transform: rotate(2deg);
+  }
 }
 @keyframes pop-in {
-  0% { opacity: 0; transform: translateY(10px) scale(0.98); }
-  100% { opacity: 1; transform: translateY(0) scale(1); }
+  0% {
+    opacity: 0;
+    transform: translateY(10px) scale(0.98);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
 @keyframes marquee {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
 }
 @keyframes shimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
 }
 @keyframes glow-pulse {
-  0%, 100% { box-shadow: 0 0 0 0 oklch(0.82 0.15 85 / 0.4); }
-  50% { box-shadow: 0 0 40px 8px oklch(0.82 0.15 85 / 0.15); }
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 oklch(0.82 0.15 85 / 0.4);
+  }
+  50% {
+    box-shadow: 0 0 40px 8px oklch(0.82 0.15 85 / 0.15);
+  }
 }
-.animate-float { animation: float 5s ease-in-out infinite; }
-.animate-wiggle { animation: wiggle 4s ease-in-out infinite; }
-.animate-pop-in { animation: pop-in 0.4s ease-out both; }
-.animate-marquee { animation: marquee 40s linear infinite; }
-.animate-glow-pulse { animation: glow-pulse 3s ease-in-out infinite; }
+.animate-float {
+  animation: float 5s ease-in-out infinite;
+}
+.animate-wiggle {
+  animation: wiggle 4s ease-in-out infinite;
+}
+.animate-pop-in {
+  animation: pop-in 0.4s ease-out both;
+}
+.animate-marquee {
+  animation: marquee 40s linear infinite;
+}
+.animate-glow-pulse {
+  animation: glow-pulse 3s ease-in-out infinite;
+}

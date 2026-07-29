@@ -33,12 +33,18 @@ export const realtimeSection: Section = {
             "For huge datasets, paginate on the server — never ship 10k rows over the wire.",
           ],
         },
-        { type: "callout", variant: "tip", content: "Virtualization alone typically drops render time from ~800ms to <16ms. Do it first, optimize second." },
+        {
+          type: "callout",
+          variant: "tip",
+          content:
+            "Virtualization alone typically drops render time from ~800ms to <16ms. Do it first, optimize second.",
+        },
       ],
     },
     {
       id: "flaky-api",
-      question: "A third-party API you depend on is flaky (5% failure). How do you design around it?",
+      question:
+        "A third-party API you depend on is flaky (5% failure). How do you design around it?",
       tags: ["Architecture", "Resilience"],
       difficulty: "Hard",
       answer: [

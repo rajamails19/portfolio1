@@ -6,9 +6,15 @@ export const Route = createFileRoute("/realtime")({
   head: () => ({
     meta: [
       { title: "Real-Time Scenarios — StudyDeck" },
-      { name: "description", content: "Real production scenarios and how to reason about them under pressure." },
+      {
+        name: "description",
+        content: "Real production scenarios and how to reason about them under pressure.",
+      },
       { property: "og:title", content: "Real-Time Scenarios — StudyDeck" },
-      { property: "og:description", content: "Real production scenarios and how to reason about them under pressure." },
+      {
+        property: "og:description",
+        content: "Real production scenarios and how to reason about them under pressure.",
+      },
     ],
   }),
   component: () => {

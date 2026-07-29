@@ -52,12 +52,24 @@ export const foundersBySection: Record<string, Founder> = {
 export const marqueeQuotes: { text: string; author: string }[] = [
   { text: "Stay hungry, stay foolish.", author: "Steve Jobs" },
   { text: "Move fast and build things.", author: "Mark Zuckerberg" },
-  { text: "When something is important enough, you do it even if the odds are not in your favor.", author: "Elon Musk" },
+  {
+    text: "When something is important enough, you do it even if the odds are not in your favor.",
+    author: "Elon Musk",
+  },
   { text: "The best way to predict the future is to invent it.", author: "Alan Kay" },
   { text: "Ideas are easy. Execution is everything.", author: "John Doerr" },
-  { text: "Your time is limited, don't waste it living someone else's life.", author: "Steve Jobs" },
+  {
+    text: "Your time is limited, don't waste it living someone else's life.",
+    author: "Steve Jobs",
+  },
   { text: "Done is better than perfect.", author: "Sheryl Sandberg" },
-  { text: "The people who are crazy enough to think they can change the world are the ones who do.", author: "Rob Siltanen" },
-  { text: "If you are not embarrassed by the first version of your product, you've launched too late.", author: "Reid Hoffman" },
+  {
+    text: "The people who are crazy enough to think they can change the world are the ones who do.",
+    author: "Rob Siltanen",
+  },
+  {
+    text: "If you are not embarrassed by the first version of your product, you've launched too late.",
+    author: "Reid Hoffman",
+  },
   { text: "Fall in love with the problem, not the solution.", author: "Uri Levine" },
 ];

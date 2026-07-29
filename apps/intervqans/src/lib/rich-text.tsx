@@ -10,8 +10,7 @@ import { Fragment, type ReactNode } from "react";
  */
 export function renderInline(input: string): ReactNode {
   // Master regex matches any of the supported markers.
-  const re =
-    /(\*\*[^*]+\*\*)|(==[^=]+==)|(__[^_]+__)|(`[^`]+`)|(\[[^\]]+\]\([^)]+\))/g;
+  const re = /(\*\*[^*]+\*\*)|(==[^=]+==)|(__[^_]+__)|(`[^`]+`)|(\[[^\]]+\]\([^)]+\))/g;
 
   const parts: ReactNode[] = [];
   let last = 0;

@@ -13,7 +13,11 @@ export const othersSection: Section = {
       tags: ["AI", "Architecture"],
       difficulty: "Medium",
       answer: [
-        { type: "text", content: "Retrieval-Augmented Generation grounds an LLM in your data: retrieve relevant chunks from a vector store, stuff them into the prompt, let the model answer." },
+        {
+          type: "text",
+          content:
+            "Retrieval-Augmented Generation grounds an LLM in your data: retrieve relevant chunks from a vector store, stuff them into the prompt, let the model answer.",
+        },
         { type: "heading", content: "Great fit" },
         {
           type: "list",
@@ -50,8 +54,17 @@ export const othersSection: Section = {
       tags: ["AI", "Fundamentals"],
       difficulty: "Easy",
       answer: [
-        { type: "text", content: "An embedding is a fixed-length vector of floats that represents the *meaning* of a piece of text. Two texts with similar meaning land close together in the vector space (small cosine distance); unrelated texts land far apart. That's it — the whole magic of semantic search, recommendations, clustering, and dedup falls out of that one property." },
-        { type: "callout", variant: "info", content: "Typical dims: 384 (small, fast), 1536 (OpenAI text-embedding-3-small), 3072 (large). Bigger ≠ always better — match model to task and budget." },
+        {
+          type: "text",
+          content:
+            "An embedding is a fixed-length vector of floats that represents the *meaning* of a piece of text. Two texts with similar meaning land close together in the vector space (small cosine distance); unrelated texts land far apart. That's it — the whole magic of semantic search, recommendations, clustering, and dedup falls out of that one property.",
+        },
+        {
+          type: "callout",
+          variant: "info",
+          content:
+            "Typical dims: 384 (small, fast), 1536 (OpenAI text-embedding-3-small), 3072 (large). Bigger ≠ always better — match model to task and budget.",
+        },
         {
           type: "link",
           href: "https://platform.openai.com/docs/guides/embeddings",
@@ -65,7 +78,11 @@ export const othersSection: Section = {
       tags: ["AI"],
       difficulty: "Medium",
       answer: [
-        { type: "text", content: "Prompt engineering is picking the right words in your instruction. Context engineering is deciding what information gets into the model's window in the first place — and just as importantly, what stays out." },
+        {
+          type: "text",
+          content:
+            "Prompt engineering is picking the right words in your instruction. Context engineering is deciding what information gets into the model's window in the first place — and just as importantly, what stays out.",
+        },
         {
           type: "list",
           items: [
@@ -73,7 +90,12 @@ export const othersSection: Section = {
             "Context engineering: which docs to retrieve, how to chunk them, what history to keep, when to summarize, what tools to expose.",
           ],
         },
-        { type: "callout", variant: "tip", content: "For production LLM apps, context engineering is 80% of the quality lift. Prompts help — but you can't out-prompt a bad context." },
+        {
+          type: "callout",
+          variant: "tip",
+          content:
+            "For production LLM apps, context engineering is 80% of the quality lift. Prompts help — but you can't out-prompt a bad context.",
+        },
       ],
     },
   ],
