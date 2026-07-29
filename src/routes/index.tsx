@@ -77,7 +77,7 @@ const projectPreviews = [
   },
   {
     name: "Sheel Tech Learn",
-    href: "http://localhost:8123/",
+    href: "https://sheelteach.vercel.app/",
     image: sheelTechLearnThumb,
     alt: "Sheel Tech Learn homepage preview",
   },
