@@ -1,33 +1,48 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import {
   ArrowRight,
+  BookOpen,
   Boxes,
   Braces,
   CalendarClock,
   Code2,
+  Container,
   Database,
+  FileJson,
   GitBranch,
+  GitPullRequest,
   Globe2,
+  Gauge,
+  KeyRound,
   Layers,
   LayoutTemplate,
+  ListTodo,
   MonitorSmartphone,
   Music2,
   Network,
+  PanelsTopLeft,
   Quote,
   Rocket,
+  ScanSearch,
   Send,
+  Server,
+  ServerCog,
   ShieldAlert,
   Sparkles,
   Star,
+  Table2,
+  Target,
+  Users,
   UtensilsCrossed,
   Workflow,
+  Wrench,
   Zap,
 } from "lucide-react";
 import { QuotesTicker } from "@/components/QuotesTicker";
 import { useTheme } from "@/context/ThemeContext";
 import { useDeck } from "@/hooks/use-deck";
 
-const sectionIcons = { qans: Sparkles, programs: Music2, realtime: Zap, projects: Star, others: Layers };
+const sectionIcons = { theory: BookOpen, qans: Sparkles, programs: Music2, realtime: Zap, projects: Star, others: Layers };
 
 const termTiles = [
   { term: "JIRA", icon: CalendarClock, short: "A tool teams use to track tasks, bugs, and project work.", why: "It keeps every ticket visible: who owns it, what status it is in, and what needs to happen next.", example: "A bug becomes a JIRA ticket assigned to a developer." },
@@ -48,14 +63,29 @@ const termTiles = [
   { term: "DevOps", icon: UtensilsCrossed, short: "The practice of building, shipping, monitoring, and running software smoothly.", why: "It connects development work with real production reliability.", example: "Automated deploys, logs, alerts, and rollback plans." },
   { term: "CI / CD", icon: Workflow, short: "Automation that tests and deploys code after changes are pushed.", why: "It reduces manual steps and catches issues earlier.", example: "GitHub push triggers build, tests, and deployment." },
   { term: "Cloud", icon: Globe2, short: "Internet-based servers and services used to host apps and data.", why: "It lets products scale without buying and managing physical machines.", example: "Vercel hosts the frontend, Supabase stores app data." },
+  { term: "Frontend", icon: PanelsTopLeft, short: "The part of an app users see and interact with in the browser.", why: "It turns data and logic into screens people can actually use.", example: "React components render the dashboard you click through." },
+  { term: "Backend", icon: Server, short: "The server-side part that handles logic, data, and security.", why: "It does the heavy lifting the user never sees: auth, storage, and rules.", example: "The backend checks your password and returns your profile." },
+  { term: "Pull Request", icon: GitPullRequest, short: "A request to merge your code changes into the main codebase.", why: "It gives teammates a chance to review before the change goes live.", example: "You open a PR, a teammate approves it, then it merges to main." },
+  { term: "Code Review", icon: ScanSearch, short: "A teammate reading your changes to catch issues and share feedback.", why: "A second pair of eyes finds bugs, gaps, and better approaches early.", example: "A reviewer spots a missing null check before the PR merges." },
+  { term: "Standup", icon: Users, short: "A short daily meeting where each person shares progress and blockers.", why: "It keeps the team aligned without long status meetings.", example: "Yesterday I fixed login, today I start reports, no blockers." },
+  { term: "Backlog", icon: ListTodo, short: "The ordered list of everything the team may build or fix later.", why: "It captures ideas and bugs so nothing gets lost, then priority sorts them.", example: "The dark mode request sits in the backlog until it's picked for a sprint." },
+  { term: "MVP", icon: Target, short: "Minimum Viable Product: the smallest version that delivers real value.", why: "Shipping small first gets real feedback before investing months.", example: "Launch notes with just create and search, then add folders later." },
+  { term: "QA / Testing", icon: ShieldAlert, short: "Checking that software works as expected before users see it.", why: "It catches broken flows early, when fixes are cheap.", example: "QA finds that checkout fails when the cart is empty." },
+  { term: "Staging vs Production", icon: ServerCog, short: "Staging is the safe rehearsal copy; production is the live app.", why: "Testing in staging protects real users from unfinished changes.", example: "The new feature runs on staging for a day before going to production." },
+  { term: "JSON", icon: FileJson, short: "A simple text format apps use to send and store structured data.", why: "Nearly every API speaks JSON, so reading it is a daily skill.", example: '{ "name": "Raja", "role": "developer" }' },
+  { term: "SQL", icon: Table2, short: "The language for asking a database questions and updating its data.", why: "Most business data lives in tables, and SQL is how you reach it.", example: "SELECT name FROM users WHERE active = true;" },
+  { term: "Authentication", icon: KeyRound, short: "Proving who a user is, usually with a password, code, or provider login.", why: "Apps must know who you are before showing your private data.", example: "Sign in with Google, get a session, see your own notes." },
+  { term: "Docker", icon: Container, short: "A tool that packages an app and everything it needs into one container.", why: "The app runs the same on any laptop or server, ending works-on-my-machine bugs.", example: "The API ships as a Docker image that runs identically everywhere." },
+  { term: "Caching", icon: Gauge, short: "Keeping a copy of data close by so it loads faster next time.", why: "Serving saved results is far faster and cheaper than recomputing them.", example: "The homepage loads instantly because its data was cached." },
+  { term: "Tech Debt", icon: Wrench, short: "Shortcuts in code that save time now but cost more effort later.", why: "Naming it helps teams schedule cleanup before it slows everyone down.", example: "The quick login hack works, but each new feature around it takes longer." },
 ];
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "StageDeck, ChaatDeck & TechHome" },
+      { title: "AIML-Kpop, ChaatDeck & TechHome" },
       { name: "description", content: "Three learning modes in one polished app: stage-style interview prep, chaat-inspired lessons, and simple technical vocabulary." },
-      { property: "og:title", content: "StageDeck, ChaatDeck & TechHome" },
+      { property: "og:title", content: "AIML-Kpop, ChaatDeck & TechHome" },
       { property: "og:description", content: "Switch between cinematic learning decks and a clean glossary of everyday technical terms." },
     ],
   }),

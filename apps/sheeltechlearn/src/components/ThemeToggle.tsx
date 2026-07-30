@@ -20,7 +20,7 @@ export function ThemeToggle() {
         className={baseClass + " " + (isStage ? activeClass : idleClass)}
       >
         <Music2 className="h-4 w-4" />
-        StageDeck
+        AIML-Kpop
       </button>
       <button
         type="button"

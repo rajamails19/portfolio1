@@ -12,7 +12,7 @@ import { useEffect, type ReactNode } from "react";
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { SideNav } from "../components/SideNav";
-import { ThemeProvider } from "../context/ThemeContext";
+import { ThemeProvider, useTheme } from "../context/ThemeContext";
 import { ThemeToggle } from "../components/ThemeToggle";
 
 function NotFoundComponent() {
@@ -72,14 +72,14 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "StageDeck & ChaatDeck — Two Cinematic Study Decks" },
+      { title: "AIML-Kpop & ChaatDeck — Two Cinematic Study Decks" },
       { name: "description", content: "Two decks, one architecture. Toggle between K-pop-mentored interview prep and India's most iconic street-food craft." },
-      { name: "author", content: "StageDeck" },
-      { property: "og:title", content: "StageDeck & ChaatDeck — Two Cinematic Study Decks" },
+      { name: "author", content: "AIML-Kpop" },
+      { property: "og:title", content: "AIML-Kpop & ChaatDeck — Two Cinematic Study Decks" },
       { property: "og:description", content: "Two decks, one architecture. Toggle between K-pop-mentored interview prep and India's most iconic street-food craft." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: "StageDeck & ChaatDeck" },
+      { name: "twitter:title", content: "AIML-Kpop & ChaatDeck" },
       { name: "twitter:description", content: "Two decks, one architecture. Toggle between K-pop-mentored interview prep and India's most iconic street-food craft." },
     ],
     links: [
@@ -119,18 +119,29 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider>
-        <div className="flex min-h-screen">
-          <div className="hidden lg:block">
-            <SideNav />
-          </div>
-          <main className="relative flex-1 min-w-0">
-            <div className="pointer-events-auto fixed right-4 top-4 z-50 sm:right-6 sm:top-6">
-              <ThemeToggle />
-            </div>
-            <Outlet />
-          </main>
-        </div>
+        <AppFrame />
       </ThemeProvider>
     </QueryClientProvider>
+  );
+}
+
+function AppFrame() {
+  const { theme } = useTheme();
+  const isTechHome = theme === "tech";
+
+  return (
+    <div className="flex min-h-screen">
+      {!isTechHome && (
+        <div className="hidden lg:block">
+          <SideNav />
+        </div>
+      )}
+      <main className="relative flex-1 min-w-0">
+        <div className="pointer-events-auto fixed right-4 top-4 z-50 sm:right-6 sm:top-6">
+          <ThemeToggle />
+        </div>
+        <Outlet />
+      </main>
+    </div>
   );
 }

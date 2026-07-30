@@ -1,3 +1,4 @@
+import { theorySection } from "./theory";
 import { qansSection } from "./qans";
 import { programsSection } from "./programs";
 import { realtimeSection } from "./realtime";
@@ -6,6 +7,7 @@ import { othersSection } from "./others";
 import type { Section } from "./types";
 
 export const sections: Section[] = [
+  theorySection,
   qansSection,
   programsSection,
   realtimeSection,

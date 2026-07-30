@@ -30,9 +30,9 @@ export interface Deck {
 }
 
 const roseDeck: Deck = {
-  brandName: "StageDeck",
+  brandName: "AIML-Kpop",
   brandTag: "Rosé Bloom",
-  brandLogo: "S",
+  brandLogo: "A",
   brandVibe: "K-Pop Study",
   sections: roseSections,
   foundersBySection: roseFounders,

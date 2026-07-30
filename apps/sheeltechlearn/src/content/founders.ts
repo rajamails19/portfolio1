@@ -12,6 +12,13 @@ export interface Founder {
 }
 
 export const foundersBySection: Record<string, Founder> = {
+  theory: {
+    name: "The Professor",
+    title: "Foundations · Clarity · Big Picture",
+    image: maestro,
+    quote:
+      "Before the first note, understand the whole song. Nobody plays every instrument — but everyone should know how the piece fits together.",
+  },
   qans: {
     name: "The Icon",
     title: "Presence · Confidence · Range",
@@ -55,7 +62,7 @@ export const marqueeQuotes: { text: string; author: string }[] = [
   { text: "When the beat drops and something breaks, keep dancing.", author: "The Performer" },
   { text: "Choose one truth. Arrange it slowly. Let the last note linger.", author: "The Storyteller" },
   { text: "Don't chase the trend. Set the silhouette.", author: "The Maestro" },
-  { text: "The comeback is louder than the debut.", author: "StageDeck" },
+  { text: "The comeback is louder than the debut.", author: "AIML-Kpop" },
   { text: "You are not late. You are on the next verse.", author: "The Storyteller" },
   { text: "Practice in the dark. Perform in the light.", author: "The Performer" },
   { text: "A great chorus is the answer everyone remembers.", author: "The Producer" },

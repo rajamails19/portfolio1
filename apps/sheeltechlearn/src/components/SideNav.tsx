@@ -1,8 +1,9 @@
 import { Link, useRouterState } from "@tanstack/react-router";
 import { useDeck } from "@/hooks/use-deck";
-import { Sparkles, Music2, Zap, Star, Layers } from "lucide-react";
+import { Sparkles, Music2, Zap, Star, Layers, BookOpen } from "lucide-react";
 
 const icons: Record<string, typeof Sparkles> = {
+  theory: BookOpen,
   qans: Sparkles,
   programs: Music2,
   realtime: Zap,

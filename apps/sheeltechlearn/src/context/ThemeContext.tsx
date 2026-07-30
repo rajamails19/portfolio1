@@ -23,7 +23,8 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     const root = document.documentElement;
     root.classList.toggle("theme-chaat", theme === "chaat");
-    root.classList.toggle("theme-rose", theme === "rose" || theme === "tech");
+    root.classList.toggle("theme-rose", theme === "rose");
+    root.classList.toggle("theme-tech", theme === "tech");
     window.localStorage.setItem("stage-deck-theme", theme);
   }, [theme]);
 
