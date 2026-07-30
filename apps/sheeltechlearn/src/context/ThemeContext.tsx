@@ -1,40 +1,48 @@
-import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
+import { createContext, useContext, useEffect, useMemo, useState } from "react";
 
-export type DeckTheme = "rose" | "chaat";
+export type DeckTheme = "rose" | "chaat" | "tech";
 
-interface ThemeCtx {
+type ThemeContextValue = {
   theme: DeckTheme;
-  setTheme: (t: DeckTheme) => void;
+  setTheme: (theme: DeckTheme) => void;
   toggle: () => void;
-}
+};
 
-const Ctx = createContext<ThemeCtx>({ theme: "rose", setTheme: () => {}, toggle: () => {} });
+const ThemeContext = createContext<ThemeContextValue | undefined>(undefined);
 
-const STORAGE_KEY = "stagedeck-theme";
-
-export function ThemeProvider({ children }: { children: ReactNode }) {
+export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [theme, setThemeState] = useState<DeckTheme>("rose");
 
   useEffect(() => {
-    try {
-      const stored = localStorage.getItem(STORAGE_KEY) as DeckTheme | null;
-      if (stored === "chaat" || stored === "rose") setThemeState(stored);
-    } catch {}
+    const stored = window.localStorage.getItem("stage-deck-theme");
+    if (stored === "chaat" || stored === "rose" || stored === "tech") {
+      setThemeState(stored);
+    }
   }, []);
 
   useEffect(() => {
     const root = document.documentElement;
     root.classList.toggle("theme-chaat", theme === "chaat");
-    root.classList.toggle("theme-rose", theme === "rose");
-    try { localStorage.setItem(STORAGE_KEY, theme); } catch {}
+    root.classList.toggle("theme-rose", theme === "rose" || theme === "tech");
+    window.localStorage.setItem("stage-deck-theme", theme);
   }, [theme]);
 
-  const setTheme = (t: DeckTheme) => setThemeState(t);
-  const toggle = () => setThemeState((t) => (t === "rose" ? "chaat" : "rose"));
+  const value = useMemo<ThemeContextValue>(
+    () => ({
+      theme,
+      setTheme: setThemeState,
+      toggle: () => setThemeState((current) => (current === "rose" ? "chaat" : "rose")),
+    }),
+    [theme],
+  );
 
-  return <Ctx.Provider value={{ theme, setTheme, toggle }}>{children}</Ctx.Provider>;
+  return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>;
 }
 
 export function useTheme() {
-  return useContext(Ctx);
+  const context = useContext(ThemeContext);
+  if (!context) {
+    throw new Error("useTheme must be used within ThemeProvider");
+  }
+  return context;
 }
