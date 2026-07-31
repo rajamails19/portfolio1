@@ -14,6 +14,7 @@ import { reportLovableError } from "../lib/lovable-error-reporting";
 import { SideNav } from "../components/SideNav";
 import { ThemeProvider, useTheme } from "../context/ThemeContext";
 import { ThemeToggle } from "../components/ThemeToggle";
+import { SiteEditor } from "../components/SiteEditor";
 
 function NotFoundComponent() {
   return (
@@ -140,8 +141,11 @@ function AppFrame() {
         <div className="pointer-events-auto fixed right-4 top-4 z-50 sm:right-6 sm:top-6">
           <ThemeToggle />
         </div>
-        <Outlet />
+        <div data-site-edit-surface="page">
+          <Outlet />
+        </div>
       </main>
+      <SiteEditor />
     </div>
   );
 }

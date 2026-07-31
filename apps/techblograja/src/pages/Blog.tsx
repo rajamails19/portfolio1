@@ -10,7 +10,7 @@ import heroImage from "@/assets/hero-featured.jpg";
 import { Link } from "react-router-dom";
 
 const blogPosts = [
-  { id: "1", title: "How to Build a Content Strategy That Actually Drives Revenue", excerpt: "Most content strategies fail because they focus on vanity metrics. Here's a framework that ties every piece of content to pipeline generation.", author: "Jessica Martinez", date: "2/20/26", category: "Marketing Strategy", image: heroImage },
+  { id: "1", title: "5 Architectural Patterns for Memory and State in AI Agents", excerpt: "LLMs are stateless by default. These five patterns — working buffers, checkpointing, semantic memory, episodic logs, and scope segregation — are how you build continuity that survives a crash.", author: "Raja V", date: "7/31/26", category: "AI Engineering", image: heroImage },
   { id: "2", title: "The Rise of Account-Based Content Marketing", excerpt: "ABM isn't just for ads and sales outreach anymore. Learn how top B2B companies are creating hyper-personalized content experiences.", author: "Marcus Chen", date: "2/18/26", category: "Sales Enablement", image: article1 },
   { id: "3", title: "Why Your Blog Needs a Video Component in 2026", excerpt: "Written content alone won't cut it. Discover how embedded video increases time on page by 88% and boosts conversion rates.", author: "Priya Sharma", date: "2/15/26", category: "Product Management", image: article2 },
   { id: "4", title: "Content Repurposing: Turn One Piece Into Twenty", excerpt: "Stop creating from scratch every time. This systematic approach to repurposing will 10x your content output without burning out your team.", author: "Amy Porterfield", date: "2/12/26", category: "Marketing Strategy", image: article3 },

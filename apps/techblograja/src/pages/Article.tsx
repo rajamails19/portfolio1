@@ -22,6 +22,75 @@ interface ArticleData {
 }
 
 const articleContent: Record<string, ArticleData> = {
+  "1": {
+    title: "5 Architectural Patterns for Memory and State in AI Agents",
+    author: "Raja V",
+    role: "AI Engineering",
+    date: "July 31, 2026",
+    readTime: "11 min read",
+    category: "AI Engineering",
+    image: heroImage,
+    body: [
+      "Large language models are stateless. Every API call arrives with no recollection of the one before it — the continuity you feel inside a chat window is something the application layer fabricates, not something the model provides. For a chatbot, that illusion is cheap to maintain. For an agent that runs for hours, calls a dozen tools, crashes halfway through, and has to pick up again tomorrow, it becomes the hardest part of the system.",
+      "What follows are five architectural patterns for giving agents memory and state. They aren't competing options — most production agents run three or four of them at once, at different layers. The five-pattern framing comes from a piece on Machine Learning Mastery; the explanations, code, and opinions below are my own.",
+
+      "## State is not memory",
+      "The two words get used interchangeably, and it causes real design mistakes. Keep them separate:",
+      "- **State** is a snapshot. It answers *where is this task right now* — which step we're on, what the last tool returned, which sub-goals are still open. It is scoped to one run, and it is authoritative.",
+      "- **Memory** is a mechanism. It answers *what survives a boundary* — the end of a turn, the end of a session, a handoff to another agent. It is scoped across runs, and it is advisory.",
+      "> Confusing the two produces the classic failure: a team stuffs long-term memory into the prompt as if it were state, the model treats a six-week-old preference as current fact, and the agent confidently acts on stale information.",
+
+      "pattern:1|The In-Context Working Buffer|Ephemeral state, held in the prompt itself",
+      "The simplest form of memory is the conversation you keep re-sending. Everything the agent needs lives inside the context window, and the window is managed with a sliding policy: keep the system prompt, keep the last N turns verbatim, and compress everything older into a running summary.",
+      "This is the only pattern that costs you tokens on every single call, which makes the compression policy the whole game. Summarize too aggressively and the agent forgets the constraint it was given at turn three. Summarize too late and you pay for thousands of tokens of tool output nobody will ever read again.",
+      "```ts\nconst KEEP_RECENT = 8;\n\nasync function buildContext(turns: Turn[], summary: string) {\n  if (turns.length <= KEEP_RECENT) return { summary, turns };\n\n  const older  = turns.slice(0, -KEEP_RECENT);\n  const recent = turns.slice(-KEEP_RECENT);\n\n  // Fold the old turns into the running summary, then drop them.\n  const nextSummary = await summarize({ previous: summary, turns: older });\n\n  return { summary: nextSummary, turns: recent };\n}\n```",
+      "Two things worth doing that most implementations skip. Trim on **tokens, not turn count** — one tool call returning a 40 KB JSON blob will blow the window that eight chat turns never would. And keep tool *results* on a shorter leash than user messages: the user's stated goal stays relevant far longer than the output of the search that served it.",
+
+      "pattern:2|Execution Checkpointing|Durable state, so a crash isn't a restart",
+      "Anything long-running needs to survive the process that started it. Checkpointing persists the agent's state after each meaningful step, so a timeout, a deploy, or a rate limit turns into a resume rather than a restart.",
+      "The state you write should be small and declarative: which step, which inputs, which outputs so far. Don't checkpoint the whole conversation — checkpoint the decision.",
+      "```ts\nawait db.checkpoint.upsert({\n  where:  { runId },\n  update: { step: \"fetch_invoices\", cursor, output, updatedAt: new Date() },\n  create: { runId, step: \"fetch_invoices\", cursor, output },\n});\n```",
+      "The trap here is side effects. Resuming a workflow re-runs the step that was in flight when it died — and if that step sent an email, charged a card, or opened a ticket, you will do it twice. Every side-effecting tool needs an idempotency key derived from the run and the step, never from a timestamp.",
+      "> Rule of thumb: if a step touches the outside world, it must be safe to call twice with the same key. If you can't make it idempotent, checkpoint *after* it and accept that a mid-step crash means manual reconciliation.",
+
+      "pattern:3|Semantic Memory|Facts that outlive the session",
+      "Semantic memory is the store of durable facts — user preferences, domain knowledge, decisions made in past sessions. Usually it's a vector store: write a fact, embed it, retrieve the top-k by similarity when a new session starts.",
+      "It's the pattern most teams reach for first, and the one they get wrong most often, for three reasons.",
+      "- **Staleness.** A vector store has no opinion about time. \"Prefers the Berlin office\" retrieves just as strongly two years after the user moved. Store a written-at timestamp with every fact, then either decay it in ranking or surface the age to the model.",
+      "- **Contradiction.** Write \"uses Postgres\" in March and \"migrated to PlanetScale\" in June, and now you retrieve both. You need a consolidation pass that resolves conflicts, not just an append-only log.",
+      "- **Leakage.** Whatever lands in semantic memory gets replayed into prompts later, often in a different session with different observers. Never write credentials, tokens, or raw PII into it — filter on the way in, not on the way out.",
+      "```ts\nawait memory.write({\n  scope:      `user:${userId}`,\n  text:       \"Prefers TypeScript examples over Python.\",\n  writtenAt:  new Date(),\n  confidence: 0.8,\n  source:     \"session_4471\",\n});\n```",
+      "img:3|Retrieval quality degrades as the store grows. The fix is curation, not a bigger k.",
+
+      "pattern:4|Episodic Event Logs|A record of what actually happened",
+      "Where semantic memory stores *facts*, episodic memory stores *trajectories* — the ordered record of what the agent tried, what came back, and how it ended. It's the difference between knowing that an API requires pagination and remembering that last Tuesday you called it without a cursor and got a silently truncated result.",
+      "Replayed selectively, these logs make an agent noticeably better at avoiding repeat failures. The practical use isn't dumping the log into the prompt — it's retrieving the two or three past episodes most similar to the current task and injecting a short note about what went wrong.",
+      "```ts\nawait events.append({\n  runId,\n  step:    7,\n  action:  \"search_invoices\",\n  args:    { customerId, page: 1 },\n  outcome: \"error\",\n  error:   \"429 rate_limited\",\n  tookMs:  1840,\n});\n```",
+      "Be honest about the ceiling: these records are advisory. The model can and will ignore a note that says *this failed last time*, especially when the failure is subtle and the prompt is long. Episodic memory reduces repeat failures; it does not eliminate them. If a mistake is expensive, encode it as a guardrail in code, not as a hint in the context.",
+
+      "pattern:5|Multi-Scope Segregation|Whose memory is this, anyway?",
+      "The moment more than one user shares an agent, memory becomes an access-control problem. A retrieval that isn't scoped will happily surface one customer's data inside another customer's session — and it will look like a great answer while it does it.",
+      "Scope every read and every write. The scope key belongs in the query itself, as a hard filter at the storage layer, never as an instruction in the prompt asking the model to be careful.",
+      "```ts\n// Scope is a query constraint, not a suggestion.\nconst facts = await memory.search({\n  query,\n  filter: { tenantId, userId },   // enforced by the store\n  topK:   5,\n});\n```",
+      "A workable hierarchy for most products: `global` for facts true of everyone, `tenant` for org-level knowledge, `user` for individual preferences, `session` for the current run. Reads walk up the hierarchy; writes default to the narrowest scope that makes sense and get promoted deliberately.",
+
+      "## Memory is a garden, not a warehouse",
+      "The pattern nobody puts in the architecture diagram is maintenance. Every store above grows monotonically unless something prunes it, and retrieval quality *falls* as it grows — more entries means more near-misses competing for the same top-k slots.",
+      "- **TTLs** on anything session-scoped or operational. Most episodic logs stop being useful after a few weeks.",
+      "- **Consolidation** on a schedule: merge duplicates, resolve contradictions, collapse ten observations into one durable fact.",
+      "- **Pruning** by usage. If a memory hasn't been retrieved in ninety days, it is probably noise.",
+
+      "## Picking the right pattern",
+      "- Multi-turn conversation, single session → **working buffer**, and nothing more.",
+      "- Long or resumable workflow → **checkpointing**, with idempotent side effects.",
+      "- \"Remember what I told you last month\" → **semantic memory**, with timestamps and consolidation.",
+      "- An agent that should learn from its own failures → **episodic logs**, plus real guardrails for the expensive mistakes.",
+      "- More than one user → **scope segregation**, from day one. Retrofitting it is miserable.",
+
+      "None of this is exotic infrastructure. It's a Postgres table, a vector index, and a discipline about what gets written where. The teams whose agents feel reliable aren't the ones with the cleverest prompts — they're the ones who decided, deliberately, what their agent is allowed to forget.",
+      "> Written after reading *5 Architectural Patterns for Persistent Memory and State in AI Agents* on Machine Learning Mastery. Worth reading in full for the original framing.",
+    ],
+  },
   featured: {
     title: "The future of marketing isn't humans vs. AI — it's humans with AI",
     author: "Jessica Martinez",
@@ -281,6 +350,108 @@ const articleContent: Record<string, ArticleData> = {
   },
 };
 
+const sectionImages: Record<string, string> = {
+  "1": article1,
+  "2": article2,
+  "3": article3,
+  "4": article4,
+};
+
+/** Inline formatting: **bold** and `code`. */
+const inline = (text: string) =>
+  text.split(/(\*\*[^*]+\*\*|`[^`]+`)/g).map((part, j) => {
+    if (part.startsWith("**") && part.endsWith("**")) {
+      return <strong key={j} className="font-bold text-foreground">{part.slice(2, -2)}</strong>;
+    }
+    if (part.startsWith("`") && part.endsWith("`")) {
+      return (
+        <code key={j} className="rounded bg-primary/10 px-1.5 py-0.5 font-mono text-[0.85em] text-primary">
+          {part.slice(1, -1)}
+        </code>
+      );
+    }
+    return part;
+  });
+
+/**
+ * Block renderer. Recognised prefixes:
+ *   "## "  h2      "### " h3        "- " bullet
+ *   "> "   callout  "```" code      "img:N|caption"
+ *   "pattern:N|Title|Subtitle"      anything else -> paragraph
+ */
+const renderBlock = (block: string, i: number) => {
+  if (block.startsWith("```")) {
+    const lines = block.split("\n");
+    const lang = lines[0].replace(/`/g, "").trim() || "code";
+    const code = lines.slice(1, lines[lines.length - 1].startsWith("```") ? -1 : undefined).join("\n");
+    return (
+      <div key={i} className="my-7 overflow-hidden rounded-xl border border-border bg-[#0d1117] shadow-sm">
+        <div className="flex items-center gap-2 border-b border-white/10 px-4 py-2.5">
+          <span className="h-2.5 w-2.5 rounded-full bg-[#ff5f57]" />
+          <span className="h-2.5 w-2.5 rounded-full bg-[#febc2e]" />
+          <span className="h-2.5 w-2.5 rounded-full bg-[#28c840]" />
+          <span className="ml-2 font-mono text-xs text-white/40">{lang}</span>
+        </div>
+        <pre className="overflow-x-auto p-4 text-sm leading-relaxed">
+          <code className="font-mono text-[#c9d1d9]">{code}</code>
+        </pre>
+      </div>
+    );
+  }
+
+  if (block.startsWith("pattern:")) {
+    const [num, title, subtitle] = block.replace("pattern:", "").split("|");
+    return (
+      <div key={i} className="mt-14 mb-6 flex items-start gap-4 rounded-xl border-l-4 border-primary bg-primary/5 p-5">
+        <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary text-lg font-bold text-primary-foreground">
+          {num}
+        </span>
+        <div>
+          <h2 className="text-2xl font-bold leading-tight text-foreground">{title}</h2>
+          {subtitle && <p className="mt-1 text-sm font-medium text-primary">{subtitle}</p>}
+        </div>
+      </div>
+    );
+  }
+
+  if (block.startsWith("img:")) {
+    const [key, caption] = block.replace("img:", "").split("|");
+    return (
+      <figure key={i} className="my-8">
+        <img src={sectionImages[key]} alt={caption ?? ""} className="w-full rounded-xl object-cover aspect-[16/9]" loading="lazy" />
+        {caption && <figcaption className="mt-2.5 text-center text-sm text-muted-foreground">{caption}</figcaption>}
+      </figure>
+    );
+  }
+
+  if (block.startsWith("> ")) {
+    return (
+      <blockquote key={i} className="my-7 rounded-r-xl border-l-4 border-primary/60 bg-muted/60 py-4 pl-5 pr-4">
+        <p className="text-base leading-relaxed text-foreground/90 italic">{inline(block.slice(2))}</p>
+      </blockquote>
+    );
+  }
+
+  if (block.startsWith("- ")) {
+    return (
+      <div key={i} className="mb-3 flex gap-3 pl-1">
+        <span className="mt-[0.6rem] h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
+        <p className="text-lg leading-relaxed text-foreground/90">{inline(block.slice(2))}</p>
+      </div>
+    );
+  }
+
+  if (block.startsWith("### ")) {
+    return <h3 key={i} className="mt-8 mb-3 text-xl font-bold text-foreground">{block.slice(4)}</h3>;
+  }
+
+  if (block.startsWith("## ")) {
+    return <h2 key={i} className="mt-12 mb-4 text-2xl font-bold text-foreground">{block.slice(3)}</h2>;
+  }
+
+  return <p key={i} className="mb-5 text-lg leading-relaxed text-foreground/90">{inline(block)}</p>;
+};
+
 const Article = () => {
   const { id } = useParams();
   const article = articleContent[id as keyof typeof articleContent];
@@ -327,13 +498,8 @@ const Article = () => {
               <img src={article.image} alt={article.title} className="w-full aspect-[16/9] object-cover" />
             </div>
 
-            <div className="mt-10 space-y-5">
-              {article.body.map((paragraph, i) => {
-                if (paragraph.startsWith("## ")) {
-                  return <h2 key={i} className="text-2xl font-bold text-foreground pt-4">{paragraph.replace("## ", "")}</h2>;
-                }
-                return <p key={i} className="text-lg leading-relaxed text-foreground/90">{paragraph}</p>;
-              })}
+            <div className="mt-10">
+              {article.body.map((block, i) => renderBlock(block, i))}
             </div>
 
             <div className="mt-12 rounded-xl bg-primary/10 border-2 border-primary/30 p-6 text-center">

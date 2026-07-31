@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useMemo, useState } from "react";
+import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
 
 export type DeckTheme = "rose" | "chaat" | "tech";
 
@@ -12,6 +12,12 @@ const ThemeContext = createContext<ThemeContextValue | undefined>(undefined);
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [theme, setThemeState] = useState<DeckTheme>("rose");
+
+  const setTheme = useCallback((nextTheme: DeckTheme) => {
+    // Persist immediately so a route change cannot race the effect below.
+    window.localStorage.setItem("stage-deck-theme", nextTheme);
+    setThemeState(nextTheme);
+  }, []);
 
   useEffect(() => {
     const stored = window.localStorage.getItem("stage-deck-theme");
@@ -31,10 +37,10 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const value = useMemo<ThemeContextValue>(
     () => ({
       theme,
-      setTheme: setThemeState,
-      toggle: () => setThemeState((current) => (current === "rose" ? "chaat" : "rose")),
+      setTheme,
+      toggle: () => setTheme(theme === "rose" ? "chaat" : "rose"),
     }),
-    [theme],
+    [setTheme, theme],
   );
 
   return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>;

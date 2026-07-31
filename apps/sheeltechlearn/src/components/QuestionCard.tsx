@@ -4,9 +4,9 @@ import type { QAItem } from "@/content/types";
 import { AnswerBlocks } from "./AnswerBlocks";
 
 const diffColors: Record<string, string> = {
-  Easy: "border border-[oklch(0.6_0.15_155)]/40 bg-[oklch(0.35_0.1_155)]/40 text-[oklch(0.88_0.12_155)]",
-  Medium: "border border-rose/40 bg-rose/15 text-rose",
-  Hard: "border border-coral/50 bg-coral/20 text-[oklch(0.85_0.15_25)]",
+  Easy: "difficulty-easy",
+  Medium: "difficulty-medium",
+  Hard: "difficulty-hard",
 };
 
 export function QuestionCard({ item, index }: { item: QAItem; index: number }) {
@@ -25,7 +25,7 @@ export function QuestionCard({ item, index }: { item: QAItem; index: number }) {
         className="flex w-full items-start gap-4 px-6 py-5 text-left"
         aria-expanded={open}
       >
-        <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-rose to-coral font-display text-sm font-bold text-primary-foreground shadow-glow">
+        <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-solid-rose to-solid-coral font-display text-sm font-bold text-on-solid shadow-glow">
           {String(index + 1).padStart(2, "0")}
         </span>
 
@@ -50,7 +50,7 @@ export function QuestionCard({ item, index }: { item: QAItem; index: number }) {
         <span
           className={[
             "mt-1 flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-rose/25 bg-noir/60 text-foreground/70 transition-transform duration-300",
-            open ? "rotate-180 border-transparent bg-gradient-to-br from-rose to-coral text-primary-foreground" : "group-hover:bg-noir",
+            open ? "rotate-180 border-transparent bg-gradient-to-br from-solid-rose to-solid-coral text-on-solid" : "group-hover:bg-noir",
           ].join(" ")}
         >
           <ChevronDown className="h-5 w-5" />

@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import {
   ArrowRight,
+  BrainCircuit,
   BookOpen,
   Boxes,
   Braces,
@@ -9,6 +10,7 @@ import {
   Container,
   Database,
   FileJson,
+  FolderKanban,
   GitBranch,
   GitPullRequest,
   Globe2,
@@ -18,6 +20,7 @@ import {
   LayoutTemplate,
   ListTodo,
   MonitorSmartphone,
+  Moon,
   Music2,
   Network,
   PanelsTopLeft,
@@ -30,17 +33,27 @@ import {
   ShieldAlert,
   Sparkles,
   Star,
+  Sun,
   Table2,
   Target,
   Users,
   UtensilsCrossed,
+  UserRound,
   Workflow,
   Wrench,
   Zap,
 } from "lucide-react";
 import { QuotesTicker } from "@/components/QuotesTicker";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { useTheme } from "@/context/ThemeContext";
 import { useDeck } from "@/hooks/use-deck";
+import { useState } from "react";
 
 const sectionIcons = { theory: BookOpen, qans: Sparkles, programs: Music2, realtime: Zap, projects: Star, others: Layers };
 
@@ -122,7 +135,7 @@ function DeckHome({ deck }: { deck: ReturnType<typeof useDeck> }) {
             </h1>
             <p className="mt-4 max-w-xl text-lg text-foreground/75">{deck.heroSubtitle}</p>
             <div className="mt-6 flex flex-wrap gap-3">
-              <Link to="/qans" className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-rose to-coral px-5 py-3 text-sm font-semibold text-primary-foreground shadow-glow transition hover:opacity-95">
+              <Link to="/qans" className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-solid-rose to-solid-coral px-5 py-3 text-sm font-semibold text-on-solid shadow-glow transition hover:opacity-95">
                 {deck.ctaPrimary} <ArrowRight className="h-4 w-4" />
               </Link>
               <Link to="/programs" className="inline-flex items-center gap-2 rounded-full border border-rose/30 bg-noir/50 px-5 py-3 text-sm font-semibold text-foreground backdrop-blur transition hover:bg-noir/80">
@@ -180,14 +193,201 @@ function DeckHome({ deck }: { deck: ReturnType<typeof useDeck> }) {
   );
 }
 
+type TechPanel = "introduction" | "projects" | "details";
+
+const techPanelTabs: { id: TechPanel; label: string; icon: typeof UserRound }[] = [
+  { id: "introduction", label: "Introduction", icon: UserRound },
+  { id: "projects", label: "Projects", icon: FolderKanban },
+  { id: "details", label: "Details", icon: BrainCircuit },
+];
+
+function IntroductionPanel({ light }: { light: boolean }) {
+  const tools = [
+    "Playwright",
+    "Selenium WebDriver",
+    "Java",
+    "TestNG",
+    "REST Assured",
+    "SQL",
+  ];
+
+  const cardTone = light
+    ? "border-[oklch(0.72_0.07_235)]/65 bg-[oklch(0.97_0.018_230)] shadow-[0_16px_45px_-34px_oklch(0.35_0.1_240/0.6)]"
+    : "border-rose/20 bg-[oklch(0.135_0.025_270/0.88)] shadow-[0_16px_45px_-34px_oklch(0.6_0.2_345/0.7)]";
+  const accent = light ? "text-[oklch(0.43_0.15_245)]" : "text-rose";
+  const stepTone = light
+    ? "border-[oklch(0.58_0.12_240)]/35 bg-[oklch(0.88_0.055_230)] text-[oklch(0.35_0.12_245)]"
+    : "border-rose/30 bg-rose/10 text-rose";
+  const readingPath = ["Who I am", "My foundation", "How I work", "AI direction", "What's next"];
+
+  return (
+    <div className="grid min-h-full grid-rows-[auto_auto_auto] gap-2.5 text-[13px] leading-5">
+      <nav className="flex items-center gap-1 overflow-x-auto rounded-2xl border border-current/10 bg-black/5 px-3 py-1.5" aria-label="Introduction reading order">
+        {readingPath.map((label, index) => (
+          <div key={label} className="flex shrink-0 items-center gap-1.5">
+            <span className={`flex items-center gap-2 rounded-full border px-3 py-1.5 font-bold ${stepTone}`}>
+              <span className="font-display text-base leading-none">{String(index + 1).padStart(2, "0")}</span>
+              <span>{label}</span>
+            </span>
+            {index < readingPath.length - 1 ? <ArrowRight className={`h-4 w-4 ${accent}`} /> : null}
+          </div>
+        ))}
+      </nav>
+
+      <div className="grid gap-2.5 lg:grid-cols-2">
+        <section className={`relative overflow-hidden rounded-[1.6rem] border p-4 ${cardTone}`}>
+          <div className="pointer-events-none absolute -right-8 -top-10 h-32 w-32 rounded-full bg-rose/15 blur-3xl" />
+          <div className="relative flex items-start justify-between gap-3">
+            <div>
+              <div className={`text-[10px] font-bold uppercase tracking-[0.26em] ${accent}`}>01 · Who I am</div>
+              <h3 className="mt-1 font-display text-2xl font-semibold leading-tight xl:text-3xl">
+                Hello, my name is <span className={accent}>SK.</span>
+              </h3>
+            </div>
+            <span className={`shrink-0 rounded-full border px-3 py-1 text-xs font-bold ${stepTone}`}>Around 7 years</span>
+          </div>
+          <p className="relative mt-3 opacity-80">
+            I have around <strong className="font-extrabold opacity-100">7 years of experience</strong> in Software Testing and Automation, primarily working on web applications across different domains.
+          </p>
+        </section>
+
+        <section className={`rounded-[1.6rem] border p-4 ${cardTone}`}>
+          <div className="flex items-center gap-2">
+            <span className={`font-display text-xl font-bold ${accent}`}>02</span>
+            <Code2 className={`h-4 w-4 ${accent}`} />
+            <h3 className="font-display text-lg font-semibold">Automation foundation</h3>
+          </div>
+          <div className="mt-2 grid gap-3 xl:grid-cols-[1.05fr_0.95fr]">
+            <div>
+              <p className="opacity-80">Over the years, I've worked with technologies like Playwright, Selenium WebDriver, Java, TestNG, REST Assured, and SQL, and have been involved in both <strong className={accent}>UI and API automation.</strong></p>
+              <div className="mt-2 flex flex-wrap gap-1.5">
+                {tools.map((tool) => <span key={tool} className={`rounded-full border px-2 py-0.5 text-[10px] font-bold ${stepTone}`}>{tool}</span>)}
+              </div>
+            </div>
+            <p className="rounded-2xl border border-current/10 bg-black/5 p-2.5 opacity-80">In my previous projects, I've built and maintained automation frameworks, developed reusable test scripts, executed regression suites, and integrated automation into <strong className={accent}>CI/CD pipelines</strong> for faster and more reliable releases.</p>
+          </div>
+        </section>
+
+        <section className={`rounded-[1.6rem] border p-4 ${cardTone}`}>
+          <div className="flex items-center gap-2">
+            <span className={`font-display text-xl font-bold ${accent}`}>03</span>
+            <Target className={`h-4 w-4 ${accent}`} />
+            <h3 className="font-display text-lg font-semibold">Quality through collaboration</h3>
+          </div>
+          <div className="mt-2.5 grid gap-2.5 sm:grid-cols-2">
+            <div className="rounded-2xl border border-current/10 bg-black/5 p-2.5">
+              <h4 className={`font-bold ${accent}`}>How I improve quality</h4>
+              <p className="mt-1.5 opacity-80">I enjoy solving automation challenges, improving test coverage, and reducing manual effort by building stable and maintainable frameworks.</p>
+            </div>
+            <div className="rounded-2xl border border-current/10 bg-black/5 p-2.5">
+              <h4 className={`font-bold ${accent}`}>How I collaborate</h4>
+              <p className="mt-1.5 opacity-80">I also believe in working closely with developers, QA, and business teams to identify issues early and deliver high-quality software.</p>
+            </div>
+          </div>
+        </section>
+
+        <section className={`rounded-[1.6rem] border p-4 ${cardTone}`}>
+          <div className="flex items-center gap-2">
+            <span className={`font-display text-xl font-bold ${accent}`}>04</span>
+            <BrainCircuit className={`h-4 w-4 ${accent}`} />
+            <h3 className="font-display text-lg font-semibold">AI-forward testing</h3>
+          </div>
+          <p className="mt-2.5 opacity-80">
+            With the rapid growth of <strong className="font-extrabold">AI and Machine Learning</strong>, I've also been exploring how AI can enhance software testing through intelligent test generation, self-healing automation, and AI-powered testing tools.
+          </p>
+          <p className="mt-2.5 opacity-80">I'm continuously learning modern AI technologies and looking for opportunities to combine traditional automation with <strong className={accent}>AI-driven testing practices.</strong></p>
+        </section>
+      </div>
+
+      <section className={`flex items-center gap-4 rounded-[1.6rem] border px-4 py-2.5 ${cardTone}`}>
+        <span className={`font-display text-3xl font-bold ${accent}`}>05</span>
+        <ArrowRight className={`hidden h-5 w-5 shrink-0 sm:block ${accent}`} />
+        <div>
+          <h3 className="font-display font-semibold">The opportunity I'm looking for</h3>
+          <p className="mt-0.5 opacity-80">I'm now looking for an opportunity where I can use my automation experience, continue learning new technologies, and contribute to building reliable and scalable testing solutions.</p>
+        </div>
+      </section>
+    </div>
+  );
+}
+
+function EmptyTechPanel({ panel, light }: { panel: Exclude<TechPanel, "introduction">; light: boolean }) {
+  const Icon = panel === "projects" ? FolderKanban : BrainCircuit;
+  const title = panel === "projects" ? "Projects" : "Details";
+  return (
+    <div className={`flex h-full min-h-72 flex-col items-center justify-center rounded-3xl border border-dashed p-8 text-center ${light ? "border-sky-400/50 bg-sky-100/70" : "border-rose/35 bg-gradient-to-br from-rose/10 to-coral/10"}`}>
+      <span className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-solid-rose to-solid-coral text-on-solid shadow-glow">
+        <Icon className="h-6 w-6" />
+      </span>
+      <h3 className="mt-5 font-display text-2xl font-semibold">{title}</h3>
+      <p className="mt-2 max-w-md text-sm leading-6 opacity-70">
+        This panel is ready for the next set of {title.toLowerCase()} content.
+      </p>
+    </div>
+  );
+}
+
 function TechHome() {
+  const [activePanel, setActivePanel] = useState<TechPanel | null>(null);
+  const [panelLight, setPanelLight] = useState(false);
+
   return (
     <div className="mx-auto w-full max-w-6xl px-5 pb-16 pt-10 sm:px-6 lg:pt-14">
-      <section className="glass-strong overflow-hidden rounded-4xl p-6 sm:p-10">
+      <section className="glass-strong relative overflow-hidden rounded-4xl p-6 sm:p-10">
+        <div className="pointer-events-none absolute -right-20 -top-20 h-60 w-60 rounded-full bg-rose/15 blur-3xl" />
         <div className="inline-flex items-center gap-2 rounded-full border border-rose/25 bg-background/70 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.25em] text-rose"><Sparkles className="h-3.5 w-3.5" /> Tech Vocabulary</div>
         <h1 className="mt-5 max-w-3xl font-display text-4xl font-semibold leading-tight text-foreground sm:text-5xl">Simple tech terms,<span className="gradient-text"> explained clearly.</span></h1>
         <p className="mt-4 max-w-2xl text-base leading-7 text-muted-foreground sm:text-lg">Quick tiles for the words you will hear in IT teams, product meetings, engineering chats, and real project work.</p>
+        <div className="relative mt-7 flex flex-wrap gap-3" aria-label="TechHome profile panels">
+          {techPanelTabs.map(({ id, label, icon: Icon }) => (
+            <button
+              key={id}
+              type="button"
+              onClick={() => setActivePanel(id)}
+              className="group inline-flex items-center gap-2 rounded-full border border-rose/30 bg-background/75 px-4 py-2.5 text-sm font-bold text-foreground shadow-soft backdrop-blur transition hover:-translate-y-0.5 hover:border-rose/60 hover:bg-rose/15 hover:text-rose focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose"
+            >
+              <Icon className="h-4 w-4 text-rose transition group-hover:scale-110" />
+              {label}
+            </button>
+          ))}
+        </div>
       </section>
+
+      <Dialog modal={false} open={activePanel !== null} onOpenChange={(open) => !open && setActivePanel(null)}>
+        <DialogContent
+          onInteractOutside={(event) => {
+            if ((event.target as Element | null)?.closest("[data-site-editor-ui]")) event.preventDefault();
+          }}
+          className={`h-[96vh] max-h-[1080px] w-[96vw] max-w-[1800px] grid-rows-[auto_1fr] gap-0 overflow-hidden rounded-[1.75rem] p-0 shadow-[0_30px_100px_-24px_oklch(0.5_0.2_345/0.75)] ${panelLight ? "border-[oklch(0.65_0.1_235)]/60 bg-[oklch(0.92_0.025_235)] text-[oklch(0.25_0.04_255)]" : "border-rose/30 bg-[oklch(0.15_0.03_280/0.985)] text-foreground"}`}
+        >
+          <DialogHeader className={`border-b px-6 py-3 pr-16 sm:px-8 ${panelLight ? "border-sky-300/70 bg-gradient-to-r from-[oklch(0.88_0.045_225)] to-[oklch(0.94_0.03_265)]" : "border-rose/20 bg-gradient-to-r from-rose/15 to-coral/10"}`}>
+            <div className="flex items-center justify-between gap-4 pr-3">
+              <div className="flex min-w-0 items-center gap-5">
+                <div className="shrink-0">
+                <div className={`text-[10px] font-bold uppercase tracking-[0.28em] ${panelLight ? "text-[oklch(0.43_0.15_245)]" : "text-rose"}`}>TechHome · SK</div>
+                <DialogTitle className="mt-1 font-display text-2xl font-semibold sm:text-3xl">
+                  {activePanel === "introduction" ? "Introduction" : activePanel === "projects" ? "Projects" : "Details"}
+                </DialogTitle>
+                </div>
+                <DialogDescription className={`hidden max-w-md border-l border-current/15 pl-5 text-sm md:block ${panelLight ? "text-[oklch(0.36_0.035_250)]" : "text-muted-foreground"}`}>
+                  {activePanel === "introduction" ? "Automation experience, testing mindset, and an AI-forward career direction." : "A focused space prepared for the next chapter."}
+                </DialogDescription>
+              </div>
+              <button type="button" onClick={() => setPanelLight((value) => !value)} className={`inline-flex items-center gap-2 rounded-full border px-3 py-2 text-xs font-bold shadow-soft transition hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 ${panelLight ? "border-sky-500/40 bg-sky-50/80 text-sky-950 focus-visible:ring-sky-500" : "border-rose/30 bg-black/20 text-foreground focus-visible:ring-rose"}`} aria-label={panelLight ? "Switch to dark theme" : "Switch to soft light theme"}>
+                {panelLight ? <Moon className="h-4 w-4" /> : <Sun className="h-4 w-4" />}
+                {panelLight ? "Deep dusk" : "Soft light"}
+              </button>
+            </div>
+          </DialogHeader>
+          <div className="min-h-0 overflow-y-auto px-4 py-2.5 sm:px-6 lg:px-8">
+            {activePanel === "introduction" ? (
+              <IntroductionPanel light={panelLight} />
+            ) : activePanel ? (
+              <EmptyTechPanel panel={activePanel} light={panelLight} />
+            ) : null}
+          </div>
+        </DialogContent>
+      </Dialog>
 
       <section className="mt-8 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
         {termTiles.map((tile, index) => {
@@ -196,7 +396,7 @@ function TechHome() {
             <article key={tile.term} className="animate-pop-in rounded-3xl bg-background/78 p-6 shadow-soft ring-1 ring-rose/10 backdrop-blur transition hover:-translate-y-1 hover:ring-rose/35 hover:shadow-glow" style={{ animationDelay: String(index * 45) + "ms" }}>
               <div className="flex items-start justify-between gap-4">
                 <div><div className="text-[10px] font-bold uppercase tracking-[0.25em] text-muted-foreground">IT Term</div><h2 className="mt-2 font-display text-2xl font-semibold text-foreground">{tile.term}</h2></div>
-                <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-rose to-coral text-primary-foreground shadow-glow"><Icon className="h-5 w-5" /></span>
+                <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-solid-rose to-solid-coral text-on-solid shadow-glow"><Icon className="h-5 w-5" /></span>
               </div>
               <p className="mt-5 text-sm font-semibold leading-6 text-foreground/85">{tile.short}</p>
               <p className="mt-4 text-sm leading-6 text-muted-foreground"><span className="font-bold text-foreground">Why:</span> {tile.why}</p>

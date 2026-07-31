@@ -1,168 +1,155 @@
-import { ArrowUp, Quote, Sparkles } from "lucide-react";
-import type { Section } from "@/content/types";
+import type { CSSProperties } from "react";
+import {
+  Activity,
+  ArrowLeftRight,
+  ArrowUp,
+  BookOpenCheck,
+  BrainCircuit,
+  Bot,
+  Boxes,
+  ChefHat,
+  Compass,
+  Cpu,
+  Gauge,
+  GraduationCap,
+  LibraryBig,
+  Languages,
+  Map,
+  MousePointerClick,
+  Mountain,
+  Network,
+  Quote,
+  RefreshCcw,
+  Route,
+  Scale,
+  School,
+  Search,
+  ShieldCheck,
+  SlidersHorizontal,
+  Sparkles,
+  Tags,
+  Target,
+  Trophy,
+  UsersRound,
+  Crosshair,
+  type LucideIcon,
+} from "lucide-react";
+import type { Block, Section } from "@/content/types";
 import { useDeck } from "@/hooks/use-deck";
 import { AnswerBlocks } from "./AnswerBlocks";
 
-/* ── Per-stop personality ─────────────────────────────────────────────
-   Each concept gets a side of the page, a shape, a tint, and a little
-   emoji scene for the empty half — so the scroll wanders left → right
-   → centre instead of reading like a syllabus. Cycles for any count. */
-
-type Stop = {
-  side: "left" | "right" | "center";
-  rotate: string;
-  shape: React.CSSProperties;
-  tint: string;
-  ring: string;
-  stamp: string;
-  art: { big: string; small: [string, string]; caption: string };
+type ConceptStyle = {
+  Icon: LucideIcon;
+  accent: string;
+  wash: string;
 };
 
-const STOPS: Stop[] = [
-  {
-    side: "left",
-    rotate: "lg:-rotate-1",
-    shape: { borderRadius: "2.5rem 2.5rem 2.5rem 0.6rem" },
-    tint: "bg-[oklch(0.98_0.02_350)]/90",
-    ring: "ring-rose/25",
-    stamp: "🚗",
-    art: { big: "🚗", small: ["🔧", "🛞"], caption: "one car, many hands" },
-  },
-  {
-    side: "right",
-    rotate: "lg:rotate-1",
-    shape: { borderRadius: "58% 42% 52% 48% / 3.5rem 4.5rem 3rem 4rem" },
-    tint: "bg-[oklch(0.97_0.03_240)]/90",
-    ring: "ring-[oklch(0.68_0.09_245)]/30",
-    stamp: "🎲",
-    art: { big: "🖱️", small: ["📚", "🎲"], caption: "same click, new answer" },
-  },
-  {
-    side: "center",
-    rotate: "lg:rotate-[0.75deg]",
-    shape: { borderRadius: "1.25rem" },
-    tint: "bg-[oklch(0.97_0.05_92)]/95",
-    ring: "ring-[oklch(0.74_0.15_82)]/35",
-    stamp: "⚖️",
-    art: { big: "🤔", small: ["✅", "⚖️"], caption: "pass/fail → judgement" },
-  },
-  {
-    side: "left",
-    rotate: "lg:-rotate-[0.75deg]",
-    shape: { borderRadius: "3.5rem 3.5rem 3.5rem 3.5rem / 4rem 3rem 4rem 3rem" },
-    tint: "bg-[oklch(0.97_0.03_320)]/90",
-    ring: "ring-[oklch(0.7_0.12_320)]/30",
-    stamp: "🎩",
-    art: { big: "🎩", small: ["🐇", "📚"], caption: "no rabbits in here" },
-  },
-  {
-    side: "right",
-    rotate: "lg:rotate-[1deg]",
-    shape: { borderRadius: "4rem 1rem 4rem 1rem" },
-    tint: "bg-[oklch(0.97_0.03_170)]/90",
-    ring: "ring-[oklch(0.66_0.09_170)]/30",
-    stamp: "🗺️",
-    art: { big: "🗺️", small: ["🛤️", "🚀"], caption: "data → product" },
-  },
-  {
-    side: "left",
-    rotate: "lg:-rotate-[1deg]",
-    shape: { borderRadius: "1rem 4rem 1rem 4rem" },
-    tint: "bg-[oklch(0.97_0.035_60)]/90",
-    ring: "ring-[oklch(0.7_0.11_50)]/35",
-    stamp: "🩺",
-    art: { big: "🩺", small: ["👩‍⚕️", "💊"], caption: "three doctors, three answers" },
-  },
-  {
-    side: "right",
-    rotate: "lg:rotate-[0.75deg]",
-    shape: { borderRadius: "45% 55% 48% 52% / 4rem 3rem 4.5rem 3.5rem" },
-    tint: "bg-[oklch(0.97_0.03_285)]/90",
-    ring: "ring-[oklch(0.68_0.11_285)]/30",
-    stamp: "🎒",
-    art: { big: "🎒", small: ["🔭", "🧩"], caption: "pack for the trail" },
-  },
-  {
-    side: "center",
-    rotate: "lg:-rotate-[0.5deg]",
-    shape: { borderRadius: "1.25rem 1.25rem 3rem 3rem" },
-    tint: "bg-[oklch(0.97_0.04_20)]/95",
-    ring: "ring-[oklch(0.7_0.13_20)]/30",
-    stamp: "🎯",
-    art: { big: "🎯", small: ["📈", "🌪️"], caption: "pattern, not noise" },
-  },
-  {
-    side: "left",
-    rotate: "lg:-rotate-[0.75deg]",
-    shape: { borderRadius: "3rem 3rem 0.6rem 3rem" },
-    tint: "bg-[oklch(0.96_0.02_250)]/90",
-    ring: "ring-[oklch(0.68_0.09_245)]/30",
-    stamp: "🌫️",
-    art: { big: "⛰️", small: ["🌫️", "🥾"], caption: "downhill in the fog" },
-  },
-  {
-    side: "right",
-    rotate: "lg:rotate-1",
-    shape: { borderRadius: "3.5rem 0.6rem 3.5rem 3.5rem" },
-    tint: "bg-[oklch(0.98_0.02_350)]/90",
-    ring: "ring-rose/25",
-    stamp: "🏁",
-    art: { big: "🎓", small: ["📊", "🏁"], caption: "the exam that matters" },
-  },
+const CONCEPT_STYLES: ConceptStyle[] = [
+  { Icon: UsersRound, accent: "oklch(0.48 0.2 350)", wash: "oklch(0.92 0.07 350)" },
+  { Icon: MousePointerClick, accent: "oklch(0.48 0.14 245)", wash: "oklch(0.92 0.055 245)" },
+  { Icon: Scale, accent: "oklch(0.48 0.14 80)", wash: "oklch(0.94 0.08 88)" },
+  { Icon: Sparkles, accent: "oklch(0.48 0.16 315)", wash: "oklch(0.93 0.06 315)" },
+  { Icon: Route, accent: "oklch(0.47 0.13 165)", wash: "oklch(0.92 0.06 165)" },
+  { Icon: Gauge, accent: "oklch(0.49 0.16 45)", wash: "oklch(0.93 0.07 55)" },
+  { Icon: Compass, accent: "oklch(0.47 0.15 285)", wash: "oklch(0.92 0.06 285)" },
+  { Icon: Target, accent: "oklch(0.48 0.19 22)", wash: "oklch(0.93 0.065 25)" },
+  { Icon: Mountain, accent: "oklch(0.47 0.13 225)", wash: "oklch(0.92 0.055 225)" },
+  { Icon: GraduationCap, accent: "oklch(0.48 0.19 345)", wash: "oklch(0.93 0.06 345)" },
+  { Icon: Cpu, accent: "oklch(0.47 0.15 255)", wash: "oklch(0.92 0.06 255)" },
+  { Icon: ChefHat, accent: "oklch(0.49 0.17 42)", wash: "oklch(0.94 0.075 52)" },
+  { Icon: Bot, accent: "oklch(0.47 0.14 175)", wash: "oklch(0.92 0.06 175)" },
+  { Icon: Network, accent: "oklch(0.48 0.17 305)", wash: "oklch(0.93 0.06 305)" },
+  { Icon: Trophy, accent: "oklch(0.48 0.15 78)", wash: "oklch(0.94 0.08 85)" },
+  { Icon: School, accent: "oklch(0.48 0.18 335)", wash: "oklch(0.93 0.065 335)" },
+  { Icon: Tags, accent: "oklch(0.47 0.14 205)", wash: "oklch(0.92 0.06 205)" },
+  { Icon: ArrowLeftRight, accent: "oklch(0.49 0.16 60)", wash: "oklch(0.94 0.075 67)" },
+  { Icon: Languages, accent: "oklch(0.47 0.16 280)", wash: "oklch(0.92 0.06 280)" },
+  { Icon: Boxes, accent: "oklch(0.47 0.14 165)", wash: "oklch(0.92 0.06 165)" },
+  { Icon: Map, accent: "oklch(0.48 0.18 25)", wash: "oklch(0.93 0.07 30)" },
+  { Icon: Search, accent: "oklch(0.47 0.14 235)", wash: "oklch(0.92 0.055 235)" },
+  { Icon: BrainCircuit, accent: "oklch(0.48 0.17 310)", wash: "oklch(0.93 0.06 310)" },
+  { Icon: Crosshair, accent: "oklch(0.48 0.19 350)", wash: "oklch(0.93 0.065 350)" },
+  { Icon: SlidersHorizontal, accent: "oklch(0.49 0.15 82)", wash: "oklch(0.94 0.075 88)" },
+  { Icon: ShieldCheck, accent: "oklch(0.47 0.13 150)", wash: "oklch(0.92 0.055 150)" },
+  { Icon: RefreshCcw, accent: "oklch(0.47 0.15 255)", wash: "oklch(0.92 0.06 255)" },
 ];
 
-/* Floating emoji scene for the empty side of a stop */
-function EmojiScene({ art, flip }: { art: Stop["art"]; flip?: boolean }) {
-  return (
-    <div className={`relative hidden h-56 select-none lg:block ${flip ? "scale-x-[-1]" : ""}`}>
-      <div
-        aria-hidden
-        className="absolute left-1/2 top-1/2 h-44 w-52 -translate-x-1/2 -translate-y-1/2 bg-gradient-to-br from-rose/15 to-coral/10 blur-none"
-        style={{ borderRadius: "60% 40% 55% 45% / 45% 55% 42% 58%" }}
-      />
-      <span
-        className={`animate-float absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-7xl drop-shadow-lg ${flip ? "scale-x-[-1]" : ""}`}
-      >
-        {art.big}
-      </span>
-      <span
-        className={`animate-wiggle absolute left-[22%] top-[18%] text-3xl opacity-90 ${flip ? "scale-x-[-1]" : ""}`}
-        style={{ animationDelay: "0.6s" }}
-      >
-        {art.small[0]}
-      </span>
-      <span
-        className={`animate-float absolute right-[20%] bottom-[16%] text-3xl opacity-90 ${flip ? "scale-x-[-1]" : ""}`}
-        style={{ animationDelay: "1.2s" }}
-      >
-        {art.small[1]}
-      </span>
-      <span
-        className={`absolute bottom-0 left-1/2 -translate-x-1/2 whitespace-nowrap font-display text-sm italic text-muted-foreground ${flip ? "scale-x-[-1]" : ""}`}
-      >
-        ~ {art.caption} ~
-      </span>
-    </div>
-  );
+type BlockGroup = {
+  blocks: Block[];
+  startIndex: number;
+};
+
+function groupBlocks(blocks: Block[]): BlockGroup[] {
+  const groups: BlockGroup[] = [];
+
+  for (let index = 0; index < blocks.length; index += 1) {
+    const block = blocks[index];
+    if (block.type === "heading" && blocks[index + 1]) {
+      groups.push({ blocks: [block, blocks[index + 1]], startIndex: index });
+      index += 1;
+    } else {
+      groups.push({ blocks: [block], startIndex: index });
+    }
+  }
+
+  return groups;
 }
 
-/* Curvy dashed trail between stops, alternating direction */
-function Trail({ flip }: { flip?: boolean }) {
+function tileSpan(blocks: Block[]) {
+  if (blocks.some((block) => block.type === "table" || block.type === "flow")) {
+    return "md:col-span-2 xl:col-span-3";
+  }
+
+  const list = blocks.find(
+    (block): block is Extract<Block, { type: "list" }> => block.type === "list",
+  );
+  if (list && list.items.length > 4) return "md:col-span-2";
+  if (blocks.some((block) => block.type === "callout")) return "md:col-span-2";
+
+  return "";
+}
+
+function BlockTile({
+  group,
+  conceptIndex,
+  tileIndex,
+}: {
+  group: BlockGroup;
+  conceptIndex: number;
+  tileIndex: number;
+}) {
+  const style = CONCEPT_STYLES[conceptIndex % CONCEPT_STYLES.length];
+  const visualBlock = group.blocks.find((block) => block.type !== "heading") ?? group.blocks[0];
+  const Icon =
+    visualBlock.type === "flow"
+      ? Activity
+      : visualBlock.type === "table"
+        ? BookOpenCheck
+        : visualBlock.type === "callout"
+          ? BrainCircuit
+          : visualBlock.type === "list"
+            ? LibraryBig
+            : Sparkles;
+
   return (
-    <div aria-hidden className="relative mx-auto hidden h-28 w-full max-w-4xl lg:block">
-      <svg viewBox="0 0 100 30" preserveAspectRatio="none" className="h-full w-full text-rose/50">
-        <path
-          d={flip ? "M 72 0 C 72 16, 28 14, 28 30" : "M 28 0 C 28 16, 72 14, 72 30"}
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="0.5"
-          strokeDasharray="1.6 2.2"
-          strokeLinecap="round"
-        />
-      </svg>
-      <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-base text-rose/80">
-        ✦
-      </span>
+    <div
+      className={`theory-block-card group relative overflow-hidden rounded-[1.65rem] border bg-white/70 p-5 shadow-[0_12px_38px_-24px_var(--concept-accent)] backdrop-blur-md transition duration-300 hover:-translate-y-1 hover:bg-white/85 hover:shadow-[0_20px_48px_-24px_var(--concept-accent)] sm:p-6 ${tileSpan(group.blocks)}`}
+      style={
+        {
+          "--concept-accent": style.accent,
+          "--concept-wash": style.wash,
+          "--tile-delay": `${Math.min(tileIndex, 5) * 70}ms`,
+        } as CSSProperties
+      }
+    >
+      <div className="pointer-events-none absolute -right-8 -top-8 h-24 w-24 rounded-full bg-[var(--concept-wash)] opacity-70 blur-2xl transition duration-500 group-hover:scale-125" />
+      <div className="mb-3 flex items-center justify-between">
+        <span className="flex h-9 w-9 items-center justify-center rounded-xl border border-white/70 bg-[var(--concept-wash)] text-[var(--concept-accent)] shadow-sm">
+          <Icon className="h-[18px] w-[18px]" strokeWidth={2.2} />
+        </span>
+        <span className="h-1.5 w-12 rounded-full bg-[var(--concept-accent)] opacity-25 transition-all duration-300 group-hover:w-20 group-hover:opacity-50" />
+      </div>
+      <AnswerBlocks blocks={group.blocks} prose />
     </div>
   );
 }
@@ -172,164 +159,202 @@ export function ArticleView({ section }: { section: Section }) {
   const founder = deck.foundersBySection[section.slug];
 
   return (
-    <div className="mx-auto w-full max-w-6xl overflow-x-clip px-6 pb-24 pt-12">
-      {/* ── Hero ──────────────────────────────────────────────────── */}
-      <header className="relative mx-auto max-w-3xl text-center">
-        <span className="absolute -left-10 top-2 hidden animate-float text-4xl lg:block">🧭</span>
-        <span
-          className="absolute -right-8 -top-4 hidden animate-wiggle text-3xl lg:block"
-          style={{ animationDelay: "0.8s" }}
-        >
-          ✨
-        </span>
-        <div className="inline-flex items-center gap-2 rounded-full border border-rose/25 bg-noir/50 px-4 py-1.5 text-[11px] font-bold uppercase tracking-[0.3em] text-rose">
-          <Sparkles className="h-3.5 w-3.5" /> A wandering field guide
-        </div>
-        <h1 className="mt-5 font-display text-5xl font-semibold leading-[1.05] sm:text-6xl">
-          <span className="gradient-text">{section.title}</span>
-        </h1>
-        <p className="mx-auto mt-4 max-w-xl text-lg leading-relaxed text-muted-foreground">
-          {section.tagline}
-        </p>
-        <p className="mt-3 font-display text-sm italic text-foreground/60">
-          No numbers, no order, no exam at the end — just follow the dotted path and stop wherever
-          something catches your eye.
-        </p>
-      </header>
+    <div id="top" className="theory-canvas relative min-h-screen overflow-x-clip pb-24">
+      <div aria-hidden className="theory-orb theory-orb-one" />
+      <div aria-hidden className="theory-orb theory-orb-two" />
+      <div aria-hidden className="theory-grid" />
 
-      {/* ── Trail map — scattered stamps, not a syllabus ──────────── */}
-      <nav
-        aria-label="Trail map"
-        className="mx-auto mt-10 flex max-w-3xl flex-wrap items-center justify-center gap-3"
-      >
-        {section.items.map((it, i) => {
-          const stop = STOPS[i % STOPS.length];
-          const tilt = [-2, 1.5, -1, 2, -1.5][i % 5];
-          return (
-            <a
-              key={it.id}
-              href={`#${it.id}`}
-              className="glass inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium text-foreground/85 transition hover:-translate-y-0.5 hover:text-rose hover:shadow-glow"
-              style={{ transform: `rotate(${tilt}deg)` }}
-            >
-              <span className="text-base">{stop.stamp}</span>
-              {it.question}
-            </a>
-          );
-        })}
-      </nav>
-
-      {/* ── The wandering stops ───────────────────────────────────── */}
-      <div className="mt-16">
-        {section.items.map((it, i) => {
-          const stop = STOPS[i % STOPS.length];
-          const panel = (
-            <article
-              className={`relative ${stop.tint} ${stop.rotate} p-7 shadow-[var(--shadow-glass)] ring-1 backdrop-blur-sm ${stop.ring} sm:p-9`}
-              style={stop.shape}
-            >
-              <span className="absolute -right-3 -top-3 flex h-12 w-12 rotate-6 items-center justify-center rounded-2xl bg-gradient-to-br from-rose to-coral text-2xl shadow-glow">
-                {stop.stamp}
-              </span>
-              <h2 className="pr-8 font-display text-[1.7rem] font-semibold leading-snug text-foreground sm:text-3xl">
-                {it.question}
-              </h2>
-              {it.tags && it.tags.length > 0 && (
-                <div className="mt-3 flex flex-wrap gap-1.5">
-                  {it.tags.map((t) => (
-                    <span
-                      key={t}
-                      className="rounded-full border border-rose/20 bg-white/50 px-2.5 py-0.5 text-[11px] font-medium text-muted-foreground"
-                    >
-                      {t}
-                    </span>
-                  ))}
-                </div>
-              )}
-              <div className="mt-5">
-                <AnswerBlocks blocks={it.answer} prose />
+      <div className="relative mx-auto w-full max-w-[1500px] px-4 pt-8 sm:px-6 lg:px-8 lg:pt-10">
+        <header className="grid gap-4 lg:grid-cols-12">
+          <div className="theory-hero-panel relative overflow-hidden rounded-[2rem] border border-white/70 bg-white/58 p-7 shadow-[0_28px_90px_-48px_oklch(0.55_0.22_345/0.65)] backdrop-blur-xl sm:p-10 lg:col-span-8 lg:p-12">
+            <div aria-hidden className="theory-hero-rings" />
+            <div className="relative max-w-3xl">
+              <div className="inline-flex items-center gap-2 rounded-full border border-rose/20 bg-white/70 px-4 py-2 text-[11px] font-bold uppercase tracking-[0.25em] text-rose shadow-sm">
+                <Sparkles className="h-3.5 w-3.5" /> A wandering field guide
               </div>
-            </article>
-          );
-
-          return (
-            <div key={it.id}>
-              {i > 0 && <Trail flip={STOPS[(i - 1) % STOPS.length].side === "right"} />}
-              <section
-                id={it.id}
-                className="scroll-mt-8 lg:grid lg:grid-cols-12 lg:items-center lg:gap-6"
-              >
-                {stop.side === "left" && (
-                  <>
-                    <div className="lg:col-span-8">{panel}</div>
-                    <div className="lg:col-span-4">
-                      <EmojiScene art={stop.art} />
-                    </div>
-                  </>
-                )}
-                {stop.side === "right" && (
-                  <>
-                    <div className="lg:col-span-4">
-                      <EmojiScene art={stop.art} flip />
-                    </div>
-                    <div className="lg:col-span-8">{panel}</div>
-                  </>
-                )}
-                {stop.side === "center" && (
-                  <div className="lg:col-span-8 lg:col-start-3">
-                    <div className="mb-4 hidden justify-center gap-6 text-3xl lg:flex">
-                      <span className="animate-wiggle">{stop.art.small[0]}</span>
-                      <span className="animate-float">{stop.art.big}</span>
-                      <span className="animate-wiggle" style={{ animationDelay: "1s" }}>
-                        {stop.art.small[1]}
-                      </span>
-                    </div>
-                    {panel}
-                  </div>
-                )}
-              </section>
+              <h1 className="mt-6 font-display text-5xl font-semibold leading-[0.98] sm:text-6xl lg:text-7xl">
+                <span className="gradient-text">{section.title}</span>
+              </h1>
+              <p className="mt-5 max-w-2xl text-base leading-relaxed text-foreground/70 sm:text-xl">
+                {section.tagline}
+              </p>
+              <p className="mt-4 max-w-xl font-display text-sm italic leading-relaxed text-foreground/72">
+                No numbers, no order, no exam at the end — just follow the dotted path and stop
+                wherever something catches your eye.
+              </p>
             </div>
-          );
-        })}
-      </div>
 
-      {/* ── Postcard sign-off ─────────────────────────────────────── */}
-      {founder && (
-        <div className="mx-auto mt-20 max-w-md rotate-[-1.5deg]">
-          <div className="glass-strong rounded-3xl p-6 shadow-glow ring-1 ring-rose/25">
-            <div className="flex items-center gap-3">
+            <div className="relative mt-9 flex flex-wrap gap-2.5">
+              {section.items.slice(0, 4).map((item, index) => {
+                const { Icon } = CONCEPT_STYLES[index];
+                return (
+                  <a
+                    key={item.id}
+                    href={`#${item.id}`}
+                    className="inline-flex items-center gap-2 rounded-full border border-rose/15 bg-white/65 px-3.5 py-2 text-xs font-semibold text-foreground/70 shadow-sm transition hover:-translate-y-0.5 hover:border-rose/35 hover:text-rose"
+                  >
+                    <Icon className="h-3.5 w-3.5" />
+                    {item.question}
+                  </a>
+                );
+              })}
+            </div>
+          </div>
+
+          {founder && (
+            <div className="theory-mentor-card group relative min-h-[360px] overflow-hidden rounded-[2rem] bg-[oklch(0.2_0.05_350)] shadow-[0_28px_80px_-42px_oklch(0.4_0.2_350)] lg:col-span-4">
               <img
                 src={founder.image}
                 alt={founder.name}
-                className="h-12 w-12 rounded-2xl object-cover ring-1 ring-rose/40"
-                loading="lazy"
+                className="absolute inset-0 h-full w-full object-cover opacity-80 transition duration-700 group-hover:scale-105"
               />
-              <div className="leading-tight">
-                <div className="font-display text-sm font-semibold text-rose">{founder.name}</div>
-                <div className="text-[10px] uppercase tracking-widest text-muted-foreground">
-                  {founder.title}
+              <div className="absolute inset-0 bg-gradient-to-t from-[oklch(0.16_0.05_350)] via-[oklch(0.18_0.04_350/0.25)] to-transparent" />
+              <div className="absolute left-5 top-5 flex h-12 w-12 items-center justify-center rounded-2xl border border-white/25 bg-white/15 text-white backdrop-blur-md">
+                <Quote className="h-5 w-5" />
+              </div>
+              <div className="absolute inset-x-0 bottom-0 p-6 text-white sm:p-8">
+                <p className="font-display text-lg italic leading-snug">"{founder.quote}"</p>
+                <div className="mt-5 flex items-center gap-3 border-t border-white/20 pt-4">
+                  <div>
+                    <div className="font-display text-base font-semibold">{founder.name}</div>
+                    <div className="mt-0.5 text-[10px] font-semibold uppercase tracking-[0.18em] text-white/90">
+                      {founder.title}
+                    </div>
+                  </div>
+                  <span className="ml-auto rounded-full border border-white/20 bg-white/10 px-3 py-1 text-[10px] font-semibold uppercase tracking-widest text-white/80">
+                    Mentor
+                  </span>
                 </div>
               </div>
-              <Quote className="ml-auto h-5 w-5 text-rose/60" />
             </div>
-            <p className="mt-3 font-display text-base italic leading-snug text-foreground/90">
-              "{founder.quote}"
-            </p>
-          </div>
-        </div>
-      )}
+          )}
+        </header>
 
-      <div className="mt-10 flex justify-center">
-        <a
-          href="#top"
-          onClick={(e) => {
-            e.preventDefault();
-            window.scrollTo({ top: 0, behavior: "smooth" });
-          }}
-          className="inline-flex items-center gap-1.5 rounded-full border border-rose/25 bg-noir/50 px-4 py-2 text-xs font-semibold text-foreground/80 transition hover:border-rose/50 hover:text-rose"
+        <nav
+          aria-label="Concept map"
+          className="theory-concept-nav sticky top-20 z-30 mt-4 flex gap-2 overflow-x-auto rounded-2xl border border-white/65 bg-white/60 p-2 shadow-[0_16px_44px_-32px_oklch(0.45_0.18_345)] backdrop-blur-xl lg:hidden"
         >
-          <ArrowUp className="h-3.5 w-3.5" /> Float back to the top
-        </a>
+          {section.items.map((item, index) => {
+            const { Icon, accent, wash } = CONCEPT_STYLES[index % CONCEPT_STYLES.length];
+            return (
+              <a
+                key={item.id}
+                href={`#${item.id}`}
+                title={item.question}
+                className="flex shrink-0 items-center gap-2 rounded-xl border border-transparent px-3 py-2 text-xs font-semibold text-foreground/80 transition hover:border-white/80 hover:bg-white/75 hover:text-[var(--concept-accent)]"
+                style={
+                  {
+                    "--concept-accent": accent,
+                    "--concept-wash": wash,
+                  } as CSSProperties
+                }
+              >
+                <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-[var(--concept-wash)] text-[var(--concept-accent)]">
+                  <Icon className="h-3.5 w-3.5" />
+                </span>
+                <span className="max-w-36 truncate">{item.question}</span>
+              </a>
+            );
+          })}
+        </nav>
+
+        <main className="mt-5 space-y-5">
+          {section.items.map((item, conceptIndex) => {
+            const style = CONCEPT_STYLES[conceptIndex % CONCEPT_STYLES.length];
+            const { Icon } = style;
+            const groups = groupBlocks(item.answer);
+
+            return (
+              <section
+                key={item.id}
+                id={item.id}
+                className="theory-concept scroll-mt-24 rounded-[2rem] border border-white/60 bg-white/28 p-3 shadow-[0_26px_80px_-58px_var(--concept-accent)] backdrop-blur-sm sm:p-4"
+                style={
+                  {
+                    "--concept-accent": style.accent,
+                    "--concept-wash": style.wash,
+                    "--concept-delay": `${conceptIndex * 55}ms`,
+                  } as CSSProperties
+                }
+              >
+                <div className="grid gap-3 lg:grid-cols-12">
+                  <header className="theory-concept-heading relative overflow-hidden rounded-[1.65rem] bg-[var(--concept-accent)] p-6 text-white shadow-[0_18px_42px_-28px_var(--concept-accent)] sm:p-7 lg:col-span-3 lg:self-start">
+                    <div className="pointer-events-none absolute -bottom-12 -right-10 font-display text-[9rem] font-bold leading-none text-white/10">
+                      {String(conceptIndex + 1).padStart(2, "0")}
+                    </div>
+                    <div className="relative flex h-12 w-12 items-center justify-center rounded-2xl border border-white/25 bg-white/15 backdrop-blur">
+                      <Icon className="h-6 w-6" strokeWidth={2} />
+                    </div>
+                    <p className="relative mt-8 text-[10px] font-bold uppercase tracking-[0.25em] text-white/90">
+                      Concept {String(conceptIndex + 1).padStart(2, "0")}
+                    </p>
+                    <h2 className="relative mt-2 font-display text-2xl font-semibold leading-tight sm:text-[1.7rem]">
+                      {item.question}
+                    </h2>
+                    {item.tags && item.tags.length > 0 && (
+                      <div className="relative mt-5 flex flex-wrap gap-1.5">
+                        {item.tags.map((tag) => (
+                          <span
+                            key={tag}
+                            className="rounded-full border border-white/35 bg-black/10 px-2.5 py-1 text-[10px] font-bold text-white backdrop-blur"
+                          >
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+                    )}
+                  </header>
+
+                  <div className="grid gap-3 md:grid-cols-2 lg:col-span-9 xl:grid-cols-3">
+                    {groups.map((group, tileIndex) => (
+                      <BlockTile
+                        key={group.startIndex}
+                        group={group}
+                        conceptIndex={conceptIndex}
+                        tileIndex={tileIndex}
+                      />
+                    ))}
+                  </div>
+                </div>
+              </section>
+            );
+          })}
+        </main>
+
+        {founder && (
+          <div className="mx-auto mt-10 max-w-3xl rounded-[2rem] border border-white/65 bg-white/55 p-4 shadow-[0_22px_60px_-40px_oklch(0.55_0.2_350)] backdrop-blur-xl sm:p-5">
+            <div className="flex flex-col gap-4 rounded-[1.5rem] bg-white/60 p-5 sm:flex-row sm:items-center">
+              <img
+                src={founder.image}
+                alt={founder.name}
+                className="h-16 w-16 rounded-2xl object-cover ring-1 ring-rose/30"
+                loading="lazy"
+              />
+              <div className="min-w-0 flex-1">
+                <p className="font-display text-base italic leading-snug text-foreground/85">
+                  "{founder.quote}"
+                </p>
+                <p className="mt-2 text-[10px] font-bold uppercase tracking-[0.2em] text-rose">
+                  {founder.name} · {founder.title}
+                </p>
+              </div>
+              <Quote className="hidden h-8 w-8 shrink-0 text-rose/35 sm:block" />
+            </div>
+          </div>
+        )}
+
+        <div className="mt-8 flex justify-center">
+          <a
+            href="#top"
+            onClick={(event) => {
+              event.preventDefault();
+              window.scrollTo({ top: 0, behavior: "smooth" });
+            }}
+            className="inline-flex items-center gap-2 rounded-full border border-rose/25 bg-white/70 px-5 py-2.5 text-xs font-semibold text-foreground/82 shadow-sm backdrop-blur transition hover:-translate-y-0.5 hover:border-rose/50 hover:text-rose"
+          >
+            <ArrowUp className="h-3.5 w-3.5" /> Float back to the top
+          </a>
+        </div>
       </div>
     </div>
   );

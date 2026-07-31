@@ -94,14 +94,27 @@ export function AnswerBlocks({ blocks, prose = false }: { blocks: Block[]; prose
             );
           case "flow":
             return <FlowDiagram key={i} block={b} />;
-          case "table":
+          case "table": {
+            const sky = b.tone === "sky";
             return (
-              <div key={i} className="my-4 overflow-hidden rounded-2xl border border-rose/20">
+              <div
+                key={i}
+                className={`my-4 overflow-x-auto rounded-2xl border shadow-[var(--shadow-soft)] ${
+                  sky
+                    ? "border-[oklch(0.7_0.11_240)]/45 bg-[oklch(0.975_0.018_240)]"
+                    : "border-rose/20"
+                }`}
+              >
                 <table className="w-full text-sm">
-                  <thead className="bg-noir/70">
+                  <thead className={sky ? "bg-[oklch(0.91_0.055_240)]" : "bg-noir/70"}>
                     <tr>
                       {b.headers.map((h, k) => (
-                        <th key={k} className="px-4 py-2.5 text-left font-semibold text-rose">
+                        <th
+                          key={k}
+                          className={`px-4 py-2.5 text-left font-semibold ${
+                            sky ? "text-[oklch(0.42_0.16_250)]" : "text-rose"
+                          }`}
+                        >
                           {h}
                         </th>
                       ))}
@@ -109,7 +122,14 @@ export function AnswerBlocks({ blocks, prose = false }: { blocks: Block[]; prose
                   </thead>
                   <tbody>
                     {b.rows.map((row, r) => (
-                      <tr key={r} className="border-t border-rose/10 odd:bg-noir/40">
+                      <tr
+                        key={r}
+                        className={`border-t ${
+                          sky
+                            ? "border-[oklch(0.76_0.08_240)]/35 odd:bg-[oklch(0.95_0.03_235)]"
+                            : "border-rose/10 odd:bg-noir/40"
+                        }`}
+                      >
                         {row.map((c, k) => (
                           <td key={k} className="px-4 py-2.5 align-top text-foreground/85">
                             {renderInline(c)}
@@ -120,6 +140,25 @@ export function AnswerBlocks({ blocks, prose = false }: { blocks: Block[]; prose
                   </tbody>
                 </table>
               </div>
+            );
+          }
+          case "image":
+            return (
+              <a
+                key={i}
+                href={b.src}
+                target="_blank"
+                rel="noreferrer"
+                aria-label={`${b.alt} — open full-size image`}
+                className="my-4 block overflow-hidden rounded-2xl border border-rose/20 bg-noir/70 p-1 shadow-[var(--shadow-soft)] transition hover:-translate-y-0.5 hover:border-rose/40 hover:shadow-glow"
+              >
+                <img
+                  src={b.src}
+                  alt={b.alt}
+                  className="h-auto w-full rounded-xl object-contain"
+                  loading="lazy"
+                />
+              </a>
             );
           case "link":
             return (
@@ -156,11 +195,11 @@ export function AnswerBlocks({ blocks, prose = false }: { blocks: Block[]; prose
                           {l.description}
                         </span>
                       )}
-                      <span className="mt-0.5 block truncate text-[11px] text-rose/60">
+                      <span className="mt-0.5 block truncate text-[11px] font-medium text-muted-foreground">
                         {l.href}
                       </span>
                     </span>
-                    <ExternalLink className="mt-1 h-3.5 w-3.5 shrink-0 text-rose/60 transition group-hover:text-rose" />
+                    <ExternalLink className="mt-1 h-3.5 w-3.5 shrink-0 text-muted-foreground transition group-hover:text-rose" />
                   </a>
                 ))}
               </div>
