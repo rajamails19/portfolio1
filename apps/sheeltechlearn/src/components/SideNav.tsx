@@ -32,6 +32,9 @@ const theoryChapters = [
   { id: "embedding-space", label: "Embeddings & search" },
   { id: "bias-and-variance", label: "Bias & variance" },
   { id: "train-validation-test-splits", label: "Train, validate, test" },
+  { id: "transformer-breakthrough-2017", label: "Transformers & attention" },
+  { id: "what-happens-when-you-press-enter", label: "Prompt → answer" },
+  { id: "linear-regression-best-fit-line", label: "ML → deep learning" },
 ] as const;
 
 export function SideNav() {

@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useState } from "react";
 import {
   ArrowRight,
   BarChart3,
@@ -8,11 +9,13 @@ import {
   CloudUpload,
   Flame,
   Infinity as InfinityIcon,
+  Menu,
   Moon,
   Quote,
   Sparkles,
   Star,
   TrendingUp,
+  X,
 } from "lucide-react";
 import aiAscendAcademyThumb from "@/assets/ai-ascend-academy-thumb.png";
 import aiLearnRajaThumb from "@/assets/ailearnraja-thumb.png";
@@ -349,7 +352,7 @@ export const Route = createFileRoute("/")({
 
 function LandingPage() {
   return (
-    <div className="min-h-screen bg-background text-foreground">
+    <div className="min-h-[100dvh] bg-background text-foreground">
       <Hero />
       <ProjectShowcase />
       <Features />
@@ -364,6 +367,7 @@ function LandingPage() {
 }
 
 function Hero() {
+  const [mobileNavOpen, setMobileNavOpen] = useState(false);
   return (
     <section
       className="relative overflow-hidden pb-24 pt-0 lg:pb-28 lg:pt-8 xl:pt-12"
@@ -414,13 +418,54 @@ function Hero() {
             Reviews
           </a>
         </div>
+
+        {/* These links only vanished below sm before — nothing replaced them */}
+        <button
+          type="button"
+          onClick={() => setMobileNavOpen((v) => !v)}
+          aria-label={mobileNavOpen ? "Close menu" : "Open menu"}
+          aria-expanded={mobileNavOpen}
+          className="flex h-10 w-10 items-center justify-center rounded-lg text-white sm:hidden"
+        >
+          {mobileNavOpen ? (
+            <X className="h-5 w-5" />
+          ) : (
+            <Menu className="h-5 w-5" />
+          )}
+        </button>
       </nav>
+
+      {mobileNavOpen && (
+        <div className="relative z-20 mx-5 mb-2 flex flex-col gap-1 rounded-2xl border border-white/15 bg-black/40 p-2 text-sm text-white backdrop-blur-md sm:hidden">
+          <a
+            href="#features"
+            onClick={() => setMobileNavOpen(false)}
+            className="rounded-lg px-3 py-2.5 transition-colors hover:bg-white/10"
+          >
+            Features
+          </a>
+          <a
+            href="#how-it-works"
+            onClick={() => setMobileNavOpen(false)}
+            className="rounded-lg px-3 py-2.5 transition-colors hover:bg-white/10"
+          >
+            How it works
+          </a>
+          <a
+            href="#reviews"
+            onClick={() => setMobileNavOpen(false)}
+            className="rounded-lg px-3 py-2.5 transition-colors hover:bg-white/10"
+          >
+            Reviews
+          </a>
+        </div>
+      )}
 
       <div className="relative z-10 mx-auto max-w-6xl px-5 pb-10 pt-24">
         <div className="max-w-2xl">
           <ScrollReveal delay={80}>
             <h1
-              className="text-left text-4xl font-bold tracking-normal text-white sm:text-5xl md:text-6xl"
+              className="text-left text-3xl font-bold tracking-normal text-white sm:text-5xl md:text-6xl"
               style={{ lineHeight: "1.08" }}
             >
               One workspace for
@@ -724,14 +769,17 @@ const features = [
   },
 ];
 
+// overflow-hidden on the section is load-bearing: the 600px blur orb below
+// is centered with -translate-x-1/2, so on a narrow viewport it pokes past
+// both edges and makes the whole page scroll sideways without it.
 function Features() {
   return (
-    <section id="features" className="relative bg-white py-28">
+    <section id="features" className="relative overflow-hidden bg-white py-28">
       <div
         className="pointer-events-none absolute inset-0"
         style={{
           backgroundImage: `url(${shadowBg})`,
-          backgroundAttachment: "fixed",
+          // background-attachment:fixed is janky/ignored on iOS Safari
           backgroundPosition: "center",
           backgroundSize: "cover",
           opacity: 0.75,

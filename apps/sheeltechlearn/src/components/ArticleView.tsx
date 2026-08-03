@@ -13,6 +13,7 @@ import {
   Gauge,
   GraduationCap,
   LibraryBig,
+  FileText,
   Languages,
   Map,
   MousePointerClick,
@@ -37,6 +38,7 @@ import {
 import type { Block, Section } from "@/content/types";
 import { useDeck } from "@/hooks/use-deck";
 import { AnswerBlocks } from "./AnswerBlocks";
+import { OriginalTheoryView } from "./OriginalTheoryView";
 
 type ConceptStyle = {
   Icon: LucideIcon;
@@ -154,12 +156,18 @@ function BlockTile({
   );
 }
 
-export function ArticleView({ section }: { section: Section }) {
+export function ArticleView({
+  section,
+  showOriginalText = false,
+}: {
+  section: Section;
+  showOriginalText?: boolean;
+}) {
   const deck = useDeck();
   const founder = deck.foundersBySection[section.slug];
 
   return (
-    <div id="top" className="theory-canvas relative min-h-screen overflow-x-clip pb-24">
+    <div id="top" className="theory-view-shell theory-canvas relative min-h-screen overflow-x-clip pb-24">
       <div aria-hidden className="theory-orb theory-orb-one" />
       <div aria-hidden className="theory-orb theory-orb-two" />
       <div aria-hidden className="theory-grid" />
@@ -184,7 +192,7 @@ export function ArticleView({ section }: { section: Section }) {
               </p>
             </div>
 
-            <div className="relative mt-9 flex flex-wrap gap-2.5">
+            <div className="relative mt-9 flex flex-wrap items-center gap-2.5">
               {section.items.slice(0, 4).map((item, index) => {
                 const { Icon } = CONCEPT_STYLES[index];
                 return (
@@ -198,6 +206,13 @@ export function ArticleView({ section }: { section: Section }) {
                   </a>
                 );
               })}
+              <a
+                href="/theory?view=original#original-theory-view"
+                aria-current={showOriginalText ? "page" : undefined}
+                className="relative ml-auto inline-flex cursor-pointer items-center gap-2 overflow-hidden rounded-full border border-[oklch(0.48_0.16_245/0.24)] bg-[oklch(0.96_0.025_240/0.88)] px-4 py-2 text-xs font-bold text-[oklch(0.42_0.14_245)] shadow-sm transition hover:-translate-y-0.5 hover:border-[oklch(0.48_0.16_245/0.45)] hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[oklch(0.48_0.16_245/0.55)] focus-visible:ring-offset-2 disabled:cursor-default disabled:opacity-70"
+              >
+                <FileText className="h-3.5 w-3.5" /> Original Text
+              </a>
             </div>
           </div>
 
@@ -230,9 +245,9 @@ export function ArticleView({ section }: { section: Section }) {
           )}
         </header>
 
-        <nav
+        {!showOriginalText && <nav
           aria-label="Concept map"
-          className="theory-concept-nav sticky top-20 z-30 mt-4 flex gap-2 overflow-x-auto rounded-2xl border border-white/65 bg-white/60 p-2 shadow-[0_16px_44px_-32px_oklch(0.45_0.18_345)] backdrop-blur-xl lg:hidden"
+          className="theory-formatted-nav theory-concept-nav sticky top-20 z-30 mt-4 flex gap-2 overflow-x-auto rounded-2xl border border-white/65 bg-white/60 p-2 shadow-[0_16px_44px_-32px_oklch(0.45_0.18_345)] backdrop-blur-xl lg:hidden"
         >
           {section.items.map((item, index) => {
             const { Icon, accent, wash } = CONCEPT_STYLES[index % CONCEPT_STYLES.length];
@@ -256,9 +271,12 @@ export function ArticleView({ section }: { section: Section }) {
               </a>
             );
           })}
-        </nav>
+        </nav>}
 
-        <main className="mt-5 space-y-5">
+        {showOriginalText ? (
+          <OriginalTheoryView />
+        ) : (
+        <main id="theory-view" className="mt-5 scroll-mt-24 space-y-5">
           {section.items.map((item, conceptIndex) => {
             const style = CONCEPT_STYLES[conceptIndex % CONCEPT_STYLES.length];
             const { Icon } = style;
@@ -320,6 +338,7 @@ export function ArticleView({ section }: { section: Section }) {
             );
           })}
         </main>
+        )}
 
         {founder && (
           <div className="mx-auto mt-10 max-w-3xl rounded-[2rem] border border-white/65 bg-white/55 p-4 shadow-[0_22px_60px_-40px_oklch(0.55_0.2_350)] backdrop-blur-xl sm:p-5">

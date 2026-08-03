@@ -11,7 +11,7 @@ function Callout({
   variant?: "info" | "warn" | "tip";
   children: React.ReactNode;
 }) {
-  const styles = {
+  const stylesByVariant = {
     info: {
       bg: "bg-[oklch(0.96_0.028_240)]",
       ring: "ring-[oklch(0.68_0.09_245)]/30",
@@ -33,7 +33,11 @@ function Callout({
       Icon: AlertTriangle,
       label: "Watch out",
     },
-  }[variant];
+  };
+  const styles =
+    variant && variant in stylesByVariant
+      ? stylesByVariant[variant as keyof typeof stylesByVariant]
+      : stylesByVariant.info;
   const { Icon } = styles;
   return (
     <div
@@ -51,23 +55,23 @@ function Callout({
 export function AnswerBlocks({ blocks, prose = false }: { blocks: Block[]; prose?: boolean }) {
   return (
     <div
-      className={
+      className={`answer-blocks ${
         prose
           ? "text-[16.5px] leading-[1.75] text-foreground/85"
           : "text-[15px] leading-relaxed text-foreground/85"
-      }
+      }`}
     >
       {blocks.map((b, i) => {
         switch (b.type) {
           case "heading":
             return (
-              <h4 key={i} className="mt-5 mb-2 font-display text-lg font-semibold text-foreground">
+              <h4 key={i} className="answer-heading mt-5 mb-2 font-display text-lg font-semibold text-foreground">
                 {b.content}
               </h4>
             );
           case "text":
             return (
-              <p key={i} className="my-3">
+              <p key={i} className="answer-text my-3">
                 {renderInline(b.content)}
               </p>
             );
@@ -99,7 +103,7 @@ export function AnswerBlocks({ blocks, prose = false }: { blocks: Block[]; prose
             return (
               <div
                 key={i}
-                className={`my-4 overflow-x-auto rounded-2xl border shadow-[var(--shadow-soft)] ${
+                className={`answer-table my-4 overflow-x-auto rounded-2xl border shadow-[var(--shadow-soft)] ${
                   sky
                     ? "border-[oklch(0.7_0.11_240)]/45 bg-[oklch(0.975_0.018_240)]"
                     : "border-rose/20"

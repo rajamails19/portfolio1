@@ -23,7 +23,7 @@ function TopicDetail() {
 
 
   return (
-    <div className="aurora min-h-screen">
+    <div className="aurora min-h-[100dvh]">
       <SiteHeader />
 
       {/* Hero */}

@@ -9,7 +9,7 @@ export const Route = createFileRoute("/")({
 
 function Home() {
   return (
-    <div className="aurora min-h-screen">
+    <div className="aurora min-h-[100dvh]">
       <SiteHeader />
 
       {/* HERO */}
@@ -19,7 +19,7 @@ function Home() {
             <span className="glass inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-widest text-primary">
               ✨ For grades 1–6
             </span>
-            <h1 className="mt-4 font-display text-5xl font-bold leading-[1.05] tracking-tight sm:text-6xl lg:text-7xl">
+            <h1 className="mt-4 font-display text-4xl font-bold leading-[1.05] tracking-tight sm:text-6xl lg:text-7xl">
               <span className="text-gradient">Math that feels</span>
               <br />
               <span className="text-gradient">like a fairytale.</span>

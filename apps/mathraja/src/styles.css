@@ -134,8 +134,17 @@
   body {
     color: var(--color-foreground);
     background: var(--gradient-sunny);
-    background-attachment: fixed;
-    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+    min-height: 100dvh;
+  }
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    background: var(--gradient-sunny);
+    pointer-events: none;
   }
   h1,
   h2,

@@ -17,23 +17,26 @@ export const Route = createFileRoute("/control-center")({
 
 function ControlCenter() {
   return (
-    <main className="min-h-screen bg-[#f8f6ef] text-[#1f211c]">
+    <main className="min-h-[100dvh] bg-[#f8f6ef] text-[#1f211c]">
       <header className="border-b border-black/10 bg-white/80 backdrop-blur">
-        <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-5">
-          <Link to="/" className="flex items-center gap-2.5 font-semibold">
-            <MonitorDot className="h-5 w-5" />
-            Control Center
+        <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-2 px-4 sm:px-5">
+          <Link
+            to="/"
+            className="flex min-w-0 items-center gap-2 font-semibold sm:gap-2.5"
+          >
+            <MonitorDot className="h-5 w-5 shrink-0" />
+            <span className="truncate">Control Center</span>
           </Link>
-          <div className="flex items-center gap-2 text-sm">
+          <div className="flex shrink-0 items-center gap-1.5 text-sm sm:gap-2">
             <Link
               to="/"
-              className="rounded-md px-3 py-2 text-black/65 transition hover:bg-black/[0.05] hover:text-black"
+              className="rounded-md px-2.5 py-2 text-black/65 transition hover:bg-black/[0.05] hover:text-black sm:px-3"
             >
               Home
             </Link>
             <Link
               to="/"
-              className="rounded-md bg-black px-3 py-2 font-medium text-white transition hover:bg-black/80"
+              className="rounded-md bg-black px-2.5 py-2 font-medium text-white transition hover:bg-black/80 sm:px-3"
             >
               Portal
             </Link>
@@ -67,7 +70,11 @@ function ControlCenter() {
   );
 }
 
-function ProjectTile({ project }: { project: (typeof projectRegistry)[number] }) {
+function ProjectTile({
+  project,
+}: {
+  project: (typeof projectRegistry)[number];
+}) {
   const Icon = project.icon;
   const className =
     "group flex min-h-[220px] flex-col justify-between rounded-lg border border-black/10 bg-white p-6 shadow-sm transition hover:-translate-y-0.5 hover:border-black/20 hover:shadow-md";
@@ -75,7 +82,9 @@ function ProjectTile({ project }: { project: (typeof projectRegistry)[number] })
   const content = (
     <>
       <div className="flex items-start justify-between gap-4">
-        <div className={`flex h-12 w-12 items-center justify-center rounded-md ${project.tone}`}>
+        <div
+          className={`flex h-12 w-12 items-center justify-center rounded-md ${project.tone}`}
+        >
           <Icon className="h-6 w-6 text-white" />
         </div>
         <ArrowUpRight className="h-5 w-5 text-black/35 transition group-hover:text-black/70" />
@@ -84,7 +93,9 @@ function ProjectTile({ project }: { project: (typeof projectRegistry)[number] })
         <p className="text-sm font-medium uppercase tracking-wide text-black/45">
           {project.label}
         </p>
-        <h2 className="mt-2 text-2xl font-bold tracking-normal">{project.name}</h2>
+        <h2 className="mt-2 text-2xl font-bold tracking-normal">
+          {project.name}
+        </h2>
         <p className="mt-3 text-sm text-black/55">{project.status}</p>
       </div>
     </>
@@ -92,7 +103,12 @@ function ProjectTile({ project }: { project: (typeof projectRegistry)[number] })
 
   if (project.external) {
     return (
-      <a href={project.href} target="_blank" rel="noopener noreferrer" className={className}>
+      <a
+        href={project.href}
+        target="_blank"
+        rel="noopener noreferrer"
+        className={className}
+      >
         {content}
       </a>
     );

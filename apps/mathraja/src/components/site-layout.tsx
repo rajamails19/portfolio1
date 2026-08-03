@@ -82,7 +82,7 @@ export function PageShell({
   subtitle?: string;
 }) {
   return (
-    <div className="aurora min-h-screen">
+    <div className="aurora min-h-[100dvh]">
       <SiteHeader />
       <main className="mx-auto max-w-7xl px-4 pt-10 sm:px-6">
         <div className="mb-10 max-w-3xl">

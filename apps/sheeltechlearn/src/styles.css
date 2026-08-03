@@ -497,6 +497,98 @@
   text-decoration-color: oklch(0.62 0.11 250);
 }
 
+/* Code windows — keep syntax colors, without painting a grey strip behind every line. */
+.code-block-shell pre,
+.code-block-shell code,
+.code-block-shell code span {
+  background-color: transparent !important;
+  background-image: none !important;
+}
+
+/* Programs read like a spacious coding workbook rather than one long text block. */
+.program-card {
+  border: 1px solid oklch(0.72 0.11 345 / 0.34);
+  box-shadow: 0 22px 60px -42px oklch(0.48 0.16 345 / 0.72);
+}
+
+.program-card > button {
+  background:
+    radial-gradient(circle at 92% 18%, oklch(0.91 0.07 340 / 0.42), transparent 15rem),
+    linear-gradient(110deg, oklch(1 0 0 / 0.2), transparent 62%);
+}
+
+.program-answer {
+  background:
+    linear-gradient(oklch(0.58 0.11 345 / 0.045) 1px, transparent 1px),
+    oklch(1 0 0 / 0.16);
+  background-size: 100% 3.2rem;
+}
+
+.program-card .answer-blocks {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.program-card .answer-text {
+  max-width: 48rem;
+  font-size: 1rem;
+  line-height: 1.8;
+}
+
+.program-card .answer-heading {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  margin-top: 1.75rem;
+  padding-top: 1.35rem;
+  border-top: 1px solid oklch(0.66 0.12 345 / 0.22);
+  color: oklch(0.46 0.17 345);
+  font-size: 0.78rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-weight: 800;
+  letter-spacing: 0.17em;
+  text-transform: uppercase;
+}
+
+.program-card .answer-heading::before {
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: 999px;
+  background: linear-gradient(135deg, var(--rose), var(--coral));
+  box-shadow: 0 0 0 0.28rem oklch(0.72 0.14 345 / 0.13);
+  content: "";
+}
+
+.program-card .code-block-shell {
+  margin-block: 1.35rem 1.65rem;
+  border-color: oklch(0.75 0.08 345 / 0.24);
+}
+
+.program-card .code-block-shell pre {
+  padding: 1.4rem 1.5rem !important;
+  font-size: 0.9rem !important;
+  line-height: 1.75 !important;
+}
+
+.program-card .answer-table {
+  margin-block: 1.15rem 1.65rem;
+}
+
+.program-card .answer-text strong,
+.program-card .callout-body strong {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+}
+
+.program-card .answer-text mark {
+  border: 1px solid oklch(0.72 0.14 80 / 0.35);
+  background: linear-gradient(100deg, oklch(0.9 0.11 80), oklch(0.93 0.09 95));
+  color: oklch(0.4 0.13 345);
+  box-shadow: none;
+}
+
 /* Theory bento field guide */
 .theory-canvas {
   isolation: isolate;
@@ -553,6 +645,7 @@
 .theory-hero-panel::after {
   content: "";
   position: absolute;
+  pointer-events: none;
   inset: auto -8% -50% 28%;
   height: 80%;
   border-radius: 50%;
@@ -562,6 +655,7 @@
 
 .theory-hero-rings {
   position: absolute;
+  pointer-events: none;
   right: -5rem;
   top: -6rem;
   width: 24rem;
@@ -701,6 +795,7 @@
 .site-editor-callout,
 .site-editor-added-text,
 .site-editor-table-wrap {
+  position: relative;
   margin-block: 1rem;
 }
 

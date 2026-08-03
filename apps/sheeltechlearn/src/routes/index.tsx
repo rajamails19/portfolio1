@@ -221,90 +221,91 @@ function IntroductionPanel({ light }: { light: boolean }) {
   const readingPath = ["Who I am", "My foundation", "How I work", "AI direction", "What's next"];
 
   return (
-    <div className="grid min-h-full grid-rows-[auto_auto_auto] gap-2.5 text-[13px] leading-5">
-      <nav className="flex items-center gap-1 overflow-x-auto rounded-2xl border border-current/10 bg-black/5 px-3 py-1.5" aria-label="Introduction reading order">
+    <div className="mx-auto flex w-full max-w-6xl flex-col gap-6 pb-8 text-[15px] leading-7 sm:text-base sm:leading-8">
+      <nav className="flex items-center gap-2 overflow-x-auto rounded-[1.4rem] border border-current/10 bg-black/5 px-4 py-3 sm:px-5" aria-label="Introduction reading order">
         {readingPath.map((label, index) => (
-          <div key={label} className="flex shrink-0 items-center gap-1.5">
-            <span className={`flex items-center gap-2 rounded-full border px-3 py-1.5 font-bold ${stepTone}`}>
-              <span className="font-display text-base leading-none">{String(index + 1).padStart(2, "0")}</span>
+          <div key={label} className="flex shrink-0 items-center gap-2">
+            <span className={`flex items-center gap-2.5 rounded-full border px-4 py-2 font-bold ${stepTone}`}>
+              <span className="font-display text-lg leading-none">{String(index + 1).padStart(2, "0")}</span>
               <span>{label}</span>
             </span>
-            {index < readingPath.length - 1 ? <ArrowRight className={`h-4 w-4 ${accent}`} /> : null}
+            {index < readingPath.length - 1 ? <ArrowRight className={`h-5 w-5 ${accent}`} /> : null}
           </div>
         ))}
       </nav>
 
-      <div className="grid gap-2.5 lg:grid-cols-2">
-        <section className={`relative overflow-hidden rounded-[1.6rem] border p-4 ${cardTone}`}>
+      <section className={`relative overflow-hidden rounded-[1.8rem] border p-6 sm:p-8 ${cardTone}`}>
           <div className="pointer-events-none absolute -right-8 -top-10 h-32 w-32 rounded-full bg-rose/15 blur-3xl" />
           <div className="relative flex items-start justify-between gap-3">
             <div>
-              <div className={`text-[10px] font-bold uppercase tracking-[0.26em] ${accent}`}>01 · Who I am</div>
-              <h3 className="mt-1 font-display text-2xl font-semibold leading-tight xl:text-3xl">
+              <div className={`text-xs font-bold uppercase tracking-[0.26em] ${accent}`}>01 · Who I am</div>
+              <h3 className="mt-2 font-display text-3xl font-semibold leading-tight sm:text-4xl">
                 Hello, my name is <span className={accent}>SK.</span>
               </h3>
             </div>
-            <span className={`shrink-0 rounded-full border px-3 py-1 text-xs font-bold ${stepTone}`}>Around 7 years</span>
+            <span className={`shrink-0 rounded-full border px-4 py-1.5 text-sm font-bold ${stepTone}`}>Around 7 years</span>
           </div>
-          <p className="relative mt-3 opacity-80">
+          <p className="relative mt-5 max-w-4xl opacity-80">
             I have around <strong className="font-extrabold opacity-100">7 years of experience</strong> in Software Testing and Automation, primarily working on web applications across different domains.
           </p>
-        </section>
+      </section>
 
-        <section className={`rounded-[1.6rem] border p-4 ${cardTone}`}>
+      <section className={`rounded-[1.8rem] border p-6 sm:p-8 ${cardTone}`}>
           <div className="flex items-center gap-2">
-            <span className={`font-display text-xl font-bold ${accent}`}>02</span>
-            <Code2 className={`h-4 w-4 ${accent}`} />
-            <h3 className="font-display text-lg font-semibold">Automation foundation</h3>
+            <span className={`font-display text-2xl font-bold ${accent}`}>02</span>
+            <Code2 className={`h-5 w-5 ${accent}`} />
+            <h3 className="font-display text-2xl font-semibold">Automation foundation</h3>
           </div>
-          <div className="mt-2 grid gap-3 xl:grid-cols-[1.05fr_0.95fr]">
+          <div className="mt-5 grid gap-5 xl:grid-cols-[1.05fr_0.95fr]">
             <div>
               <p className="opacity-80">Over the years, I've worked with technologies like Playwright, Selenium WebDriver, Java, TestNG, REST Assured, and SQL, and have been involved in both <strong className={accent}>UI and API automation.</strong></p>
-              <div className="mt-2 flex flex-wrap gap-1.5">
-                {tools.map((tool) => <span key={tool} className={`rounded-full border px-2 py-0.5 text-[10px] font-bold ${stepTone}`}>{tool}</span>)}
+              <div className="mt-4 flex flex-wrap gap-2">
+                {tools.map((tool) => <span key={tool} className={`rounded-full border px-3 py-1 text-xs font-bold ${stepTone}`}>{tool}</span>)}
               </div>
             </div>
-            <p className="rounded-2xl border border-current/10 bg-black/5 p-2.5 opacity-80">In my previous projects, I've built and maintained automation frameworks, developed reusable test scripts, executed regression suites, and integrated automation into <strong className={accent}>CI/CD pipelines</strong> for faster and more reliable releases.</p>
+            <div className="rounded-2xl border border-current/10 bg-black/5 p-5">
+              <div className={`mb-2 text-xs font-bold uppercase tracking-[0.2em] ${accent}`}>Delivery experience</div>
+              <p className="opacity-80">In my previous projects, I've built and maintained automation frameworks, developed reusable test scripts, executed regression suites, and integrated automation into <strong className={accent}>CI/CD pipelines</strong> for faster and more reliable releases.</p>
+            </div>
           </div>
-        </section>
+      </section>
 
-        <section className={`rounded-[1.6rem] border p-4 ${cardTone}`}>
+      <section className={`rounded-[1.8rem] border p-6 sm:p-8 ${cardTone}`}>
           <div className="flex items-center gap-2">
-            <span className={`font-display text-xl font-bold ${accent}`}>03</span>
-            <Target className={`h-4 w-4 ${accent}`} />
-            <h3 className="font-display text-lg font-semibold">Quality through collaboration</h3>
+            <span className={`font-display text-2xl font-bold ${accent}`}>03</span>
+            <Target className={`h-5 w-5 ${accent}`} />
+            <h3 className="font-display text-2xl font-semibold">Quality through collaboration</h3>
           </div>
-          <div className="mt-2.5 grid gap-2.5 sm:grid-cols-2">
-            <div className="rounded-2xl border border-current/10 bg-black/5 p-2.5">
+          <div className="mt-5 grid gap-4 md:grid-cols-2">
+            <div className="rounded-2xl border border-current/10 bg-black/5 p-5 sm:p-6">
               <h4 className={`font-bold ${accent}`}>How I improve quality</h4>
-              <p className="mt-1.5 opacity-80">I enjoy solving automation challenges, improving test coverage, and reducing manual effort by building stable and maintainable frameworks.</p>
+              <p className="mt-2 opacity-80">I enjoy solving automation challenges, improving test coverage, and reducing manual effort by building stable and maintainable frameworks.</p>
             </div>
-            <div className="rounded-2xl border border-current/10 bg-black/5 p-2.5">
+            <div className="rounded-2xl border border-current/10 bg-black/5 p-5 sm:p-6">
               <h4 className={`font-bold ${accent}`}>How I collaborate</h4>
-              <p className="mt-1.5 opacity-80">I also believe in working closely with developers, QA, and business teams to identify issues early and deliver high-quality software.</p>
+              <p className="mt-2 opacity-80">I also believe in working closely with developers, QA, and business teams to identify issues early and deliver high-quality software.</p>
             </div>
           </div>
-        </section>
+      </section>
 
-        <section className={`rounded-[1.6rem] border p-4 ${cardTone}`}>
+      <section className={`rounded-[1.8rem] border p-6 sm:p-8 ${cardTone}`}>
           <div className="flex items-center gap-2">
-            <span className={`font-display text-xl font-bold ${accent}`}>04</span>
-            <BrainCircuit className={`h-4 w-4 ${accent}`} />
-            <h3 className="font-display text-lg font-semibold">AI-forward testing</h3>
+            <span className={`font-display text-2xl font-bold ${accent}`}>04</span>
+            <BrainCircuit className={`h-5 w-5 ${accent}`} />
+            <h3 className="font-display text-2xl font-semibold">AI-forward testing</h3>
           </div>
-          <p className="mt-2.5 opacity-80">
+          <p className="mt-5 max-w-5xl opacity-80">
             With the rapid growth of <strong className="font-extrabold">AI and Machine Learning</strong>, I've also been exploring how AI can enhance software testing through intelligent test generation, self-healing automation, and AI-powered testing tools.
           </p>
-          <p className="mt-2.5 opacity-80">I'm continuously learning modern AI technologies and looking for opportunities to combine traditional automation with <strong className={accent}>AI-driven testing practices.</strong></p>
-        </section>
-      </div>
+          <p className="mt-4 max-w-5xl opacity-80">I'm continuously learning modern AI technologies and looking for opportunities to combine traditional automation with <strong className={accent}>AI-driven testing practices.</strong></p>
+      </section>
 
-      <section className={`flex items-center gap-4 rounded-[1.6rem] border px-4 py-2.5 ${cardTone}`}>
-        <span className={`font-display text-3xl font-bold ${accent}`}>05</span>
-        <ArrowRight className={`hidden h-5 w-5 shrink-0 sm:block ${accent}`} />
+      <section className={`flex items-start gap-5 rounded-[1.8rem] border p-6 sm:p-8 ${cardTone}`}>
+        <span className={`font-display text-4xl font-bold leading-none ${accent}`}>05</span>
+        <ArrowRight className={`mt-1 hidden h-6 w-6 shrink-0 sm:block ${accent}`} />
         <div>
-          <h3 className="font-display font-semibold">The opportunity I'm looking for</h3>
-          <p className="mt-0.5 opacity-80">I'm now looking for an opportunity where I can use my automation experience, continue learning new technologies, and contribute to building reliable and scalable testing solutions.</p>
+          <h3 className="font-display text-xl font-semibold">The opportunity I'm looking for</h3>
+          <p className="mt-2 max-w-5xl opacity-80">I'm now looking for an opportunity where I can use my automation experience, continue learning new technologies, and contribute to building reliable and scalable testing solutions.</p>
         </div>
       </section>
     </div>
@@ -332,26 +333,29 @@ function TechHome() {
   const [panelLight, setPanelLight] = useState(false);
 
   return (
-    <div className="mx-auto w-full max-w-6xl px-5 pb-16 pt-10 sm:px-6 lg:pt-14">
-      <section className="glass-strong relative overflow-hidden rounded-4xl p-6 sm:p-10">
-        <div className="pointer-events-none absolute -right-20 -top-20 h-60 w-60 rounded-full bg-rose/15 blur-3xl" />
-        <div className="inline-flex items-center gap-2 rounded-full border border-rose/25 bg-background/70 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.25em] text-rose"><Sparkles className="h-3.5 w-3.5" /> Tech Vocabulary</div>
-        <h1 className="mt-5 max-w-3xl font-display text-4xl font-semibold leading-tight text-foreground sm:text-5xl">Simple tech terms,<span className="gradient-text"> explained clearly.</span></h1>
-        <p className="mt-4 max-w-2xl text-base leading-7 text-muted-foreground sm:text-lg">Quick tiles for the words you will hear in IT teams, product meetings, engineering chats, and real project work.</p>
-        <div className="relative mt-7 flex flex-wrap gap-3" aria-label="TechHome profile panels">
+    <div className="mx-auto w-full max-w-7xl px-5 pb-16 pt-10 sm:px-6 lg:pt-14">
+      <div className="grid gap-4 lg:grid-cols-[10.5rem_minmax(0,1fr)] lg:gap-5">
+        <aside className="flex gap-2 overflow-x-auto lg:flex-col lg:justify-center lg:overflow-visible" aria-label="TechHome profile panels">
           {techPanelTabs.map(({ id, label, icon: Icon }) => (
             <button
               key={id}
               type="button"
               onClick={() => setActivePanel(id)}
-              className="group inline-flex items-center gap-2 rounded-full border border-rose/30 bg-background/75 px-4 py-2.5 text-sm font-bold text-foreground shadow-soft backdrop-blur transition hover:-translate-y-0.5 hover:border-rose/60 hover:bg-rose/15 hover:text-rose focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose"
+              className="group inline-flex shrink-0 items-center gap-2 rounded-full border border-rose/30 bg-background/80 px-4 py-2.5 text-sm font-bold text-foreground shadow-soft backdrop-blur transition hover:translate-x-1 hover:border-rose/60 hover:bg-rose/15 hover:text-rose focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose lg:w-full"
             >
               <Icon className="h-4 w-4 text-rose transition group-hover:scale-110" />
               {label}
             </button>
           ))}
-        </div>
-      </section>
+        </aside>
+
+        <section className="glass-strong relative overflow-hidden rounded-4xl p-6 sm:p-10">
+          <div className="pointer-events-none absolute -right-20 -top-20 h-60 w-60 rounded-full bg-rose/15 blur-3xl" />
+          <div className="inline-flex items-center gap-2 rounded-full border border-rose/25 bg-background/70 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.25em] text-rose"><Sparkles className="h-3.5 w-3.5" /> Tech Vocabulary</div>
+          <h1 className="mt-5 max-w-3xl font-display text-4xl font-semibold leading-tight text-foreground sm:text-5xl">Simple tech terms,<span className="gradient-text"> explained clearly.</span></h1>
+          <p className="mt-4 max-w-2xl text-base leading-7 text-muted-foreground sm:text-lg">Quick tiles for the words you will hear in IT teams, product meetings, engineering chats, and real project work.</p>
+        </section>
+      </div>
 
       <Dialog modal={false} open={activePanel !== null} onOpenChange={(open) => !open && setActivePanel(null)}>
         <DialogContent
@@ -379,7 +383,7 @@ function TechHome() {
               </button>
             </div>
           </DialogHeader>
-          <div className="min-h-0 overflow-y-auto px-4 py-2.5 sm:px-6 lg:px-8">
+          <div className="min-h-0 overflow-y-auto px-4 py-5 sm:px-7 sm:py-7 lg:px-10 lg:py-8">
             {activePanel === "introduction" ? (
               <IntroductionPanel light={panelLight} />
             ) : activePanel ? (

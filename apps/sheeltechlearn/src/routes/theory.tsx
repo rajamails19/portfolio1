@@ -3,6 +3,9 @@ import { useSection } from "@/hooks/use-deck";
 import { ArticleView } from "@/components/ArticleView";
 
 export const Route = createFileRoute("/theory")({
+  validateSearch: (search: Record<string, unknown>) => ({
+    view: search.view === "original" ? ("original" as const) : undefined,
+  }),
   head: () => ({
     meta: [
       { title: "Conceptual Theory — Start Here" },
@@ -21,7 +24,8 @@ export const Route = createFileRoute("/theory")({
   }),
   component: () => {
     const s = useSection("theory");
+    const { view } = Route.useSearch();
     if (!s) throw notFound();
-    return <ArticleView section={s} />;
+    return <ArticleView section={s} showOriginalText={view === "original"} />;
   },
 });

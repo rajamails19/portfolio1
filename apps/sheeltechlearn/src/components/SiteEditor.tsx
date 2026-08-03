@@ -1,5 +1,7 @@
 import {
   AlignLeft,
+  ArrowDownToLine,
+  ArrowUpToLine,
   Bold,
   Check,
   Eraser,
@@ -32,6 +34,7 @@ type PageEdits = { blocks: Record<string, SavedBlock>; customBlocks: CustomBlock
 
 const EMPTY_EDITS: PageEdits = { blocks: {}, customBlocks: [] };
 const EDITABLE_SELECTOR = "p,h1,h2,h3,h4,h5,h6,li,td,th,blockquote,pre,[data-site-editor-custom-id]";
+const ACCIDENTAL_BLOCK_CLEANUP = "sheeltech:cleanup:latest-two-root-blocks-v1";
 
 function storageKey() {
   return `sheeltech:page-edits:${window.location.pathname}`;
@@ -48,6 +51,20 @@ function loadEdits(): PageEdits {
 
 function saveEdits(edits: PageEdits) {
   window.localStorage.setItem(storageKey(), JSON.stringify(edits));
+}
+
+function removeLatestAccidentalBlocks() {
+  if (window.location.pathname !== "/" || window.localStorage.getItem(ACCIDENTAL_BLOCK_CLEANUP)) return;
+  const edits = loadEdits();
+  if (edits.customBlocks.length < 2) return;
+  const removed = edits.customBlocks.slice(-2);
+  edits.customBlocks = edits.customBlocks.slice(0, -2);
+  removed.forEach(({ id }) => {
+    delete edits.blocks[`custom:${id}`];
+    document.querySelector<HTMLElement>(`[data-site-editor-custom-id="${id}"]`)?.remove();
+  });
+  saveEdits(edits);
+  window.localStorage.setItem(ACCIDENTAL_BLOCK_CLEANUP, "done");
 }
 
 function isEditableBlock(element: Element): element is HTMLElement {
@@ -84,19 +101,45 @@ function ToolbarButton({
 
 export function SiteEditor() {
   const [editing, setEditing] = useState(false);
+  const [toolbarPosition, setToolbarPosition] = useState<"top" | "bottom">("bottom");
   const [hasSelection, setHasSelection] = useState(false);
+  const [selectedCustomId, setSelectedCustomId] = useState<string | null>(null);
   const [saved, setSaved] = useState(true);
   const rangeRef = useRef<Range | null>(null);
+  const customUndoRef = useRef<PageEdits[]>([]);
+  const customRedoRef = useRef<PageEdits[]>([]);
+
+  const rememberCustomChange = useCallback(() => {
+    customUndoRef.current.push(loadEdits());
+    customRedoRef.current = [];
+  }, []);
+
+  const removeCustomBlock = useCallback((customId: string, block: HTMLElement) => {
+    rememberCustomChange();
+    const edits = loadEdits();
+    edits.customBlocks = edits.customBlocks.filter((item) => item.id !== customId);
+    delete edits.blocks[`custom:${customId}`];
+    saveEdits(edits);
+    block.remove();
+    setSelectedCustomId(null);
+    setSaved(true);
+  }, [rememberCustomChange]);
 
   const persistBlock = useCallback((block: HTMLElement) => {
     const key = block.dataset.siteEditorKey;
     if (!key) return;
+    const cleanBlock = block.cloneNode(true) as HTMLElement;
+    cleanBlock.querySelectorAll("[data-site-editor-remove-control]").forEach((control) => control.remove());
+    cleanBlock.removeAttribute("contenteditable");
+    cleanBlock.removeAttribute("spellcheck");
+    cleanBlock.removeAttribute("data-site-editor-key");
+    cleanBlock.classList.remove("site-editor-block");
     const edits = loadEdits();
-    edits.blocks[key] = { html: block.innerHTML, style: block.getAttribute("style") ?? "" };
+    edits.blocks[key] = { html: cleanBlock.innerHTML, style: block.getAttribute("style") ?? "" };
     const customId = block.dataset.siteEditorCustomId;
     if (customId) {
       const custom = edits.customBlocks.find((item) => item.id === customId);
-      if (custom) custom.html = block.outerHTML;
+      if (custom) custom.html = cleanBlock.outerHTML;
     }
     saveEdits(edits);
     setSaved(true);
@@ -119,7 +162,9 @@ export function SiteEditor() {
         block.spellcheck = editing;
         block.classList.toggle("site-editor-block", editing);
         const savedBlock = edits.blocks[key];
-        if (savedBlock && block.innerHTML !== savedBlock.html) {
+        const comparableBlock = block.cloneNode(true) as HTMLElement;
+        comparableBlock.querySelectorAll("[data-site-editor-remove-control]").forEach((control) => control.remove());
+        if (savedBlock && comparableBlock.innerHTML !== savedBlock.html) {
           block.innerHTML = savedBlock.html;
           if (savedBlock.style) block.setAttribute("style", savedBlock.style);
         }
@@ -142,11 +187,12 @@ export function SiteEditor() {
         if (savedBlock) block.innerHTML = savedBlock.html;
       });
     });
-  }, [editing]);
+  }, [editing, removeCustomBlock]);
 
   useEffect(() => {
     let observer: MutationObserver | null = null;
     const timer = window.setTimeout(() => {
+      removeLatestAccidentalBlocks();
       prepareSurfaces();
       observer = new MutationObserver(() => prepareSurfaces());
       observer.observe(document.body, { childList: true, subtree: true });
@@ -180,14 +226,17 @@ export function SiteEditor() {
       const selection = window.getSelection();
       if (!selection || selection.rangeCount === 0) {
         setHasSelection(false);
+        setSelectedCustomId(null);
         return;
       }
       const range = selection.getRangeAt(0);
       const node = range.commonAncestorContainer instanceof HTMLElement ? range.commonAncestorContainer : range.commonAncestorContainer.parentElement;
       if (!node?.closest("[data-site-editor-key]")) {
         setHasSelection(false);
+        setSelectedCustomId(null);
         return;
       }
+      setSelectedCustomId(node.closest<HTMLElement>("[data-site-editor-custom-id]")?.dataset.siteEditorCustomId ?? null);
       rangeRef.current = range.cloneRange();
       setHasSelection(!selection.isCollapsed);
     };
@@ -220,9 +269,38 @@ export function SiteEditor() {
     if (resultingBlock) persistBlock(resultingBlock);
   };
 
+  const restoreCustomSnapshot = (snapshot: PageEdits) => {
+    document.querySelectorAll<HTMLElement>("[data-site-editor-custom-id]").forEach((block) => block.remove());
+    setSelectedCustomId(null);
+    saveEdits(snapshot);
+    setSaved(true);
+    window.setTimeout(() => prepareSurfaces(), 0);
+  };
+
+  const undo = () => {
+    const snapshot = customUndoRef.current.pop();
+    if (!snapshot) {
+      runCommand("undo");
+      return;
+    }
+    customRedoRef.current.push(loadEdits());
+    restoreCustomSnapshot(snapshot);
+  };
+
+  const redo = () => {
+    const snapshot = customRedoRef.current.pop();
+    if (!snapshot) {
+      runCommand("redo");
+      return;
+    }
+    customUndoRef.current.push(loadEdits());
+    restoreCustomSnapshot(snapshot);
+  };
+
   const insertCustomBlock = (kind: "text" | "box" | "table") => {
     const anchor = restoreSelection() ?? document.querySelector<HTMLElement>("[data-site-edit-surface] [data-site-editor-key]:last-of-type");
     if (!anchor) return;
+    rememberCustomChange();
     const id = `${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
     const content =
       kind === "table"
@@ -235,19 +313,23 @@ export function SiteEditor() {
     edits.customBlocks.push({ id, anchorKey: anchor.dataset.siteEditorKey ?? "", html: content });
     saveEdits(edits);
     prepareSurfaces();
-    document.querySelector<HTMLElement>(`[data-site-editor-custom-id="${id}"]`)?.focus();
+    const insertedBlock = document.querySelector<HTMLElement>(`[data-site-editor-custom-id="${id}"]`);
+    insertedBlock?.focus();
+    setSelectedCustomId(id);
+  };
+
+  const removeSelectedCustomBlock = () => {
+    if (!selectedCustomId) return;
+    const block = document.querySelector<HTMLElement>(`[data-site-editor-custom-id="${selectedCustomId}"]`);
+    if (block) removeCustomBlock(selectedCustomId, block);
   };
 
   const deleteSelection = () => {
     const block = restoreSelection();
     if (hasSelection) document.execCommand("delete");
     else if (block?.dataset.siteEditorCustomId) {
-      const edits = loadEdits();
       const customId = block.dataset.siteEditorCustomId;
-      edits.customBlocks = edits.customBlocks.filter((item) => item.id !== customId);
-      delete edits.blocks[`custom:${customId}`];
-      saveEdits(edits);
-      block.remove();
+      removeCustomBlock(customId, block);
     }
     if (block?.isConnected) persistBlock(block);
   };
@@ -269,24 +351,32 @@ export function SiteEditor() {
         <button
           type="button"
           onClick={() => setEditing(true)}
-          className="fixed bottom-5 right-5 z-[90] inline-flex items-center gap-2 rounded-full border border-rose/35 bg-background/95 px-4 py-3 text-sm font-bold text-foreground shadow-[0_18px_55px_-20px_oklch(0.55_0.2_345/0.8)] backdrop-blur-xl transition hover:-translate-y-1 hover:border-rose hover:text-rose"
+          title="Edit this page"
+          aria-label="Edit this page"
+          className="fixed bottom-5 right-5 z-[90] flex h-11 w-11 items-center justify-center rounded-full border border-rose/35 bg-background/95 text-foreground shadow-[0_18px_55px_-20px_oklch(0.55_0.2_345/0.8)] backdrop-blur-xl transition hover:-translate-y-1 hover:border-rose hover:text-rose focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose"
         >
-          <Pencil className="h-4 w-4" /> Edit site
+          <Pencil className="h-[18px] w-[18px]" />
         </button>
       ) : (
         <>
-          <div className="fixed bottom-20 right-5 z-[89] rounded-full border border-rose/25 bg-background/90 px-3 py-1.5 text-xs font-semibold text-muted-foreground shadow-soft backdrop-blur-xl">
+          <div className={`fixed right-5 z-[89] rounded-full border border-rose/25 bg-background/90 px-3 py-1.5 text-xs font-semibold text-muted-foreground shadow-soft backdrop-blur-xl ${toolbarPosition === "bottom" ? "bottom-20" : "top-20"}`}>
             {hasSelection ? "Text selected — choose a style" : "Select text or place your cursor"}
           </div>
-          <div className="fixed inset-x-3 bottom-3 z-[90] mx-auto flex max-w-[1180px] items-center gap-1.5 overflow-x-auto rounded-2xl border border-rose/25 bg-background/95 p-2 shadow-[0_24px_80px_-24px_oklch(0.45_0.15_280/0.75)] backdrop-blur-xl">
+          <div className={`fixed inset-x-3 z-[90] mx-auto flex max-w-[1180px] items-center gap-1.5 overflow-x-auto rounded-2xl border border-rose/25 bg-background/95 p-2 shadow-[0_24px_80px_-24px_oklch(0.45_0.15_280/0.75)] backdrop-blur-xl ${toolbarPosition === "bottom" ? "bottom-3" : "top-3"}`}>
             <div className="sticky left-0 z-10 flex shrink-0 items-center gap-2 border-r border-border bg-background/95 pr-2 text-xs font-bold text-foreground">
               <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-gradient-to-br from-solid-rose to-solid-coral text-on-solid"><Pencil className="h-4 w-4" /></span>
               <span className="hidden sm:block">Page editor</span>
               <span className={`rounded-full px-2 py-1 text-[10px] ${saved ? "bg-emerald-500/12 text-emerald-600" : "bg-amber-500/12 text-amber-600"}`}>{saved ? "Saved" : "Saving…"}</span>
             </div>
 
-            <ToolbarButton label="Undo" onClick={() => runCommand("undo")}><Undo2 className="h-4 w-4" /></ToolbarButton>
-            <ToolbarButton label="Redo" onClick={() => runCommand("redo")}><Redo2 className="h-4 w-4" /></ToolbarButton>
+            <ToolbarButton
+              label={toolbarPosition === "bottom" ? "Move toolbar to top" : "Move toolbar to bottom"}
+              onClick={() => setToolbarPosition((position) => position === "bottom" ? "top" : "bottom")}
+            >
+              {toolbarPosition === "bottom" ? <ArrowUpToLine className="h-4 w-4" /> : <ArrowDownToLine className="h-4 w-4" />}
+            </ToolbarButton>
+            <ToolbarButton label="Undo" onClick={undo}><Undo2 className="h-4 w-4" /></ToolbarButton>
+            <ToolbarButton label="Redo" onClick={redo}><Redo2 className="h-4 w-4" /></ToolbarButton>
             <select
               aria-label="Text style"
               defaultValue="p"
@@ -321,6 +411,16 @@ export function SiteEditor() {
             <ToolbarButton label="Add text" onClick={() => insertCustomBlock("text")}><Plus className="h-4 w-4" /></ToolbarButton>
             <ToolbarButton label="Insert highlighted box" onClick={() => insertCustomBlock("box")}><SquarePlus className="h-4 w-4" /></ToolbarButton>
             <ToolbarButton label="Insert table" onClick={() => insertCustomBlock("table")}><TableProperties className="h-4 w-4" /></ToolbarButton>
+            <button
+              type="button"
+              onMouseDown={(event) => event.preventDefault()}
+              onClick={removeSelectedCustomBlock}
+              disabled={!selectedCustomId}
+              title={selectedCustomId ? "Remove selected inserted block" : "Click an inserted block first"}
+              className="inline-flex h-9 shrink-0 items-center gap-1.5 rounded-xl border border-red-400/30 bg-red-500/10 px-2.5 text-xs font-bold text-red-500 transition hover:bg-red-500/20 disabled:cursor-not-allowed disabled:opacity-40"
+            >
+              <Trash2 className="h-4 w-4" /> Remove block
+            </button>
             <ToolbarButton label="Delete selected text or inserted block" onClick={deleteSelection} danger><Trash2 className="h-4 w-4" /></ToolbarButton>
             <ToolbarButton label="Reset this page" onClick={resetPage} danger><RotateCcw className="h-4 w-4" /></ToolbarButton>
             <button type="button" onClick={() => setEditing(false)} className="sticky right-0 z-10 ml-1 inline-flex h-9 shrink-0 items-center gap-2 rounded-xl bg-gradient-to-r from-solid-rose to-solid-coral px-3 text-xs font-bold text-on-solid shadow-soft"><Check className="h-4 w-4" /> Done</button>

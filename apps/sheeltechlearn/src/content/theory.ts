@@ -1135,5 +1135,918 @@ export const theorySection: Section = {
         },
       ],
     },
+    {
+      id: "transformer-breakthrough-2017",
+      question: "The Breakthrough That Changed Everything",
+      tags: ["Transformers", "Attention", "2017 Paper"],
+      answer: [
+        {
+          type: "text",
+          content:
+            "Most of modern AI exists because of one research paper published in **2017**. Its title was surprisingly bold.",
+        },
+        {
+          type: "callout",
+          variant: "tip",
+          content: "**Attention Is All You Need**",
+        },
+        {
+          type: "flow",
+          title: "One idea that opened a new era",
+          nodes: [
+            { label: "2017 paper", sub: "A bold proposal", tone: "rose" },
+            { label: "Attention", sub: "Connect relationships", tone: "sky" },
+            { label: "Transformers", sub: "A new architecture", tone: "mint" },
+            { label: "Modern AI", sub: "Models at scale", tone: "coral" },
+          ],
+        },
+      ],
+    },
+    {
+      id: "before-transformers",
+      question: "Before Transformers: reading through a tiny keyhole",
+      tags: ["Sequence Models", "Memory", "Language"],
+      answer: [
+        { type: "heading", content: "Let's travel back to around 2015" },
+        {
+          type: "text",
+          content:
+            'Suppose I ask a computer to read this sentence: =="The little boy who was wearing a blue jacket and carrying a red football walked into the school because he was excited."==',
+        },
+        {
+          type: "text",
+          content:
+            "Seems easy. You read it once. You instantly understand it. Older AI systems didn't. Why? Because they processed language like someone reading through a **tiny keyhole**.",
+        },
+        {
+          type: "flow",
+          direction: "vertical",
+          title: "One word at a time",
+          nodes: [
+            { label: "The", sub: "Start", tone: "rose" },
+            { label: "little", sub: "Then", tone: "coral" },
+            { label: "boy", sub: "Then", tone: "sky" },
+            { label: "who", sub: "Then", tone: "mint" },
+          ],
+        },
+        {
+          type: "callout",
+          variant: "warn",
+          content:
+            "By the time they reached the end... they had already forgotten many details from the beginning.",
+        },
+        {
+          type: "text",
+          content:
+            "Imagine trying to understand a movie... but you're only allowed to watch **one frame every ten seconds**. That's what older language models felt like.",
+        },
+      ],
+    },
+    {
+      id: "your-brain-connects-backward",
+      question: "Your brain wasn't simply moving forward",
+      tags: ["Connections", "Context", "Human Intuition"],
+      answer: [
+        {
+          type: "text",
+          content:
+            "Your brain wasn't simply moving forward. It was constantly **looking backward**. It was making connections everywhere.",
+        },
+        {
+          type: "flow",
+          title: "Understanding is a web of context",
+          nodes: [
+            { label: "boy", sub: "Who?", tone: "sky" },
+            { label: "blue jacket", sub: "Which boy?", tone: "rose" },
+            { label: "school", sub: "Where?", tone: "mint" },
+            { label: "excited", sub: "Why?", tone: "coral" },
+          ],
+        },
+        {
+          type: "callout",
+          variant: "tip",
+          content: "That ability inspired one of the greatest ideas in AI.",
+        },
+      ],
+    },
+    {
+      id: "what-is-attention",
+      question: "What Is Attention?",
+      tags: ["Attention", "Context", "Relevance"],
+      answer: [
+        {
+          type: "text",
+          content:
+            'Ten people are talking. Someone suddenly says, =="Raj, what do you think?"== Instantly... your attention shifts. You ignore every other conversation.',
+        },
+        {
+          type: "table",
+          headers: ["What humans naturally do", "What modern AI learned to do"],
+          rows: [
+            ["We don't treat every word equally.", "It does not give every word equal importance."],
+            ["Some words are important.", "It raises the relevance of useful words."],
+            ["Others are background noise.", "It lowers the relevance of distracting words."],
+          ],
+        },
+        {
+          type: "text",
+          content:
+            "Modern AI learned to do exactly the same thing. Instead of reading every word with equal importance... it asks:",
+        },
+        {
+          type: "callout",
+          variant: "info",
+          content:
+            '=="Which earlier words should I pay attention to before deciding what this word means?"==',
+        },
+        { type: "text", content: "That's **attention**." },
+      ],
+    },
+    {
+      id: "from-a-line-to-a-network",
+      question: "From a straight line to a network of words",
+      tags: ["Self-Attention", "Relationships", "Parallel Context"],
+      answer: [
+        { type: "text", content: "This is where things become fascinating. Older AI read like this." },
+        {
+          type: "flow",
+          direction: "vertical",
+          title: "Older AI — a straight line",
+          nodes: [
+            { label: "Word 1", tone: "rose" },
+            { label: "Word 2", tone: "rose" },
+            { label: "Word 3", tone: "rose" },
+            { label: "Word 4", tone: "rose" },
+          ],
+        },
+        { type: "text", content: "Transformers changed everything. Now it looks more like this." },
+        {
+          type: "table",
+          tone: "sky",
+          headers: ["Word", "Can communicate with"],
+          rows: [
+            ["**Word 1**", "Word 2 · Word 3 · Word 4 · Word 5 · Word 6"],
+            ["**Word 2**", "Word 1 · Word 3 · Word 4 · Word 5 · Word 6"],
+            ["**Word 3**", "Word 1 · Word 2 · Word 4 · Word 5 · Word 6"],
+            ["**Every word**", "Every other word"],
+          ],
+        },
+        {
+          type: "callout",
+          variant: "tip",
+          content:
+            "Not just the previous one. Not just the next one. **Every single one.** That's revolutionary.",
+        },
+      ],
+    },
+    {
+      id: "attention-computation-cost",
+      question: "But Doesn't This Become Expensive?",
+      tags: ["Compute", "Scaling", "Efficient Attention"],
+      answer: [
+        { type: "text", content: "Excellent question." },
+        {
+          type: "text",
+          content:
+            "Imagine a meeting with **five people**. Everyone can talk to everyone else. That's manageable. Now imagine a conference with **50,000 people**. Suddenly... everyone talking to everyone becomes extremely expensive.",
+        },
+        {
+          type: "flow",
+          title: "More participants, many more connections",
+          nodes: [
+            { label: "5 people", sub: "Manageable", tone: "mint" },
+            { label: "More connections", sub: "Cost rises", tone: "sky" },
+            { label: "50,000 people", sub: "Extremely expensive", tone: "coral" },
+          ],
+        },
+        {
+          type: "text",
+          content:
+            "The exact same problem exists inside Transformers. Longer conversations require dramatically more computation.",
+        },
+        {
+          type: "callout",
+          variant: "info",
+          content:
+            "This is why companies invest enormous effort into techniques like **efficient attention**, **sparse attention**, **sliding windows**, and **caching**.",
+        },
+      ],
+    },
+    {
+      id: "what-is-a-transformer",
+      question: "So... What Is a Transformer?",
+      tags: ["Architecture", "Components", "Modern Models"],
+      answer: [
+        {
+          type: "text",
+          content:
+            "Many beginners imagine the Transformer is a single algorithm. It's better to think of it as an **architecture**.",
+        },
+        { type: "heading", content: "Like saying, “A hospital.”" },
+        {
+          type: "text",
+          content:
+            "A hospital isn't one room. It contains emergency care, surgery, radiology, labs, pharmacies, nurses, and administration.",
+        },
+        {
+          type: "table",
+          headers: ["Inside a Transformer", "Its role"],
+          rows: [
+            ["Attention components", "Handle relationships and decide what matters."],
+            ["Information-processing components", "Transform and refine what the model carries forward."],
+            ["Normalization components", "Help keep internal signals stable."],
+            ["Learning components", "Help the model learn efficiently."],
+          ],
+        },
+        {
+          type: "callout",
+          variant: "tip",
+          content:
+            "Similarly, a Transformer is a collection of components working together. Together, they form the engine behind modern language models.",
+        },
+      ],
+    },
+    {
+      id: "why-the-2017-paper-matters",
+      question: "Why Everyone Talks About the 2017 Paper",
+      tags: ["AI History", "GPT", "Foundation Models"],
+      answer: [
+        {
+          type: "text",
+          content:
+            "Every few years, a research paper changes an industry. The Transformer paper was one of those moments. Not because it solved every problem. But because it provided a much better way of understanding **relationships in language**.",
+        },
+        {
+          type: "flow",
+          title: "The family tree that followed",
+          nodes: [
+            { label: "Transformers", sub: "Core architecture", tone: "rose" },
+            { label: "Larger models", sub: "Research at scale", tone: "sky" },
+            { label: "GPT · Claude", sub: "Modern assistants", tone: "mint" },
+            { label: "Gemini · Llama", sub: "A growing ecosystem", tone: "coral" },
+          ],
+        },
+        {
+          type: "text",
+          content:
+            "Researchers used Transformers to build larger and larger models. Those models eventually became **GPT, Claude, Gemini, Llama**, and many others. It's similar to the invention of the smartphone.",
+        },
+        {
+          type: "text",
+          content:
+            "The same applies to Transformers. From the outside, you see a **chatbot**. Underneath, billions of parameters are coordinating through attention, mathematical representations, and learned relationships across language, code, images, and more.",
+        },
+        {
+          type: "callout",
+          variant: "info",
+          content:
+            "The interface looks simple. The architecture underneath is an enormous coordination system.",
+        },
+      ],
+    },
+    {
+      id: "what-happens-when-you-press-enter",
+      question: "What Actually Happens When You Press Enter?",
+      tags: ["Inference", "Prompt Lifecycle", "AI Engineering"],
+      answer: [
+        {
+          type: "text",
+          content:
+            "Because that is the difference between **using AI** and **engineering AI**. Today we'll follow one prompt from beginning to end—almost like following a package through Amazon's delivery system.",
+        },
+        {
+          type: "flow",
+          title: "What you see",
+          nodes: [
+            { label: "Question", sub: "You press Enter", tone: "rose" },
+            { label: "AI system", sub: "Work happens", tone: "sky" },
+            { label: "Answer", sub: "You see the result", tone: "mint" },
+          ],
+        },
+        {
+          type: "callout",
+          variant: "info",
+          content:
+            "Behind the scenes... **hundreds of operations happen**. The simple Question → Answer interface hides the delivery system underneath.",
+        },
+      ],
+    },
+    {
+      id: "prompt-becomes-tokens-and-numbers",
+      question: "Everything first becomes tokens—and then numbers",
+      tags: ["Tokens", "Representations", "Inference"],
+      answer: [
+        {
+          type: "text",
+          content:
+            "Everything first becomes **tokens**. Internally... it becomes **numbers**.",
+        },
+        {
+          type: "flow",
+          title: "The prompt changes form",
+          nodes: [
+            { label: "Your sentence", sub: "Human language", tone: "rose" },
+            { label: "Tokens", sub: "Reusable pieces", tone: "coral" },
+            { label: "Numbers", sub: "Internal representation", tone: "sky" },
+            { label: "Attention", sub: "Relevant patterns activate", tone: "mint" },
+          ],
+        },
+        {
+          type: "text",
+          content:
+            "The model does something very similar to human attention. Using **attention**, it activates relevant knowledge learned during training.",
+        },
+      ],
+    },
+    {
+      id: "learned-knowledge-versus-search",
+      question: "Is ChatGPT searching the web for every answer?",
+      tags: ["Training", "Retrieval", "Tools"],
+      answer: [
+        { type: "text", content: "People often imagine ChatGPT doing this." },
+        {
+          type: "flow",
+          title: "The common—but usually incorrect—mental model",
+          nodes: [
+            { label: "Google Search", sub: "Find pages", tone: "rose" },
+            { label: "Reads websites", sub: "Collect text", tone: "coral" },
+            { label: "Writes answer", sub: "Respond", tone: "sky" },
+          ],
+        },
+        { type: "callout", variant: "warn", content: "Usually... **No.**" },
+        {
+          type: "text",
+          content:
+            "The knowledge already exists inside the trained model. Think back to our restaurant analogy. An experienced chef doesn't open YouTube every time someone orders biryani. Years of cooking already taught them the recipe.",
+        },
+        {
+          type: "text",
+          content:
+            "Similarly... a trained model already contains patterns learned during training. Only when engineers explicitly connect **external tools, web search, or databases** does the model retrieve fresh information.",
+        },
+        {
+          type: "table",
+          headers: ["Learned during training", "Retrieved at answer time"],
+          rows: [
+            ["Patterns stored across model weights", "Fresh information from connected tools"],
+            ["Available inside the trained model", "Web search, APIs, or databases"],
+            ["Does not require a live lookup", "Requires engineers to connect retrieval"],
+          ],
+        },
+        { type: "callout", variant: "tip", content: "This distinction is **very important**." },
+      ],
+    },
+    {
+      id: "probabilistic-reasoning-next-token",
+      question: "Predicting the Next Token",
+      tags: ["Probability", "Next Token", "Generation"],
+      answer: [
+        {
+          type: "callout",
+          variant: "info",
+          content:
+            "The engineering phrase is: **The model performs probabilistic reasoning over learned representations.**",
+        },
+        {
+          type: "text",
+          content:
+            "That sounds intimidating. But it simply means it uses everything it learned to predict the most appropriate continuation.",
+        },
+        { type: "heading", content: "Here comes one of the biggest surprises" },
+        {
+          type: "text",
+          content:
+            "Everything ChatGPT does... starts with an incredibly simple task.",
+        },
+        {
+          type: "flow",
+          title: "The core generation loop",
+          nodes: [
+            { label: "Predict", sub: "Choose a continuation", tone: "rose" },
+            { label: "One", sub: "Only one", tone: "sky" },
+            { label: "Next", sub: "After the current context", tone: "mint" },
+            { label: "Token", sub: "Then repeat", tone: "coral" },
+          ],
+        },
+        { type: "callout", variant: "tip", content: "That's all." },
+      ],
+    },
+    {
+      id: "context-changes-the-next-token",
+      question: "Everything depends on context",
+      tags: ["Context", "Probability", "Prediction"],
+      answer: [
+        {
+          type: "text",
+          content:
+            "The model saw language patterns millions of times. Now imagine writing: ==Once upon a time there was a...==",
+        },
+        {
+          type: "table",
+          tone: "sky",
+          headers: ["Likely next tokens", "Unlikely in this context"],
+          rows: [
+            ["King", "Paris"],
+            ["Princess", "A random spreadsheet formula"],
+            ["Dragon", "An unrelated database record"],
+            ["Forest", "A disconnected word"],
+          ],
+        },
+        {
+          type: "text",
+          content:
+            "The next likely token changes completely. Now it predicts **King. Princess. Dragon. Forest.** Not Paris.",
+        },
+        { type: "callout", variant: "tip", content: "Everything depends on **context**." },
+      ],
+    },
+    {
+      id: "why-can-ai-be-creative",
+      question: "Why Can AI Be Creative?",
+      tags: ["Temperature", "Creativity", "Sampling"],
+      answer: [
+        {
+          type: "text",
+          content:
+            'Now someone asks, =="If it\'s always predicting the most likely word... why does it sometimes write funny stories?"== Excellent question.',
+        },
+        {
+          type: "text",
+          content:
+            "Imagine asking three chefs to prepare the same pasta. All three know the recipe. Yet each one adds slightly different herbs. One adds extra garlic. Another adds basil. The meal is recognizably pasta... yet each version is unique.",
+        },
+        {
+          type: "text",
+          content:
+            "AI behaves similarly. Instead of always choosing the single most likely next token... sometimes it intentionally introduces **controlled randomness**. That randomness is controlled by a parameter called ==Temperature==.",
+        },
+        {
+          type: "table",
+          headers: ["Temperature", "Instruction", "Good fit"],
+          rows: [
+            ["**Lower**", '"Stay close to the safest prediction."', "Code generation · Customer support"],
+            ["**Higher**", '"Be more adventurous."', "Creative storytelling · Marketing slogans"],
+          ],
+        },
+        {
+          type: "callout",
+          variant: "tip",
+          content:
+            "As AI engineers, you'll use this constantly: low temperature for consistency; a bit higher when variation is useful.",
+        },
+      ],
+    },
+    {
+      id: "same-prompt-different-answers",
+      question: "Why the Same Prompt Can Produce Different Answers",
+      tags: ["Probability", "Temperature", "Variation"],
+      answer: [
+        { type: "callout", variant: "info", content: "Because **probability isn't certainty**." },
+        {
+          type: "text",
+          content:
+            'Imagine asking three senior developers: =="What\'s the best way to structure this API?"== All three might recommend slightly different architectures. None are necessarily wrong. Each draws from experience.',
+        },
+        {
+          type: "text",
+          content:
+            "LLMs behave similarly. They often have several reasonable continuations. **Temperature** determines how willing the model is to explore alternatives.",
+        },
+        {
+          type: "flow",
+          title: "One prompt, several reasonable paths",
+          nodes: [
+            { label: "Same prompt", sub: "One question", tone: "rose" },
+            { label: "Many probabilities", sub: "Several good continuations", tone: "sky" },
+            { label: "Temperature", sub: "Controls exploration", tone: "coral" },
+            { label: "Different answer", sub: "Still reasonable", tone: "mint" },
+          ],
+        },
+      ],
+    },
+    {
+      id: "api-call-is-only-the-beginning",
+      question: "The API Call Is Only the Beginning",
+      tags: ["AI Engineering", "Production", "Reliability"],
+      answer: [
+        {
+          type: "text",
+          content:
+            'Many junior developers think, =="My job is calling the OpenAI API."== In reality... the API call is often the smallest part of the system. The real engineering happens around it.',
+        },
+        {
+          type: "table",
+          headers: ["Before and during the call", "After and around the call"],
+          rows: [
+            ["Building the prompt", "Validating responses"],
+            ["Retrieving the right context", "Handling failures"],
+            ["Calling tools", "Managing cost"],
+            ["Caching repeated requests", "Monitoring latency"],
+            ["Preparing reliable inputs", "Evaluating output quality"],
+          ],
+        },
+        {
+          type: "callout",
+          variant: "tip",
+          content: "That's **AI Engineering**.",
+        },
+      ],
+    },
+    {
+      id: "linear-regression-best-fit-line",
+      question: "Linear regression — drawing the best-fit line",
+      tags: ["Linear Regression", "Prediction", "Loss"],
+      answer: [
+        {
+          type: "text",
+          content:
+            "This is the simplest, oldest, underrated algorithm in ML, and it's the right place to start because almost every other technique is some elaboration on this idea.",
+        },
+        {
+          type: "text",
+          content:
+            "Linear regression's entire job is to draw a **single straight line** through a cloud of dots that comes as close as possible to all of them at once—not perfectly through any one of them, but minimizing the average distance across the whole group.",
+        },
+        {
+          type: "flow",
+          title: "How the line learns",
+          nodes: [
+            { label: "Random line", sub: "Starting guess", tone: "rose" },
+            { label: "Measure error", sub: "Distance from real dots", tone: "coral" },
+            { label: "Nudge the line", sub: "Slope and position", tone: "sky" },
+            { label: "Best fit", sub: "Error becomes smaller", tone: "mint" },
+          ],
+        },
+        {
+          type: "text",
+          content:
+            "Once that line exists, prediction becomes trivial—for any new house size, you just read straight up to the line and across to the price axis.",
+        },
+        {
+          type: "callout",
+          variant: "info",
+          content:
+            "From Day 1: the model starts with a random line, measures how far off it is from all the real dots—this distance is the **error, or loss**—and nudges the line's slope and position slightly to reduce that error, over and over, until the line settles into the best fit it can find.",
+        },
+      ],
+    },
+    {
+      id: "logistic-regression-probability",
+      question: "Logistic regression — classification through probability",
+      tags: ["Logistic Regression", "Classification", "Probability"],
+      answer: [
+        {
+          type: "text",
+          content:
+            "Logistic regression is not used for predicting numbers—it's used for **classification**, for yes/no, spam/not-spam type questions.",
+        },
+        {
+          type: "text",
+          content:
+            'Logistic regression squashes that line through a mathematical function shaped like a soft **"S" curve**, which forces every output to land between **0 and 1**—and that output gets interpreted as a probability.',
+        },
+        {
+          type: "flow",
+          title: "From score to decision",
+          nodes: [
+            { label: "Raw score", sub: "Any number", tone: "rose" },
+            { label: "S-curve", sub: "Squash to 0–1", tone: "sky" },
+            { label: "87% spam", sub: "Probability", tone: "coral" },
+            { label: "Spam", sub: "Above 50% threshold", tone: "mint" },
+          ],
+        },
+        {
+          type: "callout",
+          variant: "tip",
+          content:
+            'Think of it like a **dimmer switch** instead of an on/off switch: rather than declaring "definitely spam," the model says "I\'m 87% confident this is spam," and a separate decision rule—usually "if above 50%, call it spam"—converts that probability into the final yes/no answer.',
+        },
+      ],
+    },
+    {
+      id: "decision-trees-yes-no-questions",
+      question: "Decision trees — learning through yes/no questions",
+      tags: ["Decision Trees", "Rules", "Overfitting"],
+      answer: [
+        {
+          type: "text",
+          content: "A decision tree mirrors exactly how a human would triage something manually.",
+        },
+        {
+          type: "flow",
+          direction: "vertical",
+          title: "The world's most efficient game of twenty questions",
+          nodes: [
+            { label: "Is income above $50k?", sub: "Split into two groups", tone: "rose" },
+            { label: "Is credit score above 700?", sub: "Split each group again", tone: "sky" },
+            { label: "Smaller, purer groups", sub: "Keep carving the data", tone: "mint" },
+            { label: "Final call", sub: "Stop when confident", tone: "coral" },
+          ],
+        },
+        {
+          type: "text",
+          content:
+            "A decision tree looks at your data and asks a question, splits everyone into two groups based on the answer, then asks another question within each group. It keeps doing this, carving the data into smaller and smaller, increasingly pure groups, until it is confident enough to make a final call.",
+        },
+        {
+          type: "callout",
+          variant: "warn",
+          content:
+            "A decision tree left unchecked will happily keep asking questions until it has carved out a tiny, hyper-specific rule for every single training example—a textbook overfitting trap. Left alone, a tree doesn't generalize; it memorizes.",
+        },
+      ],
+    },
+    {
+      id: "random-forest-committee",
+      question: "Ensembles — why a committee beats one expert",
+      tags: ["Ensembles", "Random Forest", "Voting"],
+      answer: [
+        {
+          type: "text",
+          content:
+            "This is the natural fix for a decision tree's overfitting problem, and it's one of the more genuinely clever ideas in classical ML.",
+        },
+        {
+          type: "text",
+          content:
+            "Instead of trusting one deep, overfit decision tree, train **hundreds of slightly different trees**—each seeing a slightly different random slice of the data and a slightly different random subset of features—and let them vote on the final answer. This is called a **random forest**.",
+        },
+        {
+          type: "flow",
+          title: "Many imperfect views, one stronger decision",
+          nodes: [
+            { label: "Tree 1", sub: "Random sample", tone: "rose" },
+            { label: "Tree 2", sub: "Different features", tone: "sky" },
+            { label: "Tree 100", sub: "Different blind spots", tone: "coral" },
+            { label: "Majority vote", sub: "More reliable answer", tone: "mint" },
+          ],
+        },
+        {
+          type: "callout",
+          variant: "tip",
+          content:
+            "Any individual tester might have blind spots or get unlucky with their sample, but those blind spots are unlikely to line up across all hundred of them—so the group's combined answer ends up far more reliable than any single member's.",
+        },
+      ],
+    },
+    {
+      id: "gradient-boosting-corrects-mistakes",
+      question: "Gradient boosting — each new tree corrects the last one",
+      tags: ["Gradient Boosting", "XGBoost", "Ensembles"],
+      answer: [
+        {
+          type: "text",
+          content:
+            "There's a second, more advanced ensemble idea called **gradient boosting**—the technique behind **XGBoost**, which you'll see constantly in real jobs and Kaggle competitions.",
+        },
+        {
+          type: "table",
+          headers: ["Random forest", "Gradient boosting"],
+          rows: [
+            ["Many independent trees", "Trees are built one at a time"],
+            ["Trees vote in parallel", "Each tree follows the previous tree"],
+            ["Different random blind spots", "Each new tree targets earlier mistakes"],
+          ],
+        },
+        {
+          type: "flow",
+          title: "A sequential correction loop",
+          nodes: [
+            { label: "Tree 1", sub: "Makes a prediction", tone: "rose" },
+            { label: "Find mistakes", sub: "What did it miss?", tone: "coral" },
+            { label: "Tree 2", sub: "Focus on those mistakes", tone: "sky" },
+            { label: "Repeat", sub: "Blind spots shrink", tone: "mint" },
+          ],
+        },
+        {
+          type: "callout",
+          variant: "info",
+          content:
+            "It's less like a panel of independent testers and more like a QA process where each reviewer is specifically briefed on exactly which bugs the last reviewer missed, so the whole team's blind spots shrink round after round.",
+        },
+      ],
+    },
+    {
+      id: "neural-networks-under-the-buzzword",
+      question: "Neural networks — what deep learning means underneath the buzzword",
+      tags: ["Neural Networks", "Deep Learning", "AI"],
+      answer: [
+        {
+          type: "text",
+          content:
+            "Everything so far—linear regression, trees, ensembles—falls under **classical ML**.",
+        },
+        {
+          type: "flow",
+          title: "Crossing into deep learning",
+          nodes: [
+            { label: "Linear regression", sub: "Classical ML", tone: "rose" },
+            { label: "Trees", sub: "Classical ML", tone: "coral" },
+            { label: "Ensembles", sub: "Classical ML", tone: "sky" },
+            { label: "Neural networks", sub: "Deep learning", tone: "mint" },
+          ],
+        },
+        {
+          type: "text",
+          content:
+            "Now we enter the territory that powers **image recognition, ChatGPT**, and most of what people mean when they say AI today: neural networks.",
+        },
+      ],
+    },
+    {
+      id: "artificial-neuron-decision-maker",
+      question: "A neuron is just a tiny decision-maker",
+      tags: ["Neuron", "Weights", "Weighted Sum"],
+      answer: [
+        {
+          type: "callout",
+          variant: "warn",
+          content: "Forget the brain metaphor for a second—it causes more confusion than it solves.",
+        },
+        {
+          type: "text",
+          content:
+            "A single artificial neuron is doing something very simple: it takes in several numbers, multiplies each one by an **importance weight**, adds them together, and passes the result through a small decision function to produce one output number.",
+        },
+        {
+          type: "table",
+          headers: ["Hiring-manager analogy", "Artificial neuron"],
+          rows: [
+            ["Years of experience", "Input number"],
+            ["Communication skills", "Input number"],
+            ["Technical test score", "Input number"],
+            ["Importance multiplier", "Weight"],
+            ["Combined candidate score", "Neuron output"],
+          ],
+        },
+        {
+          type: "text",
+          content:
+            "A hiring manager doesn't count years of experience alone. They weigh several factors, give each one a different importance multiplier based on what matters most, add everything into a single combined score, and let that score determine the outcome. That's one neuron.",
+        },
+      ],
+    },
+    {
+      id: "weights-connect-to-gradient-descent",
+      question: "The key connection: weights are what training nudges",
+      tags: ["Weights", "Gradient Descent", "Training"],
+      answer: [
+        {
+          type: "text",
+          content:
+            'The **weights** are exactly the importance multipliers—and this is the key connection.',
+        },
+        {
+          type: "callout",
+          variant: "tip",
+          content:
+            "Those weights are precisely the numbers that **gradient descent is nudging**, example after example, during training.",
+        },
+        {
+          type: "flow",
+          title: "Learning happens in tiny adjustments",
+          nodes: [
+            { label: "Input example", sub: "Training data", tone: "rose" },
+            { label: "Current weights", sub: "Importance multipliers", tone: "sky" },
+            { label: "Measure loss", sub: "How wrong?", tone: "coral" },
+            { label: "Nudge weights", sub: "A little better", tone: "mint" },
+          ],
+        },
+      ],
+    },
+    {
+      id: "deep-layers-build-complexity",
+      question: "Why “deep”? Stacking layers builds complexity",
+      tags: ["Layers", "Feature Learning", "Deep Learning"],
+      answer: [
+        {
+          type: "text",
+          content:
+            "Imagine an assembly line of increasingly senior reviewers looking at a résumé.",
+        },
+        {
+          type: "flow",
+          direction: "vertical",
+          title: "Each layer builds a more abstract representation",
+          nodes: [
+            { label: "First layer", sub: "Is a degree listed?", tone: "rose" },
+            { label: "Second layer", sub: "Technically qualified overall?", tone: "sky" },
+            { label: "Third layer", sub: "Strong overall fit?", tone: "mint" },
+          ],
+        },
+        {
+          type: "text",
+          content:
+            "The first-layer reviewer checks basic, surface-level things. The second-layer reviewer doesn't look at the résumé directly—they see the first layer's outputs and combine those simple signals into a more sophisticated judgment. A third layer combines mid-level judgments into something even more abstract.",
+        },
+        {
+          type: "text",
+          content:
+            "Each layer builds a more abstract, more useful representation out of the layer before it, without ever needing you to manually tell it what to look for.",
+        },
+        {
+          type: "table",
+          headers: ["Classical ML", "Deep learning"],
+          rows: [
+            ["You hand-engineer useful features", "The network learns intermediate features"],
+            ["You decide income and credit score matter", "Layers discover useful representations"],
+            ["Feature work can limit scale", "Learns more as data and compute grow"],
+          ],
+        },
+        {
+          type: "callout",
+          variant: "info",
+          content:
+            "This is the single biggest advantage neural networks have over classical ML. Given enough data, the network figures out its own useful intermediate features, layer by layer—which is why deep learning became dominant once large datasets and heavy compute became available.",
+        },
+      ],
+    },
+    {
+      id: "activation-functions-relu",
+      question: "Activation functions — the useful kink in the decision",
+      tags: ["Activation Functions", "ReLU", "Non-linearity"],
+      answer: [
+        {
+          type: "text",
+          content:
+            "The activation function is a small **non-linear kink** applied after each neuron's weighted sum, before passing it to the next layer.",
+        },
+        {
+          type: "callout",
+          variant: "warn",
+          content:
+            "Without it, deep networks couldn't learn anything a simple linear regression couldn't already learn.",
+        },
+        {
+          type: "table",
+          tone: "sky",
+          headers: ["ReLU input", "ReLU output"],
+          rows: [
+            ["Negative number", "0"],
+            ["Zero", "0"],
+            ["Positive number", "Pass it through unchanged"],
+          ],
+        },
+        {
+          type: "callout",
+          variant: "tip",
+          content:
+            "The most common one today, called **ReLU**, is almost embarrassingly simple: if the number is negative, output zero; if it's positive, pass it through unchanged.",
+        },
+      ],
+    },
+    {
+      id: "cnn-rnn-specialized-data-shapes",
+      question: "CNNs and RNNs — specialized for different data shapes",
+      tags: ["CNN", "RNN", "Images", "Sequences"],
+      answer: [
+        {
+          type: "text",
+          content:
+            "A plain, fully-connected neural network treats every input independently and equally, which works fine for structured spreadsheet data. But images and language have structure—nearby pixels are related, and earlier words affect the meaning of later ones—so specialized architectures were built to exploit that.",
+        },
+        { type: "heading", content: "CNN — a sliding magnifying glass for images" },
+        {
+          type: "text",
+          content:
+            "A **CNN (Convolutional Neural Network)** is built for images. Instead of looking at the whole image at once, a small filter slides across it piece by piece, learning to detect a simple local pattern—an edge, a curve, a patch of color—the same way it would appear anywhere in the photo.",
+        },
+        {
+          type: "flow",
+          title: "CNN layers build visual meaning",
+          nodes: [
+            { label: "Pixels", sub: "Raw image", tone: "rose" },
+            { label: "Edges & curves", sub: "Early layers", tone: "sky" },
+            { label: "Eyes & nose", sub: "Deeper layers", tone: "coral" },
+            { label: "Face", sub: "Complex concept", tone: "mint" },
+          ],
+        },
+        {
+          type: "text",
+          content:
+            "It is efficient because it reuses the same small filter everywhere in the image instead of learning a completely separate rule for every pixel position.",
+        },
+        { type: "heading", content: "RNN and attention — built for sequences" },
+        {
+          type: "text",
+          content:
+            "An **RNN (Recurrent Neural Network)**, and its modern evolution, the attention mechanism—the core idea behind ChatGPT and other language models—is built for sequences: language, time series, anything where order and context matter.",
+        },
+        {
+          type: "table",
+          headers: ["Same word", "Context changes its meaning"],
+          rows: [
+            ["Bank", "River bank"],
+            ["Bank", "Savings bank"],
+          ],
+        },
+        {
+          type: "callout",
+          variant: "info",
+          content:
+            "Attention does something smarter than a single running memory that can forget older details: it lets every word directly **look back at every other word** in the sentence simultaneously and decide how relevant each one is to understanding it.",
+        },
+      ],
+    },
   ],
 };

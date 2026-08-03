@@ -160,7 +160,7 @@ export function SectionView({ section }: { section: Section }) {
               : "No matches. Try a different keyword."}
           </div>
         ) : (
-          filtered.map((it, i) => <QuestionCard key={it.id} item={it} index={i} />)
+          filtered.map((it, i) => <QuestionCard key={it.id} item={it} index={i} variant={section.slug === "programs" ? "program" : "default"} />)
         )}
       </div>
     </div>

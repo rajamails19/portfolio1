@@ -9,13 +9,14 @@ const diffColors: Record<string, string> = {
   Hard: "difficulty-hard",
 };
 
-export function QuestionCard({ item, index }: { item: QAItem; index: number }) {
+export function QuestionCard({ item, index, variant = "default" }: { item: QAItem; index: number; variant?: "default" | "program" }) {
   const [open, setOpen] = useState(false);
 
   return (
     <div
       className={[
         "glass-strong animate-pop-in group overflow-hidden rounded-3xl transition-all duration-300",
+        variant === "program" ? "program-card" : "",
         open ? "shadow-glow" : "hover:-translate-y-0.5 hover:shadow-[var(--shadow-soft)]",
       ].join(" ")}
       style={{ animationDelay: `${index * 60}ms` }}
@@ -64,7 +65,7 @@ export function QuestionCard({ item, index }: { item: QAItem; index: number }) {
         ].join(" ")}
       >
         <div className="min-h-0">
-          <div className="border-t border-rose/15 bg-noir/40 px-6 pb-6 pt-4">
+          <div className={`border-t border-rose/15 bg-noir/40 ${variant === "program" ? "program-answer px-6 pb-8 pt-6 sm:px-8" : "px-6 pb-6 pt-4"}`}>
             <AnswerBlocks blocks={item.answer} />
           </div>
         </div>
