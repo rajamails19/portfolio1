@@ -65,7 +65,7 @@ function Home() {
           </div>
 
           <div className="relative">
-            <div className="absolute -inset-6 rounded-[3rem] bg-gradient-to-br from-fuchsia-300/40 via-rose-200/40 to-amber-200/40 blur-2xl" />
+            <div className="absolute inset-0 rounded-[3rem] bg-gradient-to-br from-fuchsia-300/40 via-rose-200/40 to-amber-200/40 blur-2xl" />
             <div className="glass relative overflow-hidden rounded-[2.5rem] p-3 shadow-glow">
               <img
                 src={mascot}

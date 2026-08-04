@@ -37,8 +37,8 @@ function TimesTablesPage() {
         ))}
       </div>
 
-      <div className="grid gap-6 lg:grid-cols-[1.1fr_1fr]">
-        <div className="glass rounded-3xl p-6 shadow-soft">
+      <div className="grid min-w-0 gap-6 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)]">
+        <div className="glass min-w-0 rounded-3xl p-6 shadow-soft">
           <h2 className="font-display text-3xl font-bold text-gradient">The {n} times table</h2>
           <div className="mt-5 grid grid-cols-2 gap-2 sm:grid-cols-3">
             {Array.from({ length: 12 }, (_, i) => i + 1).map((k) => (
@@ -56,9 +56,9 @@ function TimesTablesPage() {
           </div>
         </div>
 
-        <div className="glass rounded-3xl p-6 shadow-soft">
+        <div className="glass min-w-0 rounded-3xl p-6 shadow-soft">
           <h2 className="font-display text-2xl font-bold text-gradient">Full 12×12 grid</h2>
-          <div className="mt-4 overflow-x-auto">
+          <div className="mt-4 max-w-full overflow-x-auto">
             <table className="w-full text-center text-sm">
               <thead>
                 <tr>

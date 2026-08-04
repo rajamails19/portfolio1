@@ -1,9 +1,21 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { PageShell } from "@/components/site-layout";
 import { TOPICS } from "@/lib/math-data";
 
 export const Route = createFileRoute("/quiz")({
+  loader: () => {
+    const all = TOPICS.flatMap((topic) =>
+      topic.quiz.map((question) => ({
+        ...question,
+        topic: topic.name,
+        slug: topic.slug,
+        emoji: topic.emoji,
+      })),
+    );
+
+    return all.sort(() => Math.random() - 0.5).slice(0, 8);
+  },
   head: () => ({
     meta: [
       { title: "Mixed Math Quiz — MathDreams" },
@@ -14,12 +26,7 @@ export const Route = createFileRoute("/quiz")({
 });
 
 function QuizPage() {
-  const questions = useMemo(() => {
-    const all = TOPICS.flatMap((t) =>
-      t.quiz.map((q) => ({ ...q, topic: t.name, slug: t.slug, emoji: t.emoji })),
-    );
-    return all.sort(() => Math.random() - 0.5).slice(0, 8);
-  }, []);
+  const questions = Route.useLoaderData();
   const [i, setI] = useState(0);
   const [picked, setPicked] = useState<number | null>(null);
   const [score, setScore] = useState(0);

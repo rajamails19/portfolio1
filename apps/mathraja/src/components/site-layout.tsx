@@ -1,6 +1,7 @@
 import { Link, useRouterState } from "@tanstack/react-router";
 import type { ReactNode } from "react";
 import mascot from "@/assets/mascot-hero.jpg";
+import { AccountButton } from "@/components/visitor-access";
 
 const NAV = [
   { to: "/", label: "Home" },
@@ -49,6 +50,7 @@ export function SiteHeader() {
               );
             })}
           </nav>
+          <AccountButton />
         </div>
       </div>
     </header>
