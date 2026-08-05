@@ -13,6 +13,7 @@ import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { SideNav } from "../components/SideNav";
 import { ThemeProvider } from "../themes/ThemeContext";
+import { AppearanceProvider } from "../themes/AppearanceContext";
 import { ThemeSwitcher } from "../components/ThemeSwitcher";
 
 function NotFoundComponent() {
@@ -146,17 +147,19 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <ThemeProvider>
-        <ThemeSwitcher />
-        <div className="flex min-h-screen">
-          <div className="hidden lg:block">
-            <SideNav />
+      <AppearanceProvider>
+        <ThemeProvider>
+          <ThemeSwitcher />
+          <div className="flex min-h-screen">
+            <div className="hidden lg:block">
+              <SideNav />
+            </div>
+            <main className="flex-1 min-w-0">
+              <Outlet />
+            </main>
           </div>
-          <main className="flex-1 min-w-0">
-            <Outlet />
-          </main>
-        </div>
-      </ThemeProvider>
+        </ThemeProvider>
+      </AppearanceProvider>
     </QueryClientProvider>
   );
 }

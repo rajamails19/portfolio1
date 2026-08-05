@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as TheoryRouteImport } from './routes/theory'
 import { Route as RealtimeRouteImport } from './routes/realtime'
 import { Route as QansRouteImport } from './routes/qans'
 import { Route as ProjectsRouteImport } from './routes/projects'
@@ -16,6 +17,11 @@ import { Route as ProgramsRouteImport } from './routes/programs'
 import { Route as OthersRouteImport } from './routes/others'
 import { Route as IndexRouteImport } from './routes/index'
 
+const TheoryRoute = TheoryRouteImport.update({
+  id: '/theory',
+  path: '/theory',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const RealtimeRoute = RealtimeRouteImport.update({
   id: '/realtime',
   path: '/realtime',
@@ -54,6 +60,7 @@ export interface FileRoutesByFullPath {
   '/projects': typeof ProjectsRoute
   '/qans': typeof QansRoute
   '/realtime': typeof RealtimeRoute
+  '/theory': typeof TheoryRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -62,6 +69,7 @@ export interface FileRoutesByTo {
   '/projects': typeof ProjectsRoute
   '/qans': typeof QansRoute
   '/realtime': typeof RealtimeRoute
+  '/theory': typeof TheoryRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -71,12 +79,27 @@ export interface FileRoutesById {
   '/projects': typeof ProjectsRoute
   '/qans': typeof QansRoute
   '/realtime': typeof RealtimeRoute
+  '/theory': typeof TheoryRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/others' | '/programs' | '/projects' | '/qans' | '/realtime'
+  fullPaths:
+    | '/'
+    | '/others'
+    | '/programs'
+    | '/projects'
+    | '/qans'
+    | '/realtime'
+    | '/theory'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/others' | '/programs' | '/projects' | '/qans' | '/realtime'
+  to:
+    | '/'
+    | '/others'
+    | '/programs'
+    | '/projects'
+    | '/qans'
+    | '/realtime'
+    | '/theory'
   id:
     | '__root__'
     | '/'
@@ -85,6 +108,7 @@ export interface FileRouteTypes {
     | '/projects'
     | '/qans'
     | '/realtime'
+    | '/theory'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -94,10 +118,18 @@ export interface RootRouteChildren {
   ProjectsRoute: typeof ProjectsRoute
   QansRoute: typeof QansRoute
   RealtimeRoute: typeof RealtimeRoute
+  TheoryRoute: typeof TheoryRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/theory': {
+      id: '/theory'
+      path: '/theory'
+      fullPath: '/theory'
+      preLoaderRoute: typeof TheoryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/realtime': {
       id: '/realtime'
       path: '/realtime'
@@ -150,6 +182,7 @@ const rootRouteChildren: RootRouteChildren = {
   ProjectsRoute: ProjectsRoute,
   QansRoute: QansRoute,
   RealtimeRoute: RealtimeRoute,
+  TheoryRoute: TheoryRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

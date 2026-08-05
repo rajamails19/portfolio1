@@ -105,6 +105,12 @@ function RootShell({ children }: { children: ReactNode }) {
     <html lang="en">
       <head>
         <HeadContent />
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              "try{if(localStorage.getItem('stage-deck-appearance')==='dark'){document.documentElement.classList.add('appearance-dark');document.documentElement.style.colorScheme='dark'}}catch(e){}",
+          }}
+        />
       </head>
       <body>
         {children}

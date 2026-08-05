@@ -4,6 +4,16 @@ import { FlowDiagram } from "./FlowDiagram";
 import { renderInline } from "@/lib/rich-text";
 import { Info, Lightbulb, AlertTriangle, ExternalLink, Link2 } from "lucide-react";
 
+// Bold, distinct per-column header colors on a fixed dark bar — reads the
+// same in both app light/dark modes since it doesn't depend on page tokens.
+const HEADER_COLORS = [
+  "oklch(0.8 0.16 85)",
+  "oklch(0.76 0.15 235)",
+  "oklch(0.78 0.19 40)",
+  "oklch(0.78 0.15 155)",
+  "oklch(0.78 0.16 320)",
+];
+
 function Callout({
   variant = "info",
   children,
@@ -82,10 +92,14 @@ export function AnswerBlocks({ blocks }: { blocks: Block[] }) {
             return (
               <div key={i} className="my-4 overflow-hidden rounded-2xl border border-gold/20">
                 <table className="w-full text-sm">
-                  <thead className="bg-noir/70">
+                  <thead style={{ backgroundColor: "oklch(0.16 0.02 85)" }}>
                     <tr>
                       {b.headers.map((h, k) => (
-                        <th key={k} className="px-4 py-2.5 text-left font-semibold text-gold">
+                        <th
+                          key={k}
+                          className="px-4 py-2.5 text-left font-bold"
+                          style={{ color: h ? HEADER_COLORS[k % HEADER_COLORS.length] : "oklch(0.55 0.01 85)" }}
+                        >
                           {h}
                         </th>
                       ))}
@@ -94,11 +108,21 @@ export function AnswerBlocks({ blocks }: { blocks: Block[] }) {
                   <tbody>
                     {b.rows.map((row, r) => (
                       <tr key={r} className="border-t border-gold/10 odd:bg-noir/40">
-                        {row.map((c, k) => (
-                          <td key={k} className="px-4 py-2.5 align-top text-foreground/85">
-                            {renderInline(c)}
-                          </td>
-                        ))}
+                        {row.map((c, k) =>
+                          k === 0 ? (
+                            <td
+                              key={k}
+                              className="px-4 py-2.5 align-top font-bold"
+                              style={{ color: HEADER_COLORS[r % HEADER_COLORS.length] }}
+                            >
+                              {renderInline(c)}
+                            </td>
+                          ) : (
+                            <td key={k} className="px-4 py-2.5 align-top text-foreground/85">
+                              {renderInline(c)}
+                            </td>
+                          ),
+                        )}
                       </tr>
                     ))}
                   </tbody>

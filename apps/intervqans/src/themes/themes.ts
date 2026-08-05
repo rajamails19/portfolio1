@@ -88,6 +88,18 @@ export const themes: Record<ThemeKey, ThemeDef> = {
       stat3Value: "∞",
     },
     sections: {
+      theory: {
+        title: "Conceptual Theory",
+        tagline: "Start here — what the AI fuss actually means, in plain language.",
+        emoji: "◐",
+        mascot: {
+          name: "The Professor",
+          title: "Foundations, clarity, big picture",
+          image: mentor,
+          quote:
+            "Before you build anything, understand what you're actually building on top of.",
+        },
+      },
       qans: {
         title: "Q & Answers",
         tagline: "Concept-level React, hooks, and interviews.",
@@ -177,6 +189,17 @@ export const themes: Record<ThemeKey, ThemeDef> = {
       stat3Value: "∞",
     },
     sections: {
+      theory: {
+        title: "Conceptual Theory",
+        tagline: "Start here — what the AI fuss actually means, in plain language.",
+        emoji: "◐",
+        mascot: {
+          name: "Chai Sensei",
+          title: "Teaches over slow-brewed chai",
+          image: chaatMithai,
+          quote: "Understand the base masala before you improvise the recipe.",
+        },
+      },
       qans: {
         title: "Q & Answers",
         tagline: "Crispy concepts, hot & fresh off the tawa.",
@@ -265,6 +288,17 @@ export const themes: Record<ThemeKey, ThemeDef> = {
       stat3Value: "∞",
     },
     sections: {
+      theory: {
+        title: "Conceptual Theory",
+        tagline: "Start here — what the AI fuss actually means, in plain language.",
+        emoji: "◐",
+        mascot: {
+          name: "The Analyst",
+          title: "Breaks down the game before kickoff",
+          image: fifaCoach,
+          quote: "Know the shape of the game before you play it.",
+        },
+      },
       qans: {
         title: "Q & Answers",
         tagline: "First-touch fundamentals. Ball on the ground.",
@@ -353,6 +387,17 @@ export const themes: Record<ThemeKey, ThemeDef> = {
       stat3Value: "∞",
     },
     sections: {
+      theory: {
+        title: "Conceptual Theory",
+        tagline: "Start here — what the AI fuss actually means, in plain language.",
+        emoji: "◐",
+        mascot: {
+          name: "Coach Mickey",
+          title: "Fundamentals before the fight",
+          image: rockyCoach,
+          quote: "You don't win a fight in the fight. You win it in training camp.",
+        },
+      },
       qans: {
         title: "Q & Answers",
         tagline: "Roadwork. Before dawn. No shortcuts.",

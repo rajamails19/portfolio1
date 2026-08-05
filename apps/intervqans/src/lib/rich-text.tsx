@@ -32,7 +32,7 @@ export function renderInline(input: string): ReactNode {
       parts.push(
         <mark
           key={key}
-          className="rounded-md bg-gradient-to-r from-gold/30 to-ember/25 px-1.5 py-0.5 font-medium text-gold shadow-[0_0_12px_-4px_oklch(0.82_0.15_85/0.6)]"
+          className="rounded-md bg-gold px-1.5 py-0.5 font-semibold text-[oklch(0.2_0.03_85)]"
         >
           {token.slice(2, -2)}
         </mark>,

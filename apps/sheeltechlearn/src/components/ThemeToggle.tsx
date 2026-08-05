@@ -1,4 +1,4 @@
-import { Code2, Music2, UtensilsCrossed } from "lucide-react";
+import { Code2, Moon, Music2, Sun, UtensilsCrossed } from "lucide-react";
 import { useNavigate, useRouterState } from "@tanstack/react-router";
 import { useTheme } from "@/context/ThemeContext";
 
@@ -8,7 +8,7 @@ const baseClass =
   "inline-flex items-center gap-1.5 rounded-full px-2.5 py-2 text-[10px] font-bold uppercase tracking-wider transition sm:px-3 sm:text-xs";
 
 export function ThemeToggle() {
-  const { theme, setTheme } = useTheme();
+  const { theme, setTheme, appearance, toggleAppearance } = useTheme();
   const navigate = useNavigate();
   const { location } = useRouterState();
   const isStage = theme === "rose";
@@ -59,6 +59,18 @@ export function ThemeToggle() {
       >
         <Code2 className="h-4 w-4" />
         TechHome
+      </button>
+      <span aria-hidden className="mx-0.5 h-6 w-px bg-border/80" />
+      <button
+        type="button"
+        onClick={toggleAppearance}
+        aria-pressed={appearance === "dark"}
+        aria-label={appearance === "dark" ? "Switch to light theme" : "Switch to dark theme"}
+        title={appearance === "dark" ? "Light theme" : "Dark theme"}
+        className={`${baseClass} min-w-9 justify-center border border-border/70 bg-card/55 text-foreground shadow-sm hover:-translate-y-0.5 hover:border-primary/45 hover:bg-card`}
+      >
+        {appearance === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+        <span className="hidden xl:inline">{appearance === "dark" ? "Light" : "Dark"}</span>
       </button>
     </div>
   );

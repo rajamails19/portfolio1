@@ -841,3 +841,78 @@
   font-weight: 800;
   background: color-mix(in oklch, var(--rose) 10%, transparent);
 }
+
+/* App-wide night mode. Deck accent colors stay intact; only the reading
+   surfaces and neutral palette move into a softer midnight range. */
+html.appearance-dark {
+  color-scheme: dark;
+
+  --background: oklch(0.15 0.025 285);
+  --foreground: oklch(0.93 0.018 285);
+  --card: oklch(0.205 0.03 285);
+  --card-foreground: oklch(0.94 0.015 285);
+  --popover: oklch(0.19 0.03 285);
+  --popover-foreground: oklch(0.94 0.015 285);
+  --secondary: oklch(0.255 0.035 285);
+  --secondary-foreground: oklch(0.92 0.015 285);
+  --muted: oklch(0.235 0.03 285);
+  --muted-foreground: oklch(0.73 0.025 285);
+  --accent-foreground: oklch(0.13 0.025 285);
+  --border: oklch(0.7 0.055 300 / 0.28);
+  --input: oklch(0.24 0.035 285);
+  --noir: oklch(0.18 0.03 285);
+
+  --sidebar: oklch(0.175 0.03 285);
+  --sidebar-foreground: oklch(0.92 0.018 285);
+  --sidebar-accent: oklch(0.245 0.04 285);
+  --sidebar-accent-foreground: oklch(0.94 0.015 285);
+  --sidebar-border: oklch(0.7 0.055 300 / 0.24);
+
+  --gradient-noir: linear-gradient(180deg, oklch(0.19 0.035 285), oklch(0.13 0.025 285));
+  --gradient-mesh:
+    radial-gradient(at 15% 8%, color-mix(in oklch, var(--rose) 28%, transparent) 0, transparent 48%),
+    radial-gradient(at 88% 4%, color-mix(in oklch, var(--coral) 22%, transparent) 0, transparent 48%),
+    radial-gradient(at 76% 88%, oklch(0.28 0.1 245 / 0.3) 0, transparent 52%),
+    linear-gradient(145deg, oklch(0.14 0.025 285), oklch(0.17 0.035 320));
+  --shadow-glass: 0 14px 46px oklch(0.04 0.02 285 / 0.58);
+  --shadow-soft: 0 6px 24px oklch(0.04 0.02 285 / 0.42);
+}
+
+html.appearance-dark body {
+  background-color: var(--background);
+  background-image: var(--gradient-mesh);
+}
+
+html.appearance-dark .theory-canvas {
+  background:
+    radial-gradient(circle at 12% 12%, color-mix(in oklch, var(--rose) 22%, transparent), transparent 27rem),
+    radial-gradient(circle at 88% 18%, color-mix(in oklch, var(--coral) 18%, transparent), transparent 30rem),
+    radial-gradient(circle at 72% 72%, oklch(0.32 0.11 245 / 0.34), transparent 34rem),
+    linear-gradient(155deg, oklch(0.145 0.028 290), oklch(0.17 0.04 325) 48%, oklch(0.155 0.04 245));
+}
+
+/* Tailwind's translucent white cards are intentionally used throughout the
+   decks. Give them a shared dark glass treatment without flattening accents. */
+html.appearance-dark [class*="bg-white"] {
+  background-color: color-mix(in oklch, var(--card) 88%, transparent) !important;
+}
+
+html.appearance-dark [class*="border-white/"] {
+  border-color: oklch(0.82 0.035 285 / 0.2) !important;
+}
+
+html.appearance-dark [class*="bg-[oklch(0.9"],
+html.appearance-dark [class*="bg-[oklch(0.8"] {
+  background-color: color-mix(in oklch, var(--card) 90%, var(--rose) 10%) !important;
+}
+
+html.appearance-dark [class*="text-[oklch(0.2"],
+html.appearance-dark [class*="text-[oklch(0.3"] {
+  color: var(--foreground) !important;
+}
+
+html.appearance-dark .site-editor-table-wrap,
+html.appearance-dark .site-editor-added-text,
+html.appearance-dark .site-editor-callout {
+  color: var(--foreground);
+}
