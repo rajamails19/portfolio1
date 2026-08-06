@@ -3,10 +3,13 @@ import { ChevronDown } from "lucide-react";
 import type { QAItem } from "@/content/types";
 import { AnswerBlocks } from "./AnswerBlocks";
 
+// Solid background + fixed dark ink — same convention used for the
+// highlight mark and table headers, so these read correctly in both
+// light and dark appearance without depending on page tokens.
 const diffColors: Record<string, string> = {
-  Easy: "border border-[oklch(0.6_0.15_155)]/40 bg-[oklch(0.35_0.1_155)]/40 text-[oklch(0.88_0.12_155)]",
-  Medium: "border border-gold/40 bg-gold/15 text-gold",
-  Hard: "border border-ember/50 bg-ember/20 text-[oklch(0.85_0.15_35)]",
+  Easy: "bg-[oklch(0.78_0.15_155)] text-[oklch(0.2_0.04_155)]",
+  Medium: "bg-[oklch(0.82_0.15_85)] text-[oklch(0.2_0.03_85)]",
+  Hard: "bg-[oklch(0.74_0.19_35)] text-[oklch(0.18_0.04_35)]",
 };
 
 export function QuestionCard({ item, index }: { item: QAItem; index: number }) {

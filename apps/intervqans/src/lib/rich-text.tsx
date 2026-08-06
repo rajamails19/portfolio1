@@ -24,7 +24,7 @@ export function renderInline(input: string): ReactNode {
 
     if (token.startsWith("**")) {
       parts.push(
-        <strong key={key} className="font-semibold text-gold">
+        <strong key={key} className="font-semibold text-gold-ink">
           {token.slice(2, -2)}
         </strong>,
       );
@@ -50,7 +50,7 @@ export function renderInline(input: string): ReactNode {
       parts.push(
         <code
           key={key}
-          className="rounded-md border border-gold/25 bg-noir/70 px-1.5 py-0.5 font-mono text-[0.85em] text-gold"
+          className="rounded-md border border-gold/25 bg-noir/70 px-1.5 py-0.5 font-mono text-[0.85em] text-gold-ink"
         >
           {token.slice(1, -1)}
         </code>,
@@ -65,7 +65,7 @@ export function renderInline(input: string): ReactNode {
             href={href}
             target="_blank"
             rel="noreferrer"
-            className="font-medium text-gold underline decoration-gold/50 decoration-dotted underline-offset-4 transition hover:decoration-gold hover:text-[oklch(0.9_0.14_85)]"
+            className="font-medium text-gold-ink underline decoration-gold/50 decoration-dotted underline-offset-4 transition hover:decoration-gold"
           >
             {label}
           </a>,

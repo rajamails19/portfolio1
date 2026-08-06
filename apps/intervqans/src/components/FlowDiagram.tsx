@@ -21,7 +21,7 @@ export function FlowDiagram({ block }: { block: FlowBlock }) {
   return (
     <figure className="my-5 overflow-hidden rounded-2xl border border-gold/20 bg-noir/50 p-5">
       {block.title && (
-        <figcaption className="mb-4 flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.25em] text-gold/80">
+        <figcaption className="mb-4 flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.25em] text-gold-ink/80">
           <span className="h-px flex-1 bg-gradient-to-r from-transparent to-gold/40" />
           {block.title}
           <span className="h-px flex-1 bg-gradient-to-l from-transparent to-gold/40" />
@@ -60,7 +60,7 @@ export function FlowDiagram({ block }: { block: FlowBlock }) {
                 )}
               </div>
               {i < block.nodes.length - 1 && (
-                <Arrow className="h-5 w-5 shrink-0 text-gold/70" strokeWidth={2.5} />
+                <Arrow className="h-5 w-5 shrink-0 text-gold-ink/70" strokeWidth={2.5} />
               )}
             </div>
           );

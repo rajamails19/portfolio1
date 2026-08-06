@@ -1,5 +1,5 @@
 import { createFileRoute, notFound } from "@tanstack/react-router";
-import { getSection } from "@/content";
+import { useSection } from "@/hooks/use-sections";
 import { SectionView } from "@/components/SectionView";
 
 export const Route = createFileRoute("/realtime")({
@@ -18,7 +18,7 @@ export const Route = createFileRoute("/realtime")({
     ],
   }),
   component: () => {
-    const s = getSection("realtime");
+    const s = useSection("realtime");
     if (!s) throw notFound();
     return <SectionView section={s} />;
   },

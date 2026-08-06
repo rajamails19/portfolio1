@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as TheoryRouteImport } from './routes/theory'
+import { Route as TermsRouteImport } from './routes/terms'
 import { Route as RealtimeRouteImport } from './routes/realtime'
 import { Route as QansRouteImport } from './routes/qans'
 import { Route as ProjectsRouteImport } from './routes/projects'
@@ -20,6 +21,11 @@ import { Route as IndexRouteImport } from './routes/index'
 const TheoryRoute = TheoryRouteImport.update({
   id: '/theory',
   path: '/theory',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TermsRoute = TermsRouteImport.update({
+  id: '/terms',
+  path: '/terms',
   getParentRoute: () => rootRouteImport,
 } as any)
 const RealtimeRoute = RealtimeRouteImport.update({
@@ -60,6 +66,7 @@ export interface FileRoutesByFullPath {
   '/projects': typeof ProjectsRoute
   '/qans': typeof QansRoute
   '/realtime': typeof RealtimeRoute
+  '/terms': typeof TermsRoute
   '/theory': typeof TheoryRoute
 }
 export interface FileRoutesByTo {
@@ -69,6 +76,7 @@ export interface FileRoutesByTo {
   '/projects': typeof ProjectsRoute
   '/qans': typeof QansRoute
   '/realtime': typeof RealtimeRoute
+  '/terms': typeof TermsRoute
   '/theory': typeof TheoryRoute
 }
 export interface FileRoutesById {
@@ -79,6 +87,7 @@ export interface FileRoutesById {
   '/projects': typeof ProjectsRoute
   '/qans': typeof QansRoute
   '/realtime': typeof RealtimeRoute
+  '/terms': typeof TermsRoute
   '/theory': typeof TheoryRoute
 }
 export interface FileRouteTypes {
@@ -90,6 +99,7 @@ export interface FileRouteTypes {
     | '/projects'
     | '/qans'
     | '/realtime'
+    | '/terms'
     | '/theory'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -99,6 +109,7 @@ export interface FileRouteTypes {
     | '/projects'
     | '/qans'
     | '/realtime'
+    | '/terms'
     | '/theory'
   id:
     | '__root__'
@@ -108,6 +119,7 @@ export interface FileRouteTypes {
     | '/projects'
     | '/qans'
     | '/realtime'
+    | '/terms'
     | '/theory'
   fileRoutesById: FileRoutesById
 }
@@ -118,6 +130,7 @@ export interface RootRouteChildren {
   ProjectsRoute: typeof ProjectsRoute
   QansRoute: typeof QansRoute
   RealtimeRoute: typeof RealtimeRoute
+  TermsRoute: typeof TermsRoute
   TheoryRoute: typeof TheoryRoute
 }
 
@@ -128,6 +141,13 @@ declare module '@tanstack/react-router' {
       path: '/theory'
       fullPath: '/theory'
       preLoaderRoute: typeof TheoryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/terms': {
+      id: '/terms'
+      path: '/terms'
+      fullPath: '/terms'
+      preLoaderRoute: typeof TermsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/realtime': {
@@ -182,6 +202,7 @@ const rootRouteChildren: RootRouteChildren = {
   ProjectsRoute: ProjectsRoute,
   QansRoute: QansRoute,
   RealtimeRoute: RealtimeRoute,
+  TermsRoute: TermsRoute,
   TheoryRoute: TheoryRoute,
 }
 export const routeTree = rootRouteImport

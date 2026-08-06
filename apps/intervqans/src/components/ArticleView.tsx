@@ -171,7 +171,7 @@ export function ArticleView({
         <header className="theory-hero-panel relative overflow-hidden rounded-[2rem] border border-gold/20 glass p-7 shadow-[0_28px_90px_-48px_oklch(0.2_0.05_60/0.65)] sm:p-10 lg:p-12">
           <div aria-hidden className="theory-hero-rings" />
           <div className="relative max-w-3xl">
-            <div className="inline-flex items-center gap-2 rounded-full border border-gold/25 bg-noir/60 px-4 py-2 text-[11px] font-bold uppercase tracking-[0.25em] text-gold shadow-sm">
+            <div className="inline-flex items-center gap-2 rounded-full border border-gold/25 bg-noir/60 px-4 py-2 text-[11px] font-bold uppercase tracking-[0.25em] text-gold-ink shadow-sm">
               <Sparkles className="h-3.5 w-3.5" /> A wandering field guide
             </div>
             <h1 className="mt-6 font-display text-5xl font-semibold leading-[0.98] sm:text-6xl lg:text-7xl">
@@ -193,7 +193,7 @@ export function ArticleView({
                 <a
                   key={item.id}
                   href={`#${item.id}`}
-                  className="inline-flex items-center gap-2 rounded-full border border-gold/20 bg-noir/50 px-3.5 py-2 text-xs font-semibold text-foreground/70 shadow-sm transition hover:-translate-y-0.5 hover:border-gold/45 hover:text-gold"
+                  className="inline-flex items-center gap-2 rounded-full border border-gold/20 bg-noir/50 px-3.5 py-2 text-xs font-semibold text-foreground/70 shadow-sm transition hover:-translate-y-0.5 hover:border-gold/45 hover:text-gold-ink"
                 >
                   <Icon className="h-3.5 w-3.5" />
                   {item.question}
@@ -203,7 +203,7 @@ export function ArticleView({
             <a
               href="/theory?view=original#original-theory-view"
               aria-current={showOriginalText ? "page" : undefined}
-              className="relative ml-auto inline-flex cursor-pointer items-center gap-2 overflow-hidden rounded-full border border-gold/30 bg-noir/60 px-4 py-2 text-xs font-bold text-gold shadow-sm transition hover:-translate-y-0.5 hover:border-gold/55 hover:bg-noir focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold/55 focus-visible:ring-offset-2 disabled:cursor-default disabled:opacity-70"
+              className="relative ml-auto inline-flex cursor-pointer items-center gap-2 overflow-hidden rounded-full border border-gold/30 bg-noir/60 px-4 py-2 text-xs font-bold text-gold-ink shadow-sm transition hover:-translate-y-0.5 hover:border-gold/55 hover:bg-noir focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold/55 focus-visible:ring-offset-2 disabled:cursor-default disabled:opacity-70"
             >
               <FileText className="h-3.5 w-3.5" /> Original Text
             </a>
@@ -312,7 +312,7 @@ export function ArticleView({
               event.preventDefault();
               window.scrollTo({ top: 0, behavior: "smooth" });
             }}
-            className="inline-flex items-center gap-2 rounded-full border border-gold/25 bg-noir/60 px-5 py-2.5 text-xs font-semibold text-foreground/82 shadow-sm backdrop-blur transition hover:-translate-y-0.5 hover:border-gold/50 hover:text-gold"
+            className="inline-flex items-center gap-2 rounded-full border border-gold/25 bg-noir/60 px-5 py-2.5 text-xs font-semibold text-foreground/82 shadow-sm backdrop-blur transition hover:-translate-y-0.5 hover:border-gold/50 hover:text-gold-ink"
           >
             <ArrowUp className="h-3.5 w-3.5" /> Float back to the top
           </a>

@@ -227,7 +227,7 @@ export function OriginalTheoryView() {
           </div>
           <a
             href="/theory#theory-view"
-            className="inline-flex w-fit cursor-pointer items-center gap-2 rounded-full border border-gold/25 bg-noir/70 px-4 py-2.5 text-xs font-bold text-gold shadow-sm transition hover:-translate-y-0.5 hover:border-gold/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold/45 focus-visible:ring-offset-2"
+            className="inline-flex w-fit cursor-pointer items-center gap-2 rounded-full border border-gold/25 bg-noir/70 px-4 py-2.5 text-xs font-bold text-gold-ink shadow-sm transition hover:-translate-y-0.5 hover:border-gold/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold/45 focus-visible:ring-offset-2"
           >
             <LayoutGrid className="h-3.5 w-3.5" /> Formatted View
           </a>

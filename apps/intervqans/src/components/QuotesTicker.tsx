@@ -10,7 +10,7 @@ export function QuotesTicker() {
       <div className="animate-marquee flex w-max gap-10 whitespace-nowrap">
         {loop.map((q, i) => (
           <span key={i} className="inline-flex items-center gap-3 text-sm">
-            <span className="text-gold">★</span>
+            <span className="text-gold-ink">★</span>
             <span className="font-display italic text-foreground/90">"{q.text}"</span>
             <span className="text-xs uppercase tracking-widest text-muted-foreground">
               — {q.author}

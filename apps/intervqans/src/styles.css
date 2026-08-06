@@ -38,6 +38,7 @@
 
   --color-gold: var(--gold);
   --color-gold-soft: var(--gold-soft);
+  --color-gold-ink: var(--gold-ink);
   --color-noir: var(--noir);
   --color-ember: var(--ember);
 
@@ -84,6 +85,10 @@
   --gold-soft: oklch(0.72 0.11 82);
   --noir: oklch(0.11 0.01 60);
   --ember: oklch(0.65 0.19 40);
+  /* Legible-text variant of --gold. Equal to --gold here (bright gold reads
+     fine on dark surfaces); darkened per-theme-hue only under light
+     appearance, where a light gold on a light/cream background washes out. */
+  --gold-ink: var(--gold);
 
   --gradient-primary: linear-gradient(135deg, oklch(0.82 0.15 85), oklch(0.65 0.19 40));
   --gradient-gold: linear-gradient(
@@ -584,6 +589,10 @@
   --shadow-glass: 0 14px 46px oklch(0.55 0.05 225 / 0.16);
   --shadow-soft: 0 6px 24px oklch(0.55 0.05 225 / 0.1);
   color-scheme: light;
+  /* Darken the active theme's own gold hue for text — a bright gold that
+     reads fine on a dark card washes out on a light/cream one. Derived from
+     --gold so it tracks whichever theme (noir/chaat/fifa/rocky) is active. */
+  --gold-ink: color-mix(in oklch, var(--gold) 55%, black 45%);
 }
 
 :root[data-appearance="light"] .glass {
@@ -595,5 +604,50 @@
 :root[data-appearance="light"] .glass-strong {
   background: color-mix(in oklab, white 90%, transparent);
   border: 1px solid color-mix(in oklab, oklch(0.6 0.06 225) 28%, transparent);
+  box-shadow: var(--shadow-glass);
+}
+
+/* ChaatDeck's own light look — warm turmeric/tamarind cream, ported from
+   the reference app's ".theme-chaat" palette instead of the generic
+   breeze-blue light mode every other theme uses. */
+:root[data-theme="chaat"][data-appearance="light"] {
+  --background: oklch(0.97 0.04 75);
+  --foreground: oklch(0.24 0.06 40);
+  --card: oklch(0.99 0.02 75);
+  --card-foreground: oklch(0.24 0.06 40);
+  --popover: oklch(0.99 0.02 75);
+  --popover-foreground: oklch(0.24 0.06 40);
+  --secondary: oklch(0.94 0.06 70);
+  --secondary-foreground: oklch(0.28 0.08 40);
+  --muted: oklch(0.94 0.05 70);
+  --muted-foreground: oklch(0.45 0.07 50);
+  --border: oklch(0.88 0.06 65);
+  --input: oklch(0.93 0.05 70);
+  --noir: oklch(0.99 0.02 75);
+  --sidebar: oklch(0.98 0.03 75);
+  --sidebar-foreground: oklch(0.24 0.06 40);
+  --sidebar-accent: oklch(0.94 0.06 70);
+  --sidebar-accent-foreground: oklch(0.28 0.08 40);
+  --sidebar-border: oklch(0.88 0.06 65);
+  --gradient-noir: linear-gradient(180deg, oklch(0.98 0.03 75) 0%, oklch(0.95 0.06 65) 100%);
+  --gradient-mesh:
+    radial-gradient(at 15% 10%, oklch(0.9 0.14 60 / 0.8) 0px, transparent 55%),
+    radial-gradient(at 85% 0%, oklch(0.9 0.15 35 / 0.75) 0px, transparent 55%),
+    radial-gradient(at 90% 90%, oklch(0.88 0.14 90 / 0.75) 0px, transparent 55%),
+    radial-gradient(at 0% 90%, oklch(0.9 0.13 145 / 0.55) 0px, transparent 55%);
+  --shadow-glow: 0 20px 60px -20px oklch(0.7 0.2 45 / 0.5);
+  --shadow-glass: 0 12px 40px oklch(0.7 0.18 50 / 0.22);
+  --shadow-soft: 0 4px 20px oklch(0.7 0.18 50 / 0.18);
+}
+
+:root[data-theme="chaat"][data-appearance="light"] .glass {
+  background: color-mix(in oklab, white 80%, transparent);
+  border: 1px solid color-mix(in oklab, oklch(0.55 0.15 45) 22%, transparent);
+  box-shadow: var(--shadow-glass);
+}
+
+:root[data-theme="chaat"][data-appearance="light"] .glass-strong {
+  background: color-mix(in oklab, white 92%, transparent);
+  border: 1px solid color-mix(in oklab, oklch(0.55 0.15 45) 28%, transparent);
   box-shadow: var(--shadow-glass);
 }

@@ -1,11 +1,26 @@
 import { Moon, Sun } from "lucide-react";
+import { useNavigate, useRouterState } from "@tanstack/react-router";
 import { useTheme } from "@/themes/ThemeContext";
 import { useAppearance } from "@/themes/AppearanceContext";
-import { themeKeys, themes } from "@/themes/themes";
+import { themeKeys, themes, type ThemeKey } from "@/themes/themes";
+
+// Routes that only exist for the Noir theme's content set.
+const NOIR_ONLY_PATHS = ["/theory", "/terms"];
 
 export function ThemeSwitcher() {
   const { themeKey, setThemeKey } = useTheme();
   const { appearance, toggleAppearance } = useAppearance();
+  const { location } = useRouterState();
+  const navigate = useNavigate();
+
+  const chooseTheme = async (nextTheme: ThemeKey) => {
+    const onNoirOnlyPath = NOIR_ONLY_PATHS.some((p) => location.pathname.startsWith(p));
+    if (nextTheme !== "noir" && onNoirOnlyPath) {
+      await navigate({ to: "/qans" });
+    }
+    setThemeKey(nextTheme);
+  };
+
   return (
     <div className="glass-strong fixed right-4 top-4 z-50 flex items-center gap-1 rounded-full p-1 shadow-glow">
       {themeKeys.map((k) => {
@@ -14,7 +29,7 @@ export function ThemeSwitcher() {
         return (
           <button
             key={k}
-            onClick={() => setThemeKey(k)}
+            onClick={() => chooseTheme(k)}
             title={`${t.brandName} — ${t.brandKicker}`}
             className={[
               "flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-semibold uppercase tracking-wider transition-all",
@@ -34,8 +49,8 @@ export function ThemeSwitcher() {
         title={appearance === "dark" ? "Switch to light appearance" : "Switch to dark appearance"}
         className="flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-foreground/75 transition-all hover:bg-white/10 hover:text-foreground"
       >
-        {appearance === "dark" ? <Moon className="h-3.5 w-3.5" /> : <Sun className="h-3.5 w-3.5" />}
-        <span className="hidden sm:inline">{appearance === "dark" ? "Dark" : "Light"}</span>
+        {appearance === "dark" ? <Sun className="h-3.5 w-3.5" /> : <Moon className="h-3.5 w-3.5" />}
+        <span className="hidden sm:inline">{appearance === "dark" ? "Light" : "Dark"}</span>
       </button>
     </div>
   );

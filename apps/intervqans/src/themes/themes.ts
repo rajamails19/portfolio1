@@ -100,6 +100,17 @@ export const themes: Record<ThemeKey, ThemeDef> = {
             "Before you build anything, understand what you're actually building on top of.",
         },
       },
+      terms: {
+        title: "Terms at a Glance",
+        tagline: "Simple tech terms, explained clearly.",
+        emoji: "🔤",
+        mascot: {
+          name: "The Translator",
+          title: "Plain-English tech glossary",
+          image: mentor,
+          quote: "If you can't explain a term simply, you don't understand it well enough.",
+        },
+      },
       qans: {
         title: "Q & Answers",
         tagline: "Concept-level React, hooks, and interviews.",

@@ -1,5 +1,5 @@
 import { createFileRoute, notFound } from "@tanstack/react-router";
-import { getSection } from "@/content";
+import { useSection } from "@/hooks/use-sections";
 import { ArticleView } from "@/components/ArticleView";
 
 export const Route = createFileRoute("/theory")({
@@ -23,7 +23,7 @@ export const Route = createFileRoute("/theory")({
     ],
   }),
   component: () => {
-    const s = getSection("theory");
+    const s = useSection("theory");
     const { view } = Route.useSearch();
     if (!s) throw notFound();
     return <ArticleView section={s} showOriginalText={view === "original"} />;

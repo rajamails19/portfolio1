@@ -13,6 +13,7 @@ export type Block =
   | { type: "code"; language: string; content: string }
   | { type: "callout"; variant?: "info" | "warn" | "tip"; content: string }
   | { type: "table"; headers: string[]; rows: string[][] }
+  | { type: "image"; src: string; alt: string }
   | { type: "link"; href: string; label: string }
   | { type: "links"; items: { href: string; label: string; description?: string }[] }
   | {
@@ -25,6 +26,7 @@ export type Block =
 export interface QAItem {
   id: string;
   question: string;
+  category?: string;
   tags?: string[];
   difficulty?: "Easy" | "Medium" | "Hard";
   answer: Block[];

@@ -14,6 +14,22 @@ const HEADER_COLORS = [
   "oklch(0.78 0.16 320)",
 ];
 
+// First-column row-label text sits on the page's own background instead of
+// a fixed dark bar, so it needs to hold up in both light and dark mode.
+// Bold, dark red/green — reads clearly on both the dark noir cards and the
+// light/cream backgrounds, unlike a light gold at the same lightness.
+const ROW_LABEL_COLORS = ["oklch(0.42 0.13 150)", "oklch(0.45 0.19 25)"];
+
+// Source content often wraps an entire table cell in "**...**". Rendering
+// that through the shared rich-text renderer would force it to text-gold-ink,
+// which silently overrides the per-row color below — so strip that outer
+// bold marker here and apply our own bold + color instead.
+function stripOuterBold(text: string): string | null {
+  const trimmed = text.trim();
+  const match = /^\*\*(.+)\*\*$/.exec(trimmed);
+  return match ? match[1] : null;
+}
+
 function Callout({
   variant = "info",
   children,
@@ -70,7 +86,7 @@ export function AnswerBlocks({ blocks }: { blocks: Block[] }) {
             return (
               <Tag
                 key={i}
-                className={`my-3 space-y-1.5 pl-5 ${b.ordered ? "list-decimal" : "list-disc"} marker:text-gold/80`}
+                className={`my-3 space-y-1.5 pl-5 ${b.ordered ? "list-decimal" : "list-disc"} marker:text-gold-ink/80`}
               >
                 {b.items.map((it, k) => (
                   <li key={k}>{renderInline(it)}</li>
@@ -88,6 +104,12 @@ export function AnswerBlocks({ blocks }: { blocks: Block[] }) {
             );
           case "flow":
             return <FlowDiagram key={i} block={b} />;
+          case "image":
+            return (
+              <div key={i} className="my-4 overflow-hidden rounded-2xl border border-gold/20">
+                <img src={b.src} alt={b.alt} className="w-full" />
+              </div>
+            );
           case "table":
             return (
               <div key={i} className="my-4 overflow-hidden rounded-2xl border border-gold/20">
@@ -113,9 +135,9 @@ export function AnswerBlocks({ blocks }: { blocks: Block[] }) {
                             <td
                               key={k}
                               className="px-4 py-2.5 align-top font-bold"
-                              style={{ color: HEADER_COLORS[r % HEADER_COLORS.length] }}
+                              style={{ color: ROW_LABEL_COLORS[r % ROW_LABEL_COLORS.length] }}
                             >
-                              {renderInline(c)}
+                              {stripOuterBold(c) ?? renderInline(c)}
                             </td>
                           ) : (
                             <td key={k} className="px-4 py-2.5 align-top text-foreground/85">
@@ -136,7 +158,7 @@ export function AnswerBlocks({ blocks }: { blocks: Block[] }) {
                 href={b.href}
                 target="_blank"
                 rel="noreferrer"
-                className="my-2 inline-flex items-center gap-1.5 rounded-full border border-gold/30 bg-gold/10 px-3 py-1.5 text-sm font-medium text-gold hover:bg-gold/20"
+                className="my-2 inline-flex items-center gap-1.5 rounded-full border border-gold/30 bg-gold/10 px-3 py-1.5 text-sm font-medium text-gold-ink hover:bg-gold/20"
               >
                 {b.label} <ExternalLink className="h-3.5 w-3.5" />
               </a>
@@ -152,11 +174,11 @@ export function AnswerBlocks({ blocks }: { blocks: Block[] }) {
                     rel="noreferrer"
                     className="group flex items-start gap-3 rounded-2xl border border-gold/20 bg-noir/50 p-3 transition hover:border-gold/50 hover:bg-noir/80"
                   >
-                    <span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-xl border border-gold/30 bg-gold/10 text-gold">
+                    <span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-xl border border-gold/30 bg-gold/10 text-gold-ink">
                       <Link2 className="h-4 w-4" />
                     </span>
                     <span className="min-w-0 flex-1">
-                      <span className="block truncate font-medium text-foreground group-hover:text-gold">
+                      <span className="block truncate font-medium text-foreground group-hover:text-gold-ink">
                         {l.label}
                       </span>
                       {l.description && (
@@ -164,11 +186,11 @@ export function AnswerBlocks({ blocks }: { blocks: Block[] }) {
                           {l.description}
                         </span>
                       )}
-                      <span className="mt-0.5 block truncate text-[11px] text-gold/60">
+                      <span className="mt-0.5 block truncate text-[11px] text-gold-ink/60">
                         {l.href}
                       </span>
                     </span>
-                    <ExternalLink className="mt-1 h-3.5 w-3.5 shrink-0 text-gold/60 transition group-hover:text-gold" />
+                    <ExternalLink className="mt-1 h-3.5 w-3.5 shrink-0 text-gold-ink/60 transition group-hover:text-gold-ink" />
                   </a>
                 ))}
               </div>

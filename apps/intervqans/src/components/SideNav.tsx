@@ -1,11 +1,23 @@
 import { Link, useRouterState } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
-import { sections } from "@/content";
+import { Fragment, useEffect, useState } from "react";
+import { useSections } from "@/hooks/use-sections";
 import { useTheme } from "@/themes/ThemeContext";
-import { Sparkles, Code2, Zap, Rocket, Layers, BookOpenCheck, ListTree, ChevronRight } from "lucide-react";
+import {
+  Sparkles,
+  Code2,
+  Zap,
+  Rocket,
+  Layers,
+  BookOpenCheck,
+  BookText,
+  ListTree,
+  ChevronRight,
+} from "lucide-react";
+import { termTiles } from "@/content/terms";
 
 const icons: Record<string, typeof Sparkles> = {
   theory: BookOpenCheck,
+  terms: BookText,
   qans: Sparkles,
   programs: Code2,
   realtime: Zap,
@@ -31,9 +43,12 @@ const theoryChapters = [
 
 export function SideNav() {
   const { location } = useRouterState();
-  const { theme } = useTheme();
-  const activeSlug =
-    sections.find((s) => location.pathname.startsWith(`/${s.slug}`))?.slug ?? "qans";
+  const { theme, themeKey } = useTheme();
+  const sections = useSections();
+  const isTerms = location.pathname.startsWith("/terms") && themeKey === "noir";
+  const activeSlug = isTerms
+    ? "terms"
+    : (sections.find((s) => location.pathname.startsWith(`/${s.slug}`))?.slug ?? "qans");
   const activeMeta = theme.sections[activeSlug];
   const isTheory = location.pathname.startsWith("/theory");
   const [activeChapter, setActiveChapter] = useState<(typeof theoryChapters)[number]["id"]>(
@@ -69,7 +84,7 @@ export function SideNav() {
       <Link to="/" className="group flex items-center gap-3">
         <div className="relative">
           <span className="absolute -inset-1 rounded-2xl bg-gradient-to-br from-gold to-ember opacity-60 blur-md" />
-          <div className="relative flex h-14 w-14 items-center justify-center rounded-2xl bg-noir font-display text-2xl font-bold text-gold ring-1 ring-gold/40">
+          <div className="relative flex h-14 w-14 items-center justify-center rounded-2xl bg-noir font-display text-2xl font-bold text-gold-ink ring-1 ring-gold/40">
             {theme.brandName.charAt(0)}
           </div>
         </div>
@@ -82,53 +97,101 @@ export function SideNav() {
       </Link>
 
       <nav className="glass flex flex-col gap-1 rounded-3xl p-3">
-        {sections.map((s) => {
+        {sections.map((s, index) => {
           const Icon = icons[s.slug] ?? Sparkles;
           const to = `/${s.slug}` as const;
           const active = location.pathname.startsWith(to);
           const meta = theme.sections[s.slug];
           return (
-            <Link
-              key={s.slug}
-              to={to}
-              className={[
-                "group relative flex items-center gap-3 rounded-2xl px-3 py-2.5 text-sm font-medium transition-all",
-                active
-                  ? "bg-gradient-to-r from-gold/90 to-ember/80 text-primary-foreground shadow-glow"
-                  : "text-foreground/85 hover:bg-white/5 hover:text-foreground",
-              ].join(" ")}
-            >
-              <span className="relative h-9 w-9 shrink-0 overflow-hidden rounded-xl ring-1 ring-gold/30">
-                <img
-                  src={meta.mascot.image}
-                  alt=""
-                  className="h-full w-full object-cover"
-                  loading="lazy"
-                />
-              </span>
-              <span className="flex flex-1 flex-col leading-tight">
-                <span className="flex items-center gap-1.5">
-                  <Icon className="h-3.5 w-3.5 opacity-80" />
-                  {meta.title}
+            <Fragment key={s.slug}>
+              <Link
+                to={to}
+                className={[
+                  "group relative flex items-center gap-3 rounded-2xl px-3 py-2.5 text-sm font-medium transition-all",
+                  active
+                    ? "bg-gradient-to-r from-gold/90 to-ember/80 text-primary-foreground shadow-glow"
+                    : "text-foreground/85 hover:bg-white/5 hover:text-foreground",
+                ].join(" ")}
+              >
+                <span className="relative h-9 w-9 shrink-0 overflow-hidden rounded-xl ring-1 ring-gold/30">
+                  <img
+                    src={meta.mascot.image}
+                    alt=""
+                    className="h-full w-full object-cover"
+                    loading="lazy"
+                  />
+                </span>
+                <span className="flex flex-1 flex-col leading-tight">
+                  <span className="flex items-center gap-1.5">
+                    <Icon className="h-3.5 w-3.5 opacity-80" />
+                    {meta.title}
+                  </span>
+                  <span
+                    className={[
+                      "text-[10px] uppercase tracking-wider",
+                      active ? "text-primary-foreground/80" : "text-muted-foreground",
+                    ].join(" ")}
+                  >
+                    {meta.mascot.name}
+                  </span>
                 </span>
                 <span
                   className={[
-                    "text-[10px] uppercase tracking-wider",
-                    active ? "text-primary-foreground/80" : "text-muted-foreground",
+                    "rounded-full px-2 py-0.5 text-[10px] font-semibold tabular-nums",
+                    active
+                      ? "bg-black/25 text-primary-foreground"
+                      : "bg-white/5 text-foreground/70",
                   ].join(" ")}
                 >
-                  {meta.mascot.name}
+                  {s.items.length}
                 </span>
-              </span>
-              <span
-                className={[
-                  "rounded-full px-2 py-0.5 text-[10px] font-semibold tabular-nums",
-                  active ? "bg-black/25 text-primary-foreground" : "bg-white/5 text-foreground/70",
-                ].join(" ")}
-              >
-                {s.items.length}
-              </span>
-            </Link>
+              </Link>
+              {index === 0 && themeKey === "noir" && (
+                <Link
+                  key="terms"
+                  to="/terms"
+                  className={[
+                    "group relative flex items-center gap-3 rounded-2xl px-3 py-2.5 text-sm font-medium transition-all",
+                    isTerms
+                      ? "bg-gradient-to-r from-gold/90 to-ember/80 text-primary-foreground shadow-glow"
+                      : "text-foreground/85 hover:bg-white/5 hover:text-foreground",
+                  ].join(" ")}
+                >
+                  <span className="relative h-9 w-9 shrink-0 overflow-hidden rounded-xl ring-1 ring-gold/30">
+                    <img
+                      src={theme.sections.terms.mascot.image}
+                      alt=""
+                      className="h-full w-full object-cover"
+                      loading="lazy"
+                    />
+                  </span>
+                  <span className="flex flex-1 flex-col leading-tight">
+                    <span className="flex items-center gap-1.5">
+                      <BookText className="h-3.5 w-3.5 opacity-80" />
+                      {theme.sections.terms.title}
+                    </span>
+                    <span
+                      className={[
+                        "text-[10px] uppercase tracking-wider",
+                        isTerms ? "text-primary-foreground/80" : "text-muted-foreground",
+                      ].join(" ")}
+                    >
+                      {theme.sections.terms.mascot.name}
+                    </span>
+                  </span>
+                  <span
+                    className={[
+                      "rounded-full px-2 py-0.5 text-[10px] font-semibold tabular-nums",
+                      isTerms
+                        ? "bg-black/25 text-primary-foreground"
+                        : "bg-white/5 text-foreground/70",
+                    ].join(" ")}
+                  >
+                    {termTiles.length}
+                  </span>
+                </Link>
+              )}
+            </Fragment>
           );
         })}
       </nav>
@@ -136,7 +199,7 @@ export function SideNav() {
       {isTheory ? (
         <nav aria-label="Conceptual Theory chapters" className="glass rounded-3xl p-3">
           <div className="mb-2 flex items-center gap-2 px-2 py-1.5 text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground">
-            <ListTree className="h-3.5 w-3.5 text-gold" /> Chapter map
+            <ListTree className="h-3.5 w-3.5 text-gold-ink" /> Chapter map
           </div>
           <div className="space-y-0.5">
             {theoryChapters.map((chapter, index) => {
@@ -151,13 +214,13 @@ export function SideNav() {
                     "group flex items-center gap-2 rounded-xl px-2.5 py-2 text-xs font-semibold transition",
                     active
                       ? "bg-gradient-to-r from-gold/90 to-ember/80 text-primary-foreground shadow-sm"
-                      : "text-foreground/65 hover:bg-white/5 hover:text-gold",
+                      : "text-foreground/65 hover:bg-white/5 hover:text-gold-ink",
                   ].join(" ")}
                 >
                   <span
                     className={[
                       "flex h-6 w-6 shrink-0 items-center justify-center rounded-lg text-[10px] tabular-nums",
-                      active ? "bg-black/20 text-primary-foreground" : "bg-gold/10 text-gold",
+                      active ? "bg-black/20 text-primary-foreground" : "bg-gold/10 text-gold-ink",
                     ].join(" ")}
                   >
                     {String(index + 1).padStart(2, "0")}
@@ -186,7 +249,7 @@ export function SideNav() {
               loading="lazy"
             />
             <div className="min-w-0">
-              <div className="truncate font-display text-sm font-semibold text-gold">
+              <div className="truncate font-display text-sm font-semibold text-gold-ink">
                 {activeMeta.mascot.name}
               </div>
               <div className="truncate text-[10px] uppercase tracking-wider text-muted-foreground">
