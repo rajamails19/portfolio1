@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "mathdreams-app",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["--prefix", "apps/mathraja", "run", "dev", "--", "--port", "8210"],
+      "port": 8210
+    }
+  ]
+}

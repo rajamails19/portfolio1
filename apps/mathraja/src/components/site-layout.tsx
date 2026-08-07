@@ -1,7 +1,10 @@
 import { Link, useRouterState } from "@tanstack/react-router";
+import { Menu } from "lucide-react";
+import { useState } from "react";
 import type { ReactNode } from "react";
 import mascot from "@/assets/mascot-hero.jpg";
 import { AccountButton } from "@/components/visitor-access";
+import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 
 const NAV = [
   { to: "/", label: "Home" },
@@ -19,6 +22,9 @@ const NAV = [
 
 export function SiteHeader() {
   const path = useRouterState({ select: (s) => s.location.pathname });
+  const [open, setOpen] = useState(false);
+  const isActive = (to: string) => path === to || path.startsWith(to + "/");
+
   return (
     <header className="sticky top-0 z-40 w-full">
       <div className="mx-auto mt-3 max-w-7xl px-3">
@@ -31,9 +37,9 @@ export function SiteHeader() {
             />
             <span className="font-display text-lg font-bold text-gradient">MathDreams</span>
           </Link>
-          <nav className="ml-1 flex flex-1 items-center gap-1 overflow-x-auto no-scrollbar">
+          <nav className="ml-1 hidden flex-1 items-center gap-1 overflow-x-auto no-scrollbar md:flex">
             {NAV.slice(1).map((item) => {
-              const active = path === item.to || path.startsWith(item.to + "/");
+              const active = isActive(item.to);
               return (
                 <Link
                   key={item.to}
@@ -50,6 +56,42 @@ export function SiteHeader() {
               );
             })}
           </nav>
+          <div className="flex flex-1 justify-end md:hidden">
+            <Sheet open={open} onOpenChange={setOpen}>
+              <SheetTrigger asChild>
+                <button
+                  type="button"
+                  aria-label="Open menu"
+                  className="rounded-full p-2 text-foreground/70 hover:bg-white/60 hover:text-foreground"
+                >
+                  <Menu className="h-5 w-5" />
+                </button>
+              </SheetTrigger>
+              <SheetContent side="right" className="w-72">
+                <SheetTitle className="font-display text-lg text-gradient">MathDreams</SheetTitle>
+                <nav className="mt-6 flex flex-col gap-1">
+                  {NAV.slice(1).map((item) => {
+                    const active = isActive(item.to);
+                    return (
+                      <Link
+                        key={item.to}
+                        to={item.to}
+                        onClick={() => setOpen(false)}
+                        className={
+                          "rounded-xl px-3 py-2 text-sm font-medium transition " +
+                          (active
+                            ? "bg-primary text-primary-foreground shadow-glow"
+                            : "text-foreground/70 hover:bg-white/60 hover:text-foreground")
+                        }
+                      >
+                        {item.label}
+                      </Link>
+                    );
+                  })}
+                </nav>
+              </SheetContent>
+            </Sheet>
+          </div>
           <AccountButton />
         </div>
       </div>

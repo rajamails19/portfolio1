@@ -64,7 +64,6 @@ function GradeDetail() {
                 loading="lazy"
                 className="aspect-[4/3] w-full object-cover transition duration-500 group-hover:scale-105"
               />
-              <div className={`absolute inset-0 bg-gradient-to-t ${t.accent}`} />
               <div className="absolute left-3 top-3 rounded-full bg-white/85 px-2.5 py-1 text-xs font-semibold">
                 {t.emoji} {t.name}
               </div>
