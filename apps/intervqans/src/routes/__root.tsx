@@ -12,13 +12,14 @@ import { useEffect, type ReactNode } from "react";
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { SideNav } from "../components/SideNav";
+import { MobileNav } from "../components/MobileNav";
 import { ThemeProvider } from "../themes/ThemeContext";
 import { AppearanceProvider } from "../themes/AppearanceContext";
 import { ThemeSwitcher } from "../components/ThemeSwitcher";
 
 function NotFoundComponent() {
   return (
-    <div className="flex min-h-screen items-center justify-center px-4">
+    <div className="flex min-h-dvh items-center justify-center px-4">
       <div className="glass max-w-md rounded-3xl p-10 text-center">
         <h1 className="font-display text-7xl font-bold gradient-text">404</h1>
         <h2 className="mt-4 font-display text-xl font-semibold">This page went for a snack</h2>
@@ -46,7 +47,7 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   }, [error]);
 
   return (
-    <div className="flex min-h-screen items-center justify-center px-4">
+    <div className="flex min-h-dvh items-center justify-center px-4">
       <div className="glass max-w-md rounded-3xl p-10 text-center">
         <h1 className="font-display text-xl font-semibold">This page didn't load</h1>
         <p className="mt-2 text-sm text-muted-foreground">
@@ -150,7 +151,8 @@ function RootComponent() {
       <AppearanceProvider>
         <ThemeProvider>
           <ThemeSwitcher />
-          <div className="flex min-h-screen">
+          <MobileNav />
+          <div className="flex min-h-dvh">
             <div className="hidden lg:block">
               <SideNav />
             </div>

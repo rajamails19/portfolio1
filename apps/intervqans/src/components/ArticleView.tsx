@@ -162,7 +162,7 @@ export function ArticleView({
   showOriginalText?: boolean;
 }) {
   return (
-    <div id="top" className="theory-view-shell theory-canvas relative min-h-screen overflow-x-clip pb-24">
+    <div id="top" className="theory-view-shell theory-canvas relative min-h-dvh overflow-x-clip pb-24">
       <div aria-hidden className="theory-orb theory-orb-one" />
       <div aria-hidden className="theory-orb theory-orb-two" />
       <div aria-hidden className="theory-grid" />

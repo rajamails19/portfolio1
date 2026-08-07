@@ -235,7 +235,7 @@ export const themes: Record<ThemeKey, ThemeDef> = {
         },
       },
       realtime: {
-        title: "Realtime Scenarios",
+        title: "Real-Time Scenarios",
         tagline: "Rush hour. Server down. Chai on stove.",
         emoji: "🍵",
         mascot: {

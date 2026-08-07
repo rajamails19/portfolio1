@@ -2,7 +2,7 @@ import type { Section } from "@/content/types";
 
 export const qansSection: Section = {
   slug: "qans",
-  title: "Chaat Q & Answers",
+  title: "Q & Answers",
   tagline: "Street-food fundamentals — every question is a tasting note.",
   emoji: "◈",
   gradient: "from-[oklch(0.92_0.13_60)] via-[oklch(0.9_0.14_35)] to-[oklch(0.9_0.13_20)]",
@@ -1243,7 +1243,7 @@ export const qansSection: Section = {
 
 export const programsSection: Section = {
   slug: "programs",
-  title: "Signature Recipes",
+  title: "Programs",
   tagline: "Full recipes — measured, timed, and station-tight.",
   emoji: "❋",
   gradient: "from-[oklch(0.92_0.12_45)] via-[oklch(0.9_0.14_25)] to-[oklch(0.9_0.12_10)]",
@@ -1416,7 +1416,7 @@ Add water little by little — DOUGH MUST BE STIFF, not soft. Rest 30 min.`,
 
 export const realtimeSection: Section = {
   slug: "realtime",
-  title: "Kitchen Live",
+  title: "Real-Time Scenarios",
   tagline: "Real-time stall scenarios — what actually goes wrong during peak hour.",
   emoji: "⚡",
   gradient: "from-[oklch(0.92_0.13_40)] via-[oklch(0.9_0.15_20)] to-[oklch(0.88_0.14_0)]",
@@ -1513,7 +1513,7 @@ export const realtimeSection: Section = {
 
 export const projectsSection: Section = {
   slug: "projects",
-  title: "Signature Dishes",
+  title: "Projects",
   tagline: "Full plate builds — the story, the plating, the standing ovation.",
   emoji: "★",
   gradient: "from-[oklch(0.9_0.14_30)] via-[oklch(0.88_0.15_15)] to-[oklch(0.85_0.14_355)]",
@@ -1688,7 +1688,7 @@ This is the soul. No oil, no water — powder only.`,
 
 export const othersSection: Section = {
   slug: "others",
-  title: "The Deep Cuts",
+  title: "All Others",
   tagline: "Beverages, sweets, techniques — the encore menu.",
   emoji: "❋",
   gradient: "from-[oklch(0.92_0.11_50)] via-[oklch(0.9_0.13_25)] to-[oklch(0.88_0.13_5)]",

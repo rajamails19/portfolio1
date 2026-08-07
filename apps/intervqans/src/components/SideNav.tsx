@@ -231,7 +231,7 @@ export function SideNav() {
                       "h-3.5 w-3.5 transition",
                       active
                         ? "translate-x-0 opacity-100"
-                        : "-translate-x-1 opacity-0 group-hover:translate-x-0 group-hover:opacity-70",
+                        : "opacity-70 sm:-translate-x-1 sm:opacity-0 sm:group-hover:translate-x-0 sm:group-hover:opacity-70",
                     ].join(" ")}
                   />
                 </a>

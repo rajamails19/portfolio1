@@ -24,7 +24,7 @@ export function CodeBlock({ language, code }: { language: string; code: string }
         </div>
         <button
           onClick={copy}
-          className="flex items-center gap-1.5 rounded-lg bg-white/5 px-2.5 py-1 text-xs font-medium text-white/70 opacity-0 transition hover:bg-white/10 hover:text-white group-hover:opacity-100"
+          className="flex items-center gap-1.5 rounded-lg bg-white/5 px-2.5 py-1 text-xs font-medium text-white/70 opacity-100 transition hover:bg-white/10 hover:text-white sm:opacity-0 sm:group-hover:opacity-100"
         >
           {copied ? <Check className="h-3.5 w-3.5" /> : <Copy className="h-3.5 w-3.5" />}
           {copied ? "Copied" : "Copy"}

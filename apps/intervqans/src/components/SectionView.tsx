@@ -135,7 +135,7 @@ export function SectionView({ section }: { section: Section }) {
           value={q}
           onChange={(e) => setQ(e.target.value)}
           placeholder={`Search in ${showTopics ? activeTopic : meta.title}…`}
-          className="flex-1 bg-transparent text-sm placeholder:text-muted-foreground/70 focus:outline-none"
+          className="flex-1 bg-transparent text-base placeholder:text-muted-foreground/70 focus:outline-none sm:text-sm"
         />
         {q && (
           <button

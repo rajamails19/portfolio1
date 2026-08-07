@@ -113,6 +113,7 @@ export function AnswerBlocks({ blocks }: { blocks: Block[] }) {
           case "table":
             return (
               <div key={i} className="my-4 overflow-hidden rounded-2xl border border-gold/20">
+                <div className="overflow-x-auto">
                 <table className="w-full text-sm">
                   <thead style={{ backgroundColor: "oklch(0.16 0.02 85)" }}>
                     <tr>
@@ -149,6 +150,7 @@ export function AnswerBlocks({ blocks }: { blocks: Block[] }) {
                     ))}
                   </tbody>
                 </table>
+                </div>
               </div>
             );
           case "link":

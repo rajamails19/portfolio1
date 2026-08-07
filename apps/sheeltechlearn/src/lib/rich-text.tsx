@@ -24,7 +24,7 @@ export function renderInline(input: string): ReactNode {
 
     if (token.startsWith("**")) {
       parts.push(
-        <strong key={key} className="font-semibold text-rose">
+        <strong key={key} className="font-bold text-[oklch(0.52_0.21_25)]">
           {token.slice(2, -2)}
         </strong>,
       );
