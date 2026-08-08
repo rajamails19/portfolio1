@@ -13,6 +13,7 @@ import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { SideNav } from "../components/SideNav";
 import { MobileNav } from "../components/MobileNav";
+import { SiteEditor } from "../components/SiteEditor";
 import { ThemeProvider } from "../themes/ThemeContext";
 import { AppearanceProvider } from "../themes/AppearanceContext";
 import { ThemeSwitcher } from "../components/ThemeSwitcher";
@@ -157,9 +158,12 @@ function RootComponent() {
               <SideNav />
             </div>
             <main className="flex-1 min-w-0">
-              <Outlet />
+              <div data-site-edit-surface="page">
+                <Outlet />
+              </div>
             </main>
           </div>
+          <SiteEditor />
         </ThemeProvider>
       </AppearanceProvider>
     </QueryClientProvider>
