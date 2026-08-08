@@ -26,7 +26,10 @@ import {
   Underline,
   Undo2,
 } from "lucide-react";
+import { useRouterState } from "@tanstack/react-router";
 import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
+
+import { supabase } from "../lib/supabase";
 
 type SavedBlock = { html: string; style?: string };
 type CustomBlock = { id: string; anchorKey: string; html: string };
@@ -34,37 +37,48 @@ type PageEdits = { blocks: Record<string, SavedBlock>; customBlocks: CustomBlock
 
 const EMPTY_EDITS: PageEdits = { blocks: {}, customBlocks: [] };
 const EDITABLE_SELECTOR = "p,h1,h2,h3,h4,h5,h6,li,td,th,blockquote,pre,[data-site-editor-custom-id]";
-const ACCIDENTAL_BLOCK_CLEANUP = "sheeltech:cleanup:latest-two-root-blocks-v1";
 
-function storageKey() {
-  return `sheeltech:page-edits:${window.location.pathname}`;
-}
+// Edits live in Supabase (table: sheeltechlearn_page_edits, keyed by pathname)
+// so everyone sees the same content. We keep an in-memory cache per pathname
+// so the many synchronous read sites (prepareSurfaces, undo/redo snapshots)
+// stay fast, and push writes to Supabase debounced in the background.
+let cachedPathname: string | null = null;
+let cachedEdits: PageEdits = EMPTY_EDITS;
+let saveTimer: number | null = null;
+let saveListener: ((ok: boolean) => void) | null = null;
 
 function loadEdits(): PageEdits {
-  try {
-    const saved = window.localStorage.getItem(storageKey());
-    return saved ? { ...EMPTY_EDITS, ...JSON.parse(saved) } : { blocks: {}, customBlocks: [] };
-  } catch {
-    return { blocks: {}, customBlocks: [] };
-  }
+  return cachedEdits;
 }
 
 function saveEdits(edits: PageEdits) {
-  window.localStorage.setItem(storageKey(), JSON.stringify(edits));
+  cachedEdits = edits;
+  const pathname = cachedPathname;
+  if (saveTimer) window.clearTimeout(saveTimer);
+  saveTimer = window.setTimeout(() => {
+    if (!pathname) return;
+    supabase
+      .from("sheeltechlearn_page_edits")
+      .upsert({ pathname, edits }, { onConflict: "pathname" })
+      .then(({ error }) => {
+        if (error) console.error("Failed to save page edit", error);
+        saveListener?.(!error);
+      });
+  }, 500);
 }
 
-function removeLatestAccidentalBlocks() {
-  if (window.location.pathname !== "/" || window.localStorage.getItem(ACCIDENTAL_BLOCK_CLEANUP)) return;
-  const edits = loadEdits();
-  if (edits.customBlocks.length < 2) return;
-  const removed = edits.customBlocks.slice(-2);
-  edits.customBlocks = edits.customBlocks.slice(0, -2);
-  removed.forEach(({ id }) => {
-    delete edits.blocks[`custom:${id}`];
-    document.querySelector<HTMLElement>(`[data-site-editor-custom-id="${id}"]`)?.remove();
-  });
-  saveEdits(edits);
-  window.localStorage.setItem(ACCIDENTAL_BLOCK_CLEANUP, "done");
+async function fetchEdits(pathname: string): Promise<PageEdits> {
+  const { data, error } = await supabase
+    .from("sheeltechlearn_page_edits")
+    .select("edits")
+    .eq("pathname", pathname)
+    .maybeSingle();
+  if (error) {
+    console.error("Failed to load page edits", error);
+    return { blocks: {}, customBlocks: [] };
+  }
+  const edits = (data?.edits as PageEdits | undefined) ?? EMPTY_EDITS;
+  return { blocks: { ...edits.blocks }, customBlocks: [...(edits.customBlocks ?? [])] };
 }
 
 function isEditableBlock(element: Element): element is HTMLElement {
@@ -100,6 +114,7 @@ function ToolbarButton({
 }
 
 export function SiteEditor() {
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
   const [editing, setEditing] = useState(false);
   const [toolbarPosition, setToolbarPosition] = useState<"top" | "bottom">("bottom");
   const [hasSelection, setHasSelection] = useState(false);
@@ -122,7 +137,7 @@ export function SiteEditor() {
     saveEdits(edits);
     block.remove();
     setSelectedCustomId(null);
-    setSaved(true);
+    setSaved(false);
   }, [rememberCustomChange]);
 
   const persistBlock = useCallback((block: HTMLElement) => {
@@ -142,7 +157,7 @@ export function SiteEditor() {
       if (custom) custom.html = cleanBlock.outerHTML;
     }
     saveEdits(edits);
-    setSaved(true);
+    setSaved(false);
   }, []);
 
   const prepareSurfaces = useCallback(() => {
@@ -190,18 +205,30 @@ export function SiteEditor() {
   }, [editing, removeCustomBlock]);
 
   useEffect(() => {
+    saveListener = setSaved;
+    return () => {
+      if (saveListener === setSaved) saveListener = null;
+    };
+  }, []);
+
+  useEffect(() => {
+    let cancelled = false;
     let observer: MutationObserver | null = null;
-    const timer = window.setTimeout(() => {
-      removeLatestAccidentalBlocks();
+    customUndoRef.current = [];
+    customRedoRef.current = [];
+    fetchEdits(pathname).then((edits) => {
+      if (cancelled) return;
+      cachedPathname = pathname;
+      cachedEdits = edits;
       prepareSurfaces();
       observer = new MutationObserver(() => prepareSurfaces());
       observer.observe(document.body, { childList: true, subtree: true });
-    }, 500);
+    });
     return () => {
-      window.clearTimeout(timer);
+      cancelled = true;
       observer?.disconnect();
     };
-  }, [prepareSurfaces]);
+  }, [pathname, prepareSurfaces]);
 
   useEffect(() => {
     if (!editing) {
@@ -273,7 +300,7 @@ export function SiteEditor() {
     document.querySelectorAll<HTMLElement>("[data-site-editor-custom-id]").forEach((block) => block.remove());
     setSelectedCustomId(null);
     saveEdits(snapshot);
-    setSaved(true);
+    setSaved(false);
     window.setTimeout(() => prepareSurfaces(), 0);
   };
 
@@ -312,6 +339,7 @@ export function SiteEditor() {
     const edits = loadEdits();
     edits.customBlocks.push({ id, anchorKey: anchor.dataset.siteEditorKey ?? "", html: content });
     saveEdits(edits);
+    setSaved(false);
     prepareSurfaces();
     const insertedBlock = document.querySelector<HTMLElement>(`[data-site-editor-custom-id="${id}"]`);
     insertedBlock?.focus();
@@ -339,9 +367,11 @@ export function SiteEditor() {
     if (url) runCommand("createLink", url);
   };
 
-  const resetPage = () => {
+  const resetPage = async () => {
     if (!window.confirm("Remove your saved edits from this page and restore the original content?")) return;
-    window.localStorage.removeItem(storageKey());
+    if (cachedPathname) {
+      await supabase.from("sheeltechlearn_page_edits").delete().eq("pathname", cachedPathname);
+    }
     window.location.reload();
   };
 
