@@ -73,7 +73,7 @@ export function QuestionCard({ item, index }: { item: QAItem; index: number }) {
           open ? "grid-rows-[1fr]" : "grid-rows-[0fr]",
         ].join(" ")}
       >
-        <div className="min-h-0">
+        <div className="min-h-0 min-w-0">
           <div className="border-t border-gold/15 bg-noir/40 px-6 pb-6 pt-4">
             <AnswerBlocks blocks={item.answer} />
           </div>

@@ -19,7 +19,7 @@ export function FlowDiagram({ block }: { block: FlowBlock }) {
   const Arrow = horizontal ? ArrowRight : ArrowDown;
 
   return (
-    <figure className="my-5 overflow-hidden rounded-2xl border border-gold/20 bg-noir/50 p-5">
+    <figure className="my-5 overflow-x-auto rounded-2xl border border-gold/20 bg-noir/50 p-5">
       {block.title && (
         <figcaption className="mb-4 flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.25em] text-gold-ink/80">
           <span className="h-px flex-1 bg-gradient-to-r from-transparent to-gold/40" />

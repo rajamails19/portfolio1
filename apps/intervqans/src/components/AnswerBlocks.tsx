@@ -1,6 +1,7 @@
 import type { Block } from "@/content/types";
 import { CodeBlock } from "./CodeBlock";
 import { FlowDiagram } from "./FlowDiagram";
+import { Expandable } from "./Expandable";
 import { renderInline } from "@/lib/rich-text";
 import { Info, Lightbulb, AlertTriangle, ExternalLink, Link2 } from "lucide-react";
 
@@ -95,7 +96,11 @@ export function AnswerBlocks({ blocks }: { blocks: Block[] }) {
             );
           }
           case "code":
-            return <CodeBlock key={i} language={b.language} code={b.content} />;
+            return (
+              <Expandable key={i} label={`${b.language} code`}>
+                <CodeBlock language={b.language} code={b.content} />
+              </Expandable>
+            );
           case "callout":
             return (
               <Callout key={i} variant={b.variant}>
@@ -103,12 +108,18 @@ export function AnswerBlocks({ blocks }: { blocks: Block[] }) {
               </Callout>
             );
           case "flow":
-            return <FlowDiagram key={i} block={b} />;
+            return (
+              <Expandable key={i} label={b.title ?? "Diagram"}>
+                <FlowDiagram block={b} />
+              </Expandable>
+            );
           case "image":
             return (
-              <div key={i} className="my-4 overflow-hidden rounded-2xl border border-gold/20">
-                <img src={b.src} alt={b.alt} className="w-full" />
-              </div>
+              <Expandable key={i} label={b.alt}>
+                <div className="my-4 overflow-hidden rounded-2xl border border-gold/20">
+                  <img src={b.src} alt={b.alt} className="w-full" />
+                </div>
+              </Expandable>
             );
           case "table":
             return (
