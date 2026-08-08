@@ -3,6 +3,7 @@ import {
   ArrowDownToLine,
   ArrowUpToLine,
   Bold,
+  Bookmark,
   Check,
   Eraser,
   Heading1,
@@ -81,6 +82,39 @@ async function fetchEdits(pathname: string): Promise<PageEdits> {
   return { blocks: { ...edits.blocks }, customBlocks: [...(edits.customBlocks ?? [])] };
 }
 
+type StylePreset = {
+  bold: boolean;
+  italic: boolean;
+  underline: boolean;
+  strikeThrough: boolean;
+  foreColor: string | null;
+  hiliteColor: string | null;
+};
+
+// Style presets (S1/S2/S3) live in Supabase too (table: sheeltechlearn_style_presets,
+// one row per slot 0/1/2) so they follow you across devices, same as page edits.
+async function fetchStylePresets(): Promise<(StylePreset | null)[]> {
+  const { data, error } = await supabase.from("sheeltechlearn_style_presets").select("slot, style");
+  if (error) {
+    console.error("Failed to load style presets", error);
+    return [null, null, null];
+  }
+  const result: (StylePreset | null)[] = [null, null, null];
+  (data as { slot: number; style: StylePreset }[] | null)?.forEach((row) => {
+    if (row.slot >= 0 && row.slot <= 2) result[row.slot] = row.style;
+  });
+  return result;
+}
+
+function saveStylePresetSlot(index: number, style: StylePreset) {
+  supabase
+    .from("sheeltechlearn_style_presets")
+    .upsert({ slot: index, style }, { onConflict: "slot" })
+    .then(({ error }) => {
+      if (error) console.error("Failed to save style preset", error);
+    });
+}
+
 function isEditableBlock(element: Element): element is HTMLElement {
   if (!(element instanceof HTMLElement)) return false;
   if (element.closest("[data-site-editor-ui],button,a,input,select,textarea")) return false;
@@ -120,9 +154,21 @@ export function SiteEditor() {
   const [hasSelection, setHasSelection] = useState(false);
   const [selectedCustomId, setSelectedCustomId] = useState<string | null>(null);
   const [saved, setSaved] = useState(true);
+  const [presets, setPresets] = useState<(StylePreset | null)[]>([null, null, null]);
+  const [armedSave, setArmedSave] = useState(false);
   const rangeRef = useRef<Range | null>(null);
   const customUndoRef = useRef<PageEdits[]>([]);
   const customRedoRef = useRef<PageEdits[]>([]);
+
+  useEffect(() => {
+    let cancelled = false;
+    fetchStylePresets().then((loaded) => {
+      if (!cancelled) setPresets(loaded);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   const rememberCustomChange = useCallback(() => {
     customUndoRef.current.push(loadEdits());
@@ -231,12 +277,17 @@ export function SiteEditor() {
   }, [pathname, prepareSurfaces]);
 
   useEffect(() => {
+    if (!hasSelection) setArmedSave(false);
+  }, [hasSelection]);
+
+  useEffect(() => {
     if (!editing) {
       document.documentElement.classList.remove("site-editing");
       document.querySelectorAll<HTMLElement>("[data-site-editor-key]").forEach((block) => {
         block.contentEditable = "false";
         block.classList.remove("site-editor-block");
       });
+      setArmedSave(false);
       return;
     }
 
@@ -294,6 +345,53 @@ export function SiteEditor() {
     const resultingBlock = selectionNode?.closest<HTMLElement>(EDITABLE_SELECTOR) ?? block;
     if (resultingBlock && originalKey && !resultingBlock.dataset.siteEditorKey) resultingBlock.dataset.siteEditorKey = originalKey;
     if (resultingBlock) persistBlock(resultingBlock);
+  };
+
+  const applyPreset = (index: number) => {
+    const preset = presets[index];
+    if (!preset) return;
+    const block = restoreSelection();
+    const originalKey = block?.dataset.siteEditorKey;
+    const toggle = (command: string, want: boolean) => {
+      if (document.queryCommandState(command) !== want) document.execCommand(command, false);
+    };
+    toggle("bold", preset.bold);
+    toggle("italic", preset.italic);
+    toggle("underline", preset.underline);
+    toggle("strikeThrough", preset.strikeThrough);
+    if (preset.foreColor) document.execCommand("foreColor", false, preset.foreColor);
+    if (preset.hiliteColor) document.execCommand("hiliteColor", false, preset.hiliteColor);
+    const selection = window.getSelection();
+    const selectionNode =
+      selection?.anchorNode instanceof HTMLElement ? selection.anchorNode : selection?.anchorNode?.parentElement;
+    const resultingBlock = selectionNode?.closest<HTMLElement>(EDITABLE_SELECTOR) ?? block;
+    if (resultingBlock && originalKey && !resultingBlock.dataset.siteEditorKey)
+      resultingBlock.dataset.siteEditorKey = originalKey;
+    if (resultingBlock) persistBlock(resultingBlock);
+  };
+
+  const saveStyleToSlot = (index: number) => {
+    restoreSelection();
+    const style: StylePreset = {
+      bold: document.queryCommandState("bold"),
+      italic: document.queryCommandState("italic"),
+      underline: document.queryCommandState("underline"),
+      strikeThrough: document.queryCommandState("strikeThrough"),
+      foreColor: (document.queryCommandValue("foreColor") as string) || null,
+      hiliteColor: (document.queryCommandValue("hiliteColor") as string) || null,
+    };
+    saveStylePresetSlot(index, style);
+    setPresets((prev) => {
+      const next = [...prev];
+      next[index] = style;
+      return next;
+    });
+    setArmedSave(false);
+  };
+
+  const handleSlotClick = (index: number) => {
+    if (armedSave) saveStyleToSlot(index);
+    else applyPreset(index);
   };
 
   const restoreCustomSnapshot = (snapshot: PageEdits) => {
@@ -407,6 +505,57 @@ export function SiteEditor() {
             </ToolbarButton>
             <ToolbarButton label="Undo" onClick={undo}><Undo2 className="h-4 w-4" /></ToolbarButton>
             <ToolbarButton label="Redo" onClick={redo}><Redo2 className="h-4 w-4" /></ToolbarButton>
+
+            <button
+              type="button"
+              onMouseDown={(event) => event.preventDefault()}
+              onClick={() => hasSelection && setArmedSave((value) => !value)}
+              disabled={!hasSelection}
+              title={
+                hasSelection
+                  ? armedSave
+                    ? "Cancel — tap a slot below to save, or click this again to cancel"
+                    : "Save the current selection's style to a slot"
+                  : "Select styled text first"
+              }
+              className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border transition hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-40 ${armedSave ? "animate-pulse border-rose bg-rose/15 text-rose" : "border-border/70 bg-background/75 text-foreground hover:border-rose/50 hover:bg-rose/10 hover:text-rose"}`}
+            >
+              <Bookmark className="h-4 w-4" />
+            </button>
+            {presets.map((preset, index) => (
+              <button
+                key={index}
+                type="button"
+                onMouseDown={(event) => event.preventDefault()}
+                onClick={() => handleSlotClick(index)}
+                disabled={!armedSave && !preset}
+                title={
+                  armedSave
+                    ? `Save current style as S${index + 1}`
+                    : preset
+                      ? `Apply saved style S${index + 1}`
+                      : `Empty — click the bookmark, select styled text, then S${index + 1} to save here`
+                }
+                className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border text-xs transition hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-30 ${armedSave ? "border-rose bg-rose/10" : "border-border/70 bg-background/75"}`}
+                style={
+                  preset
+                    ? {
+                        color: preset.foreColor ?? undefined,
+                        fontWeight: preset.bold ? 700 : 500,
+                        fontStyle: preset.italic ? "italic" : "normal",
+                        textDecoration:
+                          [preset.underline && "underline", preset.strikeThrough && "line-through"]
+                            .filter(Boolean)
+                            .join(" ") || "none",
+                      }
+                    : undefined
+                }
+              >
+                S{index + 1}
+              </button>
+            ))}
+            <div className="mx-1 h-7 w-px shrink-0 bg-border" />
+
             <select
               aria-label="Text style"
               defaultValue="p"
