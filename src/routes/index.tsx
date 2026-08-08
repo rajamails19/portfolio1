@@ -278,7 +278,7 @@ const kidsProjectPreviews = [
     href: "https://wofirekids.vercel.app/",
     image: wingsDemoMainThumb,
     alt: "DragonHub homepage preview",
-    path: "/Users/rajav/Documents/Coding/Claude-help/wingsdemo-main",
+    path: "/Users/rajav/Documents/Coding/CGPT-help/wingsdemo-main",
   },
   {
     name: "Kudos",
