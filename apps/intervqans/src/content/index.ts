@@ -2,6 +2,7 @@ import { theorySection } from "./theory";
 import { qansSection } from "./qans";
 import { qansDefaultSection } from "./qans-default";
 import { qansChaatSection } from "./qans-chaat";
+import { qansFifaSection } from "./qans-fifa";
 import { programsSection } from "./programs";
 import { realtimeSection } from "./realtime";
 import { projectsSection } from "./projects";
@@ -9,9 +10,9 @@ import { othersSection } from "./others";
 import type { Section } from "./types";
 
 // Noir has its own content (Conceptual Theory + the AI/ML question bank).
-// Chaat has its own question bank (Playwright / Selenium / Basics). The
-// remaining themes fall back to the original, generic content until each
-// one gets its own subject-specific set.
+// Chaat has its own question bank (Playwright / Selenium / Basics). Fifa has
+// its own question bank (React / Java / Angular). Rocky falls back to the
+// original, generic content until it gets its own subject-specific set.
 export const noirSections: Section[] = [
   theorySection,
   qansSection,
@@ -23,6 +24,14 @@ export const noirSections: Section[] = [
 
 export const chaatSections: Section[] = [
   qansChaatSection,
+  programsSection,
+  realtimeSection,
+  projectsSection,
+  othersSection,
+];
+
+export const fifaSections: Section[] = [
+  qansFifaSection,
   programsSection,
   realtimeSection,
   projectsSection,

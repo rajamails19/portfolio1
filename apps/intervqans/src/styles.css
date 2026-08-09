@@ -727,3 +727,8 @@
   font-weight: 800;
   background: color-mix(in oklch, var(--gold) 10%, transparent);
 }
+
+.code-block-shell ::selection {
+  background-color: color-mix(in oklch, var(--gold) 40%, transparent);
+  color: oklch(0.98 0.02 90);
+}

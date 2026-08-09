@@ -916,3 +916,8 @@ html.appearance-dark .site-editor-added-text,
 html.appearance-dark .site-editor-callout {
   color: var(--foreground);
 }
+
+.code-block-shell ::selection {
+  background-color: color-mix(in oklch, var(--rose) 40%, transparent);
+  color: oklch(0.98 0.02 350);
+}

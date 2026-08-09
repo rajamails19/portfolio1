@@ -12,7 +12,7 @@ export function CodeBlock({ language, code }: { language: string; code: string }
   };
 
   return (
-    <div className="group relative my-4 overflow-hidden rounded-2xl border border-white/10 bg-[#1a1530] shadow-[0_20px_60px_-20px_oklch(0.3_0.15_290/0.5)]">
+    <div className="code-block-shell group relative my-4 overflow-hidden rounded-2xl border border-white/10 bg-[#1a1530] shadow-[0_20px_60px_-20px_oklch(0.3_0.15_290/0.5)]">
       <div className="flex items-center justify-between border-b border-white/10 px-4 py-2">
         <div className="flex items-center gap-2">
           <span className="h-3 w-3 rounded-full bg-[#ff5f57]" />

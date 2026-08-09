@@ -1,23 +1,37 @@
-import { useMemo, useState } from "react";
-import { Search, Quote, Code2, CircleDot, BookOpen } from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
+import { Search, Quote, Code2, CircleDot, BookOpen, Atom, Coffee, Shield } from "lucide-react";
 import type { Section } from "@/content/types";
 import { useTheme } from "@/themes/ThemeContext";
 import { QuestionCard } from "./QuestionCard";
 import { QuotesTicker } from "./QuotesTicker";
 
-const CHAAT_QANS_TOPICS = [
-  { name: "Playwright", Icon: Code2 },
-  { name: "Selenium", Icon: CircleDot },
-  { name: "Basics", Icon: BookOpen },
-];
+const QANS_TOPICS_BY_THEME: Record<string, { name: string; Icon: typeof Code2 }[]> = {
+  chaat: [
+    { name: "Playwright", Icon: Code2 },
+    { name: "Selenium", Icon: CircleDot },
+    { name: "Basics", Icon: BookOpen },
+  ],
+  fifa: [
+    { name: "React", Icon: Atom },
+    { name: "Java", Icon: Coffee },
+    { name: "Angular", Icon: Shield },
+  ],
+};
 
 export function SectionView({ section }: { section: Section }) {
   const [q, setQ] = useState("");
-  const [activeTopic, setActiveTopic] = useState("Playwright");
   const { theme, themeKey } = useTheme();
   const meta = theme.sections[section.slug];
   const mascot = meta.mascot;
-  const showTopics = themeKey === "chaat" && section.slug === "qans";
+  const topics = section.slug === "qans" ? QANS_TOPICS_BY_THEME[themeKey] : undefined;
+  const showTopics = !!topics;
+  const [activeTopic, setActiveTopic] = useState(topics?.[0]?.name ?? "");
+
+  useEffect(() => {
+    if (topics && !topics.some((t) => t.name === activeTopic)) {
+      setActiveTopic(topics[0].name);
+    }
+  }, [topics, activeTopic]);
 
   const visibleItems = useMemo(
     () => (showTopics ? section.items.filter((it) => it.category === activeTopic) : section.items),
@@ -92,7 +106,7 @@ export function SectionView({ section }: { section: Section }) {
             role="tablist"
             aria-label="Q and Answers topics"
           >
-            {CHAAT_QANS_TOPICS.map(({ name, Icon }) => {
+            {topics?.map(({ name, Icon }) => {
               const active = activeTopic === name;
               return (
                 <button
