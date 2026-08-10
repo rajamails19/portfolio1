@@ -37,7 +37,11 @@ type CustomBlock = { id: string; anchorKey: string; html: string };
 type PageEdits = { blocks: Record<string, SavedBlock>; customBlocks: CustomBlock[] };
 
 const EMPTY_EDITS: PageEdits = { blocks: {}, customBlocks: [] };
-const EDITABLE_SELECTOR = "p,h1,h2,h3,h4,h5,h6,li,td,th,blockquote,pre,[data-site-editor-custom-id]";
+// Deliberately excludes "pre": the only <pre> elements on this site are
+// syntax-highlighted code blocks, and making them contentEditable/spellcheck
+// turns on the browser's native spellchecker inside them, which paints
+// colored highlight boxes under "unknown words" in string literals.
+const EDITABLE_SELECTOR = "p,h1,h2,h3,h4,h5,h6,li,td,th,blockquote,[data-site-editor-custom-id]";
 
 // Edits live in Supabase (table: sheeltechlearn_page_edits, keyed by pathname)
 // so everyone sees the same content. We keep an in-memory cache per pathname

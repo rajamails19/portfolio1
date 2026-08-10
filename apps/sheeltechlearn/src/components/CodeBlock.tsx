@@ -3,6 +3,26 @@ import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { Check, Copy } from "lucide-react";
 import { useState } from "react";
 
+// react-syntax-highlighter defaults codeTagProps.style to the theme's own
+// `code[class*="language-"]` entry, which carries a solid background. Since
+// <code> renders `display: inline` across multiple lines, that background
+// hugs each line individually instead of filling the block — the "highlighted
+// line" look. Strip background/backgroundColor from every token in the theme
+// (not just the code tag) so no language or token type can ever reintroduce
+// it — the block's only background comes from this wrapper's own bg-[#1a1020].
+type PrismTheme = Record<string, React.CSSProperties>;
+
+function stripBackgrounds(theme: PrismTheme): PrismTheme {
+  const clean: PrismTheme = {};
+  for (const [key, value] of Object.entries(theme)) {
+    const { background: _background, backgroundColor: _backgroundColor, ...rest } = value;
+    clean[key] = rest;
+  }
+  return clean;
+}
+
+const codeTheme = stripBackgrounds(oneDark);
+
 export function CodeBlock({ language, code }: { language: string; code: string }) {
   const [copied, setCopied] = useState(false);
   const copy = () => {
@@ -32,13 +52,21 @@ export function CodeBlock({ language, code }: { language: string; code: string }
       </div>
       <SyntaxHighlighter
         language={language}
-        style={oneDark}
+        style={codeTheme}
         customStyle={{
           margin: 0,
           padding: "1rem 1.25rem",
           background: "transparent",
           fontSize: "0.85rem",
           lineHeight: 1.6,
+        }}
+        codeTagProps={{
+          className: `language-${language}`,
+          style: {
+            ...codeTheme['code[class*="language-"]'],
+            display: "block",
+            background: "transparent",
+          },
         }}
         wrapLongLines
       >
