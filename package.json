@@ -73,9 +73,7 @@
     "dev:sheeltechlearn": "npm --prefix apps/sheeltechlearn run dev -- --port 8123",
     "build:sheeltechlearn": "npm --prefix apps/sheeltechlearn run build",
     "lint:sheeltechlearn": "npm --prefix apps/sheeltechlearn run lint",
-    "dev:seminarteach": "npm --prefix apps/seminarteach run dev -- --port 8124",
-    "build:seminarteach": "npm --prefix apps/seminarteach run build",
-    "lint:seminarteach": "npm --prefix apps/seminarteach run lint",
+    "dev:seminarteach": "npm --prefix /Users/rajav/Documents/Coding/CGPT-help/seminarteach run dev -- --port 8124",
     "dev:spellbeequiz": "npm --prefix /Users/rajav/Documents/Coding/CGPT-help/spellbeequiz run dev -- --port 8125"
   },
   "dependencies": {
