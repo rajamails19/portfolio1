@@ -182,8 +182,71 @@ const projectPreviews = [
   },
 ];
 
-const heroProjects = projectPreviews.slice(0, 4);
-const secondaryProjects = projectPreviews.slice(4);
+const usingProjectPreviews = [
+  {
+    name: "ABC Notes",
+    href: "https://apple-notes-clone-pi.vercel.app/",
+    image: abcNotesThumb,
+    alt: "ABC Notes preview",
+  },
+  {
+    name: "Lumen",
+    href: "https://seminarteachraja.vercel.app/",
+    image: seminarTeachThumb,
+    alt: "Lumen tutorial platform homepage preview",
+  },
+  {
+    name: "MathDreams",
+    href: "https://mathraja.vercel.app/",
+    image: mathRajaThumb,
+    alt: "MathDreams magical math app homepage preview",
+  },
+  {
+    name: "StudyDeck",
+    href: "https://qansinterview.vercel.app/",
+    image: intervQansThumb,
+    alt: "StudyDeck interview question and answer prep homepage preview",
+  },
+  {
+    name: "SpeakPracticeTamil",
+    href: "https://tamilpracticespeak.vercel.app/",
+    image: speakPracticeTamilThumb,
+    alt: "SpeakPracticeTamil homepage preview",
+  },
+  {
+    name: "GPTTelugu",
+    href: "https://gptteluguwithraja.vercel.app/",
+    image: gptTeluguThumb,
+    alt: "GPTTelugu homepage preview",
+  },
+  {
+    name: "QuestKids",
+    href: "https://dadquizkids.vercel.app/",
+    image: dadQuizKidsThumb,
+    alt: "QuestKids quiz app homepage preview",
+  },
+  {
+    name: "WonderWorkshop",
+    href: "https://funartwithraja.vercel.app/",
+    image: drawArrtThumb,
+    alt: "WonderWorkshop creative app homepage preview",
+  },
+  {
+    name: "MeenusBowWorld",
+    href: "https://meenuworld.vercel.app/",
+    image: kidshloMainThumb,
+    alt: "MeenusBowWorld homepage preview",
+  },
+  {
+    name: "Shruti",
+    href: "https://god-pooja-songs.vercel.app/",
+    image: learnPoojaThumb,
+    alt: "Shruti shloka learning app homepage preview",
+  },
+];
+
+const heroProjects = usingProjectPreviews.slice(0, 3);
+const secondaryProjects = projectPreviews;
 
 const externalProjectPreviews = [
   {
@@ -354,6 +417,7 @@ function LandingPage() {
   return (
     <div className="min-h-[100dvh] bg-background text-foreground">
       <Hero />
+      <UsingProjects />
       <ProjectShowcase />
       <Features />
       <HowItWorks />
@@ -409,10 +473,10 @@ function Hero() {
             Features
           </a>
           <a
-            href="#how-it-works"
+            href="#using"
             className="transition-colors hover:text-white/70"
           >
-            How it works
+            Using
           </a>
           <a href="#reviews" className="transition-colors hover:text-white/70">
             Reviews
@@ -445,11 +509,11 @@ function Hero() {
             Features
           </a>
           <a
-            href="#how-it-works"
+            href="#using"
             onClick={() => setMobileNavOpen(false)}
             className="rounded-lg px-3 py-2.5 transition-colors hover:bg-white/10"
           >
-            How it works
+            Using
           </a>
           <a
             href="#reviews"
@@ -505,6 +569,91 @@ function Hero() {
         </div>
       </div>
     </section>
+  );
+}
+
+function UsingProjects() {
+  return (
+    <section id="using" className="relative overflow-hidden bg-white py-24">
+      <div
+        className="pointer-events-none absolute inset-0"
+        style={{
+          backgroundImage: `url(${shadowBg})`,
+          backgroundPosition: "center",
+          backgroundSize: "cover",
+          opacity: 0.72,
+        }}
+      />
+      <div className="relative z-10 mx-auto max-w-6xl px-5">
+        <ScrollReveal>
+          <div className="mb-10 max-w-2xl">
+            <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-primary">
+              Using
+            </p>
+            <h2
+              className="text-3xl font-bold tracking-normal text-foreground sm:text-4xl"
+              style={{ lineHeight: "1.15" }}
+            >
+              Frequently used, easy to reach
+            </h2>
+            <p className="mt-4 text-base leading-relaxed text-muted-foreground">
+              The projects you open the most, gathered into one clean shelf so
+              you do not have to scroll through the full workspace every time.
+            </p>
+          </div>
+        </ScrollReveal>
+
+        <div className="grid gap-5 md:grid-cols-6">
+          {usingProjectPreviews.map((project, index) => (
+            <div key={project.name} className={getUsingGridClass(index)}>
+              <UsingProjectPreview project={project} />
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function getUsingGridClass(index: number) {
+  if (index === 9) {
+    return "md:col-span-2 md:col-start-3";
+  }
+
+  return "md:col-span-2";
+}
+
+function UsingProjectPreview({
+  project,
+}: {
+  project: (typeof usingProjectPreviews)[number];
+}) {
+  const localOnly = isLocalUrl(project.href);
+
+  return (
+    <a
+      href={project.href}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label={`Open ${project.name}`}
+      className="group block overflow-hidden rounded-2xl border border-black/10 bg-white shadow-xl shadow-black/10 transition duration-200 hover:-translate-y-1 hover:border-black/20"
+    >
+      <img
+        src={project.image}
+        alt={project.alt}
+        className="aspect-[16/9] w-full object-cover"
+      />
+      <span className="flex items-center justify-between gap-3 border-t border-black/10 bg-white px-5 py-4 text-sm font-semibold text-foreground">
+        <span>{project.name}</span>
+        {localOnly ? (
+          <span className="rounded-full bg-black/[0.06] px-2.5 py-1 text-[0.65rem] font-bold uppercase tracking-widest text-muted-foreground">
+            Local only
+          </span>
+        ) : (
+          <ArrowRight className="h-5 w-5 text-foreground transition group-hover:translate-x-0.5" />
+        )}
+      </span>
+    </a>
   );
 }
 
@@ -1159,10 +1308,10 @@ function Footer() {
               Features
             </a>
             <a
-              href="#how-it-works"
+              href="#using"
               className="transition-colors hover:text-foreground"
             >
-              How it works
+              Using
             </a>
             <a
               href="#reviews"
