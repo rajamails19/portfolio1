@@ -1,5 +1,17 @@
 import { useEffect, useMemo, useState } from "react";
-import { Search, Quote, Code2, CircleDot, BookOpen, Atom, Coffee, Shield } from "lucide-react";
+import {
+  Search,
+  Quote,
+  Code2,
+  CircleDot,
+  BookOpen,
+  Atom,
+  Coffee,
+  Shield,
+  BarChart3,
+  LayoutDashboard,
+  Cloud,
+} from "lucide-react";
 import type { Section } from "@/content/types";
 import { useTheme } from "@/themes/ThemeContext";
 import { QuestionCard } from "./QuestionCard";
@@ -15,6 +27,12 @@ const QANS_TOPICS_BY_THEME: Record<string, { name: string; Icon: typeof Code2 }[
     { name: "React", Icon: Atom },
     { name: "Java", Icon: Coffee },
     { name: "Angular", Icon: Shield },
+  ],
+  rocky: [
+    { name: "Basics", Icon: BookOpen },
+    { name: "PowerBI", Icon: BarChart3 },
+    { name: "Tableau", Icon: LayoutDashboard },
+    { name: "MS Fabric", Icon: Cloud },
   ],
 };
 

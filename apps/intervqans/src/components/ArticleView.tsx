@@ -1,17 +1,23 @@
 import type { CSSProperties } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   Activity,
   ArrowLeftRight,
   ArrowUp,
+  BarChart3,
+  BookOpen,
   BookOpenCheck,
   BrainCircuit,
   Bot,
   Boxes,
   ChefHat,
+  Cloud,
+  Code2,
   Compass,
   Cpu,
   Gauge,
   GraduationCap,
+  LayoutDashboard,
   LibraryBig,
   FileText,
   Languages,
@@ -35,8 +41,18 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import type { Block, Section } from "@/content/types";
+import { useTheme } from "@/themes/ThemeContext";
 import { AnswerBlocks } from "./AnswerBlocks";
 import { OriginalTheoryView } from "./OriginalTheoryView";
+
+const THEORY_TOPICS_BY_THEME: Record<string, { name: string; Icon: typeof Code2 }[]> = {
+  rocky: [
+    { name: "Basics", Icon: BookOpen },
+    { name: "PowerBI", Icon: BarChart3 },
+    { name: "Tableau", Icon: LayoutDashboard },
+    { name: "MS Fabric", Icon: Cloud },
+  ],
+};
 
 type ConceptStyle = {
   Icon: LucideIcon;
@@ -161,6 +177,22 @@ export function ArticleView({
   section: Section;
   showOriginalText?: boolean;
 }) {
+  const { themeKey } = useTheme();
+  const topics = THEORY_TOPICS_BY_THEME[themeKey];
+  const showTopics = !!topics;
+  const [activeTopic, setActiveTopic] = useState(topics?.[0]?.name ?? "");
+
+  useEffect(() => {
+    if (topics && !topics.some((t) => t.name === activeTopic)) {
+      setActiveTopic(topics[0].name);
+    }
+  }, [topics, activeTopic]);
+
+  const items = useMemo(
+    () => (showTopics ? section.items.filter((it) => it.category === activeTopic) : section.items),
+    [activeTopic, section.items, showTopics],
+  );
+
   return (
     <div id="top" className="theory-view-shell theory-canvas relative min-h-dvh overflow-x-clip pb-24">
       <div aria-hidden className="theory-orb theory-orb-one" />
@@ -187,7 +219,7 @@ export function ArticleView({
           </div>
 
           <div className="relative mt-9 flex flex-wrap items-center gap-2.5">
-            {section.items.slice(0, 4).map((item, index) => {
+            {items.slice(0, 4).map((item, index) => {
               const { Icon } = CONCEPT_STYLES[index];
               return (
                 <a
@@ -210,11 +242,48 @@ export function ArticleView({
           </div>
         </header>
 
-        {!showOriginalText && <nav
+        {!showOriginalText && showTopics && (
+          <div className="mt-5 flex justify-center sm:justify-start">
+            <div
+              className="glass inline-flex max-w-full items-center gap-1 overflow-x-auto rounded-full border border-gold/20 p-1.5 shadow-[var(--shadow-soft)]"
+              role="tablist"
+              aria-label="Conceptual Theory topics"
+            >
+              {topics.map(({ name, Icon }) => {
+                const active = activeTopic === name;
+                return (
+                  <button
+                    key={name}
+                    type="button"
+                    role="tab"
+                    aria-selected={active}
+                    onClick={() => setActiveTopic(name)}
+                    className={[
+                      "inline-flex shrink-0 items-center gap-2 rounded-full px-4 py-2 text-xs font-bold tracking-wide transition-all duration-300 sm:text-sm",
+                      active
+                        ? "bg-gradient-to-r from-gold to-ember text-primary-foreground shadow-glow"
+                        : "text-foreground/65 hover:bg-noir/60 hover:text-foreground",
+                    ].join(" ")}
+                  >
+                    <Icon className="h-3.5 w-3.5" />
+                    {name}
+                    {active && (
+                      <span className="rounded-full bg-white/20 px-1.5 py-0.5 text-[10px] tabular-nums">
+                        {items.length}
+                      </span>
+                    )}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        )}
+
+        {!showOriginalText && items.length > 0 && <nav
           aria-label="Concept map"
           className="theory-formatted-nav theory-concept-nav sticky top-20 z-30 mt-4 flex gap-2 overflow-x-auto rounded-2xl border border-gold/15 glass p-2 shadow-[0_16px_44px_-32px_oklch(0.1_0.02_60)] lg:hidden"
         >
-          {section.items.map((item, index) => {
+          {items.map((item, index) => {
             const { Icon, accent, wash } = CONCEPT_STYLES[index % CONCEPT_STYLES.length];
             return (
               <a
@@ -240,9 +309,13 @@ export function ArticleView({
 
         {showOriginalText ? (
           <OriginalTheoryView />
+        ) : items.length === 0 ? (
+          <div className="glass mt-5 rounded-3xl p-10 text-center text-sm text-muted-foreground">
+            {activeTopic ? `${activeTopic} concepts are coming next.` : "Nothing here yet."}
+          </div>
         ) : (
         <main id="theory-view" className="mt-5 scroll-mt-24 space-y-5">
-          {section.items.map((item, conceptIndex) => {
+          {items.map((item, conceptIndex) => {
             const style = CONCEPT_STYLES[conceptIndex % CONCEPT_STYLES.length];
             const { Icon } = style;
             const groups = groupBlocks(item.answer);

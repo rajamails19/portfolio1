@@ -4,8 +4,11 @@ import { useTheme } from "@/themes/ThemeContext";
 import { useAppearance } from "@/themes/AppearanceContext";
 import { themeKeys, themes, type ThemeKey } from "@/themes/themes";
 
-// Routes that only exist for the Noir theme's content set.
-const NOIR_ONLY_PATHS = ["/theory", "/terms"];
+// Routes gated to specific themes' content sets.
+const RESTRICTED_PATHS: Partial<Record<string, ThemeKey[]>> = {
+  "/theory": ["noir", "rocky"],
+  "/terms": ["noir"],
+};
 
 export function ThemeSwitcher() {
   const { themeKey, setThemeKey } = useTheme();
@@ -14,8 +17,10 @@ export function ThemeSwitcher() {
   const navigate = useNavigate();
 
   const chooseTheme = async (nextTheme: ThemeKey) => {
-    const onNoirOnlyPath = NOIR_ONLY_PATHS.some((p) => location.pathname.startsWith(p));
-    if (nextTheme !== "noir" && onNoirOnlyPath) {
+    const restriction = Object.entries(RESTRICTED_PATHS).find(([path]) =>
+      location.pathname.startsWith(path),
+    )?.[1];
+    if (restriction && !restriction.includes(nextTheme)) {
       await navigate({ to: "/qans" });
     }
     setThemeKey(nextTheme);

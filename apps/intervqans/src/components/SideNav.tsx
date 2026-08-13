@@ -25,21 +25,42 @@ const icons: Record<string, typeof Sparkles> = {
   others: Layers,
 };
 
-const theoryChapters = [
-  { id: "ai-engineering-is-a-team-sport", label: "AI foundations" },
-  { id: "how-learning-actually-happens", label: "How models learn" },
-  { id: "goal-is-generalization", label: "Generalization" },
-  { id: "what-is-the-computer-doing", label: "Parameters & models" },
-  { id: "three-different-classrooms", label: "Learning types" },
-  { id: "features-and-labels", label: "Features & predictions" },
-  { id: "how-can-a-machine-understand-language", label: "Language & tokens" },
-  { id: "embedding-space", label: "Embeddings & search" },
-  { id: "bias-and-variance", label: "Bias & variance" },
-  { id: "train-validation-test-splits", label: "Train, validate, test" },
-  { id: "transformer-breakthrough-2017", label: "Transformers & attention" },
-  { id: "what-happens-when-you-press-enter", label: "Prompt → answer" },
-  { id: "linear-regression-best-fit-line", label: "ML → deep learning" },
-] as const;
+const THEORY_CHAPTERS_BY_THEME: Record<string, { id: string; label: string }[]> = {
+  noir: [
+    { id: "ai-engineering-is-a-team-sport", label: "AI foundations" },
+    { id: "how-learning-actually-happens", label: "How models learn" },
+    { id: "goal-is-generalization", label: "Generalization" },
+    { id: "what-is-the-computer-doing", label: "Parameters & models" },
+    { id: "three-different-classrooms", label: "Learning types" },
+    { id: "features-and-labels", label: "Features & predictions" },
+    { id: "how-can-a-machine-understand-language", label: "Language & tokens" },
+    { id: "embedding-space", label: "Embeddings & search" },
+    { id: "bias-and-variance", label: "Bias & variance" },
+    { id: "train-validation-test-splits", label: "Train, validate, test" },
+    { id: "transformer-breakthrough-2017", label: "Transformers & attention" },
+    { id: "what-happens-when-you-press-enter", label: "Prompt → answer" },
+    { id: "linear-regression-best-fit-line", label: "ML → deep learning" },
+  ],
+  rocky: [
+    { id: "what-is-microsoft-fabric", label: "What is Fabric?" },
+    { id: "why-fabric-exists", label: "Why Fabric exists" },
+    { id: "onelake-heart-of-fabric", label: "OneLake" },
+    { id: "fabric-workloads-ingestion-engineering", label: "Ingestion & engineering" },
+    { id: "fabric-workloads-science-realtime-bi", label: "Science, real-time & BI" },
+    { id: "lakehouse-vs-warehouse-fabric", label: "Lakehouse vs Warehouse" },
+    { id: "medallion-architecture", label: "Medallion architecture" },
+    { id: "direct-lake-explained", label: "Direct Lake" },
+    { id: "fabric-real-world-project", label: "Real-world project" },
+    { id: "fabric-real-time-analytics", label: "Real-time analytics" },
+    { id: "onelake-shortcuts-and-governance", label: "Shortcuts & governance" },
+    { id: "fabric-capacity-and-ai", label: "Capacity & AI" },
+    { id: "fabric-whiteboard-architecture", label: "Whiteboard architecture" },
+    { id: "fabric-vs-traditional-azure", label: "Fabric vs traditional Azure" },
+    { id: "fabric-end-to-end-example", label: "End-to-end example" },
+    { id: "fabric-restaurant-analogy", label: "Restaurant analogy" },
+    { id: "fabric-30-second-explanation", label: "30-second explanation" },
+  ],
+};
 
 export function SideNav() {
   const { location } = useRouterState();
@@ -51,14 +72,17 @@ export function SideNav() {
     : (sections.find((s) => location.pathname.startsWith(`/${s.slug}`))?.slug ?? "qans");
   const activeMeta = theme.sections[activeSlug];
   const isTheory = location.pathname.startsWith("/theory");
-  const [activeChapter, setActiveChapter] = useState<(typeof theoryChapters)[number]["id"]>(
-    theoryChapters[0].id,
-  );
+  const chapters = THEORY_CHAPTERS_BY_THEME[themeKey] ?? [];
+  const [activeChapter, setActiveChapter] = useState(chapters[0]?.id ?? "");
+
+  useEffect(() => {
+    setActiveChapter(chapters[0]?.id ?? "");
+  }, [themeKey]);
 
   useEffect(() => {
     if (!isTheory) return;
 
-    const chapterElements = theoryChapters
+    const chapterElements = chapters
       .map((chapter) => document.getElementById(chapter.id))
       .filter((element): element is HTMLElement => Boolean(element));
 
@@ -69,7 +93,7 @@ export function SideNav() {
           .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)[0];
 
         if (visible?.target.id) {
-          setActiveChapter(visible.target.id as (typeof theoryChapters)[number]["id"]);
+          setActiveChapter(visible.target.id);
         }
       },
       { rootMargin: "-22% 0px -68% 0px", threshold: 0 },
@@ -77,7 +101,7 @@ export function SideNav() {
 
     chapterElements.forEach((element) => observer.observe(element));
     return () => observer.disconnect();
-  }, [isTheory]);
+  }, [isTheory, chapters]);
 
   return (
     <aside className="flex w-72 shrink-0 flex-col gap-5 p-6">
@@ -196,13 +220,13 @@ export function SideNav() {
         })}
       </nav>
 
-      {isTheory ? (
+      {isTheory && chapters.length > 0 ? (
         <nav aria-label="Conceptual Theory chapters" className="glass rounded-3xl p-3">
           <div className="mb-2 flex items-center gap-2 px-2 py-1.5 text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground">
             <ListTree className="h-3.5 w-3.5 text-gold-ink" /> Chapter map
           </div>
           <div className="space-y-0.5">
-            {theoryChapters.map((chapter, index) => {
+            {chapters.map((chapter, index) => {
               const active = activeChapter === chapter.id;
               return (
                 <a

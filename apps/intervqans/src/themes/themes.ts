@@ -69,7 +69,7 @@ export interface ThemeDef {
 export const themes: Record<ThemeKey, ThemeDef> = {
   noir: {
     key: "noir",
-    label: "Noir",
+    label: "AiML",
     short: "★",
     brandName: "StudyDeck",
     brandKicker: "Noir Edition",
@@ -181,7 +181,7 @@ export const themes: Record<ThemeKey, ThemeDef> = {
 
   chaat: {
     key: "chaat",
-    label: "Chaat",
+    label: "QAutomation",
     short: "🌶️",
     brandName: "ChaatDeck",
     brandKicker: "Street-Food Edition",
@@ -280,7 +280,7 @@ export const themes: Record<ThemeKey, ThemeDef> = {
 
   fifa: {
     key: "fifa",
-    label: "FIFA",
+    label: "React-Java-Angular",
     short: "⚽",
     brandName: "MatchDeck",
     brandKicker: "Stadium Edition",
@@ -379,7 +379,7 @@ export const themes: Record<ThemeKey, ThemeDef> = {
 
   rocky: {
     key: "rocky",
-    label: "Rocky",
+    label: "DAnalyst",
     short: "🥊",
     brandName: "RingDeck",
     brandKicker: "Gym Edition",
