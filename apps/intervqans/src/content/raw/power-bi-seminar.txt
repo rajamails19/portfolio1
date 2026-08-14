@@ -1,0 +1,1306 @@
+Power Query/M → semantic modeling → VertiPaq → DAX → filter context → storage modes → visualization → security → gateway/service → deployment/performance.
+
+Page 1 — What exactly is Power BI?
+At the beginner level:
+Power BI is Microsoft's business intelligence and analytics platform for transforming raw data into governed semantic models, interactive reports, dashboards, and business insights.
+But technically, Power BI is much more than a charting tool.
+A typical architecture looks like:
+
+```
+                    DATA SOURCES
+                         │
+       ┌─────────────────┼─────────────────┐
+       │                 │                 │
+   SQL Server          Excel            APIs
+     Oracle          SharePoint        Snowflake
+       │                 │                 │
+       └─────────────────┼─────────────────┘
+                         ↓
+                   POWER QUERY
+                         │
+                    M LANGUAGE
+                         │
+                Clean / Transform
+                         ↓
+                 SEMANTIC MODEL
+                         │
+            ┌────────────┼────────────┐
+            │            │            │
+       Relationships    DAX       Hierarchies
+            │            │            │
+            └────────────┼────────────┘
+                         ↓
+                    VERTIPAQ
+                 Storage Engine
+                         ↓
+                    DAX ENGINE
+                         ↓
+                REPORT / VISUALS
+                         ↓
+                  POWER BI SERVICE
+                         ↓
+              Users / Apps / APIs
+```
+
+Microsoft describes semantic models as the reporting-ready data layer underlying Power BI; they can store imported data, query underlying sources, or combine approaches.
+The important conceptual distinction
+A beginner thinks:
+Power BI = Dashboard tool.
+An experienced developer thinks:
+Power BI = analytical modeling engine + calculation engine + columnar storage engine + visualization layer + enterprise BI service.
+That distinction matters enormously in interviews.
+
+=====
+
+Page 2 — The Power BI ecosystem
+Power BI has several major pieces.
+1. Power BI Desktop
+Your development environment.
+You use it for:
+
+```
+Connect to Data
+      ↓
+Power Query
+      ↓
+Data Modeling
+      ↓
+DAX
+      ↓
+Visualizations
+      ↓
+.pbix / .pbip
+```
+
+2. Power Query
+Power Query handles:
+Extract + Transform + Load
+It uses the M language.
+Example:
+
+```
+let
+    Source = Sql.Database("SQL01", "SalesDB"),
+    Sales = Source{[Schema="dbo",Item="Sales"]}[Data],
+    FilteredRows =
+        Table.SelectRows(
+            Sales,
+            each [SalesAmount] > 0
+        )
+in
+    FilteredRows
+```
+
+Its job is primarily:
+
+```
+Get data
+Clean data
+Change types
+Remove columns
+Merge tables
+Append tables
+Filter records
+Create transformation columns
+```
+
+before analytical modeling.
+3. Semantic Model
+This is arguably the heart of Power BI.
+It contains:
+
+```
+Tables
+Relationships
+Measures
+Calculated Columns
+Hierarchies
+Calculation Groups
+Metadata
+Security Roles
+```
+
+4. Power BI Service
+Cloud SaaS environment where you:
+
+```
+Publish
+Share
+Refresh
+Secure
+Collaborate
+Distribute
+Monitor
+Govern
+```
+
+5. Gateway
+Connects Power BI Service to data sources that aren't directly reachable from Microsoft's cloud.
+Example:
+
+```
+Power BI Service
+       │
+       │ encrypted outbound connection
+       ↓
+On-Premises Data Gateway
+       │
+       ↓
+Corporate SQL Server
+```
+
+6. Fabric
+Today, Power BI also sits within the broader Microsoft Fabric ecosystem.
+So:
+
+```
+Microsoft Fabric
+      │
+      ├── Data Factory
+      ├── Data Engineering
+      ├── Data Warehouse
+      ├── Data Science
+      ├── Real-Time Intelligence
+      │
+      └── Power BI
+```
+
+This is important architecturally:
+Power BI is the BI/semantic consumption layer within the larger Fabric data platform.
+
+=====
+
+Page 3 — Power Query and Query Folding
+This is where Power BI starts becoming properly technical.
+Suppose SQL Server contains:
+500 million rows.
+You write:
+
+```
+Source
+↓
+Filter Country = "USA"
+↓
+Filter Year = 2026
+↓
+Select 8 columns
+```
+
+There are two possibilities.
+Bad scenario
+Power BI retrieves enormous amounts of data and performs transformations locally.
+
+```
+SQL Server
+
+500M rows
+   ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
+
+Power Query Engine
+
+Filter
+Transform
+Remove columns
+```
+
+Expensive.
+Better scenario — Query Folding
+Power Query translates transformations back into something conceptually similar to:
+
+```
+SELECT
+    Date,
+    CustomerID,
+    ProductID,
+    Quantity,
+    SalesAmount
+FROM Sales
+WHERE
+    Country = 'USA'
+    AND YEAR(OrderDate) = 2026;
+```
+
+Now:
+
+```
+Power Query
+     ↓
+Generates native query
+     ↓
+SQL Server performs work
+     ↓
+Only required data returned
+```
+
+This is called:
+Query Folding
+Microsoft recommends pushing as much processing as practical to the source; query folding is especially important for DirectQuery/Dual tables and generally improves relational-source refresh efficiency for Import models too.
+Simple analogy
+Suppose Amazon has 10 million products.
+You need one laptop.
+Bad approach:
+Amazon ships all 10 million products to your house and you search through them.
+Query folding:
+You tell Amazon exactly what you want, and Amazon sends only the matching laptop.
+
+=====
+
+Page 4 — Data Modeling: Star Schema
+This is probably the single most important Power BI architecture skill.
+Suppose we have sales.
+Don't build:
+
+```
+HugeSalesTable
+
+OrderID
+CustomerName
+CustomerCity
+CustomerState
+ProductName
+Category
+StoreName
+Region
+OrderDate
+Sales
+Cost
+Profit
+...
+```
+
+Instead build:
+
+```
+                    DimDate
+                       │
+                       │
+DimCustomer ─────── FactSales ─────── DimProduct
+                       │
+                       │
+                    DimStore
+```
+
+This is a:
+Star Schema
+Fact table
+Contains events/transactions.
+
+```
+FactSales
+
+DateKey
+CustomerKey
+ProductKey
+StoreKey
+Quantity
+Revenue
+Cost
+```
+
+Potentially:
+500 million rows
+Dimension tables
+Describe the facts.
+
+```
+DimProduct
+
+ProductKey
+ProductName
+Brand
+Category
+SubCategory
+```
+
+```
+DimCustomer
+
+CustomerKey
+CustomerName
+City
+State
+Country
+Segment
+```
+
+Usually:
+
+```
+Dimension  1
+    │
+    │ 1 : *
+    ↓
+Fact      MANY
+```
+
+Microsoft's relationship engine builds optimized mappings for regular relationships, particularly one-to-many relationships within a source group.
+Why Star Schema?
+Because it improves:
+
+*  understandability
+*  DAX simplicity
+*  relationship behavior
+*  filtering
+*  compression
+*  performance
+*  maintainability
+
+Simple analogy
+Think of `FactSales` as a receipt.
+The receipt says:
+
+```
+Customer #102
+Product #58
+Store #4
+Date #20260813
+Amount $499
+```
+
+Dimension tables explain:
+Who is Customer 102?
+What is Product 58?
+Where is Store 4?
+That's dimensional modeling.
+
+=====
+
+Page 5 — VertiPaq: why Power BI can be extremely fast
+Now we get into Power BI internals.
+When using Import mode, Power BI doesn't simply hold your original relational table as-is.
+It uses an in-memory columnar engine called VertiPaq.
+Traditional row-oriented thinking:
+
+```
+Customer | Product | State | Sales
+----------------------------------
+Raj      | Laptop  | GA    | 1000
+John     | Phone   | TX    | 800
+Sam      | Laptop  | GA    | 1200
+```
+
+VertiPaq thinks more like:
+
+```
+Customer:
+Raj
+John
+Sam
+
+Product:
+Laptop
+Phone
+Laptop
+
+State:
+GA
+TX
+GA
+
+Sales:
+1000
+800
+1200
+```
+
+Columns compress extremely well when values repeat.
+Suppose:
+
+```
+State
+
+Georgia
+Georgia
+Georgia
+Georgia
+Texas
+Georgia
+Georgia
+Texas
+...
+```
+
+Instead of repeatedly storing strings, conceptually you can dictionary-encode them:
+
+```
+Dictionary
+
+1 = Georgia
+2 = Texas
+3 = Florida
+```
+
+Data becomes roughly:
+
+```
+1
+1
+1
+1
+2
+1
+1
+2
+```
+
+Much smaller.
+Cardinality
+Now we reach a very important performance concept.
+Low cardinality
+
+```
+Gender
+
+Male
+Female
+```
+
+Only two unique values.
+Excellent compression.
+High cardinality
+
+```
+TransactionID
+
+TX000000001
+TX000000002
+TX000000003
+TX000000004
+...
+```
+
+Almost every value unique.
+Poorer compression.
+That's why blindly importing columns like:
+
+```
+GUID
+Transaction UUID
+Long URL
+Free-form text
+Nanosecond timestamp
+```
+
+can dramatically increase model size.
+Microsoft's modeling guidance emphasizes reducing unnecessary model data; it also notes that DAX calculated columns can compress less efficiently than source/Power Query-derived columns in some situations
+
+Power BI performance starts with the data model, not the visualization.
+
+A beautifully designed dashboard on top of a terrible semantic model will still perform badly.
+
+=====
+
+Page 6 — DAX: the analytical calculation engine
+DAX means:
+Data Analysis Expressions
+Basic measure:
+Total Sales =
+SUM(FactSales[SalesAmount])
+Profit:
+Total Profit =
+SUM(FactSales[SalesAmount])
+-
+SUM(FactSales[CostAmount])
+Margin:
+Profit Margin % =
+DIVIDE(
+    [Total Profit],
+    [Total Sales]
+)
+But DAX becomes powerful because of evaluation context.
+Filter Context
+Suppose:
+Total Sales =
+SUM(FactSales[SalesAmount])
+And the report displays:
+State	Total Sales
+Georgia	$8M
+Texas	$12M
+Florida	$7M
+You did NOT write:
+WHERE State = "Georgia"
+Why?
+Because the visual creates:
+Filter Context
+State = Georgia
+       ↓
+DimState
+       ↓
+Relationship
+       ↓
+FactSales
+       ↓
+SUM(Sales)
+Then Texas creates another context.
+CALCULATE
+Probably the most important DAX function:
+Georgia Sales =
+CALCULATE(
+    [Total Sales],
+    DimCustomer[State] = "Georgia"
+)
+Conceptually:
+Evaluate this expression under a modified filter context.
+That's why CALCULATE is so fundamental.
+Year-over-year
+For example:
+Sales LY =
+CALCULATE(
+    [Total Sales],
+    SAMEPERIODLASTYEAR(DimDate[Date])
+)
+Then:
+YoY Growth % =
+DIVIDE(
+    [Total Sales] - [Sales LY],
+    [Sales LY]
+)
+Now we're doing actual analytical modeling rather than simple arithmetic.
+
+=====
+
+Page 7 — Measures vs Calculated Columns
+This is an extremely common interview topic.
+Calculated Column
+Calculated row by row, with results stored in the model.
+Example:
+Profit =
+FactSales[Revenue] - FactSales[Cost]
+If FactSales has:
+100 million rows
+you potentially store:
+100 million Profit values.
+Measure
+Calculated at query time based on context.
+Profit =
+SUM(FactSales[Revenue])
+-
+SUM(FactSales[Cost])
+It isn't materialized as 100 million additional values.
+General rule
+Prefer:
+Measures for analytical aggregations.
+Use calculated columns when you genuinely require a persistent row-level attribute.
+And when a transformation can sensibly happen upstream:
+Database
+   ↓
+Power Query
+   ↓
+Semantic Model
+often push it upstream rather than unnecessarily expanding the semantic model.
+Microsoft explicitly recommends considering Power Query/source-side columns over DAX calculated columns where appropriate because model calculated columns can result in less efficient compression and longer refresh processing.
+
+=====
+
+Page 8 — Import vs DirectQuery vs Composite
+This is one of the most important Power BI architectural decisions.
+Import Mode
+Database
+    ↓
+COPY DATA
+    ↓
+VertiPaq
+    ↓
+Power BI
+Advantages:
+very fast queries
+excellent interactive experience
+full modeling flexibility
+source isn't hit for every visual interaction
+Disadvantage:
+Data freshness depends on refresh.
+Microsoft describes Import as the most common/default semantic-model mode and notes that its strong performance comes from in-memory querying
+
+DirectQuery
+
+```
+User clicks slicer
+       ↓
+Power BI
+       ↓
+Generate source query
+       ↓
+SQL / Snowflake / etc.
+       ↓
+Return result
+       ↓
+Visual
+```
+
+Data stays primarily at source.
+Advantages:
+
+```
+Very large data
+Fresh/current data
+Less imported model storage
+```
+
+But:
+
+```
+Every interaction
+      ↓
+Potential source query
+      ↓
+Network
+      ↓
+Database
+      ↓
+Result
+```
+
+Therefore performance depends strongly on the source.
+Microsoft explicitly notes that DirectQuery visual performance depends on how quickly the underlying source can answer the generated queries
+
+Composite Models
+Now we combine approaches.
+
+```
+             Semantic Model
+
+     ┌────────────┼────────────┐
+     ↓            ↓            ↓
+  Import      DirectQuery     Dual
+```
+
+Example:
+
+```
+DimDate        → Import/Dual
+DimProduct     → Import/Dual
+DimCustomer    → Import/Dual
+
+FactSales      → DirectQuery
+```
+
+Dimensions are small and fast in memory.
+Massive fact data can remain at source.
+Composite models support table-level storage choices such as Import, DirectQuery and Dual in applicable scenarios.
+
+Hybrid Tables
+Even more sophisticated:
+
+```
+FactSales
+
+2018 ───────────┐
+2019            │
+2020            │
+2021            ├── IMPORT
+2022            │
+2023            │
+2024            │
+2025 ───────────┘
+
+Recent 2026 ─────── DIRECTQUERY
+```
+
+Historical data is fast in memory.
+Latest data can remain live.
+Microsoft supports this pattern through hybrid tables, commonly created using incremental refresh plus a real-time DirectQuery partition
+
+=====
+
+Page 9 — Incremental Refresh, Gateway, Security & Enterprise Architecture
+Imagine:
+
+```
+FactTransactions
+2 BILLION rows
+```
+
+Would you reload all 2 billion every night?
+Usually no.
+Instead:
+Incremental Refresh
+Conceptually:
+
+```
+2019 ████████████ Don't refresh
+2020 ████████████ Don't refresh
+2021 ████████████ Don't refresh
+2022 ████████████ Don't refresh
+2023 ████████████ Don't refresh
+2024 ████████████ Don't refresh
+2025 ████████████ Historical
+2026 ███████░░░░░ Refresh recent partitions
+```
+
+Power BI partitions the data so recent periods can be refreshed without repeatedly reprocessing the entire historical table. Microsoft specifically identifies incremental refresh as a mechanism for avoiding expensive full reloads of large Import models.
+Gateway
+Now suppose the source is:
+
+```
+Company Data Center
+
+SQL Server
+10.20.30.40
+```
+
+Power BI Service can't simply magically access your private corporate network.
+So:
+
+```
+                  INTERNET / CLOUD
+
+               Power BI Service
+                       ↑
+                       │
+                Secure connection
+                       │
+             On-Premises Gateway
+                       │
+────────────────── FIREWALL ─────────────────
+                       │
+                  SQL Server
+```
+
+Gateway enables:
+
+```
+Scheduled Refresh
+DirectQuery
+Live connections
+```
+
+for applicable private/on-premises sources.
+Row-Level Security
+Suppose the same report serves 5,000 managers.
+You don't want:
+
+```
+5,000 separate reports.
+```
+
+Instead:
+
+```
+                  ONE REPORT
+                      │
+           ┌──────────┼──────────┐
+           ↓          ↓          ↓
+       GA Manager  TX Manager  CA Manager
+           ↓          ↓          ↓
+        Georgia      Texas    California
+```
+
+Example concept:
+
+```
+DimSalesperson[Email] = USERPRINCIPALNAME()
+```
+
+Now:
+
+```
+Raj logs in
+   ↓
+Entra identity
+   ↓
+RLS
+   ↓
+Filter dimension
+   ↓
+Relationship
+   ↓
+FactSales
+   ↓
+Raj sees only authorized data
+```
+
+Power BI semantic models can enforce RLS to filter data access for users.
+
+=====
+
+Page 10 — Performance Optimization + Real Enterprise Architecture
+Now let's combine everything.
+Suppose we have:
+ERP / SAP
+SQL Server
+Oracle
+Salesforce
+Excel
+APIs
+Fabric Warehouse
+Snowflake
+Architecture:
+                         SOURCES
+       SQL ─────┐
+       SAP ─────┤
+       Oracle ──┤
+       APIs ────┤
+       Excel ───┘
+                │
+                ↓
+         DATA PLATFORM / ETL
+                │
+                ↓
+          CURATED DATA
+                │
+                ↓
+          POWER QUERY
+        Query Folding
+                │
+                ↓
+       ┌───────────────────┐
+       │  SEMANTIC MODEL   │
+       │                   │
+       │  DimDate          │
+       │     │             │
+       │  FactSales ─ DimProduct
+       │     │             │
+       │  DimCustomer      │
+       │                   │
+       │  Measures / DAX   │
+       │  RLS              │
+       └───────────────────┘
+                │
+                ↓
+          Storage Mode
+                │
+     ┌──────────┼───────────┐
+     ↓          ↓           ↓
+  Import    DirectQuery   Direct Lake
+     │          │           │
+     └──────────┼───────────┘
+                ↓
+          Power BI Service
+                │
+       ┌────────┼────────┐
+       ↓        ↓        ↓
+      Apps    Reports   APIs
+       │        │
+       ↓        ↓
+     Users   Executives
+Performance tuning — where senior developers differ
+When someone says:
+"My Power BI report is slow."
+Don't immediately say:
+"Reduce the number of visuals."
+That's one possibility, but you should investigate the whole stack.
+Think:
+1. SOURCE
+      ↓
+2. POWER QUERY
+      ↓
+3. DATA MODEL
+      ↓
+4. VERTIPAQ
+      ↓
+5. DAX
+      ↓
+6. VISUAL
+      ↓
+7. NETWORK / CAPACITY
+Source level
+Check:
+Indexes
+Views
+SQL performance
+Query plans
+Source aggregations
+Power Query
+Check:
+Query folding
+Unnecessary columns
+Unnecessary rows
+Expensive transformations
+Model
+Check:
+Star schema
+Relationship cardinality
+Bi-directional relationships
+High-cardinality columns
+Unused columns
+Granularity
+DAX
+Check:
+Iterators
+Filter context
+Repeated calculations
+Expensive FILTER operations
+Poor measure design
+Use variables:
+Profit Margin =
+VAR Revenue =
+    [Total Revenue]
+VAR Profit =
+    [Total Profit]
+RETURN
+    DIVIDE(Profit, Revenue)
+Not because VAR magically makes everything faster, but because it can improve readability, avoid repeated evaluation in appropriate expressions, and make complex DAX easier to reason about.
+Visual layer
+Check:
+Too many visuals
+Huge tables
+High-cardinality slicers
+Unnecessary interactions
+Complex custom visuals
+Microsoft maintains a dedicated Power BI optimization guidance collection covering model design, query folding, DirectQuery, relationships and related performance concerns.
+Bonus — DAX Internals: Formula Engine vs Storage Engine
+For a more senior interview, understand this mental model.
+Power BI queries involve two important engine concepts:
+                  DAX QUERY
+                      │
+                      ↓
+               FORMULA ENGINE
+                      │
+              "What calculation
+                is required?"
+                      │
+                      ↓
+               STORAGE ENGINE
+                      │
+              "Retrieve/aggregate
+                  the data"
+                      │
+                      ↓
+                    RESULT
+Storage Engine
+VertiPaq can perform highly optimized operations such as:
+SUM
+COUNT
+GROUP BY-like aggregations
+Filtering compressed columns
+very efficiently.
+Formula Engine
+Handles more sophisticated DAX logic and orchestration.
+Complex iterative logic can force more Formula Engine work.
+For example:
+SUMX(
+    FactSales,
+    FactSales[Quantity] *
+    FactSales[UnitPrice]
+)
+SUMX is an iterator.
+Conceptually:
+Row 1 → Qty × Price
+Row 2 → Qty × Price
+Row 3 → Qty × Price
+...
+Then SUM
+Iterators aren't inherently bad.
+But running expensive row-by-row expressions over enormous fact tables can become costly.
+That's why experienced DAX developers ask:
+Can this calculation be modeled differently or pushed toward a more efficient storage-engine operation?
+Bonus — Row Context vs Filter Context
+This deserves special attention because it's where DAX starts becoming difficult.
+Row Context
+Think:
+Which row am I currently evaluating?
+Calculated column:
+LineAmount =
+FactSales[Quantity] *
+FactSales[UnitPrice]
+Power BI evaluates each row.
+ROW 1
+Qty = 2
+Price = 10
+→ $20
+ROW 2
+Qty = 3
+Price = 10
+→ $30
+That's row context.
+Filter Context
+Think:
+Which subset of data is currently visible to this calculation?
+Example:
+Year = 2026
+State = Georgia
+Product = Laptop
+Then:
+Total Sales =
+SUM(FactSales[SalesAmount])
+actually means conceptually:
+FactSales
+WHERE
+Year = 2026
+AND State = Georgia
+AND Product = Laptop
+→ SUM SalesAmount
+Understanding:
+row context + filter context + context transition + CALCULATE
+is the doorway from intermediate to advanced DAX.
+Bonus — Relationship Direction
+Suppose:
+DimProduct
+     1
+     │
+     ↓
+     *
+FactSales
+Normally filtering flows:
+DimProduct
+     ↓
+FactSales
+So:
+Category = Laptop
+       ↓
+DimProduct filtered
+       ↓
+FactSales filtered
+       ↓
+Total Sales
+This is why dimensions naturally filter facts.
+Why not make everything bidirectional?
+Because then:
+Table A ↔ Table B ↔ Table C ↔ Table D
+can create:
+ambiguous filter paths
+unexpected results
+more complex reasoning
+potential performance issues
+So:
+Use single-direction relationships by default. Introduce bidirectional filtering only when the model genuinely requires it and you understand the consequences.
+Real-World Project — Retail Executive Analytics
+Let's build one mentally.
+Business requirement
+CEO asks:
+"I need daily revenue, margin, customer growth, regional performance and product profitability."
+Sources:
+SAP
+ │
+ ├── Orders
+ ├── Inventory
+ └── Products
+Salesforce
+ │
+ └── Customers
+SQL Server
+ │
+ └── Store Transactions
+Excel
+ │
+ └── Monthly Targets
+ETL
+Sources
+   ↓
+Power Query / Fabric ETL
+   ↓
+Clean
+Standardize
+Deduplicate
+Transform
+   ↓
+Semantic Model
+Model
+                    DimDate
+                       │
+                       │
+DimCustomer ─────── FactSales ─────── DimProduct
+                       │
+                       │
+                    DimStore
+                       │
+                       │
+                   DimRegion
+Measures
+Revenue =
+SUM(FactSales[Revenue])
+Cost =
+SUM(FactSales[Cost])
+Profit =
+[Revenue] - [Cost]
+Margin % =
+DIVIDE(
+    [Profit],
+    [Revenue]
+)
+Revenue LY =
+CALCULATE(
+    [Revenue],
+    SAMEPERIODLASTYEAR(DimDate[Date])
+)
+YoY % =
+DIVIDE(
+    [Revenue] - [Revenue LY],
+    [Revenue LY]
+)
+Report
+┌──────────────────────────────────────────────┐
+│             EXECUTIVE SALES                 │
+│                                              │
+│ Revenue    Profit     Margin      YoY        │
+│ $128M      $26M       20.3%       +8.2%      │
+│                                              │
+│ ┌────────────────┐ ┌───────────────────────┐ │
+│ │ Sales Trend    │ │ Revenue by Region     │ │
+│ │       ╱╲       │ │ █████ Southeast       │ │
+│ │   ╱╲ ╱  ╲      │ │ ████  Northeast       │ │
+│ └────────────────┘ └───────────────────────┘ │
+│                                              │
+│ Top Products          Margin by Category     │
+└──────────────────────────────────────────────┘
+Now executives don't need to know:
+DAX
+VertiPaq
+Power Query
+SQL
+Gateway
+Star Schema
+They simply see:
+Southeast revenue fell 11%.
+And take action.
+That is ultimately why all this engineering exists.
+Power BI Deployment Architecture
+In enterprise Power BI, don't think:
+Developer → Publish → Done
+Think SDLC:
+              DEVELOPMENT
+Power BI Developer
+       ↓
+Development Workspace
+       ↓
+Testing / QA
+       ↓
+Test Workspace
+       ↓
+UAT
+       ↓
+Production Workspace
+       ↓
+Power BI App
+       ↓
+Business Users
+Then layer in:
+Git / source control
+Deployment pipelines
+Environment parameters
+Gateway configuration
+Security
+Monitoring
+Capacity management
+Refresh monitoring
+Usage analytics
+That's the difference between:
+"I know Power BI Desktop."
+and:
+"I can operate Power BI in an enterprise."
+Power BI + Fabric — Modern Architecture
+Since we just discussed Fabric, connect the two mentally:
+                         SOURCES
+                            │
+                            ↓
+                      DATA FACTORY
+                            │
+                            ↓
+                         ONELAKE
+                            │
+                 ┌──────────┴──────────┐
+                 ↓                     ↓
+             LAKEHOUSE             WAREHOUSE
+                 │                     │
+                 └──────────┬──────────┘
+                            ↓
+                     SEMANTIC MODEL
+                            │
+                       DIRECT LAKE
+                            │
+                            ↓
+                        POWER BI
+                            │
+                     ┌──────┴──────┐
+                     ↓             ↓
+                  Reports         Apps
+                     │
+                     ↓
+               Business Users
+This is why learning Power BI today naturally leads into Fabric.
+The 1-hour seminar flow
+I'd teach these ten pages approximately like this:
+Time	Topic
+0–5 min	What Power BI actually is
+5–10 min	Ecosystem & architecture
+10–16 min	Power Query + Query Folding
+16–23 min	Star Schema
+23–28 min	VertiPaq + Cardinality
+28–38 min	DAX + Evaluation Context
+38–43 min	Measures vs Calculated Columns
+43–49 min	Import / DirectQuery / Composite
+49–54 min	Refresh / Gateway / RLS
+54–60 min	Performance + Enterprise Architecture
+For a technical audience, I'd spend the largest chunk on modeling + DAX, because that's where Power BI developers most often distinguish themselves.
+The 12 things I would expect a strong Power BI developer to know
+By the end, you should be comfortable explaining:
+Power Query / M
+Query Folding
+Star Schema
+Fact vs Dimension
+Relationships & filter direction
+VertiPaq & cardinality
+DAX
+Row Context vs Filter Context
+CALCULATE
+Import vs DirectQuery vs Composite/Direct Lake
+RLS + Gateway + Refresh
+Performance optimization
+Microsoft's current semantic-model documentation essentially follows this same professional progression: transform data, model relationships, create DAX calculations, understand storage modes, then optimize and apply advanced modeling techniques.
+One architecture to memorize
+If I could make you remember only one Power BI diagram, it would be:
+                 RAW DATA
+                    │
+                    ↓
+            POWER QUERY / M
+         Clean + Transform + ETL
+                    │
+                    ↓
+              DATA MODEL
+                    │
+         ┌──────────┼──────────┐
+         ↓          ↓          ↓
+      Tables   Relationships   DAX
+         │          │          │
+         └──────────┼──────────┘
+                    ↓
+              SEMANTIC MODEL
+                    │
+                    ↓
+                 ENGINE
+          VertiPaq / DirectQuery
+                    │
+                    ↓
+                 REPORT
+                    │
+                    ↓
+            POWER BI SERVICE
+                    │
+         ┌──────────┼───────────┐
+         ↓          ↓           ↓
+       Apps       Users      Embedded
+                    │
+                    ↓
+             BUSINESS ACTION
+What are we actually trying to achieve?
+This is the important part.
+The goal of Power BI is not to make colorful dashboards.
+The real goal is:
+Messy Enterprise Data
+          ↓
+Clean + Governed Data
+          ↓
+Correct Semantic Model
+          ↓
+Reusable Business Logic
+          ↓
+Fast + Secure Analytics
+          ↓
+Business Insight
+          ↓
+Business Decision
+A report can look beautiful and still be a terrible BI solution if:
+Revenue calculation is wrong
+Relationships are ambiguous
+Refresh fails
+RLS exposes sensitive data
+Dashboard takes 25 seconds
+Every report defines Profit differently
+Conversely, a properly designed semantic model gives the organization a single reusable definition of the business.
+Revenue, Profit, Customer, Active Customer, YoY Growth should mean the same thing whether 5 people or 5,000 people consume the reports.
+And what is the interviewer expecting?
+For a senior Power BI interview, they're usually trying to determine whether you're merely a report builder or whether you understand BI engineering.
+A strong answer naturally connects:
+Business Requirement → Source → ETL/Power Query → Query Folding → Star Schema → Relationships → VertiPaq → DAX → Storage Mode → Security → Service → Performance → Business Impact.
+If you can confidently walk an interviewer through that chain—and explain why you made each architectural decision—you'll sound much more like a senior Power BI/Data Analytics engineer than someone who has simply learned where the buttons are in Power BI Desktop.
+For deeper study, Microsoft's official Power BI guidance documentation and Semantic Model Designer documentation are particularly useful because they go beyond report creation into modeling and performance engineering.

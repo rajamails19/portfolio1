@@ -1,4 +1,6 @@
 import type { Section } from "./types";
+import { theoryRockyPowerBiItems } from "./theory-rocky-powerbi";
+import { theoryRockyBasicsItems } from "./theory-rocky-basics";
 
 export const theoryRockySection: Section = {
   slug: "theory",
@@ -1180,5 +1182,7 @@ $6,195`,
         },
       ],
     },
+    ...theoryRockyPowerBiItems,
+    ...theoryRockyBasicsItems,
   ],
 };

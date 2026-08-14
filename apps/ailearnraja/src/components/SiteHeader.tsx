@@ -1,5 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { Flame } from "lucide-react";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 const nav = [
   { to: "/", label: "Home" },
@@ -36,6 +37,7 @@ export function SiteHeader() {
             </Link>
           ))}
         </nav>
+        <ThemeToggle />
       </div>
     </header>
   );

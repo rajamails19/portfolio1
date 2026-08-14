@@ -1,0 +1,962 @@
+=====
+
+Microsoft introduced Fabric publicly at Microsoft Build on May 23, 2023, initially in preview, and it became generally available in November 2023. The core idea was to bring Microsoft's previously separate analytics technologies—Power BI, Data Factory, Synapse-style engineering/warehousing, real-time analytics, and data science—into one SaaS analytics platform centered around OneLake.
+
+
+Microsoft Fabric — 1-Hour Conceptual & Technical Seminar
+Page 1 — First: What exactly is Microsoft Fabric?
+The simplest definition:
+Microsoft Fabric is Microsoft's unified, end-to-end data and analytics platform.
+It allows an organization to:
+collect → store → clean → transform → analyze → model → visualize → monitor → act on data
+without stitching together many separate platforms.
+Microsoft currently describes Fabric as a SaaS analytics platform supporting ingestion, transformation, real-time processing, analytics and reporting, with experiences including Data Factory, Data Engineering, Data Science, Data Warehouse, Real-Time Intelligence, Databases and Power BI.
+Before Fabric
+Imagine a company had:
+
+```
+SQL Server
+   ↓
+Azure Data Factory
+   ↓
+Azure Data Lake
+   ↓
+Databricks / Synapse Spark
+   ↓
+Synapse Warehouse
+   ↓
+Power BI Dataset
+   ↓
+Power BI Report
+```
+
+Technically, this works.
+But now you have:
+
+*  different services
+*  different security models
+*  different billing
+*  different administration
+*  different storage locations
+*  data copies
+*  separate monitoring
+*  separate development experiences
+
+Fabric's idea is:
+
+```
+             MICROSOFT FABRIC
+
+ Data Factory
+      ↓
+ Data Engineering
+      ↓
+    OneLake
+      ↓
+ Lakehouse / Warehouse
+      ↓
+ Semantic Model
+      ↓
+   Power BI
+```
+
+All under one platform.
+Simple analogy
+Think about smartphones before the iPhone.
+You might have had:
+camera + GPS + MP3 player + phone + calculator + browser
+as separate devices.
+The smartphone didn't invent all those capabilities.
+It unified them into one platform.
+Fabric is trying to do something similar for enterprise analytics.
+
+
+=====
+
+Page 2 — Why did Microsoft introduce Fabric?
+This is probably the most important conceptual question.
+The problem wasn't:
+"Companies don't have enough data tools."
+It was almost the opposite.
+Companies had too many disconnected data tools.
+Microsoft itself described the analytics landscape at Fabric's introduction as fragmented, with specialized services that organizations had to integrate themselves.
+Imagine a retail company.
+It has:
+
+```
+Customers → Salesforce
+Orders → SQL Server
+Website → Application logs
+Finance → SAP
+Inventory → Oracle
+Marketing → Excel
+IoT → Event streams
+```
+
+Now management asks:
+"Show me today's sales, current inventory, customer behavior and expected demand."
+Suddenly several teams become involved.
+
+```
+Data Engineer
+     ↓
+Data Warehouse Developer
+     ↓
+Data Scientist
+     ↓
+BI Developer
+     ↓
+Power BI Developer
+     ↓
+Business Analyst
+```
+
+Each might use a different tool.
+Fabric attempts to create one ecosystem
+
+```
+                     MICROSOFT FABRIC
+
+                 ┌────── OneLake ──────┐
+                 │                     │
+       Data Factory              Data Engineering
+                 │                     │
+            Data Science          Data Warehouse
+                 │                     │
+          Real-Time Intelligence
+                 │
+             Semantic Models
+                 │
+               Power BI
+```
+
+And importantly, Fabric is delivered as SaaS.
+Microsoft manages much of the underlying infrastructure rather than making teams provision and integrate every component themselves.
+
+=====
+
+Page 3 — OneLake: the heart of Fabric
+
+If you remember only one Fabric concept after the seminar:
+
+OneLake
+
+Microsoft's own analogy is essentially:
+
+OneLake is to enterprise data what OneDrive is to files.
+
+OneLake is the unified logical data lake for a Fabric organization and is built on Azure Data Lake Storage technology. It is provisioned as part of Fabric rather than requiring every team to build its own separate lake infrastructure.
+
+Conceptually:
+
+```
+                    COMPANY
+
+                     OneLake
+                        │
+        ┌───────────────┼────────────────┐
+        │               │                │
+      Sales          Finance             HR
+        │               │                │
+   Lakehouse         Warehouse       Lakehouse
+```
+
+Instead of:
+
+```
+Sales Lake
+Finance Lake
+Marketing Lake
+HR Lake
+Analytics Lake
+AI Lake
+```
+
+you get a common logical storage foundation.
+Why is that important?
+Because traditionally:
+
+```
+Original Data
+     ↓
+Copy for Data Lake
+     ↓
+Copy for Warehouse
+     ↓
+Copy for Analytics
+     ↓
+Copy for Power BI
+```
+
+creates:
+data duplication + storage cost + synchronization problems + governance problems.
+Fabric's architecture is designed so multiple workloads can operate over OneLake instead. Microsoft states that Fabric workloads can read and write the same underlying OneLake data without repeatedly moving it between engines.
+
+=====
+
+Page 4 — The major Fabric workloads
+This is where beginners sometimes get overwhelmed.
+Don't memorize names independently.
+Think of each component as a specialist working inside the same company.
+1. Data Factory — "Bring me the data"
+Used for:
+
+* ingestion
+* ETL/ELT
+* pipelines
+* Dataflow Gen2
+* orchestration
+* scheduling
+
+Example:
+
+```
+Oracle
+SQL Server
+Salesforce
+CSV
+API
+   ↓
+Data Factory
+   ↓
+OneLake
+```
+
+2. Data Engineering — "Prepare the data"
+Used by data engineers.
+Technologies include:
+
+*  Lakehouse
+*  Spark
+*  notebooks
+*  Python
+*  PySpark
+*  SQL
+*  Delta tables
+
+Example:
+
+```
+df = spark.read.format("delta").load("/Tables/Sales")
+
+clean_df = df.filter(df.amount > 0)
+
+clean_df.write.mode("overwrite").format("delta").saveAsTable("CleanSales")
+```
+
+3. Data Warehouse — "Give SQL people an analytics warehouse"
+Great for people familiar with:
+
+```
+SELECT
+    Region,
+    SUM(SalesAmount) AS TotalSales
+FROM Sales
+GROUP BY Region;
+```
+
+Fabric Warehouse provides relational, SQL-oriented analytics while storing its data in OneLake using Delta-based storage. Microsoft's architecture includes distributed query processing, SQL execution, transaction/metadata management and OneLake storage.
+
+4. Data Science — "Build predictive models"
+Think:
+
+```
+Historical Customer Data
+          ↓
+     ML Training
+          ↓
+     Churn Model
+          ↓
+"Customer has 82% probability of leaving"
+```
+
+Data scientists can work with notebooks, Python and ML workflows without building a completely separate data platform.
+5. Real-Time Intelligence — "What's happening RIGHT NOW?"
+Imagine:
+
+```
+IoT sensors
+Website clicks
+Factory machines
+Application logs
+Stock events
+Shipment GPS
+      ↓
+ Eventstream
+      ↓
+ Eventhouse
+      ↓
+ KQL / Real-Time Analysis
+      ↓
+ Dashboard / Alert
+```
+
+Fabric's Real-Time capabilities are designed for continuously arriving event and time-series data.
+
+6. Power BI — "Show humans what the data means"
+Finally:
+
+```
+Data
+ ↓
+Semantic Model
+ ↓
+DAX
+ ↓
+Reports
+ ↓
+Dashboards
+ ↓
+Business Decision
+```
+
+This is why Fabric is particularly important for Power BI professionals.
+Power BI isn't merely something you attach afterward.
+It is part of the Fabric ecosystem itself.
+
+=====
+
+Page 5 — Lakehouse vs Warehouse
+This is one of the biggest Fabric concepts.
+Traditional Data Lake
+Very flexible:
+
+```
+CSV
+JSON
+Images
+Logs
+Parquet
+Documents
+```
+
+But historically less convenient for classic BI.
+Traditional Data Warehouse
+Very structured:
+
+```
+Customers
+Products
+Sales
+Orders
+Dates
+```
+
+Excellent for SQL and BI.
+But less flexible for raw/semi-structured data and data-science workflows.
+Lakehouse
+The idea is:
+Data Lake flexibility + Data Warehouse structure
+You can have:
+
+```
+Lakehouse
+│
+├── Files
+│   ├── CSV
+│   ├── JSON
+│   └── Parquet
+│
+└── Tables
+    ├── Customers
+    ├── Products
+    └── Sales
+```
+
+Fabric commonly stores analytical tables using:
+Delta + Parquet
+Parquet provides efficient columnar storage.
+Delta adds capabilities around transactional table management.
+When would I choose what?
+Think:
+Lakehouse
+"My engineers use Spark/Python and we're working with raw + structured data."
+Warehouse
+"My team primarily thinks in relational tables, T-SQL, dimensional models and BI."
+In real enterprise architectures, you may use both.
+
+=====
+
+Page 6 — Medallion Architecture
+Now we move into real data-engineering architecture.
+Microsoft recommends the Medallion architecture as a design approach for Fabric lakehouses.
+
+It has three stages:
+           RAW DATA
+              ↓
+        🥉 BRONZE
+          Raw data
+              ↓
+        🥈 SILVER
+       Cleaned data
+              ↓
+         🥇 GOLD
+      Business-ready
+              ↓
+          Power BI
+Bronze
+Store data basically as received.
+Customer_ID = "001"
+Country = "usa"
+Date = "8/12/26"
+Don't aggressively modify it.
+Why?
+Because Bronze is your historical/raw reference.
+Silver
+Clean and standardize.
+Customer_ID = 1
+Country = "United States"
+Date = 2026-08-12
+Operations may include:
+remove duplicates
+handle nulls
+standardize dates
+validate records
+join reference data
+correct data types
+Gold
+Business-ready data.
+For example:
+FactSales
+DimCustomer
+DimProduct
+DimDate
+DimStore
+Now Power BI can consume this efficiently.
+Simple analogy
+Think about cooking vegetables.
+Bronze: vegetables straight from the grocery bag.
+Silver: washed, peeled and chopped.
+Gold: cooked, seasoned and plated.
+Power BI shouldn't ideally be spending its time washing vegetables.
+It should receive the finished plate.
+
+=====
+
+Page 7 — Direct Lake: one of Fabric's most important innovations
+Power BI traditionally gives you two famous choices.
+Import
+Database
+   ↓
+COPY DATA
+   ↓
+Power BI Memory
+Advantages:
+Very fast
+Problem:
+You have another copy and need refreshes.
+DirectQuery
+Power BI
+   ↓
+SQL query
+   ↓
+Database
+Advantages:
+Fresh data.
+Problem:
+Performance depends heavily on the underlying source/query path.
+Direct Lake
+Fabric introduces another important storage mode:
+               Power BI
+                   ↓
+            Semantic Model
+                   ↓
+              Direct Lake
+                   ↓
+               OneLake
+                   ↓
+           Delta / Parquet
+Direct Lake is designed for Power BI semantic models over Delta tables in OneLake. Queries use the VertiPaq engine, while required columns can be loaded from OneLake on demand. Unlike Import, it doesn't require copying the entire model into an imported dataset during each refresh.
+A simplified comparison:
+	Import	DirectQuery	Direct Lake
+Copies entire data	Yes	No	No traditional full import
+VertiPaq	Yes	No	Yes
+Large data	Limited by model/capacity	Good	Designed for it
+Refresh dependency	Yes	Less	Metadata/framing model
+Typical interactive performance	Excellent	Source-dependent	Often close to Import
+Important technical nuance: Direct Lake isn't magic. Performance still depends on good Delta-table design, file organization, row groups, semantic-model design and capacity sizing.
+
+
+=====
+
+Page 8 — A complete real-world Fabric project
+Let's imagine Walmart-like retail analytics.
+The company has:
+
+```
+SQL Server → Orders
+
+Salesforce → Customers
+
+SAP → Inventory
+
+Website → Clickstream
+
+IoT → Store Sensors
+
+CSV → Monthly Targets
+```
+
+Step 1 — Ingestion
+Fabric Data Factory:
+
+```
+SQL ──────────┐
+Salesforce ───┤
+SAP ──────────┼──→ Data Factory
+CSV ──────────┤
+API ──────────┘
+```
+
+Step 2 — Storage
+Land the data in:
+
+```
+OneLake
+   ↓
+Bronze Lakehouse
+```
+
+Step 3 — Transformation
+Use:
+
+```
+Spark
+Python
+SQL
+Notebooks
+Dataflows
+```
+
+to produce:
+
+```
+Bronze
+   ↓
+Silver
+   ↓
+Gold
+```
+
+Step 4 — Business Model
+Gold tables:
+
+```
+             DimCustomer
+                  |
+DimProduct — FactSales — DimDate
+                  |
+               DimStore
+```
+
+Classic star schema.
+Step 5 — Semantic Model
+Create measures:
+
+```
+Total Sales =
+SUM(FactSales[SalesAmount])
+```
+
+```
+Profit =
+SUM(FactSales[Revenue])
+-
+SUM(FactSales[Cost])
+```
+
+```
+Profit Margin =
+DIVIDE([Profit], [Total Sales])
+```
+
+Step 6 — Power BI
+Management sees:
+
+```
+Revenue             $125M
+Profit                $22M
+Margin                17.6%
+Orders                1.8M
+────────────────────────────
+
+Sales by Region
+Sales by Product
+YoY Growth
+Inventory Risk
+Customer Segments
+```
+
+Now imagine the CEO asks:
+"Why did Southeast sales fall yesterday?"
+The goal is to reduce the distance between:
+business question → trustworthy data → analysis → decision.
+
+=====
+
+Page 9 — Fabric becomes even more interesting with real-time data
+Suppose we're operating factories.
+Every machine sends:
+
+```
+{
+  "machineId": "M102",
+  "temperature": 91.4,
+  "pressure": 62.1,
+  "timestamp": "2026-08-12T18:30:00"
+}
+```
+
+Millions of these events may arrive.
+Fabric can conceptually process:
+
+```
+Factory Sensors
+      ↓
+ Eventstream
+      ↓
+ Eventhouse
+      ↓
+      KQL
+      ↓
+ Real-Time Dashboard
+      ↓
+     Alert
+```
+
+For example:
+
+```
+IF temperature > threshold
+        ↓
+Potential overheating
+        ↓
+Alert maintenance team
+```
+
+This moves analytics from:
+"What happened last month?"
+toward:
+"What is happening right now, and should we act?"
+Microsoft's current connected-factory reference architecture demonstrates Fabric processing more than one million industrial IoT events per hour across 30,000 tags and 40 factories, combining streaming data, contextual business data, ML, real-time dashboards and notifications.
+
+So this isn't just a prettier Power BI environment.
+It can be an enterprise-scale data platform architecture.
+
+=====
+
+Page 10 — Shortcuts, zero-copy thinking, governance and the bigger picture
+There's another powerful OneLake concept:
+Shortcuts
+Suppose your organization already has data in:
+
+```
+Azure Data Lake
+
+Amazon S3
+
+Google Cloud Storage
+```
+
+The old mindset might be:
+
+```
+S3
+ ↓
+COPY
+ ↓
+Azure
+ ↓
+COPY
+ ↓
+Analytics
+```
+
+Fabric OneLake Shortcuts can provide references to supported external storage so Fabric workloads can access data without first creating another physical copy through traditional ETL. Microsoft currently documents shortcut support including ADLS, Amazon S3 and Google Cloud Storage scenarios.
+
+Think of a Windows shortcut.
+
+The shortcut doesn't duplicate your 20 GB movie.
+
+It points to where the movie exists.
+
+That's roughly the mental model.
+
+Security and governance
+
+Enterprise analytics isn't just:
+
+"Can we make a dashboard?"
+
+It's also:
+
+"Should Raja be allowed to see Finance payroll?"
+
+Fabric has platform-level governance and security capabilities, including integration with Microsoft Entra identity and Microsoft Purview-backed governance. The OneLake Catalog provides centralized discovery and governance of Fabric data and analytics artifacts.
+
+You still need to think at several levels:
+Organization / Tenant
+        ↓
+     Capacity
+        ↓
+    Workspace
+        ↓
+   Fabric Item
+        ↓
+     OneLake
+        ↓
+ Semantic Model
+        ↓
+       RLS
+        ↓
+     Report
+For example:
+CEO
+→ All regions
+US Manager
+→ United States only
+Georgia Manager
+→ Georgia only
+RLS could enforce those business boundaries at the semantic-model level.
+Fabric Capacity — how compute fits in
+One thing beginners often misunderstand:
+OneLake is storage.
+Fabric Capacity provides compute resources.
+Think:
+OneLake = warehouse where your goods are stored.
+Fabric Capacity = workers and machines processing those goods.
+Fabric capacities use Capacity Units (CUs), with Fabric capacity SKUs such as:
+F2
+F4
+F8
+F16
+F32
+F64
+...
+Different workloads—Power BI queries, Spark jobs, pipelines, warehouse queries, etc.—consume capacity resources.
+This is why enterprise Fabric architecture also involves:
+performance engineering + workload management + capacity planning + cost governance.
+Where does AI fit?
+Modern Fabric isn't only traditional BI.
+Microsoft is increasingly positioning Fabric as a data foundation for analytics and AI, with Copilot capabilities across parts of the platform and integration with Microsoft's AI ecosystem.
+Conceptually:
+                    ONE LAKE
+                       │
+       ┌───────────────┼──────────────┐
+       ↓               ↓              ↓
+     BI/SQL           ML             AI
+       ↓               ↓              ↓
+   Power BI       Data Science     AI Apps
+This matters because enterprise AI has a fundamental dependency:
+Good AI requires good data.
+You can't build trustworthy enterprise AI on:
+duplicate customer records
++
+outdated transactions
++
+unknown data ownership
++
+inconsistent definitions
+Fabric's strategic value is partly about creating a governed data foundation that BI, analytics, ML and AI systems can share.
+A technical architecture worth remembering
+For your seminar, I would actually draw this on a whiteboard:
+                        DATA SOURCES
+                             │
+       ┌─────────────────────┼─────────────────────┐
+       │                     │                     │
+   SQL / Oracle          SaaS / APIs          Events / IoT
+       │                     │                     │
+       └──────────────┬──────┴─────────────┬──────┘
+                      ↓                    ↓
+                DATA FACTORY          EVENTSTREAM
+                      │                    │
+                      └─────────┬──────────┘
+                                ↓
+                    ┌────────────────────┐
+                    │      ONELAKE       │
+                    └────────────────────┘
+                                │
+                     🥉 BRONZE — RAW
+                                ↓
+                     🥈 SILVER — CLEAN
+                                ↓
+                     🥇 GOLD — CURATED
+                                │
+               ┌────────────────┼─────────────────┐
+               ↓                ↓                 ↓
+           Lakehouse        Warehouse        Eventhouse
+               │                │                 │
+               └────────────────┼─────────────────┘
+                                ↓
+                         SEMANTIC MODEL
+                                │
+                           DIRECT LAKE
+                                │
+                             POWER BI
+                                │
+                                ↓
+                       BUSINESS DECISIONS
+That diagram alone explains a large portion of Fabric.
+Who uses what?
+Another useful way to understand Fabric:
+Person	Fabric area
+Data Integration Engineer	Data Factory
+Data Engineer	Lakehouse / Spark
+SQL Developer	Warehouse
+Data Scientist	Data Science / Notebooks
+Streaming Engineer	Real-Time Intelligence
+BI Developer	Semantic Models / Power BI
+Business Analyst	Power BI
+Data Architect	Entire Fabric architecture
+Administrator	Capacity / governance / security
+The important thing is:
+They aren't supposed to operate as isolated islands anymore.
+They're working within the same Fabric ecosystem.
+Fabric vs traditional Azure analytics
+Don't interpret Fabric as:
+"Azure Synapse renamed."
+That's too simplistic.
+The strategic change is the operating model.
+Traditional Azure analytics often feels like:
+Provision service A
+Configure networking
+Connect storage
+Configure permissions
+Connect service B
+Configure integration
+Connect Power BI
+Manage everything
+Fabric pushes toward:
+Open Fabric
+   ↓
+Create Workspace
+   ↓
+Create Fabric Items
+   ↓
+Work against shared OneLake data
+That's the SaaS philosophy.
+Less:
+"Build and integrate infrastructure."
+More:
+"Build the data product."
+A very simple end-to-end example
+Suppose we receive:
+sales.csv
+Containing:
+Date        Product      Qty     Price
+08/10/26    iPhone       2       999
+08/10/26    Laptop       1       1200
+08/11/26    iPhone       3       999
+Data Factory
+Ingest it.
+CSV → OneLake
+Lakehouse
+Store:
+BronzeSales
+Notebook
+Transform:
+from pyspark.sql.functions import col
+sales = spark.table("BronzeSales")
+clean_sales = sales.withColumn(
+    "Revenue",
+    col("Qty") * col("Price")
+)
+clean_sales.write.mode("overwrite").saveAsTable("GoldSales")
+Power BI
+Measure:
+Total Revenue =
+SUM(GoldSales[Revenue])
+Dashboard:
+TOTAL REVENUE
+$6,195
+That's Fabric in miniature:
+Raw Data
+   ↓
+Ingestion
+   ↓
+OneLake
+   ↓
+Engineering
+   ↓
+Business Model
+   ↓
+Power BI
+   ↓
+Insight
+The one analogy I would use in your seminar
+Imagine a large restaurant.
+Previously:
+Vegetables → Building A
+Meat → Building B
+Cooking → Building C
+Billing → Building D
+Waiters → Building E
+Every department keeps transporting things between buildings.
+That's fragmented analytics.
+Fabric says:
+Build one large restaurant.
+Inside it you still have specialists:
+Data Factory = delivery/loading dock
+OneLake = central pantry
+Data Engineering = preparation kitchen
+Warehouse = organized ingredient shelves
+Data Science = experimental chef
+Real-Time Intelligence = kitchen monitoring system
+Power BI = waiter presenting the finished meal
+Different jobs.
+Same restaurant.
+
+
+The 30-second explanation you should eventually be able to give
+If someone asks:
+"What is Microsoft Fabric?"
+A strong answer is:
+Microsoft Fabric is Microsoft's unified SaaS platform for end-to-end data and analytics. It brings capabilities such as Data Factory, Data Engineering, Lakehouse, Data Warehouse, Data Science, Real-Time Intelligence and Power BI into a common environment built around OneLake. The major architectural benefit is that different analytics workloads can work against a shared data foundation instead of organizations constantly copying data and integrating separate services. Fabric can take data from ingestion through transformation, modeling and ultimately Power BI reporting or real-time analytics.
+That sounds much stronger than:
+"Fabric is a new Microsoft BI tool."
+Because Fabric is much bigger than Power BI.
+The 10 concepts I would make sure everyone leaves knowing
+
+1. Fabric = unified analytics SaaS platform.
+2. OneLake = common organizational data lake.
+3. Data Factory = ingestion/orchestration.
+4. Lakehouse = lake flexibility + structured analytics.
+5. Warehouse = SQL-centric enterprise analytics.
+6. Spark/Notebooks = engineering and transformation.
+7. Bronze → Silver → Gold = progressive data refinement.
+8. Semantic Model = business meaning and analytics layer.
+9. Direct Lake = Power BI accessing OneLake-backed Delta data without traditional full Import copying.
+10. Power BI = consumption/analytics layer inside the broader Fabric ecosystem.
+
+If those ten ideas are clear, the rest of Fabric starts fitting naturally into place.
+What are we actually trying to achieve?
+This is the most important takeaway.
+We're not learning Fabric so we can memorize Microsoft's product menu.
+We're trying to solve this enterprise problem:
+
+```
+Many Data Sources
+        ↓
+ONE governed data platform
+        ↓
+Reliable, reusable data
+        ↓
+Engineering + SQL + ML + Real-Time
+        ↓
+Power BI / AI
+        ↓
+Fast, trustworthy business decisions
+```
+
+That's the architectural reason Fabric matters.
+And if this were an interview, that's also what the interviewer wants to hear. They don't just want:
+"OneLake is a data lake."
+They want to see whether you can connect:
+business requirement → ingestion → OneLake → transformation → Lakehouse/Warehouse → semantic model → Power BI → security/performance → business outcome.
+Once you can tell that story, you understand Fabric at a much more useful level than someone who simply memorized 50 Fabric definitions.
+Good official resources
+Microsoft Fabric overview (https://learn.microsoft.com/en-us/fabric/fundamentals/microsoft-fabric-overview?utm_source=chatgpt.com)
+Microsoft Fabric fundamentals learning path (https://learn.microsoft.com/en-us/fabric/fundamentals/?utm_source=chatgpt.com)
+Microsoft's original Fabric announcement (https://azure.microsoft.com/en-us/blog/introducing-microsoft-fabric-data-analytics-for-the-era-of-ai/?msockid=2fca5b44aadb600526eb4de4ab6e611c&utm_source=chatgpt.com)
+Direct Lake technical overview (https://learn.microsoft.com/en-us/fabric/fundamentals/direct-lake-overview?utm_source=chatgpt.com)
+Fabric Medallion architecture guidance (https://learn.microsoft.com/en-us/fabric/onelake/onelake-medallion-lakehouse-architecture?utm_source=chatgpt.com)
