@@ -6,6 +6,7 @@ import { qansFifaSection } from "./qans-fifa";
 import { qansRockySection } from "./qans-rocky";
 import { theoryRockySection } from "./theory-rocky";
 import { programsSection } from "./programs";
+import { programsChaatSection } from "./programs-chaat";
 import { realtimeSection } from "./realtime";
 import { projectsSection } from "./projects";
 import { othersSection } from "./others";
@@ -27,7 +28,7 @@ export const noirSections: Section[] = [
 
 export const chaatSections: Section[] = [
   qansChaatSection,
-  programsSection,
+  programsChaatSection,
   realtimeSection,
   projectsSection,
   othersSection,

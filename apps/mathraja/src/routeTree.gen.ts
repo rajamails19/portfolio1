@@ -23,6 +23,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as TopicsIndexRouteImport } from './routes/topics.index'
 import { Route as GradesIndexRouteImport } from './routes/grades.index'
 import { Route as TopicsTopicRouteImport } from './routes/topics.$topic'
+import { Route as TestsTestRouteImport } from './routes/tests.$test'
 import { Route as GradesGradeRouteImport } from './routes/grades.$grade'
 
 const TopicsRoute = TopicsRouteImport.update({
@@ -95,6 +96,11 @@ const TopicsTopicRoute = TopicsTopicRouteImport.update({
   path: '/$topic',
   getParentRoute: () => TopicsRoute,
 } as any)
+const TestsTestRoute = TestsTestRouteImport.update({
+  id: '/tests/$test',
+  path: '/tests/$test',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const GradesGradeRoute = GradesGradeRouteImport.update({
   id: '/$grade',
   path: '/$grade',
@@ -114,6 +120,7 @@ export interface FileRoutesByFullPath {
   '/tips': typeof TipsRoute
   '/topics': typeof TopicsRouteWithChildren
   '/grades/$grade': typeof GradesGradeRoute
+  '/tests/$test': typeof TestsTestRoute
   '/topics/$topic': typeof TopicsTopicRoute
   '/grades/': typeof GradesIndexRoute
   '/topics/': typeof TopicsIndexRoute
@@ -129,6 +136,7 @@ export interface FileRoutesByTo {
   '/times-tables': typeof TimesTablesRoute
   '/tips': typeof TipsRoute
   '/grades/$grade': typeof GradesGradeRoute
+  '/tests/$test': typeof TestsTestRoute
   '/topics/$topic': typeof TopicsTopicRoute
   '/grades': typeof GradesIndexRoute
   '/topics': typeof TopicsIndexRoute
@@ -147,6 +155,7 @@ export interface FileRoutesById {
   '/tips': typeof TipsRoute
   '/topics': typeof TopicsRouteWithChildren
   '/grades/$grade': typeof GradesGradeRoute
+  '/tests/$test': typeof TestsTestRoute
   '/topics/$topic': typeof TopicsTopicRoute
   '/grades/': typeof GradesIndexRoute
   '/topics/': typeof TopicsIndexRoute
@@ -166,6 +175,7 @@ export interface FileRouteTypes {
     | '/tips'
     | '/topics'
     | '/grades/$grade'
+    | '/tests/$test'
     | '/topics/$topic'
     | '/grades/'
     | '/topics/'
@@ -181,6 +191,7 @@ export interface FileRouteTypes {
     | '/times-tables'
     | '/tips'
     | '/grades/$grade'
+    | '/tests/$test'
     | '/topics/$topic'
     | '/grades'
     | '/topics'
@@ -198,6 +209,7 @@ export interface FileRouteTypes {
     | '/tips'
     | '/topics'
     | '/grades/$grade'
+    | '/tests/$test'
     | '/topics/$topic'
     | '/grades/'
     | '/topics/'
@@ -215,6 +227,7 @@ export interface RootRouteChildren {
   TimesTablesRoute: typeof TimesTablesRoute
   TipsRoute: typeof TipsRoute
   TopicsRoute: typeof TopicsRouteWithChildren
+  TestsTestRoute: typeof TestsTestRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -317,6 +330,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TopicsTopicRouteImport
       parentRoute: typeof TopicsRoute
     }
+    '/tests/$test': {
+      id: '/tests/$test'
+      path: '/tests/$test'
+      fullPath: '/tests/$test'
+      preLoaderRoute: typeof TestsTestRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/grades/$grade': {
       id: '/grades/$grade'
       path: '/$grade'
@@ -365,6 +385,7 @@ const rootRouteChildren: RootRouteChildren = {
   TimesTablesRoute: TimesTablesRoute,
   TipsRoute: TipsRoute,
   TopicsRoute: TopicsRouteWithChildren,
+  TestsTestRoute: TestsTestRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

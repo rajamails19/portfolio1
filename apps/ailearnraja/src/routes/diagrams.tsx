@@ -52,7 +52,7 @@ function DiagramsPage() {
                   </div>
                 </div>
                 {/* back */}
-                <div className="flip-face flip-back bg-gradient-to-b from-[oklch(0.22_0.06_280)] to-[oklch(0.12_0.03_270)] p-6 flex flex-col justify-center text-center shadow-cinematic">
+                <div className="flip-face flip-back bg-gradient-to-b from-card to-card p-6 flex flex-col justify-center text-center shadow-cinematic">
                   <span className="ember-chip mx-auto mb-3">{d.category}</span>
                   <h3 className="font-display text-2xl text-gradient-ember">{d.title}</h3>
                   <p className="font-serif italic text-foreground/80 mt-3">{d.caption}</p>

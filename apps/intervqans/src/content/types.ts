@@ -27,6 +27,7 @@ export interface QAItem {
   id: string;
   question: string;
   category?: string;
+  subCategory?: string;
   tags?: string[];
   difficulty?: "Easy" | "Medium" | "Hard";
   answer: Block[];

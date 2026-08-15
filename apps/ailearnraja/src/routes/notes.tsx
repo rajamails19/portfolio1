@@ -27,7 +27,7 @@ function NotesPage() {
         {noteBatches.map((batch, bi) => {
           const isOpen = openBatch === bi;
           return (
-            <div key={batch.range} className="rounded-2xl border border-[oklch(0.85_0.14_85/0.18)] bg-gradient-to-b from-[oklch(0.22_0.04_270/0.7)] to-[oklch(0.16_0.03_270/0.85)] backdrop-blur-sm shadow-cinematic overflow-hidden">
+            <div key={batch.range} className="rounded-2xl border border-[oklch(0.85_0.14_85/0.18)] bg-gradient-to-b from-card/70 to-card/90 backdrop-blur-sm shadow-cinematic overflow-hidden">
               <button
                 onClick={() => { setOpenBatch(isOpen ? null : bi); setOpenNote(null); }}
                 className="w-full flex items-center gap-4 px-6 py-5 text-left hover:bg-[oklch(0.85_0.14_85/0.06)] transition-colors"
@@ -48,7 +48,7 @@ function NotesPage() {
                     {batch.notes.map((n) => {
                       const noteOpen = openNote === n.id;
                       return (
-                        <div key={n.id} className="rounded-xl border border-[oklch(0.85_0.14_85/0.12)] bg-[oklch(0.14_0.03_270/0.55)]">
+                        <div key={n.id} className="rounded-xl border border-[oklch(0.85_0.14_85/0.12)] bg-card/50">
                           <button
                             onClick={() => setOpenNote(noteOpen ? null : n.id)}
                             className="w-full flex items-start gap-4 px-5 py-3.5 text-left hover:bg-[oklch(0.85_0.14_85/0.06)] transition-colors"

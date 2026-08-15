@@ -295,12 +295,12 @@ export const TOPICS: Topic[] = [
 ];
 
 export const GRADES = [
-  { grade: 1, title: "Grade 1", subtitle: "Little counters", color: "from-amber-200 to-orange-300", topics: ["addition", "subtraction", "geometry", "word-problems"] },
-  { grade: 2, title: "Grade 2", subtitle: "Number explorers", color: "from-orange-200 to-red-300", topics: ["addition", "subtraction", "multiplication", "geometry", "word-problems"] },
-  { grade: 3, title: "Grade 3", subtitle: "Times-tables champs", color: "from-yellow-200 to-amber-300", topics: ["multiplication", "division", "fractions", "geometry", "word-problems"] },
-  { grade: 4, title: "Grade 4", subtitle: "Fraction wizards", color: "from-teal-200 to-emerald-300", topics: ["multiplication", "division", "fractions", "geometry", "word-problems"] },
-  { grade: 5, title: "Grade 5", subtitle: "Decimal detectives", color: "from-emerald-200 to-teal-400", topics: ["fractions", "division", "geometry", "word-problems", "algebra"] },
-  { grade: 6, title: "Grade 6", subtitle: "Pre-algebra pros", color: "from-cyan-200 to-teal-400", topics: ["fractions", "division", "geometry", "word-problems", "algebra"] },
+  { grade: 1, title: "Grade 1", subtitle: "Little counters", color: "from-amber-200 to-orange-300", topics: ["addition", "subtraction", "geometry", "word-problems"], tests: [] as string[] },
+  { grade: 2, title: "Grade 2", subtitle: "Number explorers", color: "from-orange-200 to-red-300", topics: ["addition", "subtraction", "multiplication", "geometry", "word-problems"], tests: [] as string[] },
+  { grade: 3, title: "Grade 3", subtitle: "Times-tables champs", color: "from-yellow-200 to-amber-300", topics: ["multiplication", "division", "fractions", "geometry", "word-problems"], tests: ["grade3-test1"] as string[] },
+  { grade: 4, title: "Grade 4", subtitle: "Fraction wizards", color: "from-teal-200 to-emerald-300", topics: ["multiplication", "division", "fractions", "geometry", "word-problems"], tests: ["test1"] as string[] },
+  { grade: 5, title: "Grade 5", subtitle: "Decimal detectives", color: "from-emerald-200 to-teal-400", topics: ["fractions", "division", "geometry", "word-problems", "algebra"], tests: [] as string[] },
+  { grade: 6, title: "Grade 6", subtitle: "Pre-algebra pros", color: "from-cyan-200 to-teal-400", topics: ["fractions", "division", "geometry", "word-problems", "algebra"], tests: [] as string[] },
 ];
 
 export const FORMULAS = [

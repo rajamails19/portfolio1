@@ -50,7 +50,7 @@ function InterviewPage() {
 
       <section className="mx-auto max-w-6xl px-6 py-12">
         {/* filter bar */}
-        <div className="rounded-2xl border border-[oklch(0.85_0.14_85/0.2)] bg-gradient-to-b from-[oklch(0.22_0.04_270/0.7)] to-[oklch(0.16_0.03_270/0.85)] backdrop-blur-md p-4 shadow-cinematic">
+        <div className="rounded-2xl border border-[oklch(0.85_0.14_85/0.2)] bg-gradient-to-b from-card/70 to-card/90 backdrop-blur-md p-4 shadow-cinematic">
           <div className="flex flex-col lg:flex-row gap-3">
             <div className="relative flex-1">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
@@ -58,7 +58,7 @@ function InterviewPage() {
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder="Search questions…"
-                className="w-full pl-10 pr-4 py-2.5 rounded-full bg-[oklch(0.14_0.03_270/0.7)] border border-[oklch(0.85_0.14_85/0.15)] text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-[oklch(0.85_0.14_85/0.4)]"
+                className="w-full pl-10 pr-4 py-2.5 rounded-full bg-card/60 border border-[oklch(0.85_0.14_85/0.15)] text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-[oklch(0.85_0.14_85/0.4)]"
               />
             </div>
             <Select value={topic} onChange={setTopic} options={topics} label="Topic" />
@@ -81,12 +81,12 @@ function InterviewPage() {
           {list.map((q) => {
             const isOpen = open === q.id;
             return (
-              <article key={q.id} className="rounded-2xl border border-[oklch(0.85_0.14_85/0.18)] bg-gradient-to-b from-[oklch(0.22_0.04_270/0.7)] to-[oklch(0.16_0.03_270/0.85)] backdrop-blur-sm overflow-hidden">
+              <article key={q.id} className="rounded-2xl border border-[oklch(0.85_0.14_85/0.18)] bg-gradient-to-b from-card/70 to-card/90 backdrop-blur-sm overflow-hidden">
                 <button onClick={() => setOpen(isOpen ? null : q.id)} className="w-full text-left px-6 py-5 flex items-start gap-4 hover:bg-[oklch(0.85_0.14_85/0.05)] transition-colors">
                   <div className="flex-1">
                     <div className="flex flex-wrap items-center gap-2 mb-2">
                       <span className="ember-chip">{q.topic}</span>
-                      <span className="text-[10px] uppercase tracking-widest px-2 py-0.5 rounded-full bg-[oklch(0.14_0.03_270/0.7)] border border-[oklch(0.85_0.14_85/0.15)] text-muted-foreground">
+                      <span className="text-[10px] uppercase tracking-widest px-2 py-0.5 rounded-full bg-card/60 border border-[oklch(0.85_0.14_85/0.15)] text-muted-foreground">
                         {q.difficulty}
                       </span>
                       <span className="inline-flex items-center gap-1 text-[oklch(0.85_0.14_85)]">
@@ -124,7 +124,7 @@ function Select<T extends string>({ value, onChange, options, label, labelMap }:
       <select
         value={value}
         onChange={(e) => onChange(e.target.value as T)}
-        className="appearance-none pl-3 pr-8 pt-5 pb-1.5 rounded-full bg-[oklch(0.14_0.03_270/0.7)] border border-[oklch(0.85_0.14_85/0.15)] text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-[oklch(0.85_0.14_85/0.4)] min-w-[170px]"
+        className="appearance-none pl-3 pr-8 pt-5 pb-1.5 rounded-full bg-card/60 border border-[oklch(0.85_0.14_85/0.15)] text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-[oklch(0.85_0.14_85/0.4)] min-w-[170px]"
       >
         {options.map((o) => (
           <option key={o} value={o} className="bg-[oklch(0.16_0.03_270)]">{labelMap?.[o] ?? o}</option>

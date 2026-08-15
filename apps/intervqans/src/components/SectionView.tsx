@@ -11,6 +11,9 @@ import {
   BarChart3,
   LayoutDashboard,
   Cloud,
+  Braces,
+  FileCode2,
+  Bot,
 } from "lucide-react";
 import type { Section } from "@/content/types";
 import { useTheme } from "@/themes/ThemeContext";
@@ -36,14 +39,38 @@ const QANS_TOPICS_BY_THEME: Record<string, { name: string; Icon: typeof Code2 }[
   ],
 };
 
+const PROGRAM_TOPICS_BY_THEME: Record<string, { name: string; Icon: typeof Code2 }[]> = {
+  chaat: [
+    { name: "Java", Icon: Coffee },
+    { name: "JScript", Icon: Braces },
+    { name: "Python", Icon: FileCode2 },
+    { name: "QAutoPrograms", Icon: Bot },
+  ],
+};
+
+const QAUTO_PROGRAM_TOPICS = [
+  { name: "Playwright", Icon: Code2 },
+  { name: "Selenium", Icon: CircleDot },
+  { name: "Cypress", Icon: Braces },
+  { name: "RestAssured", Icon: Shield },
+];
+
 export function SectionView({ section }: { section: Section }) {
   const [q, setQ] = useState("");
   const { theme, themeKey } = useTheme();
   const meta = theme.sections[section.slug];
   const mascot = meta.mascot;
-  const topics = section.slug === "qans" ? QANS_TOPICS_BY_THEME[themeKey] : undefined;
+  const topics =
+    section.slug === "qans"
+      ? QANS_TOPICS_BY_THEME[themeKey]
+      : section.slug === "programs"
+        ? PROGRAM_TOPICS_BY_THEME[themeKey]
+        : undefined;
   const showTopics = !!topics;
   const [activeTopic, setActiveTopic] = useState(topics?.[0]?.name ?? "");
+  const [activeSubTopic, setActiveSubTopic] = useState(QAUTO_PROGRAM_TOPICS[0].name);
+  const showProgramSubTopics =
+    section.slug === "programs" && themeKey === "chaat" && activeTopic === "QAutoPrograms";
 
   useEffect(() => {
     if (topics && !topics.some((t) => t.name === activeTopic)) {
@@ -51,9 +78,17 @@ export function SectionView({ section }: { section: Section }) {
     }
   }, [topics, activeTopic]);
 
-  const visibleItems = useMemo(
+  const activeTopicItems = useMemo(
     () => (showTopics ? section.items.filter((it) => it.category === activeTopic) : section.items),
     [activeTopic, section.items, showTopics],
+  );
+
+  const visibleItems = useMemo(
+    () =>
+      showProgramSubTopics
+        ? activeTopicItems.filter((it) => it.subCategory === activeSubTopic)
+        : activeTopicItems,
+    [activeSubTopic, activeTopicItems, showProgramSubTopics],
   );
 
   const filtered = useMemo(() => {
@@ -103,7 +138,9 @@ export function SectionView({ section }: { section: Section }) {
                 className="h-14 w-14 rounded-2xl object-cover ring-1 ring-gold/40"
               />
               <div>
-                <div className="font-display text-sm font-semibold text-gold-ink">{mascot.name}</div>
+                <div className="font-display text-sm font-semibold text-gold-ink">
+                  {mascot.name}
+                </div>
                 <div className="text-[10px] uppercase tracking-widest text-muted-foreground">
                   {mascot.title}
                 </div>
@@ -122,7 +159,7 @@ export function SectionView({ section }: { section: Section }) {
           <div
             className="glass inline-flex max-w-full items-center gap-1 overflow-x-auto rounded-full border border-gold/20 p-1.5 shadow-[var(--shadow-soft)]"
             role="tablist"
-            aria-label="Q and Answers topics"
+            aria-label={section.slug === "programs" ? "Program languages" : "Q and Answers topics"}
           >
             {topics?.map(({ name, Icon }) => {
               const active = activeTopic === name;
@@ -147,7 +184,49 @@ export function SectionView({ section }: { section: Section }) {
                   {name}
                   {active && (
                     <span className="rounded-full bg-white/20 px-1.5 py-0.5 text-[10px] tabular-nums">
-                      {visibleItems.length}
+                      {activeTopicItems.length}
+                    </span>
+                  )}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
+      {showProgramSubTopics && (
+        <div className="mt-3 flex justify-center sm:justify-start">
+          <div
+            className="glass inline-flex max-w-full items-center gap-1 overflow-x-auto rounded-full border border-gold/20 p-1.5 shadow-[var(--shadow-soft)]"
+            role="tablist"
+            aria-label="QAutomation program frameworks"
+          >
+            {QAUTO_PROGRAM_TOPICS.map(({ name, Icon }) => {
+              const active = activeSubTopic === name;
+              const count = activeTopicItems.filter((item) => item.subCategory === name).length;
+
+              return (
+                <button
+                  key={name}
+                  type="button"
+                  role="tab"
+                  aria-selected={active}
+                  onClick={() => {
+                    setActiveSubTopic(name);
+                    setQ("");
+                  }}
+                  className={[
+                    "inline-flex shrink-0 items-center gap-2 rounded-full px-3 py-2 text-xs font-bold tracking-wide transition-all duration-300 sm:px-4 sm:text-sm",
+                    active
+                      ? "bg-gradient-to-r from-gold to-ember text-primary-foreground shadow-glow"
+                      : "text-foreground/65 hover:bg-noir/60 hover:text-foreground",
+                  ].join(" ")}
+                >
+                  <Icon className="h-3.5 w-3.5" />
+                  {name}
+                  {active && (
+                    <span className="rounded-full bg-white/20 px-1.5 py-0.5 text-[10px] tabular-nums">
+                      {count}
                     </span>
                   )}
                 </button>
@@ -166,7 +245,7 @@ export function SectionView({ section }: { section: Section }) {
         <input
           value={q}
           onChange={(e) => setQ(e.target.value)}
-          placeholder={`Search in ${showTopics ? activeTopic : meta.title}…`}
+          placeholder={`Search in ${showProgramSubTopics ? activeSubTopic : showTopics ? activeTopic : meta.title}…`}
           className="flex-1 bg-transparent text-base placeholder:text-muted-foreground/70 focus:outline-none sm:text-sm"
         />
         {q && (
@@ -183,7 +262,7 @@ export function SectionView({ section }: { section: Section }) {
         {filtered.length === 0 ? (
           <div className="glass rounded-3xl p-8 text-center text-sm text-muted-foreground">
             {showTopics && !q
-              ? `${activeTopic} questions are coming next.`
+              ? `${showProgramSubTopics ? activeSubTopic : activeTopic} entries are coming next.`
               : "No matches. Try a different keyword."}
           </div>
         ) : (

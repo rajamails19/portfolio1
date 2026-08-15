@@ -245,8 +245,19 @@ const usingProjectPreviews = [
   },
 ];
 
-const heroProjects = usingProjectPreviews.slice(0, 3);
-const secondaryProjects = projectPreviews;
+function uniqueProjectsByHref<T extends { href: string }>(projects: readonly T[]) {
+  return projects.filter(
+    (project, index) =>
+      projects.findIndex((candidate) => candidate.href === project.href) === index,
+  );
+}
+
+const uniqueUsingProjectPreviews = uniqueProjectsByHref(usingProjectPreviews);
+const heroProjects = uniqueUsingProjectPreviews.slice(0, 3);
+const heroProjectHrefs = new Set(heroProjects.map((project) => project.href));
+const secondaryProjects = uniqueProjectsByHref(projectPreviews).filter(
+  (project) => !heroProjectHrefs.has(project.href),
+);
 
 const externalProjectPreviews = [
   {
@@ -604,7 +615,7 @@ function UsingProjects() {
         </ScrollReveal>
 
         <div className="grid gap-5 md:grid-cols-6">
-          {usingProjectPreviews.map((project, index) => (
+          {uniqueUsingProjectPreviews.map((project, index) => (
             <div key={project.name} className={getUsingGridClass(index)}>
               <UsingProjectPreview project={project} />
             </div>

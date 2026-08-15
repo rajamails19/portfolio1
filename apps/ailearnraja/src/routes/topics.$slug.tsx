@@ -92,7 +92,7 @@ function PlaceholderList({ label, count, marks }: { label: string; count: number
   return (
     <div className="space-y-4">
       {Array.from({ length: count }).map((_, i) => (
-        <article key={i} className="rounded-2xl border border-[oklch(0.85_0.14_85/0.18)] bg-gradient-to-b from-[oklch(0.22_0.04_270/0.7)] to-[oklch(0.16_0.03_270/0.85)] backdrop-blur-sm p-6 shadow-cinematic hover:translate-y-[-2px] transition-transform">
+        <article key={i} className="rounded-2xl border border-[oklch(0.85_0.14_85/0.18)] bg-gradient-to-b from-card/70 to-card/90 backdrop-blur-sm p-6 shadow-cinematic hover:translate-y-[-2px] transition-transform">
           <div className="flex items-start gap-4">
             <span className="font-display text-3xl text-gradient-ember">{String(i + 1).padStart(2, "0")}</span>
             <div className="flex-1">
