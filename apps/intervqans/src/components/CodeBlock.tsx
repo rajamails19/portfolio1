@@ -23,7 +23,17 @@ function stripBackgrounds(theme: PrismTheme): PrismTheme {
 
 const codeTheme = stripBackgrounds(oneDark);
 
-export function CodeBlock({ language, code }: { language: string; code: string }) {
+export function CodeBlock({
+  language,
+  code,
+  wrapLongLines = true,
+  compact = false,
+}: {
+  language: string;
+  code: string;
+  wrapLongLines?: boolean;
+  compact?: boolean;
+}) {
   const [copied, setCopied] = useState(false);
   const copy = () => {
     navigator.clipboard.writeText(code);
@@ -32,13 +42,19 @@ export function CodeBlock({ language, code }: { language: string; code: string }
   };
 
   return (
-    <div className="code-block-shell group relative my-4 overflow-hidden rounded-2xl border border-white/10 bg-[#1a1530] shadow-[0_20px_60px_-20px_oklch(0.3_0.15_290/0.5)]">
-      <div className="flex items-center justify-between border-b border-white/10 px-4 py-2">
+    <div
+      className={`code-block-shell group relative overflow-hidden border border-white/10 bg-[#1a1530] ${compact ? "my-1 rounded-xl" : "my-4 rounded-2xl shadow-[0_20px_60px_-20px_oklch(0.3_0.15_290/0.5)]"}`}
+    >
+      <div
+        className={`flex items-center justify-between border-b border-white/10 ${compact ? "px-3 py-1" : "px-4 py-2"}`}
+      >
         <div className="flex items-center gap-2">
-          <span className="h-3 w-3 rounded-full bg-[#ff5f57]" />
-          <span className="h-3 w-3 rounded-full bg-[#febc2e]" />
-          <span className="h-3 w-3 rounded-full bg-[#28c840]" />
-          <span className="ml-3 text-xs font-medium uppercase tracking-wider text-white/60">
+          <span className={`${compact ? "h-2 w-2" : "h-3 w-3"} rounded-full bg-[#ff5f57]`} />
+          <span className={`${compact ? "h-2 w-2" : "h-3 w-3"} rounded-full bg-[#febc2e]`} />
+          <span className={`${compact ? "h-2 w-2" : "h-3 w-3"} rounded-full bg-[#28c840]`} />
+          <span
+            className={`${compact ? "ml-1 text-[9px]" : "ml-3 text-xs"} font-medium uppercase tracking-wider text-white/60`}
+          >
             {language}
           </span>
         </div>
@@ -47,10 +63,15 @@ export function CodeBlock({ language, code }: { language: string; code: string }
             e.stopPropagation();
             copy();
           }}
-          className="flex items-center gap-1.5 rounded-lg bg-white/5 px-2.5 py-1 text-xs font-medium text-white/70 opacity-100 transition hover:bg-white/10 hover:text-white sm:opacity-0 sm:group-hover:opacity-100"
+          className={`flex items-center rounded-lg bg-white/5 font-medium text-white/70 opacity-100 transition hover:bg-white/10 hover:text-white sm:opacity-0 sm:group-hover:opacity-100 ${compact ? "h-6 w-6 justify-center p-0" : "gap-1.5 px-2.5 py-1 text-xs"}`}
+          aria-label={copied ? "Code copied" : "Copy code"}
         >
-          {copied ? <Check className="h-3.5 w-3.5" /> : <Copy className="h-3.5 w-3.5" />}
-          {copied ? "Copied" : "Copy"}
+          {copied ? (
+            <Check className={compact ? "h-3 w-3" : "h-3.5 w-3.5"} />
+          ) : (
+            <Copy className={compact ? "h-3 w-3" : "h-3.5 w-3.5"} />
+          )}
+          <span className={compact ? "sr-only" : undefined}>{copied ? "Copied" : "Copy"}</span>
         </button>
       </div>
       <SyntaxHighlighter
@@ -58,10 +79,10 @@ export function CodeBlock({ language, code }: { language: string; code: string }
         style={codeTheme}
         customStyle={{
           margin: 0,
-          padding: "1rem 1.25rem",
+          padding: compact ? "0.65rem 0.8rem" : "1rem 1.25rem",
           background: "transparent",
-          fontSize: "0.85rem",
-          lineHeight: 1.6,
+          fontSize: compact ? "0.74rem" : "0.85rem",
+          lineHeight: compact ? 1.45 : 1.6,
           overflowX: "auto",
         }}
         codeTagProps={{
@@ -72,7 +93,7 @@ export function CodeBlock({ language, code }: { language: string; code: string }
             background: "transparent",
           },
         }}
-        wrapLongLines
+        wrapLongLines={wrapLongLines}
       >
         {code}
       </SyntaxHighlighter>

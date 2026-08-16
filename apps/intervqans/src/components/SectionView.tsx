@@ -16,10 +16,18 @@ import {
   Bot,
   Box,
 } from "lucide-react";
-import type { Section } from "@/content/types";
+import type { QAItem, Section } from "@/content/types";
 import { useTheme } from "@/themes/ThemeContext";
 import { QuestionCard } from "./QuestionCard";
 import { QuotesTicker } from "./QuotesTicker";
+import { ProgramComparisonDialog } from "./ProgramComparisonDialog";
+
+const COMPARABLE_PROGRAM_CATEGORIES = new Set(["Java", "JScript", "Python", ".NET"]);
+
+function programComparisonKey(item: QAItem) {
+  if (!item.category || !COMPARABLE_PROGRAM_CATEGORIES.has(item.category)) return undefined;
+  return item.id.replace(/^(java|javascript|jscript|python|dotnet)-/, "");
+}
 
 const QANS_TOPICS_BY_THEME: Record<string, { name: string; Icon: typeof Code2 }[]> = {
   chaat: [
@@ -59,6 +67,7 @@ const QAUTO_PROGRAM_TOPICS = [
 
 export function SectionView({ section }: { section: Section }) {
   const [q, setQ] = useState("");
+  const [comparisonKey, setComparisonKey] = useState<string | null>(null);
   const { theme, themeKey } = useTheme();
   const meta = theme.sections[section.slug];
   const mascot = meta.mascot;
@@ -92,6 +101,19 @@ export function SectionView({ section }: { section: Section }) {
         : activeTopicItems,
     [activeSubTopic, activeTopicItems, showProgramSubTopics],
   );
+
+  const comparisonGroups = useMemo(() => {
+    const groups = new Map<string, QAItem[]>();
+
+    section.items.forEach((item) => {
+      const key = programComparisonKey(item);
+      if (!key) return;
+      groups.set(key, [...(groups.get(key) ?? []), item]);
+    });
+
+    return groups;
+  }, [section.items]);
+  const comparisonItems = comparisonKey ? (comparisonGroups.get(comparisonKey) ?? []) : [];
 
   const filtered = useMemo(() => {
     if (!q.trim()) return visibleItems;
@@ -268,9 +290,30 @@ export function SectionView({ section }: { section: Section }) {
               : "No matches. Try a different keyword."}
           </div>
         ) : (
-          filtered.map((it, i) => <QuestionCard key={it.id} item={it} index={i} />)
+          filtered.map((it, i) => {
+            const itemComparisonKey = programComparisonKey(it);
+            const canCompare =
+              itemComparisonKey && comparisonGroups.get(itemComparisonKey)?.length === 4;
+
+            return (
+              <QuestionCard
+                key={it.id}
+                item={it}
+                index={i}
+                onCompare={canCompare ? () => setComparisonKey(itemComparisonKey) : undefined}
+              />
+            );
+          })
         )}
       </div>
+
+      <ProgramComparisonDialog
+        open={comparisonItems.length === 4}
+        onOpenChange={(open) => {
+          if (!open) setComparisonKey(null);
+        }}
+        items={comparisonItems}
+      />
     </div>
   );
 }
