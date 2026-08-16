@@ -14,6 +14,7 @@ import {
   Braces,
   FileCode2,
   Bot,
+  Box,
 } from "lucide-react";
 import type { Section } from "@/content/types";
 import { useTheme } from "@/themes/ThemeContext";
@@ -43,6 +44,7 @@ const PROGRAM_TOPICS_BY_THEME: Record<string, { name: string; Icon: typeof Code2
   chaat: [
     { name: "Java", Icon: Coffee },
     { name: "JScript", Icon: Braces },
+    { name: ".NET", Icon: Box },
     { name: "Python", Icon: FileCode2 },
     { name: "QAutoPrograms", Icon: Bot },
   ],

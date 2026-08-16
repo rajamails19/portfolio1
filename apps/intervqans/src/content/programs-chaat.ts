@@ -275,6 +275,346 @@ else:
   },
 ];
 
+function createDotNetProgram(program: {
+  id: string;
+  question: string;
+  tags: string[];
+  code: string;
+  output: string;
+  concepts: string[];
+  visualization?: string;
+}): QAItem {
+  const answer: QAItem["answer"] = [
+    { type: "code", language: "csharp", content: program.code },
+    { type: "heading", content: "Output" },
+    { type: "code", language: "text", content: program.output },
+  ];
+
+  if (program.visualization) {
+    answer.push(
+      { type: "heading", content: "Visualize it" },
+      { type: "code", language: "text", content: program.visualization },
+    );
+  }
+
+  answer.push({ type: "heading", content: "Concepts" }, { type: "list", items: program.concepts });
+
+  return {
+    id: `dotnet-${program.id}`,
+    category: ".NET",
+    question: program.question,
+    tags: [".NET", "C#", ...program.tags],
+    difficulty: "Easy",
+    answer,
+  };
+}
+
+const dotNetPrograms: QAItem[] = [
+  createDotNetProgram({
+    id: "largest-number-array",
+    question: "Find the Largest Number in an Array",
+    tags: ["Arrays", "Loops"],
+    output: "Largest number = 78",
+    concepts: ["Arrays", "foreach loop", "if condition", "Tracking a value"],
+    code: `using System;
+
+public class LargestNumber
+{
+    public static void Main()
+    {
+        int[] numbers = { 10, 45, 23, 78, 34 };
+
+        int largest = numbers[0];
+
+        foreach (int number in numbers)
+        {
+            if (number > largest)
+            {
+                largest = number;
+            }
+        }
+
+        Console.WriteLine("Largest number = " + largest);
+    }
+}`,
+  }),
+  createDotNetProgram({
+    id: "reverse-string",
+    question: "Reverse a String",
+    tags: ["Strings", "Loops"],
+    output: "avaJ",
+    concepts: ["String", "Character indexing", "for loop", "String concatenation"],
+    code: `using System;
+
+public class ReverseString
+{
+    public static void Main()
+    {
+        string text = "Java";
+        string reversed = "";
+
+        for (int i = text.Length - 1; i >= 0; i--)
+        {
+            reversed = reversed + text[i];
+        }
+
+        Console.WriteLine(reversed);
+    }
+}`,
+  }),
+  createDotNetProgram({
+    id: "check-prime-number",
+    question: "Create a Method to Check Prime Number",
+    tags: ["Methods", "Prime Numbers"],
+    output: "7 is Prime",
+    concepts: ["Methods", "bool return type", "Modulo operator", "Loops"],
+    code: `using System;
+
+public class PrimeNumber
+{
+    public static bool IsPrime(int number)
+    {
+        if (number <= 1)
+        {
+            return false;
+        }
+
+        for (int i = 2; i < number; i++)
+        {
+            if (number % i == 0)
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public static void Main()
+    {
+        int number = 7;
+
+        if (IsPrime(number))
+        {
+            Console.WriteLine(number + " is Prime");
+        }
+        else
+        {
+            Console.WriteLine(number + " is Not Prime");
+        }
+    }
+}`,
+  }),
+  createDotNetProgram({
+    id: "count-vowels-string",
+    question: "Count Vowels in a String",
+    tags: ["Strings", "Loops"],
+    output: "Number of vowels = 4",
+    concepts: ["String", "Character indexing", "for loop", "if condition", "logical OR ||"],
+    code: `using System;
+
+public class CountVowels
+{
+    public static void Main()
+    {
+        string text = "Hello Java";
+        int count = 0;
+
+        for (int i = 0; i < text.Length; i++)
+        {
+            char ch = text[i];
+
+            if (ch == 'a' || ch == 'e' || ch == 'i' ||
+                ch == 'o' || ch == 'u')
+            {
+                count++;
+            }
+        }
+
+        Console.WriteLine("Number of vowels = " + count);
+    }
+}`,
+  }),
+  createDotNetProgram({
+    id: "sum-numbers-array",
+    question: "Find Sum of Numbers in an Array",
+    tags: ["Arrays", "Loops"],
+    output: "Total = 150",
+    concepts: ["Arrays", "foreach loop", "Accumulator variable", "Addition"],
+    code: `using System;
+
+public class ArraySum
+{
+    public static void Main()
+    {
+        int[] numbers = { 10, 20, 30, 40, 50 };
+
+        int sum = 0;
+
+        foreach (int number in numbers)
+        {
+            sum = sum + number;
+        }
+
+        Console.WriteLine("Total = " + sum);
+    }
+}`,
+  }),
+  createDotNetProgram({
+    id: "second-largest-number-array",
+    question: "Find the Second Largest Number in an Array",
+    tags: ["Arrays", "Conditions"],
+    output: "Second Largest = 45",
+    concepts: ["Arrays", "Loops", "if / else-if", "Tracking multiple values"],
+    code: `using System;
+
+public class SecondLargest
+{
+    public static void Main()
+    {
+        int[] numbers = { 10, 45, 23, 78, 34 };
+
+        int largest = int.MinValue;
+        int secondLargest = int.MinValue;
+
+        foreach (int number in numbers)
+        {
+            if (number > largest)
+            {
+                secondLargest = largest;
+                largest = number;
+            }
+            else if (number > secondLargest && number != largest)
+            {
+                secondLargest = number;
+            }
+        }
+
+        Console.WriteLine("Second Largest = " + secondLargest);
+    }
+}`,
+  }),
+  createDotNetProgram({
+    id: "count-character-frequency",
+    question: "Count Frequency of a Character",
+    tags: ["Strings", "Counters"],
+    output: "a appears 3 times",
+    concepts: ["String traversal", "char", "Loops", "Conditions", "Counter"],
+    visualization: `b  a  n  a  n  a
+   ✓     ✓     ✓
+
+Count = 3`,
+    code: `using System;
+
+public class CharacterCount
+{
+    public static void Main()
+    {
+        string text = "banana";
+        char target = 'a';
+
+        int count = 0;
+
+        for (int i = 0; i < text.Length; i++)
+        {
+            if (text[i] == target)
+            {
+                count++;
+            }
+        }
+
+        Console.WriteLine(target + " appears " + count + " times");
+    }
+}`,
+  }),
+  createDotNetProgram({
+    id: "find-duplicate-numbers-array",
+    question: "Find Duplicate Numbers in an Array",
+    tags: ["Arrays", "Nested Loops"],
+    output: "Duplicate = 10\nDuplicate = 20",
+    concepts: ["Arrays", "Nested loops", "Comparison", "Duplicate detection"],
+    code: `using System;
+
+public class FindDuplicates
+{
+    public static void Main()
+    {
+        int[] numbers = { 10, 20, 30, 20, 40, 10 };
+
+        for (int i = 0; i < numbers.Length; i++)
+        {
+            for (int j = i + 1; j < numbers.Length; j++)
+            {
+                if (numbers[i] == numbers[j])
+                {
+                    Console.WriteLine("Duplicate = " + numbers[i]);
+                }
+            }
+        }
+    }
+}`,
+  }),
+  createDotNetProgram({
+    id: "sort-array",
+    question: "Sort an Array",
+    tags: ["Arrays", "Sorting"],
+    output: "[10, 20, 30, 40, 50]",
+    concepts: ["Arrays", "Array.Sort()", "string.Join()", "Method calls"],
+    code: `using System;
+
+public class SortNumbers
+{
+    public static void Main()
+    {
+        int[] numbers = { 40, 10, 50, 20, 30 };
+
+        Array.Sort(numbers);
+
+        Console.WriteLine("[" + string.Join(", ", numbers) + "]");
+    }
+}`,
+  }),
+  createDotNetProgram({
+    id: "count-word-frequency",
+    question: "Count Words Using Dictionary",
+    tags: ["Dictionary", "Frequency"],
+    output: "{java=3, python=1, react=1}",
+    concepts: ["Dictionary", "Key-value pairs", "Loops", "ContainsKey()", "Frequency counting"],
+    code: `using System;
+using System.Collections.Generic;
+using System.Linq;
+
+public class WordFrequency
+{
+    public static void Main()
+    {
+        string[] words = { "java", "python", "java", "react", "java" };
+
+        Dictionary<string, int> count = new Dictionary<string, int>();
+
+        foreach (string word in words)
+        {
+            if (count.ContainsKey(word))
+            {
+                count[word]++;
+            }
+            else
+            {
+                count[word] = 1;
+            }
+        }
+
+        string result = string.Join(
+            ", ",
+            count.Select(pair => pair.Key + "=" + pair.Value)
+        );
+
+        Console.WriteLine("{" + result + "}");
+    }
+}`,
+  }),
+];
+
 type ProgramLanguage = "Java" | "JScript" | "Python";
 
 interface AdditionalProgramDefinition {
@@ -915,6 +1255,7 @@ export const programsChaatSection: Section = {
     ...createAdditionalPrograms("Java"),
     ...javaScriptPrograms,
     ...createAdditionalPrograms("JScript"),
+    ...dotNetPrograms,
     ...pythonPrograms,
     ...createAdditionalPrograms("Python"),
     ...playwrightPrograms,
