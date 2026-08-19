@@ -9,9 +9,15 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as UsingRouteImport } from './routes/using'
 import { Route as ControlCenterRouteImport } from './routes/control-center'
 import { Route as IndexRouteImport } from './routes/index'
 
+const UsingRoute = UsingRouteImport.update({
+  id: '/using',
+  path: '/using',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ControlCenterRoute = ControlCenterRouteImport.update({
   id: '/control-center',
   path: '/control-center',
@@ -26,31 +32,42 @@ const IndexRoute = IndexRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/control-center': typeof ControlCenterRoute
+  '/using': typeof UsingRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/control-center': typeof ControlCenterRoute
+  '/using': typeof UsingRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/control-center': typeof ControlCenterRoute
+  '/using': typeof UsingRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/control-center'
+  fullPaths: '/' | '/control-center' | '/using'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/control-center'
-  id: '__root__' | '/' | '/control-center'
+  to: '/' | '/control-center' | '/using'
+  id: '__root__' | '/' | '/control-center' | '/using'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ControlCenterRoute: typeof ControlCenterRoute
+  UsingRoute: typeof UsingRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/using': {
+      id: '/using'
+      path: '/using'
+      fullPath: '/using'
+      preLoaderRoute: typeof UsingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/control-center': {
       id: '/control-center'
       path: '/control-center'
@@ -71,6 +88,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ControlCenterRoute: ControlCenterRoute,
+  UsingRoute: UsingRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

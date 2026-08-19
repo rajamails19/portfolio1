@@ -428,7 +428,6 @@ function LandingPage() {
   return (
     <div className="min-h-[100dvh] bg-background text-foreground">
       <Hero />
-      <UsingProjects />
       <ProjectShowcase />
       <Features />
       <HowItWorks />
@@ -483,12 +482,9 @@ function Hero() {
           <a href="#features" className="transition-colors hover:text-white/70">
             Features
           </a>
-          <a
-            href="#using"
-            className="transition-colors hover:text-white/70"
-          >
+          <Link to="/using" className="transition-colors hover:text-white/70">
             Using
-          </a>
+          </Link>
           <a href="#reviews" className="transition-colors hover:text-white/70">
             Reviews
           </a>
@@ -519,13 +515,13 @@ function Hero() {
           >
             Features
           </a>
-          <a
-            href="#using"
+          <Link
+            to="/using"
             onClick={() => setMobileNavOpen(false)}
             className="rounded-lg px-3 py-2.5 transition-colors hover:bg-white/10"
           >
             Using
-          </a>
+          </Link>
           <a
             href="#reviews"
             onClick={() => setMobileNavOpen(false)}
@@ -583,7 +579,7 @@ function Hero() {
   );
 }
 
-function UsingProjects() {
+export function UsingProjects() {
   return (
     <section id="using" className="relative overflow-hidden bg-white py-24">
       <div
@@ -1296,7 +1292,7 @@ function FinalCTA() {
   );
 }
 
-function Footer() {
+export function Footer() {
   return (
     <footer className="border-t border-border/40 py-12">
       <div className="mx-auto max-w-5xl px-5">
@@ -1318,12 +1314,9 @@ function Footer() {
             >
               Features
             </a>
-            <a
-              href="#using"
-              className="transition-colors hover:text-foreground"
-            >
+            <Link to="/using" className="transition-colors hover:text-foreground">
               Using
-            </a>
+            </Link>
             <a
               href="#reviews"
               className="transition-colors hover:text-foreground"
