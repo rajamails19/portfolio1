@@ -483,5 +483,344 @@ export const qansSection: Section = {
         },
       ],
     },
+    {
+      id: "what-is-a-neural-network",
+      question: "What is a Neural Network?",
+      tags: ["AI/ML", "Fundamentals"],
+      difficulty: "Easy",
+      answer: [
+        {
+          type: "text",
+          content:
+            "A Neural Network is a ==Machine Learning model== made of connected layers of neurons that learn patterns from data.",
+        },
+        { type: "heading", content: "How it works" },
+        {
+          type: "flow",
+          title: "Data flows through three kinds of layers",
+          nodes: [
+            { label: "Input Layer", sub: "Receives data", tone: "gold" },
+            { label: "Hidden Layers", sub: "Learn patterns/features", tone: "ember" },
+            { label: "Output Layer", sub: "Makes the prediction", tone: "mint" },
+          ],
+        },
+        { type: "heading", content: "Analogy" },
+        {
+          type: "callout",
+          variant: "tip",
+          content:
+            "Think of a **team of detectives**. Each detective finds a small clue, and together they reach the __final conclusion__.",
+        },
+        {
+          type: "callout",
+          variant: "info",
+          content:
+            "Interview Tip: A neuron performs a **weighted calculation** followed by an activation function. Training adjusts those weights to ==reduce prediction error==.",
+        },
+      ],
+    },
+    {
+      id: "what-is-backpropagation",
+      question: "What is Backpropagation?",
+      tags: ["AI/ML", "Training"],
+      difficulty: "Medium",
+      answer: [
+        {
+          type: "text",
+          content:
+            "Backpropagation is the process used to determine ==how much each neural-network weight contributed to the error==, so the weights can be corrected.",
+        },
+        { type: "heading", content: "Simple flow" },
+        {
+          type: "flow",
+          title: "The correction loop, applied to every weight",
+          nodes: [
+            { label: "Predict", sub: "Model guesses", tone: "gold" },
+            { label: "Calculate Error", sub: "Guess vs truth", tone: "ember" },
+            { label: "Backpropagate", sub: "Error flows backward", tone: "sky" },
+            { label: "Update Weights", sub: "Nudge each one", tone: "mint" },
+          ],
+        },
+        { type: "heading", content: "Analogy" },
+        {
+          type: "callout",
+          variant: "tip",
+          content:
+            "A student gets a math problem wrong, **works backward** through the steps to find where the mistake happened, corrects it, and __tries again__.",
+        },
+        {
+          type: "callout",
+          variant: "info",
+          content:
+            "Interview Tip: Backpropagation uses the **chain rule** to calculate gradients. An optimizer such as Gradient Descent uses those gradients to ==update the weights==.",
+        },
+      ],
+    },
+    {
+      id: "what-are-embeddings",
+      question: "What are Embeddings?",
+      tags: ["AI/ML", "LLM"],
+      difficulty: "Medium",
+      answer: [
+        {
+          type: "text",
+          content:
+            "Embeddings convert things like words, sentences, images, or products into ==numerical vectors== that capture their meaning or characteristics.",
+        },
+        {
+          type: "code",
+          language: "text",
+          content: "King → [0.21, 0.78, -0.34, ...]",
+        },
+        {
+          type: "text",
+          content: "Items with similar meanings usually have vectors that are __closer together__.",
+        },
+        { type: "heading", content: "Analogy" },
+        {
+          type: "callout",
+          variant: "tip",
+          content:
+            "Think of a **map** where similar things live near each other — dog is closer to cat than to airplane.",
+        },
+        {
+          type: "callout",
+          variant: "info",
+          content:
+            "Interview Tip: Embeddings are heavily used in **semantic search**, recommendation systems, RAG, and ==vector databases==.",
+        },
+      ],
+    },
+    {
+      id: "what-is-attention-transformer",
+      question: "What is Attention / Transformer Architecture?",
+      tags: ["AI/ML", "LLM"],
+      difficulty: "Medium",
+      answer: [
+        {
+          type: "text",
+          content:
+            "Attention allows a model to determine ==which words or tokens are most important to each other== when understanding context.",
+        },
+        { type: "heading", content: "Example" },
+        {
+          type: "code",
+          language: "text",
+          content: '"Raja dropped the glass because it was slippery."',
+        },
+        {
+          type: "text",
+          content:
+            'Attention helps the model understand what **"it"** refers to based on relationships between words.',
+        },
+        {
+          type: "text",
+          content:
+            "A Transformer is a neural-network architecture built around attention mechanisms, allowing tokens to be processed efficiently while capturing __relationships across the sequence__.",
+        },
+        { type: "heading", content: "Simple flow" },
+        {
+          type: "flow",
+          title: "How a Transformer processes a sequence",
+          nodes: [
+            { label: "Tokens", sub: "Split the text", tone: "gold" },
+            { label: "Embeddings", sub: "Numbers with meaning", tone: "ember" },
+            { label: "Attention", sub: "Weigh what matters", tone: "sky" },
+            { label: "Feed-Forward", sub: "Refine each token", tone: "mint" },
+            { label: "Output", sub: "Next-token prediction", tone: "gold" },
+          ],
+        },
+        { type: "heading", content: "Analogy" },
+        {
+          type: "callout",
+          variant: "tip",
+          content:
+            "Imagine reading a paragraph with a **highlighter**. Instead of treating every word equally, you highlight the words most relevant to understanding the __current word__.",
+        },
+        {
+          type: "callout",
+          variant: "info",
+          content:
+            "Interview Tip: The key mechanism is **Self-Attention**, commonly implemented using Query, Key, and Value (Q, K, V). Transformers form the foundation of modern LLMs such as ==GPT==.",
+        },
+      ],
+    },
+    {
+      id: "bagging-vs-boosting",
+      question: "What is the Difference Between Bagging and Boosting?",
+      tags: ["AI/ML", "Fundamentals"],
+      difficulty: "Medium",
+      answer: [
+        {
+          type: "text",
+          content:
+            "Both are ==Ensemble Learning== techniques that combine multiple models to produce a better final model.",
+        },
+        {
+          type: "table",
+          headers: ["", "Bagging", "Boosting"],
+          rows: [
+            ["Training", "Models trained **independently / in parallel**", "Models trained __sequentially__"],
+            [
+              "Data",
+              "Each model sees a different sample of the data",
+              "Each new model focuses more on __previous mistakes__",
+            ],
+            ["Predictions", "Final predictions are combined", "Each model corrects and improves on the last"],
+            ["Mainly helps", "Reduce **variance** / overfitting", "Reduce **bias**, improve predictive accuracy"],
+            ["Example", "Random Forest", "AdaBoost, Gradient Boosting, XGBoost"],
+          ],
+        },
+        { type: "heading", content: "Analogy" },
+        {
+          type: "callout",
+          variant: "tip",
+          content: "**Bagging:** Ask 10 independent doctors and take the majority opinion.",
+        },
+        {
+          type: "callout",
+          variant: "tip",
+          content:
+            "**Boosting:** One doctor diagnoses, the next studies their mistakes, and each subsequent doctor improves on the previous diagnosis.",
+        },
+        {
+          type: "callout",
+          variant: "info",
+          content: "Interview Tip: Remember — Bagging = ==Parallel==. Boosting = ==Sequential correction==.",
+        },
+      ],
+    },
+    {
+      id: "what-is-a-confusion-matrix",
+      question: "What is a Confusion Matrix?",
+      tags: ["AI/ML", "Metrics"],
+      difficulty: "Easy",
+      answer: [
+        {
+          type: "text",
+          content:
+            "A Confusion Matrix is a table used to evaluate a classification model by comparing ==predicted results== with __actual results__.",
+        },
+        {
+          type: "table",
+          headers: ["", "Predicted Positive", "Predicted Negative"],
+          rows: [
+            ["Actual Positive", "**TP**", "FN"],
+            ["Actual Negative", "FP", "**TN**"],
+          ],
+        },
+        {
+          type: "text",
+          content: "From this, we calculate metrics such as **Accuracy, Precision, Recall, and F1-Score**.",
+        },
+        { type: "heading", content: "Analogy" },
+        {
+          type: "callout",
+          variant: "tip",
+          content: "Think of an **airport security scanner**:",
+        },
+        {
+          type: "table",
+          headers: ["Term", "Meaning"],
+          rows: [
+            ["**TP**", "Correctly detects a prohibited item"],
+            ["**TN**", "Correctly clears a safe bag"],
+            ["**FP**", "Alarms on a safe bag"],
+            ["**FN**", "Misses a prohibited item"],
+          ],
+        },
+        {
+          type: "callout",
+          variant: "info",
+          content:
+            'Interview Tip: The interviewer often follows this with: "When would you prefer ==Precision== over ==Recall==?"',
+        },
+      ],
+    },
+    {
+      id: "what-is-feature-engineering",
+      question: "What is Feature Engineering?",
+      tags: ["AI/ML", "Data"],
+      difficulty: "Easy",
+      answer: [
+        {
+          type: "text",
+          content:
+            "Feature Engineering is the process of ==creating, transforming, or selecting== useful input features so a Machine Learning model can learn patterns more effectively.",
+        },
+        { type: "heading", content: "Example" },
+        {
+          type: "code",
+          language: "text",
+          content: "Instead of:  Date of Birth → 1990-05-20\nCreate:      Age → 36",
+        },
+        { type: "text", content: "Other examples include:" },
+        {
+          type: "list",
+          items: [
+            "Encoding categorical variables",
+            "Scaling numerical values",
+            "Creating derived features",
+            "Handling missing values",
+          ],
+        },
+        { type: "heading", content: "Analogy" },
+        {
+          type: "callout",
+          variant: "tip",
+          content:
+            "Raw ingredients don't automatically make a great meal. Feature engineering is __preparing and combining__ the ingredients so the chef (model) can use them effectively.",
+        },
+        {
+          type: "callout",
+          variant: "info",
+          content:
+            "Interview Tip: **Better features** can sometimes improve a model more than simply choosing a more complicated algorithm.",
+        },
+      ],
+    },
+    {
+      id: "batch-size-epoch-learning-rate",
+      question: "What are Batch Size, Epoch, and Learning Rate?",
+      tags: ["AI/ML", "Training"],
+      difficulty: "Medium",
+      answer: [
+        {
+          type: "text",
+          content:
+            "These are important parameters controlling ==how a neural network learns== during training.",
+        },
+        {
+          type: "list",
+          items: [
+            "**Batch Size** → Number of training examples processed before one weight update.",
+            "**Epoch** → One complete pass through the entire training dataset.",
+            "**Learning Rate** → Controls how large each weight update is.",
+          ],
+        },
+        { type: "heading", content: "Example" },
+        {
+          type: "code",
+          language: "text",
+          content: "1,000 training samples ÷ Batch Size 100 = 10 batches per epoch\n\n1 Epoch = 10 weight updates",
+        },
+        { type: "heading", content: "Analogy" },
+        { type: "text", content: "Imagine studying a 1,000-question book:" },
+        {
+          type: "list",
+          items: [
+            "**Batch Size** → Study 100 questions at a time.",
+            "**Epoch** → Finish all 1,000 questions once.",
+            "**Learning Rate** → How aggressively you change your understanding after discovering mistakes.",
+          ],
+        },
+        {
+          type: "callout",
+          variant: "warn",
+          content:
+            "Interview Tip: Learning rate __too high__ → may overshoot the optimum. Learning rate __too low__ → training becomes slow or can stall.",
+        },
+      ],
+    },
   ],
 };
