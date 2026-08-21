@@ -9,6 +9,7 @@ import { programsSection } from "./programs";
 import { programsNoirSection } from "./programs-noir";
 import { programsChaatSection } from "./programs-chaat";
 import { realtimeSection } from "./realtime";
+import { realtimeNoirSection } from "./realtime-noir";
 import { projectsSection } from "./projects";
 import { othersSection } from "./others";
 import type { Section } from "./types";
@@ -22,7 +23,7 @@ export const noirSections: Section[] = [
   theorySection,
   qansSection,
   programsNoirSection,
-  realtimeSection,
+  realtimeNoirSection,
   projectsSection,
   othersSection,
 ];
