@@ -19,6 +19,23 @@ export type Topic = {
   tricks: string[];
   examples: { question: string; steps: string[]; answer: string }[];
   quiz: { q: string; options: string[]; answer: number; hint?: string }[];
+  deepDive?: {
+    intro: string;
+    vocabulary: { term: string; meaning: string; example: string }[];
+    method: { title: string; cue: string; steps: { label: string; text: string }[] };
+    checks: string[];
+    mistakes: { mistake: string; fix: string }[];
+    practice: {
+      level: "Easy" | "Medium" | "Hard";
+      subtitle: string;
+      problems: {
+        question: string;
+        hint: string;
+        steps: string[];
+        answer: string;
+      }[];
+    }[];
+  };
 };
 
 export const TOPICS: Topic[] = [
@@ -139,22 +156,226 @@ export const TOPICS: Topic[] = [
     tips: [
       "Division undoes multiplication. If 6 × 4 = 24, then 24 ÷ 4 = 6.",
       "Think 'how many groups?' or 'how many in each group?'",
+      "Estimate before solving: 196 ÷ 4 should be close to 200 ÷ 4 = 50.",
+      "Write every place-value step. Neat columns prevent most long-division mistakes.",
+      "Always check: quotient × divisor + remainder must equal the dividend.",
     ],
     tricks: [
       "÷ 5: divide by 10, then double.",
       "A number is divisible by 3 if its digits sum to a multiple of 3.",
+      "÷ 4: halve, then halve again. 84 ÷ 4 → 42 ÷ 2 = 21.",
+      "÷ 25: divide by 100, then multiply by 4. 300 ÷ 25 = 3 × 4 = 12.",
+      "Divisible by 9? Add the digits. If that sum is a multiple of 9, the whole number is too.",
     ],
     examples: [
       {
         question: "84 ÷ 4 = ?",
-        steps: ["8 ÷ 4 = 2 (tens).", "4 ÷ 4 = 1 (ones).", "Answer: 21."],
+        steps: [
+          "Estimate first: 80 ÷ 4 = 20, so the answer should be just above 20.",
+          "Split 84 into 80 + 4.",
+          "80 ÷ 4 = 20 and 4 ÷ 4 = 1.",
+          "Combine: 20 + 1 = 21. Check: 21 × 4 = 84.",
+        ],
         answer: "21",
+      },
+      {
+        question: "156 ÷ 12 = ?",
+        steps: [
+          "Ask which 12-times-table fact is near 156.",
+          "12 × 10 = 120, leaving 36.",
+          "12 × 3 = 36, so 10 groups + 3 groups = 13 groups.",
+          "Check: 13 × 12 = 156.",
+        ],
+        answer: "13",
+      },
+      {
+        question: "638 ÷ 5 = ?",
+        steps: [
+          "5 goes into 6 once. Subtract 5; the remainder is 1.",
+          "Bring down 3 to make 13. 5 goes into 13 twice; remainder 3.",
+          "Bring down 8 to make 38. 5 goes into 38 seven times; remainder 3.",
+          "Check: 127 × 5 + 3 = 638.",
+        ],
+        answer: "127 remainder 3",
+      },
+      {
+        question: "2,184 ÷ 24 = ?",
+        steps: [
+          "24 does not fit into 2 or 21, so begin with 218.",
+          "24 × 9 = 216. Write 9; subtract to get 2.",
+          "Bring down 4 to make 24. 24 ÷ 24 = 1.",
+          "The quotient is 91. Check: 91 × 24 = 2,184.",
+        ],
+        answer: "91",
       },
     ],
     quiz: [
       { q: "72 ÷ 8 = ?", options: ["7", "8", "9", "12"], answer: 2 },
       { q: "45 ÷ 5 = ?", options: ["8", "9", "10", "11"], answer: 1 },
+      {
+        q: "Which equation correctly checks 127 remainder 3 for 638 ÷ 5?",
+        options: ["127 + 5 + 3 = 135", "127 × 5 + 3 = 638", "638 × 5 = 3,190", "638 − 3 = 127"],
+        answer: 1,
+        hint: "Multiply the quotient by the divisor, then add the remainder.",
+      },
+      {
+        q: "2,184 ÷ 24 = ?",
+        options: ["81", "89", "91", "104"],
+        answer: 2,
+        hint: "24 × 90 = 2,160. What remains?",
+      },
     ],
+    deepDive: {
+      intro:
+        "Division answers one of two questions: ‘How many equal groups can I make?’ or ‘How many items belong in each equal group?’ The symbol changes, but the idea is always fair grouping.",
+      vocabulary: [
+        { term: "Dividend", meaning: "the amount being divided", example: "84 in 84 ÷ 4" },
+        { term: "Divisor", meaning: "the group size or number of groups", example: "4 in 84 ÷ 4" },
+        { term: "Quotient", meaning: "the division answer", example: "21 in 84 ÷ 4" },
+        {
+          term: "Remainder",
+          meaning: "what is left after making equal groups",
+          example: "3 in 23 ÷ 5 = 4 R3",
+        },
+      ],
+      method: {
+        title: "The long-division loop",
+        cue: "D · M · S · B — Divide, Multiply, Subtract, Bring down",
+        steps: [
+          { label: "Divide", text: "Ask how many times the divisor fits into the current digits." },
+          {
+            label: "Multiply",
+            text: "Multiply that quotient digit by the divisor and write it underneath.",
+          },
+          {
+            label: "Subtract",
+            text: "Subtract to find what is left. It must be smaller than the divisor.",
+          },
+          { label: "Bring down", text: "Bring down the next digit, then repeat the loop." },
+          {
+            label: "Check",
+            text: "Multiply the final quotient by the divisor and add any remainder.",
+          },
+        ],
+      },
+      checks: [
+        "The remainder must always be smaller than the divisor.",
+        "Quotient × divisor + remainder = dividend.",
+        "Compare with your estimate. A wildly different answer needs another look.",
+      ],
+      mistakes: [
+        {
+          mistake: "Forgetting a zero in the quotient",
+          fix: "If the divisor fits zero times in a place, write 0 before bringing down the next digit.",
+        },
+        {
+          mistake: "Stopping after one subtract step",
+          fix: "Keep repeating D–M–S–B until every digit has been brought down.",
+        },
+        {
+          mistake: "Leaving a remainder larger than the divisor",
+          fix: "The divisor can still fit at least one more time. Increase the quotient digit.",
+        },
+      ],
+      practice: [
+        {
+          level: "Easy",
+          subtitle: "Use multiplication facts and friendly splits.",
+          problems: [
+            {
+              question: "48 ÷ 6",
+              hint: "What number multiplied by 6 makes 48?",
+              steps: ["Recall 6 × 8 = 48.", "Reverse the fact: 48 ÷ 6 = 8."],
+              answer: "8",
+            },
+            {
+              question: "96 ÷ 3",
+              hint: "Split 96 into 90 + 6.",
+              steps: ["90 ÷ 3 = 30.", "6 ÷ 3 = 2.", "30 + 2 = 32."],
+              answer: "32",
+            },
+            {
+              question: "84 cookies shared among 7 children",
+              hint: "Use the 7-times table.",
+              steps: ["Ask: 7 × ? = 84.", "7 × 12 = 84.", "Each child receives 12 cookies."],
+              answer: "12 cookies each",
+            },
+          ],
+        },
+        {
+          level: "Medium",
+          subtitle: "Use place value, estimation, and short division.",
+          problems: [
+            {
+              question: "432 ÷ 9",
+              hint: "Break 432 into 360 + 72.",
+              steps: ["360 ÷ 9 = 40.", "72 ÷ 9 = 8.", "40 + 8 = 48."],
+              answer: "48",
+            },
+            {
+              question: "725 ÷ 5",
+              hint: "Divide each place from left to right.",
+              steps: [
+                "5 goes into 7 once, remainder 2.",
+                "Bring down 2 to make 22: write 4, remainder 2.",
+                "Bring down 5 to make 25: write 5.",
+                "Check: 145 × 5 = 725.",
+              ],
+              answer: "145",
+            },
+            {
+              question: "1,003 ÷ 8",
+              hint: "This answer has a remainder.",
+              steps: [
+                "8 × 125 = 1,000.",
+                "1,003 − 1,000 = 3.",
+                "Because 3 is less than 8, it is the remainder.",
+              ],
+              answer: "125 remainder 3",
+            },
+          ],
+        },
+        {
+          level: "Hard",
+          subtitle: "Use long division with two-digit divisors and interpret remainders.",
+          problems: [
+            {
+              question: "1,428 ÷ 12",
+              hint: "Start with 14, then repeat D–M–S–B.",
+              steps: [
+                "12 fits into 14 once; subtract to leave 2.",
+                "Bring down 2: 12 fits into 22 once; leave 10.",
+                "Bring down 8: 12 fits into 108 nine times.",
+                "The quotient is 119.",
+              ],
+              answer: "119",
+            },
+            {
+              question: "3,276 ÷ 18",
+              hint: "18 × 180 is 3,240.",
+              steps: [
+                "Use the estimate 18 × 180 = 3,240.",
+                "3,276 − 3,240 = 36.",
+                "36 ÷ 18 = 2.",
+                "180 + 2 = 182. Check: 182 × 18 = 3,276.",
+              ],
+              answer: "182",
+            },
+            {
+              question:
+                "A school has 1,250 students. Buses hold 48 students. How many buses are needed?",
+              hint: "A remainder means some students still need a bus.",
+              steps: [
+                "1,250 ÷ 48 = 26 remainder 2.",
+                "26 buses carry 1,248 students.",
+                "The remaining 2 students still need transportation, so round up.",
+              ],
+              answer: "27 buses",
+            },
+          ],
+        },
+      ],
+    },
   },
   {
     slug: "fractions",
@@ -211,10 +432,7 @@ export const TOPICS: Topic[] = [
     examples: [
       {
         question: "A rectangle is 8 cm × 5 cm. Find its area and perimeter.",
-        steps: [
-          "Area = 8 × 5 = 40 cm².",
-          "Perimeter = 2 × (8 + 5) = 26 cm.",
-        ],
+        steps: ["Area = 8 × 5 = 40 cm².", "Perimeter = 2 × (8 + 5) = 26 cm."],
         answer: "Area 40 cm², Perimeter 26 cm",
       },
     ],
@@ -243,10 +461,7 @@ export const TOPICS: Topic[] = [
     examples: [
       {
         question: "Maya has 24 stickers. She gives 3 friends 5 stickers each. How many are left?",
-        steps: [
-          "Given away: 3 × 5 = 15.",
-          "Left: 24 − 15 = 9.",
-        ],
+        steps: ["Given away: 3 × 5 = 15.", "Left: 24 − 15 = 9."],
         answer: "9 stickers",
       },
     ],
@@ -295,37 +510,91 @@ export const TOPICS: Topic[] = [
 ];
 
 export const GRADES = [
-  { grade: 1, title: "Grade 1", subtitle: "Little counters", color: "from-amber-200 to-orange-300", topics: ["addition", "subtraction", "geometry", "word-problems"], tests: [] as string[] },
-  { grade: 2, title: "Grade 2", subtitle: "Number explorers", color: "from-orange-200 to-red-300", topics: ["addition", "subtraction", "multiplication", "geometry", "word-problems"], tests: [] as string[] },
-  { grade: 3, title: "Grade 3", subtitle: "Times-tables champs", color: "from-yellow-200 to-amber-300", topics: ["multiplication", "division", "fractions", "geometry", "word-problems"], tests: ["grade3-test1"] as string[] },
-  { grade: 4, title: "Grade 4", subtitle: "Fraction wizards", color: "from-teal-200 to-emerald-300", topics: ["multiplication", "division", "fractions", "geometry", "word-problems"], tests: ["test1"] as string[] },
-  { grade: 5, title: "Grade 5", subtitle: "Decimal detectives", color: "from-emerald-200 to-teal-400", topics: ["fractions", "division", "geometry", "word-problems", "algebra"], tests: [] as string[] },
-  { grade: 6, title: "Grade 6", subtitle: "Pre-algebra pros", color: "from-cyan-200 to-teal-400", topics: ["fractions", "division", "geometry", "word-problems", "algebra"], tests: [] as string[] },
+  {
+    grade: 1,
+    title: "Grade 1",
+    subtitle: "Little counters",
+    color: "from-amber-200 to-orange-300",
+    topics: ["addition", "subtraction", "geometry", "word-problems"],
+    tests: [] as string[],
+  },
+  {
+    grade: 2,
+    title: "Grade 2",
+    subtitle: "Number explorers",
+    color: "from-orange-200 to-red-300",
+    topics: ["addition", "subtraction", "multiplication", "geometry", "word-problems"],
+    tests: [] as string[],
+  },
+  {
+    grade: 3,
+    title: "Grade 3",
+    subtitle: "Times-tables champs",
+    color: "from-yellow-200 to-amber-300",
+    topics: ["multiplication", "division", "fractions", "geometry", "word-problems"],
+    tests: ["grade3-test1"] as string[],
+  },
+  {
+    grade: 4,
+    title: "Grade 4",
+    subtitle: "Fraction wizards",
+    color: "from-teal-200 to-emerald-300",
+    topics: ["multiplication", "division", "fractions", "geometry", "word-problems"],
+    tests: ["test1"] as string[],
+  },
+  {
+    grade: 5,
+    title: "Grade 5",
+    subtitle: "Decimal detectives",
+    color: "from-emerald-200 to-teal-400",
+    topics: ["fractions", "division", "geometry", "word-problems", "algebra"],
+    tests: [] as string[],
+  },
+  {
+    grade: 6,
+    title: "Grade 6",
+    subtitle: "Pre-algebra pros",
+    color: "from-cyan-200 to-teal-400",
+    topics: ["fractions", "division", "geometry", "word-problems", "algebra"],
+    tests: [] as string[],
+  },
 ];
 
 export const FORMULAS = [
-  { category: "Perimeter & Area", items: [
-    { name: "Square area", formula: "A = s × s", example: "s = 4 → A = 16" },
-    { name: "Rectangle area", formula: "A = l × w", example: "6×3 → 18" },
-    { name: "Triangle area", formula: "A = (b × h) ÷ 2", example: "b=6,h=4 → 12" },
-    { name: "Circle area", formula: "A = π × r²", example: "r=5 → ~78.5" },
-    { name: "Rectangle perimeter", formula: "P = 2(l + w)", example: "5,3 → 16" },
-    { name: "Circle circumference", formula: "C = 2 × π × r", example: "r=7 → ~44" },
-  ]},
-  { category: "Volume", items: [
-    { name: "Cube", formula: "V = s³", example: "s=3 → 27" },
-    { name: "Rectangular prism", formula: "V = l × w × h", example: "2×3×4 → 24" },
-    { name: "Cylinder", formula: "V = π × r² × h", example: "r=2,h=5 → ~62.8" },
-  ]},
-  { category: "Fractions", items: [
-    { name: "Add (same bottom)", formula: "a/n + b/n = (a+b)/n", example: "1/5+2/5=3/5" },
-    { name: "Multiply", formula: "a/b × c/d = (a×c)/(b×d)", example: "2/3×3/4=1/2" },
-    { name: "Divide", formula: "a/b ÷ c/d = a/b × d/c", example: "1/2÷1/4=2" },
-  ]},
-  { category: "Number sense", items: [
-    { name: "Average (mean)", formula: "sum ÷ count", example: "(2+4+6)/3 = 4" },
-    { name: "Percent of", formula: "(part ÷ whole) × 100", example: "15/60 = 25%" },
-  ]},
+  {
+    category: "Perimeter & Area",
+    items: [
+      { name: "Square area", formula: "A = s × s", example: "s = 4 → A = 16" },
+      { name: "Rectangle area", formula: "A = l × w", example: "6×3 → 18" },
+      { name: "Triangle area", formula: "A = (b × h) ÷ 2", example: "b=6,h=4 → 12" },
+      { name: "Circle area", formula: "A = π × r²", example: "r=5 → ~78.5" },
+      { name: "Rectangle perimeter", formula: "P = 2(l + w)", example: "5,3 → 16" },
+      { name: "Circle circumference", formula: "C = 2 × π × r", example: "r=7 → ~44" },
+    ],
+  },
+  {
+    category: "Volume",
+    items: [
+      { name: "Cube", formula: "V = s³", example: "s=3 → 27" },
+      { name: "Rectangular prism", formula: "V = l × w × h", example: "2×3×4 → 24" },
+      { name: "Cylinder", formula: "V = π × r² × h", example: "r=2,h=5 → ~62.8" },
+    ],
+  },
+  {
+    category: "Fractions",
+    items: [
+      { name: "Add (same bottom)", formula: "a/n + b/n = (a+b)/n", example: "1/5+2/5=3/5" },
+      { name: "Multiply", formula: "a/b × c/d = (a×c)/(b×d)", example: "2/3×3/4=1/2" },
+      { name: "Divide", formula: "a/b ÷ c/d = a/b × d/c", example: "1/2÷1/4=2" },
+    ],
+  },
+  {
+    category: "Number sense",
+    items: [
+      { name: "Average (mean)", formula: "sum ÷ count", example: "(2+4+6)/3 = 4" },
+      { name: "Percent of", formula: "(part ÷ whole) × 100", example: "15/60 = 25%" },
+    ],
+  },
 ];
 
 export const DICTIONARY = [
@@ -333,41 +602,163 @@ export const DICTIONARY = [
   { term: "Difference", def: "The answer to a subtraction problem.", ex: "10 − 4 = 6." },
   { term: "Product", def: "The answer to a multiplication problem.", ex: "6 × 7 = 42." },
   { term: "Quotient", def: "The answer to a division problem.", ex: "20 ÷ 4 = 5." },
-  { term: "Numerator", def: "The top number of a fraction — how many parts you have.", ex: "In 3/4, the 3 is the numerator." },
-  { term: "Denominator", def: "The bottom number — how many equal parts make the whole.", ex: "In 3/4, the 4 is the denominator." },
-  { term: "Prime number", def: "A number greater than 1 with only two factors: 1 and itself.", ex: "2, 3, 5, 7, 11 …" },
-  { term: "Factor", def: "A number that divides another number exactly.", ex: "Factors of 12: 1, 2, 3, 4, 6, 12." },
-  { term: "Multiple", def: "The result of multiplying a number by any whole number.", ex: "Multiples of 4: 4, 8, 12, 16…" },
-  { term: "Perimeter", def: "The distance around a shape.", ex: "A 3×5 rectangle has perimeter 16." },
+  {
+    term: "Numerator",
+    def: "The top number of a fraction — how many parts you have.",
+    ex: "In 3/4, the 3 is the numerator.",
+  },
+  {
+    term: "Denominator",
+    def: "The bottom number — how many equal parts make the whole.",
+    ex: "In 3/4, the 4 is the denominator.",
+  },
+  {
+    term: "Prime number",
+    def: "A number greater than 1 with only two factors: 1 and itself.",
+    ex: "2, 3, 5, 7, 11 …",
+  },
+  {
+    term: "Factor",
+    def: "A number that divides another number exactly.",
+    ex: "Factors of 12: 1, 2, 3, 4, 6, 12.",
+  },
+  {
+    term: "Multiple",
+    def: "The result of multiplying a number by any whole number.",
+    ex: "Multiples of 4: 4, 8, 12, 16…",
+  },
+  {
+    term: "Perimeter",
+    def: "The distance around a shape.",
+    ex: "A 3×5 rectangle has perimeter 16.",
+  },
   { term: "Area", def: "How much flat space a shape covers.", ex: "3×5 rectangle → area 15." },
-  { term: "Angle", def: "The space between two lines meeting at a point.", ex: "A right angle is 90°." },
+  {
+    term: "Angle",
+    def: "The space between two lines meeting at a point.",
+    ex: "A right angle is 90°.",
+  },
   { term: "Equation", def: "A math sentence with an equals sign.", ex: "x + 2 = 5." },
-  { term: "Variable", def: "A letter that stands for a number.", ex: "In x + 3 = 7, x is a variable." },
+  {
+    term: "Variable",
+    def: "A letter that stands for a number.",
+    ex: "In x + 3 = 7, x is a variable.",
+  },
 ];
 
 export const PUZZLES = [
-  { title: "The Missing Number", diff: "Easy", body: "1, 3, 5, 7, __, 11. What's missing?", answer: "9 — the pattern skips by 2." },
-  { title: "Magic Square", diff: "Medium", body: "Arrange 1–9 in a 3×3 grid so every row, column and diagonal sums to 15.", answer: "One solution: 2,7,6 / 9,5,1 / 4,3,8." },
-  { title: "Farmer's Fence", diff: "Medium", body: "A farmer has 20m of fence. What's the largest rectangle he can make?", answer: "A 5×5 square — area 25 m²." },
-  { title: "Coin Riddle", diff: "Hard", body: "You have 8 coins; one is fake and lighter. Using a balance twice, how do you find it?", answer: "Split into 3-3-2, weigh the 3s; narrow down and weigh 1v1." },
-  { title: "Pizza Party", diff: "Easy", body: "A pizza is cut into 8 slices. You eat 3, your friend eats 2. What fraction is left?", answer: "3/8." },
-  { title: "Age Puzzle", diff: "Medium", body: "In 5 years, Mia will be twice as old as she was 5 years ago. How old is she now?", answer: "15." },
+  {
+    title: "The Missing Number",
+    diff: "Easy",
+    body: "1, 3, 5, 7, __, 11. What's missing?",
+    answer: "9 — the pattern skips by 2.",
+  },
+  {
+    title: "Magic Square",
+    diff: "Medium",
+    body: "Arrange 1–9 in a 3×3 grid so every row, column and diagonal sums to 15.",
+    answer: "One solution: 2,7,6 / 9,5,1 / 4,3,8.",
+  },
+  {
+    title: "Farmer's Fence",
+    diff: "Medium",
+    body: "A farmer has 20m of fence. What's the largest rectangle he can make?",
+    answer: "A 5×5 square — area 25 m².",
+  },
+  {
+    title: "Coin Riddle",
+    diff: "Hard",
+    body: "You have 8 coins; one is fake and lighter. Using a balance twice, how do you find it?",
+    answer: "Split into 3-3-2, weigh the 3s; narrow down and weigh 1v1.",
+  },
+  {
+    title: "Pizza Party",
+    diff: "Easy",
+    body: "A pizza is cut into 8 slices. You eat 3, your friend eats 2. What fraction is left?",
+    answer: "3/8.",
+  },
+  {
+    title: "Age Puzzle",
+    diff: "Medium",
+    body: "In 5 years, Mia will be twice as old as she was 5 years ago. How old is she now?",
+    answer: "15.",
+  },
 ];
 
 export const GAMES = [
-  { title: "Number Ninja", desc: "Slice the correct answers before the timer runs out.", topic: "Addition & subtraction", difficulty: "All grades", emoji: "🥷" },
-  { title: "Fraction Bakery", desc: "Bake the exact fraction of pie a customer orders.", topic: "Fractions", difficulty: "Grades 3–5", emoji: "🥧" },
-  { title: "Shape Safari", desc: "Spot triangles, hexagons and cylinders hiding in the jungle.", topic: "Geometry", difficulty: "Grades 1–3", emoji: "🦒" },
-  { title: "Times Table Racers", desc: "Race a rocket by answering multiplication questions.", topic: "Multiplication", difficulty: "Grades 2–4", emoji: "🚀" },
-  { title: "Word Problem Detective", desc: "Solve mystery cases by finding the hidden math.", topic: "Word problems", difficulty: "Grades 3–6", emoji: "🕵️" },
-  { title: "Algebra Alchemist", desc: "Balance potions on a scale — one side must equal the other.", topic: "Pre-Algebra", difficulty: "Grades 5–6", emoji: "⚗️" },
+  {
+    title: "Number Ninja",
+    desc: "Slice the correct answers before the timer runs out.",
+    topic: "Addition & subtraction",
+    difficulty: "All grades",
+    emoji: "🥷",
+  },
+  {
+    title: "Fraction Bakery",
+    desc: "Bake the exact fraction of pie a customer orders.",
+    topic: "Fractions",
+    difficulty: "Grades 3–5",
+    emoji: "🥧",
+  },
+  {
+    title: "Shape Safari",
+    desc: "Spot triangles, hexagons and cylinders hiding in the jungle.",
+    topic: "Geometry",
+    difficulty: "Grades 1–3",
+    emoji: "🦒",
+  },
+  {
+    title: "Times Table Racers",
+    desc: "Race a rocket by answering multiplication questions.",
+    topic: "Multiplication",
+    difficulty: "Grades 2–4",
+    emoji: "🚀",
+  },
+  {
+    title: "Word Problem Detective",
+    desc: "Solve mystery cases by finding the hidden math.",
+    topic: "Word problems",
+    difficulty: "Grades 3–6",
+    emoji: "🕵️",
+  },
+  {
+    title: "Algebra Alchemist",
+    desc: "Balance potions on a scale — one side must equal the other.",
+    topic: "Pre-Algebra",
+    difficulty: "Grades 5–6",
+    emoji: "⚗️",
+  },
 ];
 
 export const TIPS = [
-  { icon: "🌱", title: "5 minutes a day beats 1 hour a week", body: "Small daily practice builds strong number sense. Try one warm-up problem before breakfast." },
-  { icon: "🖍️", title: "Draw it before you solve it", body: "Bars, circles, arrays — pictures unlock word problems." },
-  { icon: "🎯", title: "Estimate first", body: "Guess the answer before calculating. It teaches you to catch big mistakes fast." },
-  { icon: "🔁", title: "Explain it back", body: "If you can teach a step to a stuffed animal, you truly understand it." },
-  { icon: "🧩", title: "Mistakes are clues", body: "A wrong answer tells you exactly where to look — celebrate them." },
-  { icon: "🎮", title: "Play, don't drill", body: "Games and puzzles wire math into long-term memory much better than repetition alone." },
+  {
+    icon: "🌱",
+    title: "5 minutes a day beats 1 hour a week",
+    body: "Small daily practice builds strong number sense. Try one warm-up problem before breakfast.",
+  },
+  {
+    icon: "🖍️",
+    title: "Draw it before you solve it",
+    body: "Bars, circles, arrays — pictures unlock word problems.",
+  },
+  {
+    icon: "🎯",
+    title: "Estimate first",
+    body: "Guess the answer before calculating. It teaches you to catch big mistakes fast.",
+  },
+  {
+    icon: "🔁",
+    title: "Explain it back",
+    body: "If you can teach a step to a stuffed animal, you truly understand it.",
+  },
+  {
+    icon: "🧩",
+    title: "Mistakes are clues",
+    body: "A wrong answer tells you exactly where to look — celebrate them.",
+  },
+  {
+    icon: "🎮",
+    title: "Play, don't drill",
+    body: "Games and puzzles wire math into long-term memory much better than repetition alone.",
+  },
 ];
