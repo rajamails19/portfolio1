@@ -96,8 +96,7 @@ export const themes: Record<ThemeKey, ThemeDef> = {
           name: "The Professor",
           title: "Foundations, clarity, big picture",
           image: mentor,
-          quote:
-            "Before you build anything, understand what you're actually building on top of.",
+          quote: "Before you build anything, understand what you're actually building on top of.",
         },
       },
       terms: {
@@ -109,6 +108,17 @@ export const themes: Record<ThemeKey, ThemeDef> = {
           title: "Plain-English tech glossary",
           image: mentor,
           quote: "If you can't explain a term simply, you don't understand it well enough.",
+        },
+      },
+      story: {
+        title: "Story-Based",
+        tagline: "Whatever you paste, retold as a guided walk-through.",
+        emoji: "📖",
+        mascot: {
+          name: "The Narrator",
+          title: "Turns raw text into a story you can follow",
+          image: mentor,
+          quote: "Every wall of text is a story waiting to be told one chapter at a time.",
         },
       },
       qans: {

@@ -10,15 +10,19 @@ import {
   Layers,
   BookOpenCheck,
   BookText,
+  BookOpen,
   Heart,
   ListTree,
   ChevronRight,
+  NotebookPen,
 } from "lucide-react";
 import { termTiles } from "@/content/terms";
 import { useTheoryFavorites } from "@/hooks/use-theory-favorites";
+import { useRandomInputs } from "@/hooks/use-random-inputs";
 
 const icons: Record<string, typeof Sparkles> = {
   theory: BookOpenCheck,
+  story: BookOpen,
   terms: BookText,
   qans: Sparkles,
   programs: Code2,
@@ -119,6 +123,9 @@ export function SideNav() {
   const favoritesEnabled = themeKey === "rocky";
   const favoritesActive = location.pathname.startsWith("/favorites");
   const { favorites } = useTheoryFavorites(favoritesEnabled);
+  const inputsEnabled = themeKey === "noir";
+  const inputsActive = location.pathname.startsWith("/inputs");
+  const { inputs } = useRandomInputs();
   const isTerms = location.pathname.startsWith("/terms") && themeKey === "noir";
   const activeSlug = isTerms
     ? "terms"
@@ -320,6 +327,49 @@ export function SideNav() {
             </span>
           </Link>
         )}
+        {inputsEnabled && (
+          <Link
+            to="/inputs"
+            className={[
+              "group relative flex items-center gap-3 rounded-2xl px-3 py-2.5 text-sm font-medium transition-all",
+              inputsActive
+                ? "bg-gradient-to-r from-gold/90 to-ember/80 text-primary-foreground shadow-glow"
+                : "text-foreground/85 hover:bg-white/5 hover:text-foreground",
+            ].join(" ")}
+          >
+            <span
+              className={[
+                "flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border",
+                inputsActive
+                  ? "border-black/15 bg-black/15"
+                  : "border-gold/30 bg-gold/10 text-gold-ink",
+              ].join(" ")}
+            >
+              <NotebookPen className="h-4 w-4" />
+            </span>
+            <span className="flex flex-1 flex-col leading-tight">
+              <span className="flex items-center gap-1.5">Your Inputs</span>
+              <span
+                className={[
+                  "text-[10px] uppercase tracking-wider",
+                  inputsActive ? "text-primary-foreground/80" : "text-muted-foreground",
+                ].join(" ")}
+              >
+                Random
+              </span>
+            </span>
+            <span
+              className={[
+                "rounded-full px-2 py-0.5 text-[10px] font-semibold tabular-nums",
+                inputsActive
+                  ? "bg-black/25 text-primary-foreground"
+                  : "bg-white/5 text-foreground/70",
+              ].join(" ")}
+            >
+              {inputs.length}
+            </span>
+          </Link>
+        )}
       </nav>
 
       {favoritesActive ? (
@@ -332,6 +382,20 @@ export function SideNav() {
               <div className="font-display text-sm font-semibold text-gold-ink">How to save</div>
               <div className="mt-0.5 text-[11px] leading-relaxed text-foreground/65">
                 Highlight any text in DAnalyst Basics, then choose Favorite.
+              </div>
+            </div>
+          </div>
+        </div>
+      ) : inputsActive ? (
+        <div className="glass rounded-3xl p-4">
+          <div className="flex items-center gap-3">
+            <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border border-gold/30 bg-gold/10 text-gold-ink">
+              <NotebookPen className="h-5 w-5" />
+            </span>
+            <div>
+              <div className="font-display text-sm font-semibold text-gold-ink">How to save</div>
+              <div className="mt-0.5 text-[11px] leading-relaxed text-foreground/65">
+                Type or paste anything, hit Save, and it's appended below exactly as written.
               </div>
             </div>
           </div>

@@ -11,11 +11,13 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as TheoryRouteImport } from './routes/theory'
 import { Route as TermsRouteImport } from './routes/terms'
+import { Route as StoryRouteImport } from './routes/story'
 import { Route as RealtimeRouteImport } from './routes/realtime'
 import { Route as QansRouteImport } from './routes/qans'
 import { Route as ProjectsRouteImport } from './routes/projects'
 import { Route as ProgramsRouteImport } from './routes/programs'
 import { Route as OthersRouteImport } from './routes/others'
+import { Route as InputsRouteImport } from './routes/inputs'
 import { Route as FavoritesRouteImport } from './routes/favorites'
 import { Route as IndexRouteImport } from './routes/index'
 
@@ -27,6 +29,11 @@ const TheoryRoute = TheoryRouteImport.update({
 const TermsRoute = TermsRouteImport.update({
   id: '/terms',
   path: '/terms',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const StoryRoute = StoryRouteImport.update({
+  id: '/story',
+  path: '/story',
   getParentRoute: () => rootRouteImport,
 } as any)
 const RealtimeRoute = RealtimeRouteImport.update({
@@ -54,6 +61,11 @@ const OthersRoute = OthersRouteImport.update({
   path: '/others',
   getParentRoute: () => rootRouteImport,
 } as any)
+const InputsRoute = InputsRouteImport.update({
+  id: '/inputs',
+  path: '/inputs',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const FavoritesRoute = FavoritesRouteImport.update({
   id: '/favorites',
   path: '/favorites',
@@ -68,22 +80,26 @@ const IndexRoute = IndexRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/favorites': typeof FavoritesRoute
+  '/inputs': typeof InputsRoute
   '/others': typeof OthersRoute
   '/programs': typeof ProgramsRoute
   '/projects': typeof ProjectsRoute
   '/qans': typeof QansRoute
   '/realtime': typeof RealtimeRoute
+  '/story': typeof StoryRoute
   '/terms': typeof TermsRoute
   '/theory': typeof TheoryRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/favorites': typeof FavoritesRoute
+  '/inputs': typeof InputsRoute
   '/others': typeof OthersRoute
   '/programs': typeof ProgramsRoute
   '/projects': typeof ProjectsRoute
   '/qans': typeof QansRoute
   '/realtime': typeof RealtimeRoute
+  '/story': typeof StoryRoute
   '/terms': typeof TermsRoute
   '/theory': typeof TheoryRoute
 }
@@ -91,11 +107,13 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/favorites': typeof FavoritesRoute
+  '/inputs': typeof InputsRoute
   '/others': typeof OthersRoute
   '/programs': typeof ProgramsRoute
   '/projects': typeof ProjectsRoute
   '/qans': typeof QansRoute
   '/realtime': typeof RealtimeRoute
+  '/story': typeof StoryRoute
   '/terms': typeof TermsRoute
   '/theory': typeof TheoryRoute
 }
@@ -104,33 +122,39 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/favorites'
+    | '/inputs'
     | '/others'
     | '/programs'
     | '/projects'
     | '/qans'
     | '/realtime'
+    | '/story'
     | '/terms'
     | '/theory'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/favorites'
+    | '/inputs'
     | '/others'
     | '/programs'
     | '/projects'
     | '/qans'
     | '/realtime'
+    | '/story'
     | '/terms'
     | '/theory'
   id:
     | '__root__'
     | '/'
     | '/favorites'
+    | '/inputs'
     | '/others'
     | '/programs'
     | '/projects'
     | '/qans'
     | '/realtime'
+    | '/story'
     | '/terms'
     | '/theory'
   fileRoutesById: FileRoutesById
@@ -138,11 +162,13 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   FavoritesRoute: typeof FavoritesRoute
+  InputsRoute: typeof InputsRoute
   OthersRoute: typeof OthersRoute
   ProgramsRoute: typeof ProgramsRoute
   ProjectsRoute: typeof ProjectsRoute
   QansRoute: typeof QansRoute
   RealtimeRoute: typeof RealtimeRoute
+  StoryRoute: typeof StoryRoute
   TermsRoute: typeof TermsRoute
   TheoryRoute: typeof TheoryRoute
 }
@@ -161,6 +187,13 @@ declare module '@tanstack/react-router' {
       path: '/terms'
       fullPath: '/terms'
       preLoaderRoute: typeof TermsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/story': {
+      id: '/story'
+      path: '/story'
+      fullPath: '/story'
+      preLoaderRoute: typeof StoryRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/realtime': {
@@ -198,6 +231,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof OthersRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/inputs': {
+      id: '/inputs'
+      path: '/inputs'
+      fullPath: '/inputs'
+      preLoaderRoute: typeof InputsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/favorites': {
       id: '/favorites'
       path: '/favorites'
@@ -218,11 +258,13 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   FavoritesRoute: FavoritesRoute,
+  InputsRoute: InputsRoute,
   OthersRoute: OthersRoute,
   ProgramsRoute: ProgramsRoute,
   ProjectsRoute: ProjectsRoute,
   QansRoute: QansRoute,
   RealtimeRoute: RealtimeRoute,
+  StoryRoute: StoryRoute,
   TermsRoute: TermsRoute,
   TheoryRoute: TheoryRoute,
 }
