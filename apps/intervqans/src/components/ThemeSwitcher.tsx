@@ -8,6 +8,8 @@ import { themeKeys, themes, type ThemeKey } from "@/themes/themes";
 const RESTRICTED_PATHS: Partial<Record<string, ThemeKey[]>> = {
   "/theory": ["noir", "rocky"],
   "/terms": ["noir"],
+  "/story": ["noir"],
+  "/inputs": ["noir"],
 };
 
 export function ThemeSwitcher() {

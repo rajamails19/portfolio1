@@ -15,6 +15,9 @@ import {
   FileCode2,
   Bot,
   Box,
+  Zap,
+  FileText,
+  ScrollText,
 } from "lucide-react";
 import type { QAItem, Section } from "@/content/types";
 import { useTheme } from "@/themes/ThemeContext";
@@ -29,6 +32,10 @@ function programComparisonKey(item: QAItem) {
   return item.id.replace(/^(java|javascript|jscript|python|dotnet)-/, "");
 }
 
+// Noir's horizontal topic-tab slot is intentionally left free — it's
+// reserved for future subject tabs (AI, DL, ML, NN, ...), same pattern as
+// DAnalyst's Basics/PowerBI/Tableau/MS Fabric row. Marks (2M/5M/16M) get
+// their own side rail instead — see QANS_MARKS_BY_THEME.
 const QANS_TOPICS_BY_THEME: Record<string, { name: string; Icon: typeof Code2 }[]> = {
   chaat: [
     { name: "Playwright", Icon: Code2 },
@@ -45,6 +52,14 @@ const QANS_TOPICS_BY_THEME: Record<string, { name: string; Icon: typeof Code2 }[
     { name: "PowerBI", Icon: BarChart3 },
     { name: "Tableau", Icon: LayoutDashboard },
     { name: "MS Fabric", Icon: Cloud },
+  ],
+};
+
+const QANS_MARKS_BY_THEME: Record<string, { name: string; Icon: typeof Code2 }[]> = {
+  noir: [
+    { name: "2M", Icon: Zap },
+    { name: "5M", Icon: FileText },
+    { name: "16M", Icon: ScrollText },
   ],
 };
 
@@ -78,10 +93,15 @@ export function SectionView({ section }: { section: Section }) {
         ? PROGRAM_TOPICS_BY_THEME[themeKey]
         : undefined;
   const showTopics = !!topics;
+  const marks = section.slug === "qans" ? QANS_MARKS_BY_THEME[themeKey] : undefined;
+  const showMarks = !!marks;
   const [activeTopic, setActiveTopic] = useState(topics?.[0]?.name ?? "");
+  const [activeMark, setActiveMark] = useState(marks?.[0]?.name ?? "");
   const [activeSubTopic, setActiveSubTopic] = useState(QAUTO_PROGRAM_TOPICS[0].name);
   const showProgramSubTopics =
     section.slug === "programs" && themeKey === "chaat" && activeTopic === "QAutoPrograms";
+  const activeCategory = showMarks ? activeMark : activeTopic;
+  const showCategoryFilter = showTopics || showMarks;
 
   useEffect(() => {
     if (topics && !topics.some((t) => t.name === activeTopic)) {
@@ -89,9 +109,18 @@ export function SectionView({ section }: { section: Section }) {
     }
   }, [topics, activeTopic]);
 
+  useEffect(() => {
+    if (marks && !marks.some((m) => m.name === activeMark)) {
+      setActiveMark(marks[0].name);
+    }
+  }, [marks, activeMark]);
+
   const activeTopicItems = useMemo(
-    () => (showTopics ? section.items.filter((it) => it.category === activeTopic) : section.items),
-    [activeTopic, section.items, showTopics],
+    () =>
+      showCategoryFilter
+        ? section.items.filter((it) => it.category === activeCategory)
+        : section.items,
+    [activeCategory, section.items, showCategoryFilter],
   );
 
   const visibleItems = useMemo(
@@ -126,185 +155,257 @@ export function SectionView({ section }: { section: Section }) {
   }, [q, visibleItems]);
 
   return (
-    <div className="mx-auto w-full max-w-4xl px-6 pb-16 pt-8">
-      <div className="relative overflow-hidden rounded-4xl shadow-glow ring-1 ring-gold/20">
-        <img
-          src={mascot.image}
-          alt=""
-          className="absolute inset-0 h-full w-full object-cover opacity-45"
-          loading="lazy"
-        />
-        <div className="absolute inset-0 bg-gradient-to-r from-noir via-noir/85 to-noir/30" />
-        <div className="absolute -right-16 -top-16 h-64 w-64 rounded-full bg-gold/20 blur-3xl" />
-        <div className="relative grid gap-6 p-8 sm:p-10 md:grid-cols-[1.5fr,1fr] md:items-center">
-          <div>
-            <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-gold/30 bg-noir/60 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.25em] text-gold-ink backdrop-blur">
-              <span className="text-base">{meta.emoji}</span> Section
-            </div>
-            <h1 className="font-display text-4xl font-semibold leading-tight text-foreground sm:text-5xl">
-              {meta.title}
-            </h1>
-            <p className="mt-3 max-w-xl text-base text-foreground/75 sm:text-lg">{meta.tagline}</p>
-            <div className="mt-5 flex flex-wrap items-center gap-2">
-              <span className="rounded-full border border-gold/25 bg-noir/60 px-3 py-1 text-xs font-semibold text-foreground/80">
-                {visibleItems.length} entries
-              </span>
-              <span className="rounded-full border border-gold/25 bg-noir/60 px-3 py-1 text-xs font-semibold text-foreground/80">
-                Click any card to expand
-              </span>
-            </div>
-          </div>
-          <div className="glass-strong hidden rounded-3xl p-4 md:block">
-            <div className="flex items-center gap-3">
-              <img
-                src={mascot.image}
-                alt={mascot.name}
-                className="h-14 w-14 rounded-2xl object-cover ring-1 ring-gold/40"
-              />
+    <div className="mx-auto w-full max-w-5xl px-6 pb-16 pt-8">
+      {showMarks && (
+        <div className="mb-4 mt-12 flex items-center gap-1.5 overflow-x-auto sm:hidden">
+          {marks.map(({ name, Icon }) => {
+            const active = activeMark === name;
+            return (
+              <button
+                key={name}
+                type="button"
+                onClick={() => {
+                  setActiveMark(name);
+                  setQ("");
+                }}
+                className={[
+                  "inline-flex shrink-0 items-center gap-1.5 rounded-full border px-3 py-2 text-xs font-bold transition-all",
+                  active
+                    ? "border-gold/40 bg-gradient-to-r from-gold to-ember text-primary-foreground shadow-glow"
+                    : "border-gold/15 bg-noir/50 text-foreground/65",
+                ].join(" ")}
+              >
+                <Icon className="h-3.5 w-3.5" />
+                {name}
+              </button>
+            );
+          })}
+        </div>
+      )}
+
+      <div className="flex items-start gap-5">
+        {showMarks && (
+          <nav aria-label="Marks" className="hidden w-16 shrink-0 flex-col gap-2 sm:flex">
+            {marks.map(({ name, Icon }) => {
+              const active = activeMark === name;
+              const count = section.items.filter((it) => it.category === name).length;
+              return (
+                <button
+                  key={name}
+                  type="button"
+                  onClick={() => {
+                    setActiveMark(name);
+                    setQ("");
+                  }}
+                  aria-current={active ? "true" : undefined}
+                  className={[
+                    "relative grid h-14 w-14 place-items-center rounded-full border text-[10px] font-bold transition-all",
+                    active
+                      ? "border-gold/40 bg-gradient-to-br from-gold to-ember text-primary-foreground shadow-glow"
+                      : "border-gold/15 bg-noir/50 text-foreground/65 hover:bg-noir/70 hover:text-foreground",
+                  ].join(" ")}
+                >
+                  <Icon className="h-3.5 w-3.5" />
+                  <span className="mt-0.5">{name}</span>
+                  <span
+                    className={[
+                      "absolute -right-1 -top-1 grid h-4 min-w-4 place-items-center rounded-full px-1 text-[9px] tabular-nums",
+                      active ? "bg-noir text-gold-ink" : "bg-white/10 text-foreground/70",
+                    ].join(" ")}
+                  >
+                    {count}
+                  </span>
+                </button>
+              );
+            })}
+          </nav>
+        )}
+
+        <div className="min-w-0 flex-1">
+          <div className="relative overflow-hidden rounded-4xl shadow-glow ring-1 ring-gold/20">
+            <img
+              src={mascot.image}
+              alt=""
+              className="absolute inset-0 h-full w-full object-cover opacity-45"
+              loading="lazy"
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-noir via-noir/85 to-noir/30" />
+            <div className="absolute -right-16 -top-16 h-64 w-64 rounded-full bg-gold/20 blur-3xl" />
+            <div className="relative grid gap-6 p-8 sm:p-10 md:grid-cols-[1.5fr,1fr] md:items-center">
               <div>
-                <div className="font-display text-sm font-semibold text-gold-ink">
-                  {mascot.name}
+                <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-gold/30 bg-noir/60 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.25em] text-gold-ink backdrop-blur">
+                  <span className="text-base">{meta.emoji}</span> Section
                 </div>
-                <div className="text-[10px] uppercase tracking-widest text-muted-foreground">
-                  {mascot.title}
+                <h1 className="font-display text-4xl font-semibold leading-tight text-foreground sm:text-5xl">
+                  {meta.title}
+                </h1>
+                <p className="mt-3 max-w-xl text-base text-foreground/75 sm:text-lg">
+                  {meta.tagline}
+                </p>
+                <div className="mt-5 flex flex-wrap items-center gap-2">
+                  <span className="rounded-full border border-gold/25 bg-noir/60 px-3 py-1 text-xs font-semibold text-foreground/80">
+                    {visibleItems.length} entries
+                  </span>
+                  <span className="rounded-full border border-gold/25 bg-noir/60 px-3 py-1 text-xs font-semibold text-foreground/80">
+                    Click any card to expand
+                  </span>
                 </div>
               </div>
+              <div className="glass-strong hidden rounded-3xl p-4 md:block">
+                <div className="flex items-center gap-3">
+                  <img
+                    src={mascot.image}
+                    alt={mascot.name}
+                    className="h-14 w-14 rounded-2xl object-cover ring-1 ring-gold/40"
+                  />
+                  <div>
+                    <div className="font-display text-sm font-semibold text-gold-ink">
+                      {mascot.name}
+                    </div>
+                    <div className="text-[10px] uppercase tracking-widest text-muted-foreground">
+                      {mascot.title}
+                    </div>
+                  </div>
+                </div>
+                <Quote className="mt-3 h-4 w-4 text-gold-ink" />
+                <p className="mt-1 font-display text-sm italic leading-snug text-foreground/90">
+                  "{mascot.quote}"
+                </p>
+              </div>
             </div>
-            <Quote className="mt-3 h-4 w-4 text-gold-ink" />
-            <p className="mt-1 font-display text-sm italic leading-snug text-foreground/90">
-              "{mascot.quote}"
-            </p>
+          </div>
+
+          {showTopics && (
+            <div className="mt-5 flex justify-center sm:justify-start">
+              <div
+                className="glass inline-flex max-w-full items-center gap-1 overflow-x-auto rounded-full border border-gold/20 p-1.5 shadow-[var(--shadow-soft)]"
+                role="tablist"
+                aria-label={
+                  section.slug === "programs" ? "Program languages" : "Q and Answers topics"
+                }
+              >
+                {topics?.map(({ name, Icon }) => {
+                  const active = activeTopic === name;
+                  return (
+                    <button
+                      key={name}
+                      type="button"
+                      role="tab"
+                      aria-selected={active}
+                      onClick={() => {
+                        setActiveTopic(name);
+                        setQ("");
+                      }}
+                      className={[
+                        "inline-flex shrink-0 items-center gap-2 rounded-full px-4 py-2 text-xs font-bold tracking-wide transition-all duration-300 sm:text-sm",
+                        active
+                          ? "bg-gradient-to-r from-gold to-ember text-primary-foreground shadow-glow"
+                          : "text-foreground/65 hover:bg-noir/60 hover:text-foreground",
+                      ].join(" ")}
+                    >
+                      <Icon className="h-3.5 w-3.5" />
+                      {name}
+                      {active && (
+                        <span className="rounded-full bg-white/20 px-1.5 py-0.5 text-[10px] tabular-nums">
+                          {activeTopicItems.length}
+                        </span>
+                      )}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
+          {showProgramSubTopics && (
+            <div className="mt-3 flex justify-center sm:justify-start">
+              <div
+                className="glass inline-flex max-w-full items-center gap-1 overflow-x-auto rounded-full border border-gold/20 p-1.5 shadow-[var(--shadow-soft)]"
+                role="tablist"
+                aria-label="QAutomation program frameworks"
+              >
+                {QAUTO_PROGRAM_TOPICS.map(({ name, Icon }) => {
+                  const active = activeSubTopic === name;
+                  const count = activeTopicItems.filter((item) => item.subCategory === name).length;
+
+                  return (
+                    <button
+                      key={name}
+                      type="button"
+                      role="tab"
+                      aria-selected={active}
+                      onClick={() => {
+                        setActiveSubTopic(name);
+                        setQ("");
+                      }}
+                      className={[
+                        "inline-flex shrink-0 items-center gap-2 rounded-full px-3 py-2 text-xs font-bold tracking-wide transition-all duration-300 sm:px-4 sm:text-sm",
+                        active
+                          ? "bg-gradient-to-r from-gold to-ember text-primary-foreground shadow-glow"
+                          : "text-foreground/65 hover:bg-noir/60 hover:text-foreground",
+                      ].join(" ")}
+                    >
+                      <Icon className="h-3.5 w-3.5" />
+                      {name}
+                      {active && (
+                        <span className="rounded-full bg-white/20 px-1.5 py-0.5 text-[10px] tabular-nums">
+                          {count}
+                        </span>
+                      )}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
+          <div className="mt-6">
+            <QuotesTicker />
+          </div>
+
+          <div className="glass sticky top-4 z-10 mt-6 flex items-center gap-3 rounded-full px-4 py-2.5">
+            <Search className="h-4 w-4 text-muted-foreground" />
+            <input
+              value={q}
+              onChange={(e) => setQ(e.target.value)}
+              placeholder={`Search in ${showProgramSubTopics ? activeSubTopic : showCategoryFilter ? activeCategory : meta.title}…`}
+              className="flex-1 bg-transparent text-base placeholder:text-muted-foreground/70 focus:outline-none sm:text-sm"
+            />
+            {q && (
+              <button
+                onClick={() => setQ("")}
+                className="rounded-full border border-gold/25 bg-noir/60 px-2 py-0.5 text-xs font-medium text-foreground/80 hover:bg-noir"
+              >
+                clear
+              </button>
+            )}
+          </div>
+
+          <div className="mt-6 flex flex-col gap-4">
+            {filtered.length === 0 ? (
+              <div className="glass rounded-3xl p-8 text-center text-sm text-muted-foreground">
+                {showCategoryFilter && !q
+                  ? `${showProgramSubTopics ? activeSubTopic : activeCategory} entries are coming next.`
+                  : "No matches. Try a different keyword."}
+              </div>
+            ) : (
+              filtered.map((it, i) => {
+                const itemComparisonKey = programComparisonKey(it);
+                const canCompare =
+                  itemComparisonKey && comparisonGroups.get(itemComparisonKey)?.length === 4;
+
+                return (
+                  <QuestionCard
+                    key={it.id}
+                    item={it}
+                    index={i}
+                    onCompare={canCompare ? () => setComparisonKey(itemComparisonKey) : undefined}
+                  />
+                );
+              })
+            )}
           </div>
         </div>
-      </div>
-
-      {showTopics && (
-        <div className="mt-5 flex justify-center sm:justify-start">
-          <div
-            className="glass inline-flex max-w-full items-center gap-1 overflow-x-auto rounded-full border border-gold/20 p-1.5 shadow-[var(--shadow-soft)]"
-            role="tablist"
-            aria-label={section.slug === "programs" ? "Program languages" : "Q and Answers topics"}
-          >
-            {topics?.map(({ name, Icon }) => {
-              const active = activeTopic === name;
-              return (
-                <button
-                  key={name}
-                  type="button"
-                  role="tab"
-                  aria-selected={active}
-                  onClick={() => {
-                    setActiveTopic(name);
-                    setQ("");
-                  }}
-                  className={[
-                    "inline-flex shrink-0 items-center gap-2 rounded-full px-4 py-2 text-xs font-bold tracking-wide transition-all duration-300 sm:text-sm",
-                    active
-                      ? "bg-gradient-to-r from-gold to-ember text-primary-foreground shadow-glow"
-                      : "text-foreground/65 hover:bg-noir/60 hover:text-foreground",
-                  ].join(" ")}
-                >
-                  <Icon className="h-3.5 w-3.5" />
-                  {name}
-                  {active && (
-                    <span className="rounded-full bg-white/20 px-1.5 py-0.5 text-[10px] tabular-nums">
-                      {activeTopicItems.length}
-                    </span>
-                  )}
-                </button>
-              );
-            })}
-          </div>
-        </div>
-      )}
-
-      {showProgramSubTopics && (
-        <div className="mt-3 flex justify-center sm:justify-start">
-          <div
-            className="glass inline-flex max-w-full items-center gap-1 overflow-x-auto rounded-full border border-gold/20 p-1.5 shadow-[var(--shadow-soft)]"
-            role="tablist"
-            aria-label="QAutomation program frameworks"
-          >
-            {QAUTO_PROGRAM_TOPICS.map(({ name, Icon }) => {
-              const active = activeSubTopic === name;
-              const count = activeTopicItems.filter((item) => item.subCategory === name).length;
-
-              return (
-                <button
-                  key={name}
-                  type="button"
-                  role="tab"
-                  aria-selected={active}
-                  onClick={() => {
-                    setActiveSubTopic(name);
-                    setQ("");
-                  }}
-                  className={[
-                    "inline-flex shrink-0 items-center gap-2 rounded-full px-3 py-2 text-xs font-bold tracking-wide transition-all duration-300 sm:px-4 sm:text-sm",
-                    active
-                      ? "bg-gradient-to-r from-gold to-ember text-primary-foreground shadow-glow"
-                      : "text-foreground/65 hover:bg-noir/60 hover:text-foreground",
-                  ].join(" ")}
-                >
-                  <Icon className="h-3.5 w-3.5" />
-                  {name}
-                  {active && (
-                    <span className="rounded-full bg-white/20 px-1.5 py-0.5 text-[10px] tabular-nums">
-                      {count}
-                    </span>
-                  )}
-                </button>
-              );
-            })}
-          </div>
-        </div>
-      )}
-
-      <div className="mt-6">
-        <QuotesTicker />
-      </div>
-
-      <div className="glass sticky top-4 z-10 mt-6 flex items-center gap-3 rounded-full px-4 py-2.5">
-        <Search className="h-4 w-4 text-muted-foreground" />
-        <input
-          value={q}
-          onChange={(e) => setQ(e.target.value)}
-          placeholder={`Search in ${showProgramSubTopics ? activeSubTopic : showTopics ? activeTopic : meta.title}…`}
-          className="flex-1 bg-transparent text-base placeholder:text-muted-foreground/70 focus:outline-none sm:text-sm"
-        />
-        {q && (
-          <button
-            onClick={() => setQ("")}
-            className="rounded-full border border-gold/25 bg-noir/60 px-2 py-0.5 text-xs font-medium text-foreground/80 hover:bg-noir"
-          >
-            clear
-          </button>
-        )}
-      </div>
-
-      <div className="mt-6 flex flex-col gap-4">
-        {filtered.length === 0 ? (
-          <div className="glass rounded-3xl p-8 text-center text-sm text-muted-foreground">
-            {showTopics && !q
-              ? `${showProgramSubTopics ? activeSubTopic : activeTopic} entries are coming next.`
-              : "No matches. Try a different keyword."}
-          </div>
-        ) : (
-          filtered.map((it, i) => {
-            const itemComparisonKey = programComparisonKey(it);
-            const canCompare =
-              itemComparisonKey && comparisonGroups.get(itemComparisonKey)?.length === 4;
-
-            return (
-              <QuestionCard
-                key={it.id}
-                item={it}
-                index={i}
-                onCompare={canCompare ? () => setComparisonKey(itemComparisonKey) : undefined}
-              />
-            );
-          })
-        )}
       </div>
 
       <ProgramComparisonDialog

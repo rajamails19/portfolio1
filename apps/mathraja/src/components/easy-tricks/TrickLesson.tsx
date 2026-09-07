@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { ChevronLeft, ChevronRight, Eye, EyeOff, Lightbulb, Sparkles } from "lucide-react";
+import { PhotoSlideshow } from "./PhotoSlideshow";
 import {
   Accordion,
   AccordionContent,
@@ -70,28 +71,34 @@ export function TrickLessonView({
         </div>
         <p className="mt-2 max-w-2xl text-sm text-muted-foreground">{lesson.description}</p>
 
-        <div className="mt-5 flex flex-wrap items-center gap-2 rounded-2xl border border-border bg-muted/40 px-4 py-3">
-          <span className="shrink-0 text-[11px] font-bold uppercase tracking-wide text-muted-foreground">
-            What you'll learn
-          </span>
-          {lesson.tricks.map((trick) => (
-            <span
-              key={trick.id}
-              className="rounded-full border border-border bg-card px-2.5 py-1 text-xs font-medium text-foreground/70"
-            >
-              {trick.title}
+        {lesson.kind !== "photos" && (
+          <div className="mt-5 flex flex-wrap items-center gap-2 rounded-2xl border border-border bg-muted/40 px-4 py-3">
+            <span className="shrink-0 text-[11px] font-bold uppercase tracking-wide text-muted-foreground">
+              What you'll learn
             </span>
-          ))}
-        </div>
+            {lesson.tricks.map((trick) => (
+              <span
+                key={trick.id}
+                className="rounded-full border border-border bg-card px-2.5 py-1 text-xs font-medium text-foreground/70"
+              >
+                {trick.title}
+              </span>
+            ))}
+          </div>
+        )}
       </div>
 
-      <div className="mt-5 overflow-hidden rounded-3xl border border-border bg-card">
-        <Accordion type="single" collapsible value={openTrickId} onValueChange={setOpenTrickId}>
-          {lesson.tricks.map((trick, i) => (
-            <TrickRow key={trick.id} trick={trick} n={i + 1} />
-          ))}
-        </Accordion>
-      </div>
+      {lesson.kind === "photos" ? (
+        <PhotoSlideshow photos={lesson.photos ?? []} />
+      ) : (
+        <div className="mt-5 overflow-hidden rounded-3xl border border-border bg-card">
+          <Accordion type="single" collapsible value={openTrickId} onValueChange={setOpenTrickId}>
+            {lesson.tricks.map((trick, i) => (
+              <TrickRow key={trick.id} trick={trick} n={i + 1} />
+            ))}
+          </Accordion>
+        </div>
+      )}
 
       <LessonPager
         prevLesson={prevLesson}

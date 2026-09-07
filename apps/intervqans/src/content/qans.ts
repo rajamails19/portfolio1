@@ -9,6 +9,7 @@ export const qansSection: Section = {
   items: [
     {
       id: "what-is-machine-learning",
+      category: "2M",
       question: "What is Machine Learning?",
       tags: ["AI/ML", "Fundamentals"],
       difficulty: "Easy",
@@ -28,6 +29,7 @@ export const qansSection: Section = {
     },
     {
       id: "what-is-deep-learning",
+      category: "2M",
       question: "What is Deep Learning?",
       tags: ["AI/ML", "Fundamentals"],
       difficulty: "Easy",
@@ -52,6 +54,7 @@ export const qansSection: Section = {
     },
     {
       id: "what-is-a-model",
+      category: "2M",
       question: "What is a Model?",
       tags: ["AI/ML", "Fundamentals"],
       difficulty: "Easy",
@@ -79,6 +82,7 @@ export const qansSection: Section = {
     },
     {
       id: "training-data-vs-test-data",
+      category: "2M",
       question: "What is Training Data and What is Test Data?",
       tags: ["AI/ML", "Data"],
       difficulty: "Easy",
@@ -99,6 +103,7 @@ export const qansSection: Section = {
     },
     {
       id: "overfitting-vs-underfitting",
+      category: "2M",
       question: "What is Overfitting and What is Underfitting?",
       tags: ["AI/ML", "Generalization"],
       difficulty: "Medium",
@@ -148,6 +153,7 @@ export const qansSection: Section = {
     },
     {
       id: "what-is-an-llm",
+      category: "2M",
       question: "What is an LLM?",
       tags: ["AI/ML", "GenAI"],
       difficulty: "Easy",
@@ -172,6 +178,7 @@ export const qansSection: Section = {
     },
     {
       id: "ai-vs-ml-vs-dl",
+      category: "2M",
       question: "AI vs ML vs DL — What's the difference?",
       tags: ["AI/ML", "Fundamentals"],
       difficulty: "Easy",
@@ -225,6 +232,7 @@ export const qansSection: Section = {
     },
     {
       id: "supervised-unsupervised-reinforcement",
+      category: "2M",
       question: "Supervised vs Unsupervised vs Reinforcement Learning",
       tags: ["AI/ML", "Learning Types"],
       difficulty: "Easy",
@@ -269,6 +277,7 @@ export const qansSection: Section = {
     },
     {
       id: "train-validation-test-split",
+      category: "2M",
       question: "Why split data into Train / Validation / Test?",
       tags: ["AI/ML", "Data"],
       difficulty: "Easy",
@@ -310,6 +319,7 @@ export const qansSection: Section = {
     },
     {
       id: "bias-variance-tradeoff",
+      category: "2M",
       question: "What is the Bias-Variance Tradeoff?",
       tags: ["AI/ML", "Generalization"],
       difficulty: "Medium",
@@ -343,6 +353,7 @@ export const qansSection: Section = {
     },
     {
       id: "what-is-a-loss-function",
+      category: "2M",
       question: "What is a Loss Function?",
       tags: ["AI/ML", "Training"],
       difficulty: "Easy",
@@ -372,6 +383,7 @@ export const qansSection: Section = {
     },
     {
       id: "what-is-gradient-descent",
+      category: "2M",
       question: "What is Gradient Descent?",
       tags: ["AI/ML", "Optimization"],
       difficulty: "Medium",
@@ -405,6 +417,7 @@ export const qansSection: Section = {
     },
     {
       id: "what-is-regularization",
+      category: "2M",
       question: "What is Regularization (L1 / L2)?",
       tags: ["AI/ML", "Regularization"],
       difficulty: "Medium",
@@ -445,6 +458,7 @@ export const qansSection: Section = {
     },
     {
       id: "precision-recall-f1",
+      category: "2M",
       question: "Precision, Recall, and F1 — What's the difference?",
       tags: ["AI/ML", "Metrics"],
       difficulty: "Medium",
@@ -485,6 +499,7 @@ export const qansSection: Section = {
     },
     {
       id: "what-is-a-neural-network",
+      category: "2M",
       question: "What is a Neural Network?",
       tags: ["AI/ML", "Fundamentals"],
       difficulty: "Easy",
@@ -521,6 +536,7 @@ export const qansSection: Section = {
     },
     {
       id: "what-is-backpropagation",
+      category: "2M",
       question: "What is Backpropagation?",
       tags: ["AI/ML", "Training"],
       difficulty: "Medium",
@@ -558,6 +574,7 @@ export const qansSection: Section = {
     },
     {
       id: "what-are-embeddings",
+      category: "2M",
       question: "What are Embeddings?",
       tags: ["AI/ML", "LLM"],
       difficulty: "Medium",
@@ -593,6 +610,7 @@ export const qansSection: Section = {
     },
     {
       id: "what-is-attention-transformer",
+      category: "2M",
       question: "What is Attention / Transformer Architecture?",
       tags: ["AI/ML", "LLM"],
       difficulty: "Medium",
@@ -647,6 +665,7 @@ export const qansSection: Section = {
     },
     {
       id: "bagging-vs-boosting",
+      category: "2M",
       question: "What is the Difference Between Bagging and Boosting?",
       tags: ["AI/ML", "Fundamentals"],
       difficulty: "Medium",
@@ -660,14 +679,26 @@ export const qansSection: Section = {
           type: "table",
           headers: ["", "Bagging", "Boosting"],
           rows: [
-            ["Training", "Models trained **independently / in parallel**", "Models trained __sequentially__"],
+            [
+              "Training",
+              "Models trained **independently / in parallel**",
+              "Models trained __sequentially__",
+            ],
             [
               "Data",
               "Each model sees a different sample of the data",
               "Each new model focuses more on __previous mistakes__",
             ],
-            ["Predictions", "Final predictions are combined", "Each model corrects and improves on the last"],
-            ["Mainly helps", "Reduce **variance** / overfitting", "Reduce **bias**, improve predictive accuracy"],
+            [
+              "Predictions",
+              "Final predictions are combined",
+              "Each model corrects and improves on the last",
+            ],
+            [
+              "Mainly helps",
+              "Reduce **variance** / overfitting",
+              "Reduce **bias**, improve predictive accuracy",
+            ],
             ["Example", "Random Forest", "AdaBoost, Gradient Boosting, XGBoost"],
           ],
         },
@@ -686,12 +717,14 @@ export const qansSection: Section = {
         {
           type: "callout",
           variant: "info",
-          content: "Interview Tip: Remember — Bagging = ==Parallel==. Boosting = ==Sequential correction==.",
+          content:
+            "Interview Tip: Remember — Bagging = ==Parallel==. Boosting = ==Sequential correction==.",
         },
       ],
     },
     {
       id: "what-is-a-confusion-matrix",
+      category: "2M",
       question: "What is a Confusion Matrix?",
       tags: ["AI/ML", "Metrics"],
       difficulty: "Easy",
@@ -711,7 +744,8 @@ export const qansSection: Section = {
         },
         {
           type: "text",
-          content: "From this, we calculate metrics such as **Accuracy, Precision, Recall, and F1-Score**.",
+          content:
+            "From this, we calculate metrics such as **Accuracy, Precision, Recall, and F1-Score**.",
         },
         { type: "heading", content: "Analogy" },
         {
@@ -739,6 +773,7 @@ export const qansSection: Section = {
     },
     {
       id: "what-is-feature-engineering",
+      category: "2M",
       question: "What is Feature Engineering?",
       tags: ["AI/ML", "Data"],
       difficulty: "Easy",
@@ -781,6 +816,7 @@ export const qansSection: Section = {
     },
     {
       id: "batch-size-epoch-learning-rate",
+      category: "2M",
       question: "What are Batch Size, Epoch, and Learning Rate?",
       tags: ["AI/ML", "Training"],
       difficulty: "Medium",
@@ -802,7 +838,8 @@ export const qansSection: Section = {
         {
           type: "code",
           language: "text",
-          content: "1,000 training samples ÷ Batch Size 100 = 10 batches per epoch\n\n1 Epoch = 10 weight updates",
+          content:
+            "1,000 training samples ÷ Batch Size 100 = 10 batches per epoch\n\n1 Epoch = 10 weight updates",
         },
         { type: "heading", content: "Analogy" },
         { type: "text", content: "Imagine studying a 1,000-question book:" },
@@ -819,6 +856,91 @@ export const qansSection: Section = {
           variant: "warn",
           content:
             "Interview Tip: Learning rate __too high__ → may overshoot the optimum. Learning rate __too low__ → training becomes slow or can stall.",
+        },
+      ],
+    },
+    {
+      id: "5m-explain-bias-variance-tradeoff",
+      category: "5M",
+      question: "Explain the Bias-Variance Tradeoff with an example.",
+      tags: ["AI/ML", "5 Marks"],
+      difficulty: "Medium",
+      answer: [
+        {
+          type: "callout",
+          variant: "info",
+          content: "🚧 Placeholder — full 5-mark answer coming soon.",
+        },
+      ],
+    },
+    {
+      id: "5m-explain-regularization",
+      category: "5M",
+      question: "Explain L1 and L2 Regularization and when you would use each.",
+      tags: ["AI/ML", "5 Marks"],
+      difficulty: "Medium",
+      answer: [
+        {
+          type: "callout",
+          variant: "info",
+          content: "🚧 Placeholder — full 5-mark answer coming soon.",
+        },
+      ],
+    },
+    {
+      id: "5m-explain-precision-recall-f1",
+      category: "5M",
+      question: "Explain Precision, Recall, and F1-Score with a real-world example.",
+      tags: ["AI/ML", "5 Marks"],
+      difficulty: "Medium",
+      answer: [
+        {
+          type: "callout",
+          variant: "info",
+          content: "🚧 Placeholder — full 5-mark answer coming soon.",
+        },
+      ],
+    },
+    {
+      id: "16m-explain-ml-lifecycle",
+      category: "16M",
+      question: "Describe the end-to-end Machine Learning lifecycle used in a production system.",
+      tags: ["AI/ML", "16 Marks"],
+      difficulty: "Hard",
+      answer: [
+        {
+          type: "callout",
+          variant: "info",
+          content: "🚧 Placeholder — full 16-mark answer coming soon.",
+        },
+      ],
+    },
+    {
+      id: "16m-explain-transformer-architecture",
+      category: "16M",
+      question: "Explain the Transformer architecture in detail, including self-attention.",
+      tags: ["AI/ML", "16 Marks"],
+      difficulty: "Hard",
+      answer: [
+        {
+          type: "callout",
+          variant: "info",
+          content: "🚧 Placeholder — full 16-mark answer coming soon.",
+        },
+      ],
+    },
+    {
+      id: "16m-design-genai-service",
+      category: "16M",
+      question:
+        "Design a GenAI-powered enterprise service, covering architecture, guardrails, and evaluation.",
+      tags: ["AI/ML", "16 Marks"],
+      difficulty: "Hard",
+      answer: [
+        {
+          type: "callout",
+          variant: "info",
+          content: "🚧 Placeholder — full 16-mark answer coming soon.",
         },
       ],
     },

@@ -1,5 +1,6 @@
 import {
   Asterisk,
+  Camera,
   Hash,
   Minus,
   Percent,
@@ -9,6 +10,15 @@ import {
   Zap,
   type LucideIcon,
 } from "lucide-react";
+import closeTo102050100Photo from "@/assets/tricks/close-to-10-20-50-100.png";
+import multiplyBy11Photo from "@/assets/tricks/multiply-by-11.png";
+import trick3Photo from "@/assets/tricks/trick3.png";
+import trick4Photo from "@/assets/tricks/trick4.png";
+import trick5Photo from "@/assets/tricks/trick5.png";
+import trick6Photo from "@/assets/tricks/trick6.png";
+import trick7Photo from "@/assets/tricks/trick7.png";
+import trick8Photo from "@/assets/tricks/trick8.png";
+import trick9Photo from "@/assets/tricks/trick9.png";
 
 export type TrickDifficulty = "Easy" | "Medium" | "Fast Pattern";
 
@@ -31,13 +41,22 @@ export type Trick = {
   };
 };
 
+export type TrickPhoto = {
+  id: string;
+  src: string;
+  alt: string;
+  caption: string;
+};
+
 export type TrickLesson = {
   id: string;
   categoryId: string;
   title: string;
   description: string;
   icon: LucideIcon;
+  kind?: "tricks" | "photos";
   tricks: Trick[];
+  photos?: TrickPhoto[];
 };
 
 export type TrickCategory = {
@@ -359,7 +378,79 @@ export const TRICK_CATEGORIES: TrickCategory[] = [
   { id: "subtraction", title: "Subtraction", icon: Minus, status: "coming-soon", lessons: [] },
   { id: "fractions", title: "Fractions", icon: PieChart, status: "coming-soon", lessons: [] },
   { id: "percentages", title: "Percentages", icon: Percent, status: "coming-soon", lessons: [] },
-  { id: "other-tricks", title: "Other Tricks", icon: Sparkles, status: "coming-soon", lessons: [] },
+  {
+    id: "other-tricks",
+    title: "Other Tricks",
+    icon: Sparkles,
+    status: "ready",
+    lessons: [
+      {
+        id: "photos",
+        categoryId: "other-tricks",
+        title: "Photos",
+        description: "Hand-drawn trick walkthroughs, one photo at a time.",
+        icon: Camera,
+        kind: "photos",
+        tricks: [],
+        photos: [
+          {
+            id: "close-to-10-20-50-100-photo",
+            src: closeTo102050100Photo,
+            alt: "Hand-drawn working for 18 x 19 using the close-to-20 shortcut, ending in 342.",
+            caption: "18 x 19 — round to 20, then subtract the extra group.",
+          },
+          {
+            id: "multiply-by-11-photo",
+            src: multiplyBy11Photo,
+            alt: "Multiply any 2-digit number by 11: add the two digits and place the sum in the middle, worked out for 43 x 11 = 473.",
+            caption: "43 x 11 — add the digits, drop the sum in the middle.",
+          },
+          {
+            id: "trick3-photo",
+            src: trick3Photo,
+            alt: "Square numbers ending in 5: multiply the first digit by the next number, then attach 25, worked out for 35 squared = 1225 and 65 squared = 4225.",
+            caption: "35² = 1225 — multiply the first digit by the next number, then attach 25.",
+          },
+          {
+            id: "trick4-photo",
+            src: trick4Photo,
+            alt: "Same tens digit and last digits make 10: multiply the tens digit by one more than itself, then place the product of the last digits after it, worked out for 43 x 47 = 2021 and 62 x 68 = 4216.",
+            caption: "43 x 47 = 2021 — same tens digit, last digits add to 10.",
+          },
+          {
+            id: "trick5-photo",
+            src: trick5Photo,
+            alt: "Numbers ending in 5, squared: multiply the tens digit by one more than itself, then always put 25 at the end, worked out for 75 squared = 5625 and 85 squared = 7225.",
+            caption: "75² = 5625 — multiply by the next number up, then put 25 at the end.",
+          },
+          {
+            id: "trick6-photo",
+            src: trick6Photo,
+            alt: "Same ending digit and first digits make 10: multiply the first digits, add the common ending, then square the ending, worked out for 23 x 83 = 1909.",
+            caption: "23 x 83 = 1909 — same ending digit, first digits add to 10.",
+          },
+          {
+            id: "trick7-photo",
+            src: trick7Photo,
+            alt: "Multiply by 15: take half of the other number, add it to that number, then add a zero, worked out for 24 x 15 = 360.",
+            caption: "24 x 15 = 360 — add half of 24, then add a zero.",
+          },
+          {
+            id: "trick8-photo",
+            src: trick8Photo,
+            alt: "Multiply by 12: double the other number, then add it to ten times that number, worked out for 35 x 12 = 420.",
+            caption: "35 x 12 = 420 — double 35, then add it to 350.",
+          },
+          {
+            id: "trick9-photo",
+            src: trick9Photo,
+            alt: "Multiply a 2-digit number by 101: just repeat the number, worked out for 47 x 101 = 4747, 63 x 101 = 6363, and 82 x 101 = 8282.",
+            caption: "47 x 101 = 4747 — just repeat the number.",
+          },
+        ],
+      },
+    ],
+  },
 ];
 
 export function getAllLessons(): TrickLesson[] {
