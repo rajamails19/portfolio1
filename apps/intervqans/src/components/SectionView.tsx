@@ -18,6 +18,7 @@ import {
   Zap,
   FileText,
   ScrollText,
+  Sparkles,
 } from "lucide-react";
 import type { QAItem, Section } from "@/content/types";
 import { useTheme } from "@/themes/ThemeContext";
@@ -52,6 +53,17 @@ const QANS_TOPICS_BY_THEME: Record<string, { name: string; Icon: typeof Code2 }[
     { name: "PowerBI", Icon: BarChart3 },
     { name: "Tableau", Icon: LayoutDashboard },
     { name: "MS Fabric", Icon: Cloud },
+  ],
+};
+
+const CERT_TOPICS_BY_THEME: Record<string, { name: string; Icon: typeof Code2 }[]> = {
+  noir: [
+    { name: "AIF-C01", Icon: Shield },
+    { name: "MLA-C01", Icon: Bot },
+    { name: "AI-103", Icon: Cloud },
+    { name: "PMLE", Icon: BarChart3 },
+    { name: "CCA-F", Icon: Sparkles },
+    { name: "MLA-C02", Icon: Box },
   ],
 };
 
@@ -91,7 +103,9 @@ export function SectionView({ section }: { section: Section }) {
       ? QANS_TOPICS_BY_THEME[themeKey]
       : section.slug === "programs"
         ? PROGRAM_TOPICS_BY_THEME[themeKey]
-        : undefined;
+        : section.slug === "certifications"
+          ? CERT_TOPICS_BY_THEME[themeKey]
+          : undefined;
   const showTopics = !!topics;
   const marks = section.slug === "qans" ? QANS_MARKS_BY_THEME[themeKey] : undefined;
   const showMarks = !!marks;
@@ -281,7 +295,11 @@ export function SectionView({ section }: { section: Section }) {
                 className="glass inline-flex max-w-full items-center gap-1 overflow-x-auto rounded-full border border-gold/20 p-1.5 shadow-[var(--shadow-soft)]"
                 role="tablist"
                 aria-label={
-                  section.slug === "programs" ? "Program languages" : "Q and Answers topics"
+                  section.slug === "programs"
+                    ? "Program languages"
+                    : section.slug === "certifications"
+                      ? "Certification exams"
+                      : "Q and Answers topics"
                 }
               >
                 {topics?.map(({ name, Icon }) => {

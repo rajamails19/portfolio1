@@ -15,6 +15,7 @@ import {
   ListTree,
   ChevronRight,
   NotebookPen,
+  Award,
 } from "lucide-react";
 import { termTiles } from "@/content/terms";
 import { useTheoryFavorites } from "@/hooks/use-theory-favorites";
@@ -22,6 +23,7 @@ import { useRandomInputs } from "@/hooks/use-random-inputs";
 
 const icons: Record<string, typeof Sparkles> = {
   theory: BookOpenCheck,
+  certifications: Award,
   story: BookOpen,
   terms: BookText,
   qans: Sparkles,

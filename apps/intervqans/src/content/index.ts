@@ -1,5 +1,6 @@
 import { theorySection } from "./theory";
 import { storySection } from "./story-noir";
+import { certificationsSection } from "./certifications-noir";
 import { qansSection } from "./qans";
 import { qansDefaultSection } from "./qans-default";
 import { qansChaatSection } from "./qans-chaat";
@@ -22,6 +23,7 @@ import type { Section } from "./types";
 // as a safe fallback.
 export const noirSections: Section[] = [
   theorySection,
+  certificationsSection,
   storySection,
   qansSection,
   programsNoirSection,

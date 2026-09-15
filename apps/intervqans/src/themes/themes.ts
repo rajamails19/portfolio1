@@ -110,6 +110,17 @@ export const themes: Record<ThemeKey, ThemeDef> = {
           quote: "If you can't explain a term simply, you don't understand it well enough.",
         },
       },
+      certifications: {
+        title: "Certifications",
+        tagline: "Exam-mapped prep — AWS, Azure, GCP, and Anthropic AI credentials.",
+        emoji: "🎓",
+        mascot: {
+          name: "The Examiner",
+          title: "Keeps score against the real exam blueprint",
+          image: mentor,
+          quote: "A certificate is just proof you can survive the questions no one else prepared for.",
+        },
+      },
       story: {
         title: "Story-Based",
         tagline: "Whatever you paste, retold as a guided walk-through.",

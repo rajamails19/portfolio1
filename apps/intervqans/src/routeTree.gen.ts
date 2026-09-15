@@ -19,6 +19,7 @@ import { Route as ProgramsRouteImport } from './routes/programs'
 import { Route as OthersRouteImport } from './routes/others'
 import { Route as InputsRouteImport } from './routes/inputs'
 import { Route as FavoritesRouteImport } from './routes/favorites'
+import { Route as CertificationsRouteImport } from './routes/certifications'
 import { Route as IndexRouteImport } from './routes/index'
 
 const TheoryRoute = TheoryRouteImport.update({
@@ -71,6 +72,11 @@ const FavoritesRoute = FavoritesRouteImport.update({
   path: '/favorites',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CertificationsRoute = CertificationsRouteImport.update({
+  id: '/certifications',
+  path: '/certifications',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -79,6 +85,7 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/certifications': typeof CertificationsRoute
   '/favorites': typeof FavoritesRoute
   '/inputs': typeof InputsRoute
   '/others': typeof OthersRoute
@@ -92,6 +99,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/certifications': typeof CertificationsRoute
   '/favorites': typeof FavoritesRoute
   '/inputs': typeof InputsRoute
   '/others': typeof OthersRoute
@@ -106,6 +114,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/certifications': typeof CertificationsRoute
   '/favorites': typeof FavoritesRoute
   '/inputs': typeof InputsRoute
   '/others': typeof OthersRoute
@@ -121,6 +130,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/certifications'
     | '/favorites'
     | '/inputs'
     | '/others'
@@ -134,6 +144,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/certifications'
     | '/favorites'
     | '/inputs'
     | '/others'
@@ -147,6 +158,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/certifications'
     | '/favorites'
     | '/inputs'
     | '/others'
@@ -161,6 +173,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  CertificationsRoute: typeof CertificationsRoute
   FavoritesRoute: typeof FavoritesRoute
   InputsRoute: typeof InputsRoute
   OthersRoute: typeof OthersRoute
@@ -245,6 +258,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof FavoritesRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/certifications': {
+      id: '/certifications'
+      path: '/certifications'
+      fullPath: '/certifications'
+      preLoaderRoute: typeof CertificationsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -257,6 +277,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  CertificationsRoute: CertificationsRoute,
   FavoritesRoute: FavoritesRoute,
   InputsRoute: InputsRoute,
   OthersRoute: OthersRoute,

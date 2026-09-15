@@ -10,6 +10,7 @@ const RESTRICTED_PATHS: Partial<Record<string, ThemeKey[]>> = {
   "/terms": ["noir"],
   "/story": ["noir"],
   "/inputs": ["noir"],
+  "/certifications": ["noir"],
 };
 
 export function ThemeSwitcher() {
