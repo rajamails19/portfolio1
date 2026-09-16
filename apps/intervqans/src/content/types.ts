@@ -21,7 +21,15 @@ export type Block =
       title?: string;
       direction?: "horizontal" | "vertical";
       nodes: { label: string; sub?: string; tone?: "gold" | "ember" | "mint" | "sky" }[];
-    };
+    }
+  | { type: "accordion"; items: AccordionItem[] };
+
+/** A collapsible row whose content can itself contain nested accordions. */
+export interface AccordionItem {
+  title: string;
+  badge?: string;
+  content: Block[];
+}
 
 export interface QAItem {
   id: string;
