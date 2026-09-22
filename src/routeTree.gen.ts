@@ -10,12 +10,18 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as UsingRouteImport } from './routes/using'
+import { Route as JustForMeRouteImport } from './routes/just-for-me'
 import { Route as ControlCenterRouteImport } from './routes/control-center'
 import { Route as IndexRouteImport } from './routes/index'
 
 const UsingRoute = UsingRouteImport.update({
   id: '/using',
   path: '/using',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const JustForMeRoute = JustForMeRouteImport.update({
+  id: '/just-for-me',
+  path: '/just-for-me',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ControlCenterRoute = ControlCenterRouteImport.update({
@@ -32,30 +38,34 @@ const IndexRoute = IndexRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/control-center': typeof ControlCenterRoute
+  '/just-for-me': typeof JustForMeRoute
   '/using': typeof UsingRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/control-center': typeof ControlCenterRoute
+  '/just-for-me': typeof JustForMeRoute
   '/using': typeof UsingRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/control-center': typeof ControlCenterRoute
+  '/just-for-me': typeof JustForMeRoute
   '/using': typeof UsingRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/control-center' | '/using'
+  fullPaths: '/' | '/control-center' | '/just-for-me' | '/using'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/control-center' | '/using'
-  id: '__root__' | '/' | '/control-center' | '/using'
+  to: '/' | '/control-center' | '/just-for-me' | '/using'
+  id: '__root__' | '/' | '/control-center' | '/just-for-me' | '/using'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ControlCenterRoute: typeof ControlCenterRoute
+  JustForMeRoute: typeof JustForMeRoute
   UsingRoute: typeof UsingRoute
 }
 
@@ -66,6 +76,13 @@ declare module '@tanstack/react-router' {
       path: '/using'
       fullPath: '/using'
       preLoaderRoute: typeof UsingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/just-for-me': {
+      id: '/just-for-me'
+      path: '/just-for-me'
+      fullPath: '/just-for-me'
+      preLoaderRoute: typeof JustForMeRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/control-center': {
@@ -88,6 +105,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ControlCenterRoute: ControlCenterRoute,
+  JustForMeRoute: JustForMeRoute,
   UsingRoute: UsingRoute,
 }
 export const routeTree = rootRouteImport

@@ -22,7 +22,8 @@ export type Block =
       direction?: "horizontal" | "vertical";
       nodes: { label: string; sub?: string; tone?: "gold" | "ember" | "mint" | "sky" }[];
     }
-  | { type: "accordion"; items: AccordionItem[] };
+  | { type: "accordion"; items: AccordionItem[] }
+  | { type: "slideshow"; slides: { src: string; alt: string; caption?: string }[] };
 
 /** A collapsible row whose content can itself contain nested accordions. */
 export interface AccordionItem {

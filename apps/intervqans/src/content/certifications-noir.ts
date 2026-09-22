@@ -1,4 +1,8 @@
 import type { Section } from "./types";
+import tipRoadmapTable from "@/assets/certs/tip-roadmap-table.png";
+import tipThink from "@/assets/certs/tip-think.png";
+import tipAzureAi300 from "@/assets/certs/tip-azure-ai-300.png";
+import tipRoadmapOrder from "@/assets/certs/tip-roadmap-order.png";
 
 export const certificationsSection: Section = {
   slug: "certifications",
@@ -7,6 +11,95 @@ export const certificationsSection: Section = {
   emoji: "🎓",
   gradient: "from-[oklch(0.92_0.08_265)] via-[oklch(0.92_0.09_320)] to-[oklch(0.92_0.08_350)]",
   items: [
+    {
+      id: "cert-tips-slideshow",
+      question: "Certification roadmap & tips",
+      category: "Tips",
+      tags: ["Tips", "Roadmap"],
+      answer: [
+        {
+          type: "slideshow",
+          slides: [
+            {
+              src: tipRoadmapTable,
+              alt: "Table of six certifications with order, difficulty stars, and why",
+              caption: "Order, difficulty, and why — AIF-C01 up to GCP PMLE.",
+            },
+            {
+              src: tipThink,
+              alt: "What each certification says about you: AIF-C01, MLA, AIP-C01",
+              caption: "How to think about it: understand AI, build/deploy ML, build production GenAI.",
+            },
+            {
+              src: tipAzureAi300,
+              alt: "Azure AI-300 — Operationalizing ML and GenAI",
+              caption: "Azure AI-300 — MLOps + GenAIOps/AIOps, Microsoft's newer certification.",
+            },
+            {
+              src: tipRoadmapOrder,
+              alt: "Refined roadmap: AIF-C01, CCA-F, AI-103, MLA-C02, PMLE, AIP-C01",
+              caption: "Refined roadmap: AIF-C01 → CCA-F → AI-103 → MLA-C02 → PMLE → AIP-C01.",
+            },
+          ],
+        },
+      ],
+    },
+    {
+      id: "cert-aip-c01-link",
+      question: "AWS Certified Generative AI Developer – Professional (AIP-C01) — official exam page",
+      category: "AIP-C01",
+      tags: ["AWS", "Official Page"],
+      answer: [
+        {
+          type: "text",
+          content:
+            "Professional-level. Validates the ability to integrate foundation models into applications and business workflows. 65 scored + 10 unscored questions.",
+        },
+        {
+          type: "link",
+          href: "https://docs.aws.amazon.com/aws-certification/latest/ai-professional-01/ai-professional-01.html",
+          label: "AWS Certified Generative AI Developer – Professional — official exam guide",
+        },
+      ],
+    },
+    {
+      id: "cert-aip-c01-syllabus",
+      question: "AWS Certified Generative AI Developer – Professional (AIP-C01) — syllabus & domains",
+      category: "AIP-C01",
+      tags: ["AWS", "Syllabus"],
+      answer: [
+        {
+          type: "accordion",
+          items: [
+            {
+              title: "1. Foundation Model Integration, Data Management, and Compliance",
+              badge: "31%",
+              content: [{ type: "text", content: "Task-level detail coming soon." }],
+            },
+            {
+              title: "2. Implementation and Integration",
+              badge: "26%",
+              content: [{ type: "text", content: "Task-level detail coming soon." }],
+            },
+            {
+              title: "3. AI Safety, Security, and Governance",
+              badge: "20%",
+              content: [{ type: "text", content: "Task-level detail coming soon." }],
+            },
+            {
+              title: "4. Operational Efficiency and Optimization for GenAI Applications",
+              badge: "12%",
+              content: [{ type: "text", content: "Task-level detail coming soon." }],
+            },
+            {
+              title: "5. Testing, Validation, and Troubleshooting",
+              badge: "11%",
+              content: [{ type: "text", content: "Task-level detail coming soon." }],
+            },
+          ],
+        },
+      ],
+    },
     {
       id: "cert-aif-c01-link",
       question: "AWS Certified AI Practitioner (AIF-C01) — official exam page",

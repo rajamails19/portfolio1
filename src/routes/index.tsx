@@ -1,22 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
-import {
-  ArrowRight,
-  BarChart3,
-  Bell,
-  CalendarDays,
-  CheckCircle2,
-  CloudUpload,
-  Flame,
-  Infinity as InfinityIcon,
-  Menu,
-  Moon,
-  Quote,
-  Sparkles,
-  Star,
-  TrendingUp,
-  X,
-} from "lucide-react";
+import { ArrowRight, Infinity as InfinityIcon, Menu, X } from "lucide-react";
 import aiAscendAcademyThumb from "@/assets/ai-ascend-academy-thumb.png";
 import aiLearnRajaThumb from "@/assets/ailearnraja-thumb.png";
 import abcNotesThumb from "@/assets/abc-notes-thumb.png";
@@ -245,10 +229,13 @@ const usingProjectPreviews = [
   },
 ];
 
-function uniqueProjectsByHref<T extends { href: string }>(projects: readonly T[]) {
+function uniqueProjectsByHref<T extends { href: string }>(
+  projects: readonly T[],
+) {
   return projects.filter(
     (project, index) =>
-      projects.findIndex((candidate) => candidate.href === project.href) === index,
+      projects.findIndex((candidate) => candidate.href === project.href) ===
+      index,
   );
 }
 
@@ -429,12 +416,8 @@ function LandingPage() {
     <div className="min-h-[100dvh] bg-background text-foreground">
       <Hero />
       <ProjectShowcase />
-      <Features />
-      <HowItWorks />
       <ExternalProjects />
-      <Reviews />
       <KidsProjects />
-      <FinalCTA />
       <Footer />
     </div>
   );
@@ -479,15 +462,15 @@ function Hero() {
         </Link>
 
         <div className="hidden items-center gap-8 text-sm text-white sm:flex">
-          <a href="#features" className="transition-colors hover:text-white/70">
-            Features
-          </a>
+          <Link
+            to="/just-for-me"
+            className="transition-colors hover:text-white/70"
+          >
+            Just for Me
+          </Link>
           <Link to="/using" className="transition-colors hover:text-white/70">
             Using
           </Link>
-          <a href="#reviews" className="transition-colors hover:text-white/70">
-            Reviews
-          </a>
         </div>
 
         {/* These links only vanished below sm before — nothing replaced them */}
@@ -508,13 +491,13 @@ function Hero() {
 
       {mobileNavOpen && (
         <div className="relative z-20 mx-5 mb-2 flex flex-col gap-1 rounded-2xl border border-white/15 bg-black/40 p-2 text-sm text-white backdrop-blur-md sm:hidden">
-          <a
-            href="#features"
+          <Link
+            to="/just-for-me"
             onClick={() => setMobileNavOpen(false)}
             className="rounded-lg px-3 py-2.5 transition-colors hover:bg-white/10"
           >
-            Features
-          </a>
+            Just for Me
+          </Link>
           <Link
             to="/using"
             onClick={() => setMobileNavOpen(false)}
@@ -522,13 +505,6 @@ function Hero() {
           >
             Using
           </Link>
-          <a
-            href="#reviews"
-            onClick={() => setMobileNavOpen(false)}
-            className="rounded-lg px-3 py-2.5 transition-colors hover:bg-white/10"
-          >
-            Reviews
-          </a>
         </div>
       )}
 
@@ -615,6 +591,47 @@ export function UsingProjects() {
             <div key={project.name} className={getUsingGridClass(index)}>
               <UsingProjectPreview project={project} />
             </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export function JustForMeProjects() {
+  return (
+    <section className="relative overflow-hidden bg-white py-24">
+      <div
+        className="pointer-events-none absolute inset-0"
+        style={{
+          backgroundImage: `url(${shadowBg})`,
+          backgroundPosition: "center",
+          backgroundSize: "cover",
+          opacity: 0.72,
+        }}
+      />
+      <div className="relative z-10 mx-auto max-w-6xl px-5">
+        <ScrollReveal>
+          <div className="mb-10 max-w-2xl">
+            <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-primary">
+              Just for Me
+            </p>
+            <h2
+              className="text-3xl font-bold tracking-normal text-foreground sm:text-4xl"
+              style={{ lineHeight: "1.15" }}
+            >
+              My quickest shortcuts
+            </h2>
+            <p className="mt-4 text-base leading-relaxed text-muted-foreground">
+              The three projects I want closest at hand, kept together in one
+              focused shelf.
+            </p>
+          </div>
+        </ScrollReveal>
+
+        <div className="grid gap-5 md:grid-cols-3">
+          {heroProjects.map((project) => (
+            <UsingProjectPreview key={project.name} project={project} />
           ))}
         </div>
       </div>
@@ -892,406 +909,6 @@ function ExternalProjectCard({
   );
 }
 
-const features = [
-  {
-    icon: Flame,
-    title: "Project momentum",
-    desc: "Keep the active ideas visible so nothing gets lost between folders, tabs, and chats.",
-  },
-  {
-    icon: CalendarDays,
-    title: "Clean separation",
-    desc: "Each product keeps its own folder, assets, scripts, and future path to extraction.",
-  },
-  {
-    icon: BarChart3,
-    title: "One control surface",
-    desc: "Use one home page to see what is alive locally and switch focus quickly.",
-  },
-  {
-    icon: Bell,
-    title: "Fast context switching",
-    desc: "Move from a restaurant site to a learning app without opening new VS Code windows.",
-  },
-  {
-    icon: Moon,
-    title: "Calm workspace",
-    desc: "A focused interface that stays quiet while the individual projects do the real work.",
-  },
-  {
-    icon: CloudUpload,
-    title: "Ready to separate",
-    desc: "When a project matures, it can be split into its own repo and published on its own.",
-  },
-];
-
-// overflow-hidden on the section is load-bearing: the 600px blur orb below
-// is centered with -translate-x-1/2, so on a narrow viewport it pokes past
-// both edges and makes the whole page scroll sideways without it.
-function Features() {
-  return (
-    <section id="features" className="relative overflow-hidden bg-white py-28">
-      <div
-        className="pointer-events-none absolute inset-0"
-        style={{
-          backgroundImage: `url(${shadowBg})`,
-          // background-attachment:fixed is janky/ignored on iOS Safari
-          backgroundPosition: "center",
-          backgroundSize: "cover",
-          opacity: 0.75,
-        }}
-      />
-      <div className="pointer-events-none absolute left-1/2 top-0 h-[400px] w-[600px] -translate-x-1/2 rounded-full bg-primary/5 blur-3xl" />
-
-      <div className="relative mx-auto max-w-6xl px-5">
-        <div className="flex flex-col items-start gap-12 lg:flex-row lg:gap-16">
-          <div className="w-full flex-shrink-0 lg:w-[420px]">
-            <div className="relative">
-              <div className="overflow-hidden rounded-xl border border-black/[0.06] bg-white shadow-xl">
-                <div className="flex items-center gap-3 border-b border-black/5 bg-gray-50/80 px-5 py-3">
-                  <div className="flex gap-1.5">
-                    <div className="h-2.5 w-2.5 rounded-full bg-black/10" />
-                    <div className="h-2.5 w-2.5 rounded-full bg-black/10" />
-                    <div className="h-2.5 w-2.5 rounded-full bg-black/10" />
-                  </div>
-                  <div className="flex-1" />
-                </div>
-
-                <div className="space-y-4 p-6">
-                  <div>
-                    <p className="text-xs text-black/40">Good morning</p>
-                    <p className="mt-0.5 text-lg font-semibold text-black/90">
-                      Project dashboard
-                    </p>
-                    <p className="mt-1 text-xs text-black/40">
-                      Friday, July 3 - 2 active apps
-                    </p>
-                  </div>
-
-                  <div className="flex justify-center py-3">
-                    <div className="relative flex h-20 w-20 items-center justify-center rounded-full border-[4px] border-black/[0.06]">
-                      <svg
-                        className="absolute inset-0 h-full w-full -rotate-90"
-                        viewBox="0 0 80 80"
-                      >
-                        <circle
-                          cx="40"
-                          cy="40"
-                          r="35"
-                          fill="none"
-                          stroke="#FDAA3E"
-                          strokeDasharray="220"
-                          strokeDashoffset="92"
-                          strokeLinecap="round"
-                          strokeWidth="4"
-                        />
-                      </svg>
-                      <span className="text-lg font-bold text-black/80">
-                        58%
-                      </span>
-                    </div>
-                  </div>
-
-                  {[
-                    { name: "Portfolio Raja", color: "#FDAA3E", done: true },
-                    {
-                      name: "JagsRajKitchen",
-                      color: "hsl(84, 30%, 35%)",
-                      done: true,
-                    },
-                    {
-                      name: "Next idea space",
-                      color: "hsl(217, 91%, 60%)",
-                      done: false,
-                    },
-                    {
-                      name: "Future mobile build",
-                      color: "hsl(270, 95%, 75%)",
-                      done: false,
-                    },
-                  ].map((item) => (
-                    <div
-                      key={item.name}
-                      className="flex items-center gap-3 rounded-xl border border-black/[0.06] bg-black/[0.02] px-4 py-3"
-                    >
-                      <div
-                        className="h-2 w-2 flex-shrink-0 rounded-full"
-                        style={{ backgroundColor: item.color }}
-                      />
-                      <span
-                        className={`flex-1 text-sm ${item.done ? "text-black/70" : "text-black/45"}`}
-                      >
-                        {item.name}
-                      </span>
-                      <div
-                        className={`flex h-5 w-5 items-center justify-center rounded-full border-2 ${
-                          item.done
-                            ? "border-primary bg-primary"
-                            : "border-black/15"
-                        }`}
-                      >
-                        {item.done && (
-                          <CheckCircle2 className="h-3.5 w-3.5 text-white" />
-                        )}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="flex-1">
-            <ScrollReveal>
-              <div className="mb-10">
-                <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-primary">
-                  Features
-                </p>
-                <h2
-                  className="text-3xl font-bold tracking-normal text-foreground sm:text-4xl"
-                  style={{ lineHeight: "1.15" }}
-                >
-                  Everything organized,
-                  <br />
-                  nothing tangled
-                </h2>
-              </div>
-            </ScrollReveal>
-
-            <div className="grid gap-5 sm:grid-cols-2">
-              {features.map((feature, index) => (
-                <ScrollReveal key={feature.title} delay={index * 70}>
-                  <div className="group rounded-2xl border border-black/[0.04] bg-black/[0.03] p-5 transition-all duration-300 hover:border-black/[0.08] hover:bg-black/[0.05]">
-                    <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-primary/15 to-primary/5 transition-transform duration-300 group-hover:scale-105">
-                      <feature.icon className="h-5 w-5 text-primary" />
-                    </div>
-                    <h3 className="mb-1 font-semibold text-foreground">
-                      {feature.title}
-                    </h3>
-                    <p className="text-sm leading-relaxed text-muted-foreground">
-                      {feature.desc}
-                    </p>
-                  </div>
-                </ScrollReveal>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-const steps = [
-  {
-    num: "1",
-    icon: CheckCircle2,
-    title: "Add a project",
-    desc: "Place each new app under its own folder so the repo stays easy to reason about.",
-  },
-  {
-    num: "2",
-    icon: Sparkles,
-    title: "Work from one repo",
-    desc: "Keep VS Code, Codex, and the local browser focused on this one home base.",
-  },
-  {
-    num: "3",
-    icon: TrendingUp,
-    title: "Split when ready",
-    desc: "When a product is mature, detach it cleanly into a separate repo and publish.",
-  },
-];
-
-function HowItWorks() {
-  return (
-    <section
-      id="how-it-works"
-      className="border-y border-border/30 bg-white py-28"
-    >
-      <div className="mx-auto max-w-4xl px-5">
-        <ScrollReveal>
-          <div className="mb-16 text-center">
-            <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-primary">
-              How it works
-            </p>
-            <h2
-              className="text-3xl font-bold tracking-normal text-foreground sm:text-4xl"
-              style={{ lineHeight: "1.15" }}
-            >
-              One home base, many products
-            </h2>
-          </div>
-        </ScrollReveal>
-
-        <div className="relative grid gap-8 md:grid-cols-3">
-          <div className="absolute left-[calc(16.67%+28px)] right-[calc(16.67%+28px)] top-7 hidden h-px border-t-2 border-dashed border-primary/20 md:block" />
-
-          {steps.map((step, index) => (
-            <ScrollReveal key={step.num} delay={index * 100}>
-              <div className="relative text-center">
-                <div className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-2xl bg-primary text-lg font-bold text-primary-foreground shadow-lg shadow-primary/15">
-                  {step.num}
-                </div>
-                <h3 className="mb-2 text-lg font-semibold text-foreground">
-                  {step.title}
-                </h3>
-                <p className="mx-auto max-w-xs text-sm leading-relaxed text-muted-foreground">
-                  {step.desc}
-                </p>
-              </div>
-            </ScrollReveal>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-const reviews = [
-  {
-    name: "Raja",
-    role: "Builder",
-    initials: "RJ",
-    tone: "bg-[#FDAA3E]",
-    quote:
-      "I can switch projects without reopening folders, terminals, and new chats.",
-    rating: 5,
-  },
-  {
-    name: "Kitchen Launch",
-    role: "Restaurant site",
-    initials: "JK",
-    tone: "bg-[#5c6b3a]",
-    quote:
-      "The app can live inside the workspace now and still become its own product later.",
-    rating: 5,
-  },
-  {
-    name: "Future Apps",
-    role: "Weekly ideas",
-    initials: "FA",
-    tone: "bg-[#3f6ea5]",
-    quote:
-      "New projects can be added without turning one src folder into a mess.",
-    rating: 5,
-  },
-  {
-    name: "Codex",
-    role: "Workspace partner",
-    initials: "CX",
-    tone: "bg-[#8a6bb3]",
-    quote:
-      "One repo gives the conversation enough context to help across every active build.",
-    rating: 5,
-  },
-];
-
-function Reviews() {
-  return (
-    <section id="reviews" className="py-28">
-      <div className="mx-auto max-w-5xl px-5">
-        <ScrollReveal>
-          <div className="mb-16 text-center">
-            <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-primary">
-              Reviews
-            </p>
-            <h2
-              className="text-3xl font-bold tracking-normal text-foreground sm:text-4xl"
-              style={{ lineHeight: "1.15" }}
-            >
-              Built for weekly momentum
-            </h2>
-          </div>
-        </ScrollReveal>
-
-        <div className="grid gap-5 sm:grid-cols-2">
-          {reviews.map((review, index) => (
-            <ScrollReveal key={review.name} delay={index * 80}>
-              <div className="relative overflow-hidden rounded-2xl border border-border/50 bg-card p-6">
-                <Quote className="absolute right-4 top-4 h-10 w-10 rotate-180 text-primary/[0.06]" />
-
-                <div className="mb-4 flex gap-0.5">
-                  {Array.from({ length: review.rating }).map((_, starIndex) => (
-                    <Star
-                      key={starIndex}
-                      className="h-4 w-4 fill-primary text-primary"
-                    />
-                  ))}
-                </div>
-                <p className="relative mb-5 text-sm leading-relaxed text-foreground">
-                  "{review.quote}"
-                </p>
-                <div className="flex items-center gap-3">
-                  <div
-                    className={`flex h-[4.5rem] w-[4.5rem] items-center justify-center rounded-full text-base font-bold text-white ${review.tone}`}
-                    aria-hidden="true"
-                  >
-                    {review.initials}
-                  </div>
-                  <div>
-                    <p className="text-sm font-medium text-foreground">
-                      {review.name}
-                    </p>
-                    <p className="text-xs text-muted-foreground">
-                      {review.role}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </ScrollReveal>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function FinalCTA() {
-  return (
-    <section
-      className="relative overflow-hidden py-28"
-      style={{ background: "#050d0a" }}
-    >
-      <img
-        src={heroBg}
-        alt=""
-        width={1920}
-        height={1080}
-        loading="lazy"
-        className="pointer-events-none absolute inset-0 h-full w-full select-none object-cover opacity-25"
-        aria-hidden="true"
-      />
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#050d0a] via-transparent to-[#050d0a]" />
-
-      <div className="relative z-10 mx-auto max-w-2xl px-5 text-center">
-        <ScrollReveal>
-          <h2
-            className="text-3xl font-bold tracking-normal text-white sm:text-4xl"
-            style={{ lineHeight: "1.15" }}
-          >
-            Ready for the next project?
-          </h2>
-          <p
-            className="mx-auto mt-4 max-w-md text-white"
-            style={{ textWrap: "pretty" }}
-          >
-            Add it cleanly, keep it visible, and only separate it when it is
-            ready for the real world.
-          </p>
-          <button
-            type="button"
-            className="mt-8 inline-flex cursor-default items-center gap-2 rounded-xl bg-[#FDAA3E] px-8 py-4 text-sm font-semibold text-[#1a1a1a] shadow-lg shadow-[#FDAA3E]/25"
-          >
-            Get started free
-            <ArrowRight className="h-4 w-4" />
-          </button>
-        </ScrollReveal>
-      </div>
-    </section>
-  );
-}
-
 export function Footer() {
   return (
     <footer className="border-t border-border/40 py-12">
@@ -1308,21 +925,18 @@ export function Footer() {
           </div>
 
           <div className="flex items-center gap-6 text-sm text-muted-foreground">
-            <a
-              href="#features"
+            <Link
+              to="/just-for-me"
               className="transition-colors hover:text-foreground"
             >
-              Features
-            </a>
-            <Link to="/using" className="transition-colors hover:text-foreground">
+              Just for Me
+            </Link>
+            <Link
+              to="/using"
+              className="transition-colors hover:text-foreground"
+            >
               Using
             </Link>
-            <a
-              href="#reviews"
-              className="transition-colors hover:text-foreground"
-            >
-              Reviews
-            </a>
           </div>
 
           <p className="text-xs text-muted-foreground">

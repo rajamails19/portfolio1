@@ -3,6 +3,7 @@ import { CodeBlock } from "./CodeBlock";
 import { FlowDiagram } from "./FlowDiagram";
 import { Expandable } from "./Expandable";
 import { AccordionBlock } from "./AccordionBlock";
+import { SlideshowBlock } from "./SlideshowBlock";
 import { renderInline } from "@/lib/rich-text";
 import { Info, Lightbulb, AlertTriangle, ExternalLink, Link2 } from "lucide-react";
 
@@ -167,6 +168,8 @@ export function AnswerBlocks({ blocks }: { blocks: Block[] }) {
             );
           case "accordion":
             return <AccordionBlock key={i} items={b.items} />;
+          case "slideshow":
+            return <SlideshowBlock key={i} slides={b.slides} />;
           case "link":
             return (
               <a

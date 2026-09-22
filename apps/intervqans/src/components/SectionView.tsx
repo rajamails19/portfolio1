@@ -19,6 +19,7 @@ import {
   FileText,
   ScrollText,
   Sparkles,
+  Lightbulb,
 } from "lucide-react";
 import type { QAItem, Section } from "@/content/types";
 import { useTheme } from "@/themes/ThemeContext";
@@ -58,12 +59,13 @@ const QANS_TOPICS_BY_THEME: Record<string, { name: string; Icon: typeof Code2 }[
 
 const CERT_TOPICS_BY_THEME: Record<string, { name: string; Icon: typeof Code2 }[]> = {
   noir: [
+    { name: "Tips", Icon: Lightbulb },
     { name: "AIF-C01", Icon: Shield },
-    { name: "MLA-C01", Icon: Bot },
-    { name: "AI-103", Icon: Cloud },
-    { name: "PMLE", Icon: BarChart3 },
     { name: "CCA-F", Icon: Sparkles },
+    { name: "AI-103", Icon: Cloud },
     { name: "MLA-C02", Icon: Box },
+    { name: "PMLE", Icon: BarChart3 },
+    { name: "AIP-C01", Icon: Bot },
   ],
 };
 
