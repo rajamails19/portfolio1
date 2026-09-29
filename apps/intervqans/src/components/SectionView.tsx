@@ -20,6 +20,8 @@ import {
   ScrollText,
   Sparkles,
   Lightbulb,
+  Target,
+  Briefcase,
 } from "lucide-react";
 import type { QAItem, Section } from "@/content/types";
 import { useTheme } from "@/themes/ThemeContext";
@@ -60,6 +62,8 @@ const QANS_TOPICS_BY_THEME: Record<string, { name: string; Icon: typeof Code2 }[
 const CERT_TOPICS_BY_THEME: Record<string, { name: string; Icon: typeof Code2 }[]> = {
   noir: [
     { name: "Tips", Icon: Lightbulb },
+    { name: "CSM", Icon: Target },
+    { name: "ECBA", Icon: Briefcase },
     { name: "AIF-C01", Icon: Shield },
     { name: "CCA-F", Icon: Sparkles },
     { name: "AI-103", Icon: Cloud },

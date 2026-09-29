@@ -1,4 +1,12 @@
 import type { Section } from "./types";
+import { aifC01StudyCards } from "./certs/aif-c01";
+import { ccarFStudyCards } from "./certs/ccar-f";
+import { ai103StudyCards } from "./certs/ai-103";
+import { mlaC02StudyCards } from "./certs/mla-c02";
+import { pmleStudyCards, pmleSyllabus } from "./certs/pmle";
+import { aipC01StudyCards, aipC01Syllabus } from "./certs/aip-c01";
+import { csmCards } from "./certs/csm";
+import { ecbaCards } from "./certs/ecba";
 import tipRoadmapTable from "@/assets/certs/tip-roadmap-table.png";
 import tipThink from "@/assets/certs/tip-think.png";
 import tipAzureAi300 from "@/assets/certs/tip-azure-ai-300.png";
@@ -7,7 +15,7 @@ import tipRoadmapOrder from "@/assets/certs/tip-roadmap-order.png";
 export const certificationsSection: Section = {
   slug: "certifications",
   title: "Certifications",
-  tagline: "Exam-mapped prep — AWS, Azure, GCP, and Anthropic AI credentials.",
+  tagline: "Exam-mapped prep — your CSM and ECBA targets, plus AWS, Azure, GCP, and Anthropic AI credentials.",
   emoji: "🎓",
   gradient: "from-[oklch(0.92_0.08_265)] via-[oklch(0.92_0.09_320)] to-[oklch(0.92_0.08_350)]",
   items: [
@@ -67,38 +75,7 @@ export const certificationsSection: Section = {
       question: "AWS Certified Generative AI Developer – Professional (AIP-C01) — syllabus & domains",
       category: "AIP-C01",
       tags: ["AWS", "Syllabus"],
-      answer: [
-        {
-          type: "accordion",
-          items: [
-            {
-              title: "1. Foundation Model Integration, Data Management, and Compliance",
-              badge: "31%",
-              content: [{ type: "text", content: "Task-level detail coming soon." }],
-            },
-            {
-              title: "2. Implementation and Integration",
-              badge: "26%",
-              content: [{ type: "text", content: "Task-level detail coming soon." }],
-            },
-            {
-              title: "3. AI Safety, Security, and Governance",
-              badge: "20%",
-              content: [{ type: "text", content: "Task-level detail coming soon." }],
-            },
-            {
-              title: "4. Operational Efficiency and Optimization for GenAI Applications",
-              badge: "12%",
-              content: [{ type: "text", content: "Task-level detail coming soon." }],
-            },
-            {
-              title: "5. Testing, Validation, and Troubleshooting",
-              badge: "11%",
-              content: [{ type: "text", content: "Task-level detail coming soon." }],
-            },
-          ],
-        },
-      ],
+      answer: aipC01Syllabus,
     },
     {
       id: "cert-aif-c01-link",
@@ -404,6 +381,7 @@ export const certificationsSection: Section = {
         },
       ],
     },
+    ...aifC01StudyCards,
     {
       id: "cert-mla-c01-link",
       question: "AWS Certified Machine Learning Engineer – Associate (MLA-C01) — official exam page",
@@ -1156,99 +1134,7 @@ export const certificationsSection: Section = {
       question: "Google Cloud PMLE — syllabus & domains",
       category: "PMLE",
       tags: ["GCP", "Syllabus"],
-      answer: [
-        {
-          type: "callout",
-          variant: "info",
-          content:
-            "Google's own exam guide doesn't publish per-domain weightings — it lists 6 sections with task-level detail instead.",
-        },
-        {
-          type: "accordion",
-          items: [
-            {
-              title: "1. ML Problem Framing",
-              content: [
-                {
-                  type: "list",
-                  items: [
-                    "Translate business challenge into ML use case",
-                    "Define ML problem",
-                    "Define business success criteria",
-                    "Identify risks to feasibility and implementation of ML solution",
-                  ],
-                },
-              ],
-            },
-            {
-              title: "2. ML Solution Architecture",
-              content: [
-                {
-                  type: "list",
-                  items: [
-                    "Design reliable, scalable, highly available ML solutions",
-                    "Choose appropriate Google Cloud software components",
-                    "Choose appropriate Google Cloud hardware components",
-                    "Design architecture that complies with regulatory and security concerns",
-                  ],
-                },
-              ],
-            },
-            {
-              title: "3. Data Preparation and Processing",
-              content: [
-                {
-                  type: "list",
-                  items: [
-                    "Data ingestion",
-                    "Data exploration (EDA)",
-                    "Design data pipelines",
-                    "Build data pipelines",
-                    "Feature engineering",
-                  ],
-                },
-              ],
-            },
-            {
-              title: "4. ML Model Development",
-              content: [
-                {
-                  type: "list",
-                  items: ["Build a model", "Train a model", "Test a model", "Scale model training and serving"],
-                },
-              ],
-            },
-            {
-              title: "5. ML Pipeline Automation & Orchestration",
-              content: [
-                {
-                  type: "list",
-                  items: [
-                    "Design pipeline",
-                    "Implement training pipeline",
-                    "Implement serving pipeline",
-                    "Track and audit metadata",
-                    "Use CI/CD to test and deploy models",
-                  ],
-                },
-              ],
-            },
-            {
-              title: "6. ML Solution Monitoring, Optimization, and Maintenance",
-              content: [
-                {
-                  type: "list",
-                  items: [
-                    "Monitor ML solutions",
-                    "Troubleshoot ML solutions",
-                    "Tune performance of ML solutions for training & serving in production",
-                  ],
-                },
-              ],
-            },
-          ],
-        },
-      ],
+      answer: pmleSyllabus,
     },
     {
       id: "cert-ccar-f-link",
@@ -1677,5 +1563,14 @@ export const certificationsSection: Section = {
         },
       ],
     },
+    // Study cards (concepts + quiz) — appended so each tab keeps link → syllabus → concepts → quiz.
+    ...ccarFStudyCards,
+    ...ai103StudyCards,
+    ...mlaC02StudyCards,
+    ...pmleStudyCards,
+    ...aipC01StudyCards,
+    // Target certifications — all four cards for each live in certs/csm.ts and certs/ecba.ts.
+    ...csmCards,
+    ...ecbaCards,
   ],
 };

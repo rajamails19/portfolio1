@@ -8,12 +8,12 @@ export const Route = createFileRoute("/certifications")({
       { title: "Certifications — StudyDeck" },
       {
         name: "description",
-        content: "Exam-mapped prep for AWS, Azure, GCP, and Anthropic AI certifications.",
+        content: "Exam-mapped prep for Scrum Alliance CSM, IIBA ECBA, and AWS, Azure, GCP, and Anthropic AI certifications.",
       },
       { property: "og:title", content: "Certifications — StudyDeck" },
       {
         property: "og:description",
-        content: "Exam-mapped prep for AWS, Azure, GCP, and Anthropic AI certifications.",
+        content: "Exam-mapped prep for Scrum Alliance CSM, IIBA ECBA, and AWS, Azure, GCP, and Anthropic AI certifications.",
       },
     ],
   }),

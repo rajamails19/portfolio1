@@ -23,7 +23,16 @@ export type Block =
       nodes: { label: string; sub?: string; tone?: "gold" | "ember" | "mint" | "sky" }[];
     }
   | { type: "accordion"; items: AccordionItem[] }
-  | { type: "slideshow"; slides: { src: string; alt: string; caption?: string }[] };
+  | { type: "slideshow"; slides: { src: string; alt: string; caption?: string }[] }
+  | { type: "quiz"; questions: QuizQuestion[] };
+
+/** Multiple-choice question; `answer` is the index into `options`. */
+export interface QuizQuestion {
+  q: string;
+  options: string[];
+  answer: number;
+  explanation: string;
+}
 
 /** A collapsible row whose content can itself contain nested accordions. */
 export interface AccordionItem {

@@ -245,6 +245,15 @@ const heroProjectHrefs = new Set(heroProjects.map((project) => project.href));
 const secondaryProjects = uniqueProjectsByHref(projectPreviews).filter(
   (project) => !heroProjectHrefs.has(project.href),
 );
+const justForMeProjects = heroProjects.filter(
+  (project) => project.name !== "Lumen",
+);
+const toBePublishedProjects = uniqueProjectsByHref(projectPreviews).filter(
+  (project) => project.name === "Lumen" || project.name === "Tech Blog Raja",
+);
+const moneyReadyProjects = uniqueProjectsByHref(projectPreviews).filter(
+  (project) => project.name === "Campus AI",
+);
 
 const externalProjectPreviews = [
   {
@@ -461,12 +470,24 @@ function Hero() {
           </span>
         </Link>
 
-        <div className="hidden items-center gap-8 text-sm text-white sm:flex">
+        <div className="hidden items-center gap-7 text-sm text-white lg:flex">
           <Link
             to="/just-for-me"
             className="transition-colors hover:text-white/70"
           >
             Just for Me
+          </Link>
+          <Link
+            to="/to-be-published"
+            className="transition-colors hover:text-white/70"
+          >
+            To-be-Published
+          </Link>
+          <Link
+            to="/money-ready"
+            className="transition-colors hover:text-white/70"
+          >
+            Money-Ready
           </Link>
           <Link to="/using" className="transition-colors hover:text-white/70">
             Using
@@ -479,7 +500,7 @@ function Hero() {
           onClick={() => setMobileNavOpen((v) => !v)}
           aria-label={mobileNavOpen ? "Close menu" : "Open menu"}
           aria-expanded={mobileNavOpen}
-          className="flex h-10 w-10 items-center justify-center rounded-lg text-white sm:hidden"
+          className="flex h-10 w-10 items-center justify-center rounded-lg text-white lg:hidden"
         >
           {mobileNavOpen ? (
             <X className="h-5 w-5" />
@@ -490,13 +511,27 @@ function Hero() {
       </nav>
 
       {mobileNavOpen && (
-        <div className="relative z-20 mx-5 mb-2 flex flex-col gap-1 rounded-2xl border border-white/15 bg-black/40 p-2 text-sm text-white backdrop-blur-md sm:hidden">
+        <div className="relative z-20 mx-5 mb-2 flex flex-col gap-1 rounded-2xl border border-white/15 bg-black/40 p-2 text-sm text-white backdrop-blur-md lg:hidden">
           <Link
             to="/just-for-me"
             onClick={() => setMobileNavOpen(false)}
             className="rounded-lg px-3 py-2.5 transition-colors hover:bg-white/10"
           >
             Just for Me
+          </Link>
+          <Link
+            to="/to-be-published"
+            onClick={() => setMobileNavOpen(false)}
+            className="rounded-lg px-3 py-2.5 transition-colors hover:bg-white/10"
+          >
+            To-be-Published
+          </Link>
+          <Link
+            to="/money-ready"
+            onClick={() => setMobileNavOpen(false)}
+            className="rounded-lg px-3 py-2.5 transition-colors hover:bg-white/10"
+          >
+            Money-Ready
           </Link>
           <Link
             to="/using"
@@ -600,6 +635,56 @@ export function UsingProjects() {
 
 export function JustForMeProjects() {
   return (
+    <CuratedProjectShelf
+      eyebrow="Just for Me"
+      title="My quickest shortcuts"
+      description="The projects I want closest at hand, kept together in one focused shelf."
+      projects={justForMeProjects}
+    />
+  );
+}
+
+export function ToBePublishedProjects() {
+  return (
+    <CuratedProjectShelf
+      eyebrow="To-be-Published"
+      title="Next in line to go live"
+      description="Projects being polished and prepared for their next published release."
+      projects={toBePublishedProjects}
+    />
+  );
+}
+
+export function MoneyReadyProjects() {
+  return (
+    <CuratedProjectShelf
+      eyebrow="Money-Ready"
+      title="Ready for the business stage"
+      description="Projects positioned for monetization, customers, or a focused product launch."
+      projects={moneyReadyProjects}
+    />
+  );
+}
+
+type ProjectTile = {
+  name: string;
+  href: string;
+  image: string;
+  alt: string;
+};
+
+function CuratedProjectShelf({
+  eyebrow,
+  title,
+  description,
+  projects,
+}: {
+  eyebrow: string;
+  title: string;
+  description: string;
+  projects: readonly ProjectTile[];
+}) {
+  return (
     <section className="relative overflow-hidden bg-white py-24">
       <div
         className="pointer-events-none absolute inset-0"
@@ -614,23 +699,22 @@ export function JustForMeProjects() {
         <ScrollReveal>
           <div className="mb-10 max-w-2xl">
             <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-primary">
-              Just for Me
+              {eyebrow}
             </p>
             <h2
               className="text-3xl font-bold tracking-normal text-foreground sm:text-4xl"
               style={{ lineHeight: "1.15" }}
             >
-              My quickest shortcuts
+              {title}
             </h2>
             <p className="mt-4 text-base leading-relaxed text-muted-foreground">
-              The three projects I want closest at hand, kept together in one
-              focused shelf.
+              {description}
             </p>
           </div>
         </ScrollReveal>
 
         <div className="grid gap-5 md:grid-cols-3">
-          {heroProjects.map((project) => (
+          {projects.map((project) => (
             <UsingProjectPreview key={project.name} project={project} />
           ))}
         </div>
@@ -647,11 +731,7 @@ function getUsingGridClass(index: number) {
   return "md:col-span-2";
 }
 
-function UsingProjectPreview({
-  project,
-}: {
-  project: (typeof usingProjectPreviews)[number];
-}) {
+function UsingProjectPreview({ project }: { project: ProjectTile }) {
   const localOnly = isLocalUrl(project.href);
 
   return (
@@ -924,12 +1004,24 @@ export function Footer() {
             </span>
           </div>
 
-          <div className="flex items-center gap-6 text-sm text-muted-foreground">
+          <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm text-muted-foreground">
             <Link
               to="/just-for-me"
               className="transition-colors hover:text-foreground"
             >
               Just for Me
+            </Link>
+            <Link
+              to="/to-be-published"
+              className="transition-colors hover:text-foreground"
+            >
+              To-be-Published
+            </Link>
+            <Link
+              to="/money-ready"
+              className="transition-colors hover:text-foreground"
+            >
+              Money-Ready
             </Link>
             <Link
               to="/using"

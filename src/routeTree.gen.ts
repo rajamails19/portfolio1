@@ -10,6 +10,8 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as UsingRouteImport } from './routes/using'
+import { Route as ToBePublishedRouteImport } from './routes/to-be-published'
+import { Route as MoneyReadyRouteImport } from './routes/money-ready'
 import { Route as JustForMeRouteImport } from './routes/just-for-me'
 import { Route as ControlCenterRouteImport } from './routes/control-center'
 import { Route as IndexRouteImport } from './routes/index'
@@ -17,6 +19,16 @@ import { Route as IndexRouteImport } from './routes/index'
 const UsingRoute = UsingRouteImport.update({
   id: '/using',
   path: '/using',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ToBePublishedRoute = ToBePublishedRouteImport.update({
+  id: '/to-be-published',
+  path: '/to-be-published',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MoneyReadyRoute = MoneyReadyRouteImport.update({
+  id: '/money-ready',
+  path: '/money-ready',
   getParentRoute: () => rootRouteImport,
 } as any)
 const JustForMeRoute = JustForMeRouteImport.update({
@@ -39,12 +51,16 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/control-center': typeof ControlCenterRoute
   '/just-for-me': typeof JustForMeRoute
+  '/money-ready': typeof MoneyReadyRoute
+  '/to-be-published': typeof ToBePublishedRoute
   '/using': typeof UsingRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/control-center': typeof ControlCenterRoute
   '/just-for-me': typeof JustForMeRoute
+  '/money-ready': typeof MoneyReadyRoute
+  '/to-be-published': typeof ToBePublishedRoute
   '/using': typeof UsingRoute
 }
 export interface FileRoutesById {
@@ -52,20 +68,43 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/control-center': typeof ControlCenterRoute
   '/just-for-me': typeof JustForMeRoute
+  '/money-ready': typeof MoneyReadyRoute
+  '/to-be-published': typeof ToBePublishedRoute
   '/using': typeof UsingRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/control-center' | '/just-for-me' | '/using'
+  fullPaths:
+    | '/'
+    | '/control-center'
+    | '/just-for-me'
+    | '/money-ready'
+    | '/to-be-published'
+    | '/using'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/control-center' | '/just-for-me' | '/using'
-  id: '__root__' | '/' | '/control-center' | '/just-for-me' | '/using'
+  to:
+    | '/'
+    | '/control-center'
+    | '/just-for-me'
+    | '/money-ready'
+    | '/to-be-published'
+    | '/using'
+  id:
+    | '__root__'
+    | '/'
+    | '/control-center'
+    | '/just-for-me'
+    | '/money-ready'
+    | '/to-be-published'
+    | '/using'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ControlCenterRoute: typeof ControlCenterRoute
   JustForMeRoute: typeof JustForMeRoute
+  MoneyReadyRoute: typeof MoneyReadyRoute
+  ToBePublishedRoute: typeof ToBePublishedRoute
   UsingRoute: typeof UsingRoute
 }
 
@@ -76,6 +115,20 @@ declare module '@tanstack/react-router' {
       path: '/using'
       fullPath: '/using'
       preLoaderRoute: typeof UsingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/to-be-published': {
+      id: '/to-be-published'
+      path: '/to-be-published'
+      fullPath: '/to-be-published'
+      preLoaderRoute: typeof ToBePublishedRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/money-ready': {
+      id: '/money-ready'
+      path: '/money-ready'
+      fullPath: '/money-ready'
+      preLoaderRoute: typeof MoneyReadyRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/just-for-me': {
@@ -106,6 +159,8 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ControlCenterRoute: ControlCenterRoute,
   JustForMeRoute: JustForMeRoute,
+  MoneyReadyRoute: MoneyReadyRoute,
+  ToBePublishedRoute: ToBePublishedRoute,
   UsingRoute: UsingRoute,
 }
 export const routeTree = rootRouteImport

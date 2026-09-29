@@ -4,6 +4,7 @@ import { FlowDiagram } from "./FlowDiagram";
 import { Expandable } from "./Expandable";
 import { AccordionBlock } from "./AccordionBlock";
 import { SlideshowBlock } from "./SlideshowBlock";
+import { QuizBlock } from "./QuizBlock";
 import { renderInline } from "@/lib/rich-text";
 import { Info, Lightbulb, AlertTriangle, ExternalLink, Link2 } from "lucide-react";
 
@@ -170,6 +171,8 @@ export function AnswerBlocks({ blocks }: { blocks: Block[] }) {
             return <AccordionBlock key={i} items={b.items} />;
           case "slideshow":
             return <SlideshowBlock key={i} slides={b.slides} />;
+          case "quiz":
+            return <QuizBlock key={i} questions={b.questions} />;
           case "link":
             return (
               <a

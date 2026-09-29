@@ -1,22 +1,21 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowLeft, Infinity as InfinityIcon } from "lucide-react";
-import { JustForMeProjects, Footer } from "./index";
+import { Footer, ToBePublishedProjects } from "./index";
 
-export const Route = createFileRoute("/just-for-me")({
+export const Route = createFileRoute("/to-be-published")({
   head: () => ({
     meta: [
-      { title: "Just for Me — Portfolio Raja" },
+      { title: "To-be-Published — Portfolio Raja" },
       {
         name: "description",
-        content:
-          "The projects Raja wants closest at hand in one focused shelf.",
+        content: "Projects being prepared for their next published release.",
       },
     ],
   }),
-  component: JustForMePage,
+  component: ToBePublishedPage,
 });
 
-function JustForMePage() {
+function ToBePublishedPage() {
   return (
     <div className="min-h-[100dvh] bg-background text-foreground">
       <nav className="mx-auto flex h-16 max-w-6xl items-center justify-between px-5">
@@ -34,7 +33,7 @@ function JustForMePage() {
         </Link>
       </nav>
 
-      <JustForMeProjects />
+      <ToBePublishedProjects />
       <Footer />
     </div>
   );
