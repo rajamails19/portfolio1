@@ -112,7 +112,7 @@ export const themes: Record<ThemeKey, ThemeDef> = {
       },
       certifications: {
         title: "Certifications",
-        tagline: "Exam-mapped prep — your CSM and ECBA targets, plus AWS, Azure, GCP, and Anthropic AI credentials.",
+        tagline: "Exam-mapped prep — your CSM, ECBA and CAPM targets, plus AWS, Azure, GCP, and Anthropic AI credentials.",
         emoji: "🎓",
         mascot: {
           name: "The Examiner",

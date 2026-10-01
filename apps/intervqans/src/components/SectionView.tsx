@@ -22,6 +22,7 @@ import {
   Lightbulb,
   Target,
   Briefcase,
+  ClipboardList,
 } from "lucide-react";
 import type { QAItem, Section } from "@/content/types";
 import { useTheme } from "@/themes/ThemeContext";
@@ -64,6 +65,7 @@ const CERT_TOPICS_BY_THEME: Record<string, { name: string; Icon: typeof Code2 }[
     { name: "Tips", Icon: Lightbulb },
     { name: "CSM", Icon: Target },
     { name: "ECBA", Icon: Briefcase },
+    { name: "CAPM", Icon: ClipboardList },
     { name: "AIF-C01", Icon: Shield },
     { name: "CCA-F", Icon: Sparkles },
     { name: "AI-103", Icon: Cloud },

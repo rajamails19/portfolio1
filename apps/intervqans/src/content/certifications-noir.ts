@@ -7,6 +7,7 @@ import { pmleStudyCards, pmleSyllabus } from "./certs/pmle";
 import { aipC01StudyCards, aipC01Syllabus } from "./certs/aip-c01";
 import { csmCards } from "./certs/csm";
 import { ecbaCards } from "./certs/ecba";
+import { capmCards } from "./certs/capm";
 import tipRoadmapTable from "@/assets/certs/tip-roadmap-table.png";
 import tipThink from "@/assets/certs/tip-think.png";
 import tipAzureAi300 from "@/assets/certs/tip-azure-ai-300.png";
@@ -15,7 +16,7 @@ import tipRoadmapOrder from "@/assets/certs/tip-roadmap-order.png";
 export const certificationsSection: Section = {
   slug: "certifications",
   title: "Certifications",
-  tagline: "Exam-mapped prep — your CSM and ECBA targets, plus AWS, Azure, GCP, and Anthropic AI credentials.",
+  tagline: "Exam-mapped prep — your CSM, ECBA and CAPM targets, plus AWS, Azure, GCP, and Anthropic AI credentials.",
   emoji: "🎓",
   gradient: "from-[oklch(0.92_0.08_265)] via-[oklch(0.92_0.09_320)] to-[oklch(0.92_0.08_350)]",
   items: [
@@ -1572,5 +1573,6 @@ export const certificationsSection: Section = {
     // Target certifications — all four cards for each live in certs/csm.ts and certs/ecba.ts.
     ...csmCards,
     ...ecbaCards,
+    ...capmCards,
   ],
 };

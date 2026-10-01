@@ -40,14 +40,14 @@ export function ThemeSwitcher() {
             onClick={() => chooseTheme(k)}
             title={`${t.brandName} — ${t.brandKicker}`}
             className={[
-              "flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-semibold uppercase tracking-wider transition-all",
+              "flex items-center gap-1.5 rounded-full px-2.5 py-1.5 text-xs font-semibold uppercase tracking-wider transition-all sm:px-3",
               active
                 ? "bg-gradient-to-r from-gold to-ember text-primary-foreground shadow-glow"
                 : "text-foreground/75 hover:bg-white/10 hover:text-foreground",
             ].join(" ")}
           >
             <span className="text-sm">{t.short}</span>
-            <span className="hidden sm:inline">{t.label}</span>
+            <span className={active ? "inline" : "hidden sm:inline"}>{t.label}</span>
           </button>
         );
       })}
