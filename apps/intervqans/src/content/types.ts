@@ -24,7 +24,8 @@ export type Block =
     }
   | { type: "accordion"; items: AccordionItem[] }
   | { type: "slideshow"; slides: { src: string; alt: string; caption?: string }[] }
-  | { type: "quiz"; questions: QuizQuestion[] };
+  | { type: "quiz"; questions: QuizQuestion[] }
+  | { type: "notes"; certCode: string };
 
 /** Multiple-choice question; `answer` is the index into `options`. */
 export interface QuizQuestion {

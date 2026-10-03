@@ -74,3 +74,24 @@ export function certStudyCards({ code, label, examName, concepts, quiz }: CertSt
     },
   ];
 }
+
+/**
+ * A "My Notes" card for a cert tab. The notes themselves live in the browser
+ * (see MyNotesBlock), keyed by `code`, so this card is identical for every cert.
+ */
+export function certNotesCard(code: string, label?: string): QAItem {
+  return {
+    id: `cert-${code.toLowerCase()}-notes`,
+    question: `${label ?? code} — My Notes`,
+    category: code,
+    tags: ["My Notes", "Personal"],
+    answer: [
+      {
+        type: "text",
+        content:
+          "Your own space for this cert — save links, key lines and screenshots to revisit later. **Edit or delete** anything, any time.",
+      },
+      { type: "notes", certCode: code },
+    ],
+  };
+}

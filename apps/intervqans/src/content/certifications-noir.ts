@@ -5,6 +5,7 @@ import { ai103StudyCards } from "./certs/ai-103";
 import { mlaC02StudyCards } from "./certs/mla-c02";
 import { pmleStudyCards, pmleSyllabus } from "./certs/pmle";
 import { aipC01StudyCards, aipC01Syllabus } from "./certs/aip-c01";
+import { certNotesCard } from "./certs/cert-cards";
 import { csmCards } from "./certs/csm";
 import { ecbaCards } from "./certs/ecba";
 import { capmCards } from "./certs/capm";
@@ -1574,5 +1575,17 @@ export const certificationsSection: Section = {
     ...csmCards,
     ...ecbaCards,
     ...capmCards,
+    // "My Notes" — one personal-notes card at the end of every cert tab (not Tips).
+    ...[
+      "CSM",
+      "ECBA",
+      "CAPM",
+      "AIF-C01",
+      "CCA-F",
+      "AI-103",
+      "MLA-C02",
+      "PMLE",
+      "AIP-C01",
+    ].map((code) => certNotesCard(code, code === "CCA-F" ? "CCAR-F" : undefined)),
   ],
 };

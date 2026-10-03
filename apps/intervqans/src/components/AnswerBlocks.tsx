@@ -5,6 +5,7 @@ import { Expandable } from "./Expandable";
 import { AccordionBlock } from "./AccordionBlock";
 import { SlideshowBlock } from "./SlideshowBlock";
 import { QuizBlock } from "./QuizBlock";
+import { MyNotesBlock } from "./MyNotesBlock";
 import { renderInline } from "@/lib/rich-text";
 import { Info, Lightbulb, AlertTriangle, ExternalLink, Link2 } from "lucide-react";
 
@@ -173,6 +174,8 @@ export function AnswerBlocks({ blocks }: { blocks: Block[] }) {
             return <SlideshowBlock key={i} slides={b.slides} />;
           case "quiz":
             return <QuizBlock key={i} questions={b.questions} />;
+          case "notes":
+            return <MyNotesBlock key={i} certCode={b.certCode} />;
           case "link":
             return (
               <a
