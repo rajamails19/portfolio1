@@ -9,31 +9,16 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as UsingRouteImport } from './routes/using'
-import { Route as ToBePublishedRouteImport } from './routes/to-be-published'
-import { Route as MoneyReadyRouteImport } from './routes/money-ready'
-import { Route as JustForMeRouteImport } from './routes/just-for-me'
-import { Route as ControlCenterRouteImport } from './routes/control-center'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ControlCenterRouteImport } from './routes/control-center'
+import { Route as JustForMeRouteImport } from './routes/just-for-me'
+import { Route as MoneyReadyRouteImport } from './routes/money-ready'
+import { Route as ToBePublishedRouteImport } from './routes/to-be-published'
+import { Route as UsingRouteImport } from './routes/using'
 
-const UsingRoute = UsingRouteImport.update({
-  id: '/using',
-  path: '/using',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ToBePublishedRoute = ToBePublishedRouteImport.update({
-  id: '/to-be-published',
-  path: '/to-be-published',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const MoneyReadyRoute = MoneyReadyRouteImport.update({
-  id: '/money-ready',
-  path: '/money-ready',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const JustForMeRoute = JustForMeRouteImport.update({
-  id: '/just-for-me',
-  path: '/just-for-me',
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ControlCenterRoute = ControlCenterRouteImport.update({
@@ -41,9 +26,24 @@ const ControlCenterRoute = ControlCenterRouteImport.update({
   path: '/control-center',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
+const JustForMeRoute = JustForMeRouteImport.update({
+  id: '/just-for-me',
+  path: '/just-for-me',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MoneyReadyRoute = MoneyReadyRouteImport.update({
+  id: '/money-ready',
+  path: '/money-ready',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ToBePublishedRoute = ToBePublishedRouteImport.update({
+  id: '/to-be-published',
+  path: '/to-be-published',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const UsingRoute = UsingRouteImport.update({
+  id: '/using',
+  path: '/using',
   getParentRoute: () => rootRouteImport,
 } as any)
 
@@ -110,32 +110,11 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/using': {
-      id: '/using'
-      path: '/using'
-      fullPath: '/using'
-      preLoaderRoute: typeof UsingRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/to-be-published': {
-      id: '/to-be-published'
-      path: '/to-be-published'
-      fullPath: '/to-be-published'
-      preLoaderRoute: typeof ToBePublishedRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/money-ready': {
-      id: '/money-ready'
-      path: '/money-ready'
-      fullPath: '/money-ready'
-      preLoaderRoute: typeof MoneyReadyRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/just-for-me': {
-      id: '/just-for-me'
-      path: '/just-for-me'
-      fullPath: '/just-for-me'
-      preLoaderRoute: typeof JustForMeRouteImport
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/control-center': {
@@ -145,11 +124,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ControlCenterRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
+    '/just-for-me': {
+      id: '/just-for-me'
+      path: '/just-for-me'
+      fullPath: '/just-for-me'
+      preLoaderRoute: typeof JustForMeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/money-ready': {
+      id: '/money-ready'
+      path: '/money-ready'
+      fullPath: '/money-ready'
+      preLoaderRoute: typeof MoneyReadyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/to-be-published': {
+      id: '/to-be-published'
+      path: '/to-be-published'
+      fullPath: '/to-be-published'
+      preLoaderRoute: typeof ToBePublishedRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/using': {
+      id: '/using'
+      path: '/using'
+      fullPath: '/using'
+      preLoaderRoute: typeof UsingRouteImport
       parentRoute: typeof rootRouteImport
     }
   }

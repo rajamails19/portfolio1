@@ -9,67 +9,22 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as TheoryRouteImport } from './routes/theory'
-import { Route as TermsRouteImport } from './routes/terms'
-import { Route as StoryRouteImport } from './routes/story'
-import { Route as RealtimeRouteImport } from './routes/realtime'
-import { Route as QansRouteImport } from './routes/qans'
-import { Route as ProjectsRouteImport } from './routes/projects'
-import { Route as ProgramsRouteImport } from './routes/programs'
-import { Route as OthersRouteImport } from './routes/others'
-import { Route as InputsRouteImport } from './routes/inputs'
-import { Route as FavoritesRouteImport } from './routes/favorites'
-import { Route as CertificationsRouteImport } from './routes/certifications'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as CertificationsRouteImport } from './routes/certifications'
+import { Route as FavoritesRouteImport } from './routes/favorites'
+import { Route as InputsRouteImport } from './routes/inputs'
+import { Route as OthersRouteImport } from './routes/others'
+import { Route as ProgramsRouteImport } from './routes/programs'
+import { Route as ProjectsRouteImport } from './routes/projects'
+import { Route as QansRouteImport } from './routes/qans'
+import { Route as RealtimeRouteImport } from './routes/realtime'
+import { Route as StoryRouteImport } from './routes/story'
+import { Route as TermsRouteImport } from './routes/terms'
+import { Route as TheoryRouteImport } from './routes/theory'
 
-const TheoryRoute = TheoryRouteImport.update({
-  id: '/theory',
-  path: '/theory',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const TermsRoute = TermsRouteImport.update({
-  id: '/terms',
-  path: '/terms',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const StoryRoute = StoryRouteImport.update({
-  id: '/story',
-  path: '/story',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const RealtimeRoute = RealtimeRouteImport.update({
-  id: '/realtime',
-  path: '/realtime',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const QansRoute = QansRouteImport.update({
-  id: '/qans',
-  path: '/qans',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ProjectsRoute = ProjectsRouteImport.update({
-  id: '/projects',
-  path: '/projects',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ProgramsRoute = ProgramsRouteImport.update({
-  id: '/programs',
-  path: '/programs',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const OthersRoute = OthersRouteImport.update({
-  id: '/others',
-  path: '/others',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const InputsRoute = InputsRouteImport.update({
-  id: '/inputs',
-  path: '/inputs',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const FavoritesRoute = FavoritesRouteImport.update({
-  id: '/favorites',
-  path: '/favorites',
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CertificationsRoute = CertificationsRouteImport.update({
@@ -77,9 +32,54 @@ const CertificationsRoute = CertificationsRouteImport.update({
   path: '/certifications',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
+const FavoritesRoute = FavoritesRouteImport.update({
+  id: '/favorites',
+  path: '/favorites',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const InputsRoute = InputsRouteImport.update({
+  id: '/inputs',
+  path: '/inputs',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OthersRoute = OthersRouteImport.update({
+  id: '/others',
+  path: '/others',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProgramsRoute = ProgramsRouteImport.update({
+  id: '/programs',
+  path: '/programs',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProjectsRoute = ProjectsRouteImport.update({
+  id: '/projects',
+  path: '/projects',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const QansRoute = QansRouteImport.update({
+  id: '/qans',
+  path: '/qans',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RealtimeRoute = RealtimeRouteImport.update({
+  id: '/realtime',
+  path: '/realtime',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const StoryRoute = StoryRouteImport.update({
+  id: '/story',
+  path: '/story',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TermsRoute = TermsRouteImport.update({
+  id: '/terms',
+  path: '/terms',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TheoryRoute = TheoryRouteImport.update({
+  id: '/theory',
+  path: '/theory',
   getParentRoute: () => rootRouteImport,
 } as any)
 
@@ -188,74 +188,11 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/theory': {
-      id: '/theory'
-      path: '/theory'
-      fullPath: '/theory'
-      preLoaderRoute: typeof TheoryRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/terms': {
-      id: '/terms'
-      path: '/terms'
-      fullPath: '/terms'
-      preLoaderRoute: typeof TermsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/story': {
-      id: '/story'
-      path: '/story'
-      fullPath: '/story'
-      preLoaderRoute: typeof StoryRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/realtime': {
-      id: '/realtime'
-      path: '/realtime'
-      fullPath: '/realtime'
-      preLoaderRoute: typeof RealtimeRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/qans': {
-      id: '/qans'
-      path: '/qans'
-      fullPath: '/qans'
-      preLoaderRoute: typeof QansRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/projects': {
-      id: '/projects'
-      path: '/projects'
-      fullPath: '/projects'
-      preLoaderRoute: typeof ProjectsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/programs': {
-      id: '/programs'
-      path: '/programs'
-      fullPath: '/programs'
-      preLoaderRoute: typeof ProgramsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/others': {
-      id: '/others'
-      path: '/others'
-      fullPath: '/others'
-      preLoaderRoute: typeof OthersRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/inputs': {
-      id: '/inputs'
-      path: '/inputs'
-      fullPath: '/inputs'
-      preLoaderRoute: typeof InputsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/favorites': {
-      id: '/favorites'
-      path: '/favorites'
-      fullPath: '/favorites'
-      preLoaderRoute: typeof FavoritesRouteImport
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/certifications': {
@@ -265,11 +202,74 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CertificationsRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
+    '/favorites': {
+      id: '/favorites'
+      path: '/favorites'
+      fullPath: '/favorites'
+      preLoaderRoute: typeof FavoritesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/inputs': {
+      id: '/inputs'
+      path: '/inputs'
+      fullPath: '/inputs'
+      preLoaderRoute: typeof InputsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/others': {
+      id: '/others'
+      path: '/others'
+      fullPath: '/others'
+      preLoaderRoute: typeof OthersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/programs': {
+      id: '/programs'
+      path: '/programs'
+      fullPath: '/programs'
+      preLoaderRoute: typeof ProgramsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/projects': {
+      id: '/projects'
+      path: '/projects'
+      fullPath: '/projects'
+      preLoaderRoute: typeof ProjectsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/qans': {
+      id: '/qans'
+      path: '/qans'
+      fullPath: '/qans'
+      preLoaderRoute: typeof QansRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/realtime': {
+      id: '/realtime'
+      path: '/realtime'
+      fullPath: '/realtime'
+      preLoaderRoute: typeof RealtimeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/story': {
+      id: '/story'
+      path: '/story'
+      fullPath: '/story'
+      preLoaderRoute: typeof StoryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/terms': {
+      id: '/terms'
+      path: '/terms'
+      fullPath: '/terms'
+      preLoaderRoute: typeof TermsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/theory': {
+      id: '/theory'
+      path: '/theory'
+      fullPath: '/theory'
+      preLoaderRoute: typeof TheoryRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
