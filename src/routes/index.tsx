@@ -15,6 +15,7 @@ import formaFitnessThumb from "@/assets/forma-fitness-thumb.png";
 import genZStyleLearnThumb from "@/assets/genzstylelearn-thumb.png";
 import guideLearnAiThumb from "@/assets/guide-learn-ai-thumb.png";
 import heroBg from "@/assets/hero-bg.jpg";
+import aimlQaThumb from "@/assets/aimlqa-thumb.png";
 import intervQansThumb from "@/assets/intervqans-thumb.png";
 import jagsRajKitchenThumb from "@/assets/jagsrajkitchen-thumb.png";
 import jobsOpsWithRajaThumb from "@/assets/jobsopswithraja-thumb.png";
@@ -97,6 +98,12 @@ const projectPreviews = [
     href: "https://qansinterview.vercel.app/",
     image: intervQansThumb,
     alt: "StudyDeck interview question and answer prep homepage preview",
+  },
+  {
+    name: "AIML Q&A",
+    href: "https://aiml-qans.vercel.app/qans",
+    image: aimlQaThumb,
+    alt: "AIML Q&A interview question and answer app preview",
   },
   {
     name: "JagsRajKitchen",
