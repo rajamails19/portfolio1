@@ -725,6 +725,40 @@ export const qansSection: Section = {
       ],
     },
     {
+      id: "what-is-cross-validation",
+      category: "2M",
+      question: "What is Cross-Validation?",
+      tags: ["AI/ML", "Evaluation"],
+      difficulty: "Medium",
+      answer: [
+        {
+          type: "text",
+          content:
+            "Cross-Validation checks ==how well a model generalizes== by splitting the training data into folds, then repeatedly training on some folds and validating on the one left out.",
+        },
+        { type: "heading", content: "Example: 5-Fold" },
+        {
+          type: "code",
+          language: "text",
+          content:
+            "Round 1: [Val][Train][Train][Train][Train]\nRound 2: [Train][Val][Train][Train][Train]\n...\nRound 5: [Train][Train][Train][Train][Val]\n\nFinal score = average of the 5 validation scores",
+        },
+        {
+          type: "callout",
+          variant: "info",
+          content:
+            "Interview Tip: Most useful when data is __small__ — one lucky split can mislead. For time-series data use **time-based splits**, never random folds, to avoid peeking at the future.",
+        },
+        { type: "heading", content: "Analogy" },
+        {
+          type: "callout",
+          variant: "tip",
+          content:
+            "A student takes **five different practice exams** instead of trusting a single score.",
+        },
+      ],
+    },
+    {
       id: "precision-recall-f1",
       category: "2M",
       question: "Precision, Recall, and F1 — What's the difference?",
@@ -1003,6 +1037,123 @@ export const qansSection: Section = {
       ],
     },
     {
+      id: "what-is-gradient-descent",
+      category: "2M",
+      question: "What is Gradient Descent?",
+      tags: ["AI/ML", "Optimization"],
+      difficulty: "Medium",
+      answer: [
+        {
+          type: "text",
+          content:
+            "You are on a ==foggy mountain at night==, trying to reach the valley (the lowest loss). You cannot see the whole landscape — but you can __feel which direction slopes downward__ under your feet, so you take small steps downhill, repeatedly, until you reach the bottom.",
+        },
+        { type: "heading", content: "Learning rate — how big your steps are" },
+        {
+          type: "table",
+          headers: ["Learning rate", "What happens on the mountain", "Result"],
+          rows: [
+            [
+              "**Too big**",
+              "You overshoot the valley and stumble around",
+              "Never settles — loss bounces",
+            ],
+            ["**Too small**", "You inch downhill forever", "Takes ==far too long== to train"],
+            ["**Just right**", "Steady steps toward the bottom", "Converges smoothly"],
+          ],
+        },
+        {
+          type: "callout",
+          variant: "info",
+          content:
+            "The slope you feel underfoot is the **gradient** — the direction of steepest increase. __Descent__ simply means stepping the opposite way.",
+        },
+        { type: "heading", content: "Types" },
+        {
+          type: "list",
+          items: [
+            "**Batch** — uses the ==entire dataset== for every step. Stable but slow.",
+            "**Stochastic (SGD)** — uses ==one sample== per step. Fast but noisy.",
+            "**Mini-Batch** — uses a ==small batch== per step. The practical default.",
+          ],
+        },
+      ],
+    },
+    {
+      id: "what-are-activation-functions",
+      category: "2M",
+      question: "What are Activation Functions in Neural Networks?",
+      tags: ["AI/ML", "Deep Learning"],
+      difficulty: "Medium",
+      answer: [
+        {
+          type: "text",
+          content:
+            "Activation functions add ==non-linearity==, so a neural network can learn complex patterns — without them, many layers would collapse into one simple linear model.",
+        },
+        {
+          type: "table",
+          headers: ["Function", "Output", "Typically used for"],
+          rows: [
+            ["**ReLU**", "max(0, x)", "Hidden layers — fast, the default"],
+            ["**Sigmoid**", "Between 0 and 1", "Binary classification output"],
+            ["**Softmax**", "Probabilities that sum to 1", "Multi-class classification output"],
+          ],
+        },
+        {
+          type: "callout",
+          variant: "info",
+          content:
+            "Interview Tip: Sigmoid can cause **vanishing gradients** in deep networks, which is one reason ReLU became the default. Transformers commonly use GELU.",
+        },
+        { type: "heading", content: "Analogy" },
+        {
+          type: "callout",
+          variant: "tip",
+          content:
+            "Different **judges apply different rules** to decide which signals are allowed to pass through.",
+        },
+      ],
+    },
+    {
+      id: "what-is-backpropagation",
+      category: "2M",
+      question: "What is Backpropagation?",
+      tags: ["AI/ML", "Training"],
+      difficulty: "Medium",
+      answer: [
+        {
+          type: "text",
+          content:
+            "Backpropagation is the process used to determine ==how much each neural-network weight contributed to the error==, so the weights can be corrected.",
+        },
+        { type: "heading", content: "Simple flow" },
+        {
+          type: "flow",
+          title: "The correction loop, applied to every weight",
+          nodes: [
+            { label: "Predict", sub: "Model guesses", tone: "gold" },
+            { label: "Calculate Error", sub: "Guess vs truth", tone: "ember" },
+            { label: "Backpropagate", sub: "Error flows backward", tone: "sky" },
+            { label: "Update Weights", sub: "Nudge each one", tone: "mint" },
+          ],
+        },
+        { type: "heading", content: "Analogy" },
+        {
+          type: "callout",
+          variant: "tip",
+          content:
+            "A student gets a math problem wrong, **works backward** through the steps to find where the mistake happened, corrects it, and __tries again__.",
+        },
+        {
+          type: "callout",
+          variant: "info",
+          content:
+            "Interview Tip: Backpropagation uses the **chain rule** to calculate gradients. An optimizer such as SGD or Adam uses those gradients to ==update the weights==.",
+        },
+      ],
+    },
+    {
       id: "what-is-llm-evaluation",
       category: "2M",
       question: "What is LLM Evaluation?",
@@ -1218,40 +1369,6 @@ export const qansSection: Section = {
       ],
     },
     {
-      id: "what-is-gradient-descent",
-      category: "2M",
-      question: "What is Gradient Descent?",
-      tags: ["AI/ML", "Optimization"],
-      difficulty: "Medium",
-      answer: [
-        {
-          type: "text",
-          content:
-            "You are on a ==foggy mountain at night==, trying to reach the valley (the lowest loss). You cannot see the whole landscape — but you can __feel which direction slopes downward__ under your feet, so you take small steps downhill, repeatedly, until you reach the bottom.",
-        },
-        { type: "heading", content: "Learning rate — how big your steps are" },
-        {
-          type: "table",
-          headers: ["Learning rate", "What happens on the mountain", "Result"],
-          rows: [
-            [
-              "**Too big**",
-              "You overshoot the valley and stumble around",
-              "Never settles — loss bounces",
-            ],
-            ["**Too small**", "You inch downhill forever", "Takes ==far too long== to train"],
-            ["**Just right**", "Steady steps toward the bottom", "Converges smoothly"],
-          ],
-        },
-        {
-          type: "callout",
-          variant: "info",
-          content:
-            "The slope you feel underfoot is the **gradient** — the direction of steepest increase. __Descent__ simply means stepping the opposite way.",
-        },
-      ],
-    },
-    {
       id: "what-is-regularization",
       category: "2M",
       question: "What is Regularization (L1 / L2)?",
@@ -1289,6 +1406,53 @@ export const qansSection: Section = {
           variant: "tip",
           content:
             "Both fight **overfitting** by adding a penalty for complexity. L1 makes the model __shorter__; L2 makes it __calmer__.",
+        },
+      ],
+    },
+    {
+      id: "batch-size-epoch-learning-rate",
+      category: "2M",
+      question: "What are Batch Size, Epoch, Iteration, and Learning Rate?",
+      tags: ["AI/ML", "Training"],
+      difficulty: "Medium",
+      answer: [
+        {
+          type: "text",
+          content:
+            "These are important parameters controlling ==how a neural network learns== during training.",
+        },
+        {
+          type: "list",
+          items: [
+            "**Batch Size** → Number of training examples processed before one weight update.",
+            "**Epoch** → One complete pass through the entire training dataset.",
+            "**Iteration** → One weight update using one batch.",
+            "**Learning Rate** → Controls how large each weight update is.",
+          ],
+        },
+        { type: "heading", content: "Example" },
+        {
+          type: "code",
+          language: "text",
+          content:
+            "1,000 training samples ÷ Batch Size 100 = 10 batches per epoch\n\n1 Epoch = 10 iterations (10 weight updates)",
+        },
+        { type: "heading", content: "Analogy" },
+        { type: "text", content: "Imagine studying a 1,000-question book:" },
+        {
+          type: "list",
+          items: [
+            "**Batch Size** → Study 100 questions at a time.",
+            "**Epoch** → Finish all 1,000 questions once.",
+            "**Iteration** → One study session on a single chapter.",
+            "**Learning Rate** → How aggressively you change your understanding after discovering mistakes.",
+          ],
+        },
+        {
+          type: "callout",
+          variant: "warn",
+          content:
+            "Interview Tip: Learning rate __too high__ → may overshoot the optimum. Learning rate __too low__ → training becomes slow or can stall.",
         },
       ],
     },
@@ -1688,44 +1852,6 @@ export const qansSection: Section = {
       ],
     },
     {
-      id: "what-is-backpropagation",
-      category: "2M",
-      question: "What is Backpropagation?",
-      tags: ["AI/ML", "Training"],
-      difficulty: "Medium",
-      answer: [
-        {
-          type: "text",
-          content:
-            "Backpropagation is the process used to determine ==how much each neural-network weight contributed to the error==, so the weights can be corrected.",
-        },
-        { type: "heading", content: "Simple flow" },
-        {
-          type: "flow",
-          title: "The correction loop, applied to every weight",
-          nodes: [
-            { label: "Predict", sub: "Model guesses", tone: "gold" },
-            { label: "Calculate Error", sub: "Guess vs truth", tone: "ember" },
-            { label: "Backpropagate", sub: "Error flows backward", tone: "sky" },
-            { label: "Update Weights", sub: "Nudge each one", tone: "mint" },
-          ],
-        },
-        { type: "heading", content: "Analogy" },
-        {
-          type: "callout",
-          variant: "tip",
-          content:
-            "A student gets a math problem wrong, **works backward** through the steps to find where the mistake happened, corrects it, and __tries again__.",
-        },
-        {
-          type: "callout",
-          variant: "info",
-          content:
-            "Interview Tip: Backpropagation uses the **chain rule** to calculate gradients. An optimizer such as Gradient Descent uses those gradients to ==update the weights==.",
-        },
-      ],
-    },
-    {
       id: "encoder-vs-decoder-transformers",
       category: "2M",
       question: "Encoder vs Decoder Transformers (BERT, GPT, T5)",
@@ -1882,51 +2008,6 @@ export const qansSection: Section = {
           variant: "info",
           content:
             "Interview Tip: **Better features** can sometimes improve a model more than simply choosing a more complicated algorithm.",
-        },
-      ],
-    },
-    {
-      id: "batch-size-epoch-learning-rate",
-      category: "2M",
-      question: "What are Batch Size, Epoch, and Learning Rate?",
-      tags: ["AI/ML", "Training"],
-      difficulty: "Medium",
-      answer: [
-        {
-          type: "text",
-          content:
-            "These are important parameters controlling ==how a neural network learns== during training.",
-        },
-        {
-          type: "list",
-          items: [
-            "**Batch Size** → Number of training examples processed before one weight update.",
-            "**Epoch** → One complete pass through the entire training dataset.",
-            "**Learning Rate** → Controls how large each weight update is.",
-          ],
-        },
-        { type: "heading", content: "Example" },
-        {
-          type: "code",
-          language: "text",
-          content:
-            "1,000 training samples ÷ Batch Size 100 = 10 batches per epoch\n\n1 Epoch = 10 weight updates",
-        },
-        { type: "heading", content: "Analogy" },
-        { type: "text", content: "Imagine studying a 1,000-question book:" },
-        {
-          type: "list",
-          items: [
-            "**Batch Size** → Study 100 questions at a time.",
-            "**Epoch** → Finish all 1,000 questions once.",
-            "**Learning Rate** → How aggressively you change your understanding after discovering mistakes.",
-          ],
-        },
-        {
-          type: "callout",
-          variant: "warn",
-          content:
-            "Interview Tip: Learning rate __too high__ → may overshoot the optimum. Learning rate __too low__ → training becomes slow or can stall.",
         },
       ],
     },
