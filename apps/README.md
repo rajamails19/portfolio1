@@ -19,5 +19,6 @@ Each product lives in its own folder so the repo stays easy to scan and each app
 - `serverdashboard`: Stage server/dev dashboard.
 - `jobsopswithraja`: JobOps job application command center.
 - `intervqans`: StudyDeck interview question and answer prep app.
+- `aiqa`: AIML Q&A — standalone AI/ML/GenAI interview Q&A app (live: aiml-qans.vercel.app). Source of truth is its own repo `rajamails19/aiml-qa`; keep this copy in sync.
 
 Add future projects as `apps/<project-name>` and register them in the root `package.json` scripts plus the portal cards in `src/routes/index.tsx`.
