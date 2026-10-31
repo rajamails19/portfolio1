@@ -1154,6 +1154,167 @@ export const qansSection: Section = {
       ],
     },
     {
+      id: "what-is-transfer-learning",
+      category: "2M",
+      question: "What is Transfer Learning?",
+      tags: ["AI/ML", "Training"],
+      difficulty: "Easy",
+      answer: [
+        {
+          type: "text",
+          content:
+            "Transfer Learning ==reuses knowledge from a pretrained model== for a new but related task.",
+        },
+        {
+          type: "callout",
+          variant: "info",
+          content:
+            "Benefit: less training time, less data, lower cost. Common approach: keep the early layers, then **fine-tune** the last layers on your data. LLM fine-tuning is transfer learning.",
+        },
+        { type: "heading", content: "Analogy" },
+        {
+          type: "callout",
+          variant: "tip",
+          content:
+            "A **cricket player learning baseball** already understands batting fundamentals.",
+        },
+      ],
+    },
+    {
+      id: "what-is-rlhf",
+      category: "2M",
+      question: "What is RLHF (Reinforcement Learning from Human Feedback)?",
+      tags: ["AI/ML", "LLM", "Alignment"],
+      difficulty: "Hard",
+      answer: [
+        {
+          type: "text",
+          content:
+            "RLHF uses ==human preferences to train a reward model==, which then guides the LLM toward responses people actually want.",
+        },
+        {
+          type: "flow",
+          title: "RLHF pipeline",
+          nodes: [
+            { label: "Pretrained LLM", sub: "Learns language", tone: "gold" },
+            { label: "Fine-tune", sub: "On good examples", tone: "ember" },
+            { label: "Reward model", sub: "Learns human rankings", tone: "sky" },
+            { label: "Optimize", sub: "Reinforcement learning", tone: "mint" },
+          ],
+        },
+        {
+          type: "callout",
+          variant: "info",
+          content: "Benefit: better helpfulness, safety, and response quality.",
+        },
+        { type: "heading", content: "Analogy" },
+        {
+          type: "callout",
+          variant: "tip",
+          content: "A student **improves answers** based on a teacher's feedback.",
+        },
+      ],
+    },
+    {
+      id: "what-is-hyperparameter-tuning",
+      category: "2M",
+      question: "What is Hyperparameter Tuning?",
+      tags: ["AI/ML", "Training"],
+      difficulty: "Medium",
+      answer: [
+        {
+          type: "text",
+          content:
+            "Hyperparameter Tuning finds the ==best model settings== — such as learning rate, batch size, or number of layers — by comparing validation performance.",
+        },
+        {
+          type: "list",
+          items: [
+            "**Grid Search** — try every combination. Thorough but expensive.",
+            "**Random Search** — try random combinations. Often more efficient.",
+            "**Bayesian Optimization** — learns from past trials to pick the next one.",
+          ],
+        },
+        {
+          type: "callout",
+          variant: "warn",
+          content:
+            "Interview Tip: Tune on the __validation__ set, never the test set. Hyperparameters are set __before__ training; parameters (weights) are learned __during__ it.",
+        },
+        { type: "heading", content: "Analogy" },
+        {
+          type: "callout",
+          variant: "tip",
+          content: "A chef experiments with **temperature and timing** to find the best recipe.",
+        },
+      ],
+    },
+    {
+      id: "what-is-a-cnn",
+      category: "2M",
+      question: "What is a CNN (Convolutional Neural Network)?",
+      tags: ["AI/ML", "Deep Learning"],
+      difficulty: "Medium",
+      answer: [
+        {
+          type: "text",
+          content:
+            "A CNN uses ==convolutional filters to extract spatial features== from images (or other grid-like data).",
+        },
+        {
+          type: "flow",
+          title: "What a CNN learns, layer by layer",
+          nodes: [
+            { label: "Edges", sub: "Early layers", tone: "gold" },
+            { label: "Shapes", sub: "Middle layers", tone: "ember" },
+            { label: "Objects", sub: "Deep layers", tone: "mint" },
+          ],
+        },
+        {
+          type: "callout",
+          variant: "info",
+          content:
+            "Interview Tip: Filters are shared across the image, so CNNs need far fewer parameters than fully connected networks. **Pooling** shrinks the feature maps.",
+        },
+        { type: "heading", content: "Analogy" },
+        {
+          type: "callout",
+          variant: "tip",
+          content: "Recognizing a face by first spotting the **eyes, nose, and mouth**.",
+        },
+      ],
+    },
+    {
+      id: "what-is-an-rnn",
+      category: "2M",
+      question: "What is an RNN (Recurrent Neural Network)?",
+      tags: ["AI/ML", "Deep Learning"],
+      difficulty: "Medium",
+      answer: [
+        {
+          type: "text",
+          content:
+            "An RNN processes ==sequential data==, carrying a **hidden state** forward so earlier steps influence the current one.",
+        },
+        {
+          type: "list",
+          items: ["Text", "Speech", "Time-series prediction"],
+        },
+        {
+          type: "callout",
+          variant: "info",
+          content:
+            "Interview Tip: Plain RNNs struggle with long sequences (__vanishing gradients__), so **LSTM** and **GRU** were created. Transformers have largely replaced RNNs for language because they process tokens in parallel.",
+        },
+        { type: "heading", content: "Analogy" },
+        {
+          type: "callout",
+          variant: "tip",
+          content: "Reading a story **sentence by sentence**, remembering earlier events.",
+        },
+      ],
+    },
+    {
       id: "what-is-llm-evaluation",
       category: "2M",
       question: "What is LLM Evaluation?",
@@ -1211,6 +1372,59 @@ export const qansSection: Section = {
           type: "callout",
           variant: "tip",
           content: "Breaking a sentence into **LEGO pieces** before building meaning.",
+        },
+      ],
+    },
+    {
+      id: "what-is-dropout",
+      category: "2M",
+      question: "What is Dropout in Neural Networks?",
+      tags: ["AI/ML", "Deep Learning"],
+      difficulty: "Medium",
+      answer: [
+        {
+          type: "text",
+          content:
+            "Dropout is a regularization technique that ==randomly switches off neurons during training== to reduce overfitting.",
+        },
+        {
+          type: "callout",
+          variant: "info",
+          content:
+            "Benefit: stops the network depending too much on specific neurons, so it generalizes better. Dropout is __off at inference__ — all neurons are used.",
+        },
+        { type: "heading", content: "Analogy" },
+        {
+          type: "callout",
+          variant: "tip",
+          content:
+            "A football team **practices without certain players** so everyone learns to contribute.",
+        },
+      ],
+    },
+    {
+      id: "what-is-model-monitoring",
+      category: "2M",
+      question: "What is Model Monitoring in MLOps?",
+      tags: ["AI/ML", "MLOps"],
+      difficulty: "Medium",
+      answer: [
+        {
+          type: "text",
+          content:
+            "Model Monitoring ==continuously tracks a deployed model== — performance, data drift, latency, errors, and resource usage.",
+        },
+        {
+          type: "callout",
+          variant: "info",
+          content:
+            "Benefit: catches degradation early and triggers alerts or retraining. For LLMs also track __cost, hallucination rate, and user feedback__.",
+        },
+        { type: "heading", content: "Analogy" },
+        {
+          type: "callout",
+          variant: "tip",
+          content: "A **car dashboard** showing speed, fuel, and engine warnings while you drive.",
         },
       ],
     },
@@ -1286,6 +1500,40 @@ export const qansSection: Section = {
           variant: "tip",
           content:
             "The **kitchen** prepares the food (training); the **serving counter** delivers it to customers (serving).",
+        },
+      ],
+    },
+    {
+      id: "ab-testing-for-ai-models",
+      category: "2M",
+      question: "What is A/B Testing for AI Models?",
+      tags: ["AI/ML", "MLOps", "Evaluation"],
+      difficulty: "Medium",
+      answer: [
+        {
+          type: "text",
+          content:
+            "A/B Testing ==compares two model versions on different user groups== to measure real-world performance.",
+        },
+        {
+          type: "list",
+          items: [
+            "**Metrics** — accuracy, user satisfaction, latency, business KPIs.",
+            "Split users __randomly__ and run long enough for statistically significant results.",
+          ],
+        },
+        {
+          type: "callout",
+          variant: "info",
+          content:
+            "Interview Tip: Offline evaluation can look great while users disagree. Safer rollouts: **shadow mode** (new model runs silently) then **canary** (small % of traffic).",
+        },
+        { type: "heading", content: "Analogy" },
+        {
+          type: "callout",
+          variant: "tip",
+          content:
+            "A restaurant serves **two versions of a dish** to different customers to see which wins.",
         },
       ],
     },
@@ -1453,6 +1701,33 @@ export const qansSection: Section = {
           variant: "warn",
           content:
             "Interview Tip: Learning rate __too high__ → may overshoot the optimum. Learning rate __too low__ → training becomes slow or can stall.",
+        },
+      ],
+    },
+    {
+      id: "what-is-batch-normalization",
+      category: "2M",
+      question: "What is Batch Normalization?",
+      tags: ["AI/ML", "Deep Learning"],
+      difficulty: "Hard",
+      answer: [
+        {
+          type: "text",
+          content:
+            "Batch Normalization ==normalizes a layer's activations using the mini-batch's mean and variance==, then applies learnable scale and shift parameters.",
+        },
+        {
+          type: "callout",
+          variant: "info",
+          content:
+            "Benefit: more stable training, faster convergence, and often tolerates higher learning rates. At inference it uses __running averages__ from training. Transformers usually use **Layer Normalization** instead.",
+        },
+        { type: "heading", content: "Analogy" },
+        {
+          type: "callout",
+          variant: "tip",
+          content:
+            "A teacher **adjusts scores to a consistent scale** so students can be compared fairly.",
         },
       ],
     },
@@ -1692,6 +1967,59 @@ export const qansSection: Section = {
           variant: "tip",
           content:
             "Upgrading a car with a **small add-on** instead of rebuilding the whole engine.",
+        },
+      ],
+    },
+    {
+      id: "what-is-mixture-of-experts",
+      category: "2M",
+      question: "What is Mixture of Experts (MoE)?",
+      tags: ["AI/ML", "LLM", "Architecture"],
+      difficulty: "Hard",
+      answer: [
+        {
+          type: "text",
+          content:
+            "MoE uses a ==router to activate only a few expert networks== for each input, instead of the whole model.",
+        },
+        {
+          type: "callout",
+          variant: "info",
+          content:
+            "Benefit: much more capacity with less computation per token. Trade-off: all experts still have to be loaded in __memory__.",
+        },
+        { type: "heading", content: "Analogy" },
+        {
+          type: "callout",
+          variant: "tip",
+          content:
+            "A hospital **receptionist sends each patient to the right specialists** instead of consulting every doctor.",
+        },
+      ],
+    },
+    {
+      id: "what-is-dpo",
+      category: "2M",
+      question: "What is DPO (Direct Preference Optimization)?",
+      tags: ["AI/ML", "LLM", "Alignment"],
+      difficulty: "Hard",
+      answer: [
+        {
+          type: "text",
+          content:
+            "DPO aligns an LLM with human preferences by ==training directly on preferred vs rejected responses== — no separate reward model.",
+        },
+        {
+          type: "callout",
+          variant: "info",
+          content:
+            "Benefit: a simpler, more stable alternative to RLHF. Needs a dataset of __(prompt, chosen answer, rejected answer)__ triples.",
+        },
+        { type: "heading", content: "Analogy" },
+        {
+          type: "callout",
+          variant: "tip",
+          content: "A student learns by **comparing a better answer with a worse one**.",
         },
       ],
     },
