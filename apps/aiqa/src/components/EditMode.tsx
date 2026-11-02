@@ -14,7 +14,6 @@ import { applyEdit, type EditOp } from "@/lib/rich-edit";
 import { hashAnswer } from "@/lib/answer-hash";
 import {
   fetchRemoteEdits,
-  readUnlocked,
   remoteConfigured,
   saveRemoteEdits,
   type RemoteEdit,
@@ -23,8 +22,7 @@ import {
 // Edits go live through Supabase (see answer-edits.ts), so they show up on the
 // deployed site and in local dev alike. On the dev server they are also written
 // into src/content/qans.ts (qa-edit Vite plugin) so they land in git.
-// Editing is always available in dev; on a deployed site the pencil only
-// appears in a browser unlocked once by opening /qans?edit=1 (?edit=0 locks it).
+// This is a personal app: the pencil is always there when Supabase is configured.
 const DEV = import.meta.env.DEV;
 
 const hashCache = new WeakMap<Block[], string>();
@@ -102,8 +100,7 @@ export function EditProvider({ children }: { children: ReactNode }) {
   const [message, setMessage] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
   const [remote, setRemote] = useState<Record<string, RemoteEdit>>({});
-  const [unlocked, setUnlocked] = useState(false);
-  const enabled = (DEV || unlocked) && (DEV || remoteConfigured);
+  const enabled = DEV || remoteConfigured;
   const registry = useRef(new Map<string, Block[]>());
   const timer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
   const overrides = hist.stack[hist.i];
@@ -125,10 +122,6 @@ export function EditProvider({ children }: { children: ReactNode }) {
     return () => {
       cancelled = true;
     };
-  }, []);
-
-  useEffect(() => {
-    setUnlocked(readUnlocked());
   }, []);
 
   const flash = useCallback((m: string) => {

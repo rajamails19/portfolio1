@@ -9,27 +9,18 @@ import {
   type ReactNode,
 } from "react";
 import type { QAItem } from "@/content/types";
-import {
-  fetchMarkRows,
-  readUnlocked,
-  remoteConfigured,
-  saveMarkRow,
-  type MarkRow,
-} from "@/lib/answer-edits";
+import { fetchMarkRows, remoteConfigured, saveMarkRow, type MarkRow } from "@/lib/answer-edits";
 
 // Per-question study marks: heart → Super Important tab, "+" → Important tab,
 // independently; every question always stays in All.
 //
-// Where they live:
-//  • the owner (dev server, or a browser unlocked with ?edit=1) writes them to
-//    Supabase, so localhost and the deployed site show the same marks;
-//  • everyone else sees the owner's marks as a starting point and keeps their
-//    own changes in this browser only.
+// Marks are saved to Supabase (one row per question), so localhost and the
+// deployed site show the same marks; they are re-read whenever the tab regains
+// focus. Without Supabase configured they fall back to this browser's storage.
 // An entry's `tiers` in qans.ts is just the default before anything is marked.
 export type Marks = MarkRow;
 
 const LOCAL_KEY = "aiqa.marks";
-const DEV = import.meta.env.DEV;
 
 const defaultsFor = (item: QAItem): Marks => ({
   plus: !!item.tiers?.includes("imp"),
@@ -47,11 +38,9 @@ export const useTierMarks = () => useContext(TierMarksCtx);
 export function TierMarksProvider({ children }: { children: ReactNode }) {
   const [local, setLocal] = useState<Record<string, Marks>>({});
   const [remote, setRemote] = useState<Record<string, Marks>>({});
-  const [owner, setOwner] = useState(false);
   const loaded = useRef(false);
 
   useEffect(() => {
-    setOwner((DEV || readUnlocked()) && remoteConfigured);
     try {
       const raw = localStorage.getItem(LOCAL_KEY);
       if (raw) setLocal(JSON.parse(raw));
@@ -70,7 +59,7 @@ export function TierMarksProvider({ children }: { children: ReactNode }) {
     }
   }, [local]);
 
-  // Load the owner's marks, and again whenever the tab regains focus so edits
+  // Load the marks, and again whenever the tab regains focus so edits
   // made on the other side (localhost ↔ deployed) show up without a reload.
   useEffect(() => {
     let cancelled = false;
@@ -90,23 +79,22 @@ export function TierMarksProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const marksFor = useCallback(
-    (item: QAItem) =>
-      (owner ? remote[item.id] : (local[item.id] ?? remote[item.id])) ?? defaultsFor(item),
-    [owner, local, remote],
+    (item: QAItem) => (remoteConfigured ? remote[item.id] : local[item.id]) ?? defaultsFor(item),
+    [local, remote],
   );
 
   const toggle = useCallback(
     (item: QAItem, which: keyof Marks) => {
       const cur = marksFor(item);
       const next = { ...cur, [which]: !cur[which] };
-      if (owner) {
+      if (remoteConfigured) {
         setRemote((r) => ({ ...r, [item.id]: next }));
         saveMarkRow(item.id, next).catch((e) => console.error(e));
       } else {
         setLocal((s) => ({ ...s, [item.id]: next }));
       }
     },
-    [marksFor, owner],
+    [marksFor],
   );
 
   const value = useMemo(() => ({ marksFor, toggle }), [marksFor, toggle]);

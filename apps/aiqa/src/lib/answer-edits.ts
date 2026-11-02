@@ -50,21 +50,6 @@ export async function saveRemoteEdits(edits: Record<string, RemoteEdit>): Promis
   if (!res.ok) throw new Error(`Live save failed (${res.status})`);
 }
 
-// ── Owner unlock ───────────────────────────────────────────────────────────
-// Writing to the shared tables is only offered in dev, or in a browser unlocked
-// once by opening any page with ?edit=1 (?edit=0 locks it again).
-const UNLOCK_KEY = "aiqa.edit";
-export function readUnlocked(): boolean {
-  try {
-    const q = new URLSearchParams(window.location.search).get("edit");
-    if (q === "1") localStorage.setItem(UNLOCK_KEY, "1");
-    if (q === "0") localStorage.removeItem(UNLOCK_KEY);
-    return localStorage.getItem(UNLOCK_KEY) === "1";
-  } catch {
-    return false;
-  }
-}
-
 // ── Study marks (+ / heart), one row per question: "aiqa-mark:<id>" ─────────
 const MARK_PREFIX = "aiqa-mark:";
 export interface MarkRow {
