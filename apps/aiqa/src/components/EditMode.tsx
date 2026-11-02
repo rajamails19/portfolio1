@@ -11,10 +11,31 @@ import {
 import { Pencil, Redo2, Save, Undo2, X } from "lucide-react";
 import type { Block, QAItem } from "@/content/types";
 import { applyEdit, type EditOp } from "@/lib/rich-edit";
+import { hashAnswer } from "@/lib/answer-hash";
+import {
+  fetchRemoteEdits,
+  remoteConfigured,
+  saveRemoteEdits,
+  type RemoteEdit,
+} from "@/lib/answer-edits";
 
-// Editing is a local authoring tool: it only exists on the dev server, where
-// the qa-edit Vite plugin can write the result back into src/content/qans.ts.
-const ENABLED = import.meta.env.DEV;
+// Edits go live through Supabase (see answer-edits.ts), so they show up on the
+// deployed site and in local dev alike. On the dev server they are also written
+// into src/content/qans.ts (qa-edit Vite plugin) so they land in git.
+// Editing is always available in dev; on a deployed site the pencil only
+// appears in a browser unlocked once by opening /qans?edit=1 (?edit=0 locks it).
+const DEV = import.meta.env.DEV;
+const UNLOCK_KEY = "aiqa.edit";
+
+const hashCache = new WeakMap<Block[], string>();
+function hashOf(answer: Block[]): string {
+  let h = hashCache.get(answer);
+  if (!h) {
+    h = hashAnswer(answer);
+    hashCache.set(answer, h);
+  }
+  return h;
+}
 
 interface EditCtx {
   enabled: boolean;
@@ -80,6 +101,9 @@ export function EditProvider({ children }: { children: ReactNode }) {
   const [hist, setHist] = useState<{ stack: Overrides[]; i: number }>({ stack: [{}], i: 0 });
   const [message, setMessage] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
+  const [remote, setRemote] = useState<Record<string, RemoteEdit>>({});
+  const [unlocked, setUnlocked] = useState(false);
+  const enabled = (DEV || unlocked) && (DEV || remoteConfigured);
   const registry = useRef(new Map<string, Block[]>());
   const timer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
   const overrides = hist.stack[hist.i];
@@ -91,6 +115,28 @@ export function EditProvider({ children }: { children: ReactNode }) {
     [overrides],
   );
   const dirty = pending.length;
+
+  // Everyone (not just editors) loads the live edits so the deployed site shows them.
+  useEffect(() => {
+    let cancelled = false;
+    fetchRemoteEdits()
+      .then((r) => !cancelled && setRemote(r))
+      .catch((e) => console.error(e));
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  useEffect(() => {
+    try {
+      const q = new URLSearchParams(window.location.search).get("edit");
+      if (q === "1") localStorage.setItem(UNLOCK_KEY, "1");
+      if (q === "0") localStorage.removeItem(UNLOCK_KEY);
+      setUnlocked(localStorage.getItem(UNLOCK_KEY) === "1");
+    } catch {
+      /* storage blocked — stay locked */
+    }
+  }, []);
 
   const flash = useCallback((m: string) => {
     setMessage(m);
@@ -109,9 +155,9 @@ export function EditProvider({ children }: { children: ReactNode }) {
       )
         return;
       if (!v) reset();
-      setEditingState(ENABLED && v);
+      setEditingState(enabled && v);
     },
-    [dirty, reset],
+    [dirty, reset, enabled],
   );
 
   useEffect(() => {
@@ -126,13 +172,23 @@ export function EditProvider({ children }: { children: ReactNode }) {
     return () => window.removeEventListener("beforeunload", warn);
   }, [dirty]);
 
+  // Staged edit → live edit (only while the file answer is unchanged) → file answer.
+  const effective = useCallback(
+    (id: string, base: Block[]) => {
+      const o = overrides[id];
+      if (o && o.base === base) return o.answer;
+      const r = remote[id];
+      return r && r.baseHash === hashOf(base) ? r.answer : base;
+    },
+    [overrides, remote],
+  );
+
   const answerFor = useCallback(
     (item: QAItem) => {
       registry.current.set(item.id, item.answer);
-      const o = overrides[item.id];
-      return o && o.base === item.answer ? o.answer : item.answer;
+      return effective(item.id, item.answer);
     },
-    [overrides],
+    [effective],
   );
 
   const apply = useCallback(
@@ -141,7 +197,7 @@ export function EditProvider({ children }: { children: ReactNode }) {
       if (typeof sel === "string") return flash(sel);
       const base = registry.current.get(sel.itemId);
       if (!base) return flash("Couldn't find that answer.");
-      const current = overrides[sel.itemId]?.base === base ? overrides[sel.itemId].answer : base;
+      const current = effective(sel.itemId, base);
       const result = applyEdit(current, sel, op);
       if ("error" in result) return flash(result.error);
       window.getSelection()?.removeAllRanges();
@@ -151,7 +207,7 @@ export function EditProvider({ children }: { children: ReactNode }) {
         return { stack: trimmed, i: trimmed.length - 1 };
       });
     },
-    [overrides, flash],
+    [effective, flash],
   );
 
   const undo = useCallback(() => setHist((h) => ({ ...h, i: Math.max(0, h.i - 1) })), []);
@@ -171,14 +227,33 @@ export function EditProvider({ children }: { children: ReactNode }) {
     if (!dirty || saving) return;
     setSaving(true);
     try {
-      const res = await fetch("/__qa-edit", {
-        method: "POST",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify({ edits: pending.map(([id, o]) => ({ id, answer: o.answer })) }),
-      });
-      if (!res.ok) throw new Error((await res.json()).error ?? "Save failed");
+      if (DEV) {
+        const res = await fetch("/__qa-edit", {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify({ edits: pending.map(([id, o]) => ({ id, answer: o.answer })) }),
+        });
+        if (!res.ok) throw new Error((await res.json()).error ?? "Save failed");
+      }
+      const live: Record<string, RemoteEdit> = {};
+      for (const [id, o] of pending) live[id] = { baseHash: hashOf(o.base), answer: o.answer };
+      let liveOk = true;
+      try {
+        await saveRemoteEdits(live);
+        setRemote((r) => ({ ...r, ...live }));
+      } catch (e) {
+        liveOk = false;
+        if (!DEV) throw e;
+      }
       reset();
-      flash(`Saved ${dirty} answer${dirty > 1 ? "s" : ""} to qans.ts`);
+      const n = `${dirty} answer${dirty > 1 ? "s" : ""}`;
+      flash(
+        DEV
+          ? liveOk
+            ? `Saved ${n} to qans.ts and live`
+            : `Saved ${n} to qans.ts (live save failed)`
+          : `Saved ${n} — live now`,
+      );
     } catch (e) {
       flash(`Not saved: ${(e as Error).message}`);
     } finally {
@@ -211,14 +286,14 @@ export function EditProvider({ children }: { children: ReactNode }) {
   }, [editing, undo, redo, save]);
 
   const value = useMemo(
-    () => ({ enabled: ENABLED, editing, setEditing, answerFor }),
-    [editing, setEditing, answerFor],
+    () => ({ enabled, editing, setEditing, answerFor }),
+    [enabled, editing, setEditing, answerFor],
   );
 
   return (
     <Ctx.Provider value={value}>
       {children}
-      {ENABLED && editing && (
+      {enabled && editing && (
         <EditToolbar
           onApply={apply}
           message={message}
@@ -364,7 +439,7 @@ function EditToolbar({
           type="button"
           onClick={onSave}
           disabled={!dirty || saving}
-          title="Save to qans.ts (Ctrl/Cmd+S)"
+          title="Save (Ctrl/Cmd+S)"
           className="inline-flex h-9 items-center gap-1.5 rounded-xl bg-gradient-to-br from-gold to-ember px-3 text-xs font-bold text-primary-foreground shadow-glow transition disabled:cursor-not-allowed disabled:opacity-35 disabled:shadow-none"
         >
           <Save className="h-3.5 w-3.5" />

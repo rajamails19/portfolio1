@@ -1,7 +1,8 @@
 import fs from "node:fs";
 import path from "node:path";
 import { execFile } from "node:child_process";
-import type { Plugin } from "vite";
+import { loadEnv, type Plugin, type ViteDevServer } from "vite";
+import { hashAnswer } from "./src/lib/answer-hash";
 
 // Dev-only: lets the in-app "Edit" toolbar write an answer's blocks back into
 // src/content/qans.ts, so edits made in the browser land in source control.
@@ -29,10 +30,62 @@ export function qaEditPlugin(): Plugin {
     });
   };
 
+  // Supabase's jsonb hands keys back sorted by length, which would shuffle every
+  // block's fields in qans.ts. Put them back in the order the file already uses.
+  const keepKeyOrder = (b: unknown, template: unknown): unknown => {
+    const block = b as Record<string, unknown>;
+    const t = template as Record<string, unknown> | undefined;
+    const keys = Object.keys(block);
+    const order =
+      t && t.type === block.type
+        ? [...Object.keys(t).filter((k) => k in block), ...keys.filter((k) => !(k in t))]
+        : ["type", ...keys.filter((k) => k !== "type")];
+    return Object.fromEntries(order.map((k) => [k, block[k]]));
+  };
+
+  // Edits made on the deployed site live in Supabase. When the dev server starts,
+  // fold any that still match the file's current answer into qans.ts, so local
+  // and live stay in step (and the changes show up in git).
+  const pull = async (server: ViteDevServer, url: string, key: string) => {
+    try {
+      const res = await fetch(
+        `${url}/rest/v1/intervqans_page_edits?select=pathname,edits&pathname=like.${encodeURIComponent("aiqa-answer:*")}`,
+        { headers: { apikey: key, Authorization: `Bearer ${key}` } },
+      );
+      if (!res.ok) return;
+      const rows = (await res.json()) as {
+        pathname: string;
+        edits: { baseHash: string; answer: unknown[] };
+      }[];
+      const mod = await server.ssrLoadModule("/src/content/qans.ts");
+      const current = new Map<string, unknown[]>(
+        (mod.qansSection.items as { id: string; answer: unknown[] }[]).map((i) => [i.id, i.answer]),
+      );
+      const edits = rows.flatMap((r) => {
+        const id = r.pathname.slice("aiqa-answer:".length);
+        const file = current.get(id);
+        return file && r.edits?.baseHash === hashAnswer(file) && Array.isArray(r.edits.answer)
+          ? [{ id, answer: r.edits.answer.map((b, i) => keepKeyOrder(b, file[i])) }]
+          : [];
+      });
+      if (!edits.length) return;
+      await (queue = queue.then(() => save(edits)));
+      server.config.logger.info(`[qa-edit] pulled ${edits.length} live edit(s) into qans.ts`);
+    } catch {
+      /* offline or no table access — local content is unaffected */
+    }
+  };
+
   return {
     name: "qa-edit",
     apply: "serve",
     configureServer(server) {
+      const env = loadEnv(server.config.mode, process.cwd(), "");
+      if (env.VITE_SUPABASE_URL && env.VITE_SUPABASE_ANON_KEY) {
+        server.httpServer?.once("listening", () => {
+          void pull(server, env.VITE_SUPABASE_URL, env.VITE_SUPABASE_ANON_KEY);
+        });
+      }
       server.middlewares.use("/__qa-edit", (req, res) => {
         if (req.method !== "POST") {
           res.statusCode = 405;
