@@ -27,6 +27,7 @@ import { useTheme } from "@/themes/ThemeContext";
 import { QuestionCard } from "./QuestionCard";
 import { QuotesTicker } from "./QuotesTicker";
 import { ProgramComparisonDialog } from "./ProgramComparisonDialog";
+import { HighlightGuideDialog } from "./HighlightGuideDialog";
 
 const COMPARABLE_PROGRAM_CATEGORIES = new Set(["Java", "JScript", "Python", ".NET"]);
 
@@ -74,9 +75,7 @@ const CERT_TOPICS_BY_THEME: Record<string, { name: string; Icon: typeof Code2 }[
 };
 
 const QANS_MARKS_BY_THEME: Record<string, { name: string; Icon: typeof Code2 }[]> = {
-  noir: [
-    { name: "2M", Icon: Zap },
-  ],
+  noir: [{ name: "2M", Icon: Zap }],
 };
 
 const PROGRAM_TOPICS_BY_THEME: Record<string, { name: string; Icon: typeof Code2 }[]> = {
@@ -267,6 +266,7 @@ export function SectionView({ section }: { section: Section }) {
                   <span className="rounded-full border border-gold/25 bg-noir/60 px-3 py-1 text-xs font-semibold text-foreground/80">
                     Click any card to expand
                   </span>
+                  <HighlightGuideDialog />
                 </div>
               </div>
               <div className="glass-strong hidden rounded-3xl p-4 md:block">

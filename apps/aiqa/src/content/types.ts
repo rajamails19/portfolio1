@@ -3,6 +3,7 @@
  *   ==highlight==   → gold highlight background
  *   __underline__   → wavy gold underline
  *   **bold**        → bold + gold color
+ *   ^^rose^^        → soft rose highlight
  *   `code`          → inline code chip
  *   [label](url)    → external link
  */
@@ -11,7 +12,7 @@ export type Block =
   | { type: "heading"; content: string }
   | { type: "list"; items: string[]; ordered?: boolean }
   | { type: "code"; language: string; content: string }
-  | { type: "callout"; variant?: "info" | "warn" | "tip"; content: string }
+  | { type: "callout"; variant?: "info" | "warn" | "tip" | "spotlight"; content: string }
   | { type: "table"; headers: string[]; rows: string[][] }
   | { type: "image"; src: string; alt: string }
   | { type: "link"; href: string; label: string }

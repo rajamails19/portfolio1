@@ -38,9 +38,12 @@ function Callout({
   variant = "info",
   children,
 }: {
-  variant?: "info" | "warn" | "tip";
+  variant?: "info" | "warn" | "tip" | "spotlight";
   children: React.ReactNode;
 }) {
+  if (variant === "spotlight") {
+    return <div className="callout-spotlight my-4 text-[15px] leading-relaxed">{children}</div>;
+  }
   const styles = {
     info: {
       bg: "bg-[oklch(0.25_0.06_235)]/60",
@@ -75,7 +78,7 @@ export function AnswerBlocks({ blocks }: { blocks: Block[] }) {
         switch (b.type) {
           case "heading":
             return (
-              <h4 key={i} className="mt-5 mb-2 font-display text-lg font-semibold text-foreground">
+              <h4 key={i} className="qa-heading mt-6 mb-3 font-display text-lg font-semibold">
                 {b.content}
               </h4>
             );
@@ -128,42 +131,46 @@ export function AnswerBlocks({ blocks }: { blocks: Block[] }) {
             return (
               <div key={i} className="my-4 overflow-hidden rounded-2xl border border-gold/20">
                 <div className="overflow-x-auto">
-                <table className="w-full text-sm">
-                  <thead style={{ backgroundColor: "oklch(0.16 0.02 85)" }}>
-                    <tr>
-                      {b.headers.map((h, k) => (
-                        <th
-                          key={k}
-                          className="px-4 py-2.5 text-left font-bold"
-                          style={{ color: h ? HEADER_COLORS[k % HEADER_COLORS.length] : "oklch(0.55 0.01 85)" }}
-                        >
-                          {h}
-                        </th>
-                      ))}
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {b.rows.map((row, r) => (
-                      <tr key={r} className="border-t border-gold/10 odd:bg-noir/40">
-                        {row.map((c, k) =>
-                          k === 0 ? (
-                            <td
-                              key={k}
-                              className="px-4 py-2.5 align-top font-bold"
-                              style={{ color: ROW_LABEL_COLORS[r % ROW_LABEL_COLORS.length] }}
-                            >
-                              {stripOuterBold(c) ?? renderInline(c)}
-                            </td>
-                          ) : (
-                            <td key={k} className="px-4 py-2.5 align-top text-foreground/85">
-                              {renderInline(c)}
-                            </td>
-                          ),
-                        )}
+                  <table className="w-full text-sm">
+                    <thead style={{ backgroundColor: "oklch(0.16 0.02 85)" }}>
+                      <tr>
+                        {b.headers.map((h, k) => (
+                          <th
+                            key={k}
+                            className="px-4 py-2.5 text-left font-bold"
+                            style={{
+                              color: h
+                                ? HEADER_COLORS[k % HEADER_COLORS.length]
+                                : "oklch(0.55 0.01 85)",
+                            }}
+                          >
+                            {h}
+                          </th>
+                        ))}
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
+                    </thead>
+                    <tbody>
+                      {b.rows.map((row, r) => (
+                        <tr key={r} className="border-t border-gold/10 odd:bg-noir/40">
+                          {row.map((c, k) =>
+                            k === 0 ? (
+                              <td
+                                key={k}
+                                className="px-4 py-2.5 align-top font-bold"
+                                style={{ color: ROW_LABEL_COLORS[r % ROW_LABEL_COLORS.length] }}
+                              >
+                                {stripOuterBold(c) ?? renderInline(c)}
+                              </td>
+                            ) : (
+                              <td key={k} className="px-4 py-2.5 align-top text-foreground/85">
+                                {renderInline(c)}
+                              </td>
+                            ),
+                          )}
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
                 </div>
               </div>
             );

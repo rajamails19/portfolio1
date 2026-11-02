@@ -5,12 +5,14 @@ import { Fragment, type ReactNode } from "react";
  *   ==highlight==   → gold highlight background
  *   __underline__   → wavy gold underline
  *   **bold**        → bold + gold text
+ *   ^^rose^^        → soft rose highlight
  *   `code`          → inline code chip
  *   [label](url)    → external link
  */
 export function renderInline(input: string): ReactNode {
   // Master regex matches any of the supported markers.
-  const re = /(\*\*[^*]+\*\*)|(==[^=]+==)|(__[^_]+__)|(`[^`]+`)|(\[[^\]]+\]\([^)]+\))/g;
+  const re =
+    /(\*\*[^*]+\*\*)|(==[^=]+==)|(__[^_]+__)|(\^\^.+?\^\^)|(`[^`]+`)|(\[[^\]]+\]\([^)]+\))/g;
 
   const parts: ReactNode[] = [];
   let last = 0;
@@ -34,6 +36,12 @@ export function renderInline(input: string): ReactNode {
           key={key}
           className="rounded-md bg-gold px-1.5 py-0.5 font-semibold text-[oklch(0.2_0.03_85)]"
         >
+          {token.slice(2, -2)}
+        </mark>,
+      );
+    } else if (token.startsWith("^^")) {
+      parts.push(
+        <mark key={key} className="hl hl-rose">
           {token.slice(2, -2)}
         </mark>,
       );

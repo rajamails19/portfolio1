@@ -17,13 +17,31 @@ export const qansSection: Section = {
         {
           type: "text",
           content:
-            "Machine Learning is a subset of AI where computers ==learn from data== instead of being explicitly programmed.",
+            "“Machine learning is a **way of building software** where, instead of **explicitly programming the rules**, we give the system ==examples==, and it ==learns a mapping from inputs to outputs== on its own.”",
         },
         {
           type: "callout",
-          variant: "info",
+          variant: "spotlight",
           content:
-            "Machine Learning is a technique where a **model** learns patterns from historical data and uses those patterns to make predictions on new data.",
+            "“Machine learning (ML) is a way **to train software**, called a **model**, that ^^learn patterns from data^^ to make predictions or generate content using data.”",
+        },
+        {
+          type: "text",
+          content: "In traditional programming, we write ^^rules + data → answers^^.",
+        },
+        {
+          type: "text",
+          content:
+            "In ML, **we flip it**: we give it ==data + answers==, and it ^^figures out the rules^^.",
+        },
+        { type: "heading", content: "3 key pillars of ML :-" },
+        {
+          type: "list",
+          items: [
+            "==Explicit Rules vs. Learned Patterns:==",
+            "Generalization over Memorization:",
+            "^^Continuous Iteration (Data over Code):^^",
+          ],
         },
       ],
     },
