@@ -17,6 +17,7 @@ import { MobileNav } from "../components/MobileNav";
 import { SiteEditor } from "../components/SiteEditor";
 import { ThemeProvider } from "../themes/ThemeContext";
 import { AppearanceProvider } from "../themes/AppearanceContext";
+import { TierMarksProvider } from "../lib/tier-marks";
 import { ThemeSwitcher } from "../components/ThemeSwitcher";
 
 function NotFoundComponent() {
@@ -155,19 +156,21 @@ function RootComponent() {
     <QueryClientProvider client={queryClient}>
       <AppearanceProvider>
         <ThemeProvider>
-          <ThemeSwitcher />
-          <MobileNav />
-          <div className="flex min-h-dvh">
-            <div className="hidden lg:block">
-              <SideNav />
-            </div>
-            <main className="flex-1 min-w-0">
-              <div data-site-edit-surface="page">
-                <Outlet />
+          <TierMarksProvider>
+            <ThemeSwitcher />
+            <MobileNav />
+            <div className="flex min-h-dvh">
+              <div className="hidden lg:block">
+                <SideNav />
               </div>
-            </main>
-          </div>
-          <SiteEditor />
+              <main className="flex-1 min-w-0">
+                <div data-site-edit-surface="page">
+                  <Outlet />
+                </div>
+              </main>
+            </div>
+            <SiteEditor />
+          </TierMarksProvider>
         </ThemeProvider>
       </AppearanceProvider>
     </QueryClientProvider>

@@ -13,6 +13,7 @@ export const qansSection: Section = {
       question: "What is Machine Learning?",
       tags: ["AI/ML", "Fundamentals"],
       difficulty: "Easy",
+      tiers: ["simp", "imp"],
       answer: [
         {
           type: "text",

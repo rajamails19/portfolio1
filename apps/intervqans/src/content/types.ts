@@ -50,6 +50,8 @@ export interface QAItem {
   subCategory?: string;
   tags?: string[];
   difficulty?: "Easy" | "Medium" | "Hard";
+  /** Importance tiers this entry starts in (before the owner marks it): "simp" / "imp". */
+  tiers?: ("simp" | "imp")[];
   answer: Block[];
 }
 

@@ -15,7 +15,9 @@ import {
   FileCode2,
   Bot,
   Box,
-  Zap,
+  Flame,
+  Star,
+  Layers,
   Sparkles,
   Lightbulb,
   Target,
@@ -29,6 +31,7 @@ import { QuotesTicker } from "./QuotesTicker";
 import { ProgramComparisonDialog } from "./ProgramComparisonDialog";
 import { HighlightGuideDialog } from "./HighlightGuideDialog";
 import { EditToggle } from "./EditMode";
+import { useTierMarks } from "@/lib/tier-marks";
 
 const COMPARABLE_PROGRAM_CATEGORIES = new Set(["Java", "JScript", "Python", ".NET"]);
 
@@ -75,8 +78,26 @@ const CERT_TOPICS_BY_THEME: Record<string, { name: string; Icon: typeof Code2 }[
   ],
 };
 
-const QANS_MARKS_BY_THEME: Record<string, { name: string; Icon: typeof Code2 }[]> = {
-  noir: [{ name: "2M", Icon: Zap }],
+// Importance tiers shown on the side rail. "All" is every entry; SImp / Imp are
+// the entries tagged with that tier in qans.ts (`tiers`).
+type Tier = "simp" | "imp" | "all";
+const QANS_MARKS_BY_THEME: Record<string, { name: string; tier: Tier; Icon: typeof Code2 }[]> = {
+  noir: [
+    { name: "SImp", tier: "simp", Icon: Flame },
+    { name: "Imp", tier: "imp", Icon: Star },
+    { name: "All", tier: "all", Icon: Layers },
+  ],
+};
+
+// "+" → Imp; heart → SImp. Everything is in All.
+const inTier = (
+  it: QAItem,
+  tier: Tier,
+  marksFor: (it: QAItem) => { plus: boolean; heart: boolean },
+) => {
+  if (it.category !== "2M") return false;
+  const m = marksFor(it);
+  return tier === "all" || (tier === "imp" ? m.plus : m.heart);
 };
 
 const PROGRAM_TOPICS_BY_THEME: Record<string, { name: string; Icon: typeof Code2 }[]> = {
@@ -100,6 +121,7 @@ export function SectionView({ section }: { section: Section }) {
   const [q, setQ] = useState("");
   const [comparisonKey, setComparisonKey] = useState<string | null>(null);
   const { theme, themeKey } = useTheme();
+  const { marksFor } = useTierMarks();
   const meta = theme.sections[section.slug];
   const mascot = meta.mascot;
   const topics =
@@ -114,7 +136,9 @@ export function SectionView({ section }: { section: Section }) {
   const marks = section.slug === "qans" ? QANS_MARKS_BY_THEME[themeKey] : undefined;
   const showMarks = !!marks;
   const [activeTopic, setActiveTopic] = useState(topics?.[0]?.name ?? "");
-  const [activeMark, setActiveMark] = useState(marks?.[0]?.name ?? "");
+  const [activeMark, setActiveMark] = useState(
+    marks?.find((m) => m.tier === "all")?.name ?? marks?.[0]?.name ?? "",
+  );
   const [activeSubTopic, setActiveSubTopic] = useState(QAUTO_PROGRAM_TOPICS[0].name);
   const showProgramSubTopics =
     section.slug === "programs" && themeKey === "chaat" && activeTopic === "QAutoPrograms";
@@ -133,12 +157,15 @@ export function SectionView({ section }: { section: Section }) {
     }
   }, [marks, activeMark]);
 
+  const activeTier = marks?.find((m) => m.name === activeMark)?.tier ?? "all";
   const activeTopicItems = useMemo(
     () =>
-      showCategoryFilter
-        ? section.items.filter((it) => it.category === activeCategory)
-        : section.items,
-    [activeCategory, section.items, showCategoryFilter],
+      showMarks
+        ? section.items.filter((it) => inTier(it, activeTier, marksFor))
+        : showCategoryFilter
+          ? section.items.filter((it) => it.category === activeCategory)
+          : section.items,
+    [activeCategory, activeTier, marksFor, section.items, showCategoryFilter, showMarks],
   );
 
   const visibleItems = useMemo(
@@ -204,9 +231,9 @@ export function SectionView({ section }: { section: Section }) {
       <div className="flex items-start gap-5">
         {showMarks && (
           <nav aria-label="Marks" className="hidden w-16 shrink-0 flex-col gap-2 sm:flex">
-            {marks.map(({ name, Icon }) => {
+            {marks.map(({ name, tier, Icon }) => {
               const active = activeMark === name;
-              const count = section.items.filter((it) => it.category === name).length;
+              const count = section.items.filter((it) => inTier(it, tier, marksFor)).length;
               return (
                 <button
                   key={name}

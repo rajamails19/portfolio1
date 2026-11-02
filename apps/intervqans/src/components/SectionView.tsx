@@ -16,6 +16,8 @@ import {
   Bot,
   Box,
   Zap,
+  Flame,
+  Star,
   FileText,
   ScrollText,
   Sparkles,
@@ -28,6 +30,7 @@ import type { QAItem, Section } from "@/content/types";
 import { useTheme } from "@/themes/ThemeContext";
 import { QuestionCard } from "./QuestionCard";
 import { QuotesTicker } from "./QuotesTicker";
+import { useTierMarks } from "@/lib/tier-marks";
 import { ProgramComparisonDialog } from "./ProgramComparisonDialog";
 
 const COMPARABLE_PROGRAM_CATEGORIES = new Set(["Java", "JScript", "Python", ".NET"]);
@@ -75,12 +78,28 @@ const CERT_TOPICS_BY_THEME: Record<string, { name: string; Icon: typeof Code2 }[
   ],
 };
 
-const QANS_MARKS_BY_THEME: Record<string, { name: string; Icon: typeof Code2 }[]> = {
+// SImp / Imp are views over the 2M entries: "heart" → SImp, "+" → Imp (set on
+// each card). 2M itself stays the full list; 5M / 16M are unchanged.
+type Mark = { name: string; tier?: "simp" | "imp"; Icon: typeof Code2 };
+const QANS_MARKS_BY_THEME: Record<string, Mark[]> = {
   noir: [
+    { name: "SImp", tier: "simp", Icon: Flame },
+    { name: "Imp", tier: "imp", Icon: Star },
     { name: "2M", Icon: Zap },
     { name: "5M", Icon: FileText },
     { name: "16M", Icon: ScrollText },
   ],
+};
+
+const inMark = (
+  it: QAItem,
+  mark: Mark,
+  marksFor: (it: QAItem) => { plus: boolean; heart: boolean },
+) => {
+  if (!mark.tier) return it.category === mark.name;
+  if (it.category !== "2M") return false;
+  const m = marksFor(it);
+  return mark.tier === "imp" ? m.plus : m.heart;
 };
 
 const PROGRAM_TOPICS_BY_THEME: Record<string, { name: string; Icon: typeof Code2 }[]> = {
@@ -104,6 +123,7 @@ export function SectionView({ section }: { section: Section }) {
   const [q, setQ] = useState("");
   const [comparisonKey, setComparisonKey] = useState<string | null>(null);
   const { theme, themeKey } = useTheme();
+  const { marksFor } = useTierMarks();
   const meta = theme.sections[section.slug];
   const mascot = meta.mascot;
   const topics =
@@ -118,7 +138,9 @@ export function SectionView({ section }: { section: Section }) {
   const marks = section.slug === "qans" ? QANS_MARKS_BY_THEME[themeKey] : undefined;
   const showMarks = !!marks;
   const [activeTopic, setActiveTopic] = useState(topics?.[0]?.name ?? "");
-  const [activeMark, setActiveMark] = useState(marks?.[0]?.name ?? "");
+  const [activeMark, setActiveMark] = useState(
+    marks?.find((m) => m.name === "2M")?.name ?? marks?.[0]?.name ?? "",
+  );
   const [activeSubTopic, setActiveSubTopic] = useState(QAUTO_PROGRAM_TOPICS[0].name);
   const showProgramSubTopics =
     section.slug === "programs" && themeKey === "chaat" && activeTopic === "QAutoPrograms";
@@ -137,12 +159,15 @@ export function SectionView({ section }: { section: Section }) {
     }
   }, [marks, activeMark]);
 
+  const activeMarkDef = marks?.find((m) => m.name === activeMark);
   const activeTopicItems = useMemo(
     () =>
-      showCategoryFilter
-        ? section.items.filter((it) => it.category === activeCategory)
-        : section.items,
-    [activeCategory, section.items, showCategoryFilter],
+      showMarks && activeMarkDef
+        ? section.items.filter((it) => inMark(it, activeMarkDef, marksFor))
+        : showCategoryFilter
+          ? section.items.filter((it) => it.category === activeCategory)
+          : section.items,
+    [activeCategory, activeMarkDef, marksFor, section.items, showCategoryFilter, showMarks],
   );
 
   const visibleItems = useMemo(
@@ -208,9 +233,10 @@ export function SectionView({ section }: { section: Section }) {
       <div className="flex items-start gap-5">
         {showMarks && (
           <nav aria-label="Marks" className="hidden w-16 shrink-0 flex-col gap-2 sm:flex">
-            {marks.map(({ name, Icon }) => {
+            {marks.map((mark) => {
+              const { name, Icon } = mark;
               const active = activeMark === name;
-              const count = section.items.filter((it) => it.category === name).length;
+              const count = section.items.filter((it) => inMark(it, mark, marksFor)).length;
               return (
                 <button
                   key={name}

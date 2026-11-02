@@ -14,6 +14,7 @@ import { applyEdit, type EditOp } from "@/lib/rich-edit";
 import { hashAnswer } from "@/lib/answer-hash";
 import {
   fetchRemoteEdits,
+  readUnlocked,
   remoteConfigured,
   saveRemoteEdits,
   type RemoteEdit,
@@ -25,7 +26,6 @@ import {
 // Editing is always available in dev; on a deployed site the pencil only
 // appears in a browser unlocked once by opening /qans?edit=1 (?edit=0 locks it).
 const DEV = import.meta.env.DEV;
-const UNLOCK_KEY = "aiqa.edit";
 
 const hashCache = new WeakMap<Block[], string>();
 function hashOf(answer: Block[]): string {
@@ -128,14 +128,7 @@ export function EditProvider({ children }: { children: ReactNode }) {
   }, []);
 
   useEffect(() => {
-    try {
-      const q = new URLSearchParams(window.location.search).get("edit");
-      if (q === "1") localStorage.setItem(UNLOCK_KEY, "1");
-      if (q === "0") localStorage.removeItem(UNLOCK_KEY);
-      setUnlocked(localStorage.getItem(UNLOCK_KEY) === "1");
-    } catch {
-      /* storage blocked — stay locked */
-    }
+    setUnlocked(readUnlocked());
   }, []);
 
   const flash = useCallback((m: string) => {

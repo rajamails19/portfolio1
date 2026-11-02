@@ -1,8 +1,9 @@
 import { useState } from "react";
-import { ChevronDown, Columns3 } from "lucide-react";
+import { ChevronDown, Columns3, Heart, Plus } from "lucide-react";
 import type { QAItem } from "@/content/types";
 import { AnswerBlocks } from "./AnswerBlocks";
 import { useEditMode } from "./EditMode";
+import { useTierMarks } from "@/lib/tier-marks";
 
 // Solid background + fixed dark ink — same convention used for the
 // highlight mark and table headers, so these read correctly in both
@@ -24,6 +25,8 @@ export function QuestionCard({
 }) {
   const [open, setOpen] = useState(false);
   const { answerFor } = useEditMode();
+  const { marksFor, toggle } = useTierMarks();
+  const marks = marksFor(item);
 
   return (
     <div
@@ -65,18 +68,58 @@ export function QuestionCard({
               ))}
             </div>
           </div>
+        </button>
 
-          <span
+        <div className="mt-1 flex shrink-0 items-center gap-1.5">
+          {item.category === "2M" && (
+            <>
+              <button
+                type="button"
+                onClick={() => toggle(item, "plus")}
+                aria-pressed={marks.plus}
+                title={marks.plus ? "Remove from Important" : "Mark Important (+)"}
+                aria-label="Mark Important"
+                className={[
+                  "flex h-8 w-8 items-center justify-center rounded-full border transition",
+                  marks.plus
+                    ? "border-gold/40 bg-gold/15 text-gold-ink"
+                    : "border-gold/25 bg-noir/60 text-foreground/70 hover:border-gold/60 hover:text-foreground",
+                ].join(" ")}
+              >
+                <Plus className="h-4 w-4" />
+              </button>
+              <button
+                type="button"
+                onClick={() => toggle(item, "heart")}
+                aria-pressed={marks.heart}
+                title={marks.heart ? "Remove from Super Important" : "Mark Super Important (heart)"}
+                aria-label="Heart"
+                className={[
+                  "flex h-8 w-8 items-center justify-center rounded-full border transition",
+                  marks.heart
+                    ? "border-[oklch(0.62_0.14_12)]/45 bg-[oklch(0.62_0.14_12)]/20 text-[oklch(0.74_0.12_12)]"
+                    : "border-gold/25 bg-noir/60 text-foreground/70 hover:border-gold/60 hover:text-foreground",
+                ].join(" ")}
+              >
+                <Heart className={["h-4 w-4", marks.heart ? "fill-current" : ""].join(" ")} />
+              </button>
+            </>
+          )}
+          <button
+            type="button"
+            onClick={() => setOpen((v) => !v)}
+            aria-expanded={open}
+            aria-label={open ? "Collapse answer" : "Expand answer"}
             className={[
-              "mt-1 flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-gold/25 bg-noir/60 text-foreground/70 transition-transform duration-300",
+              "flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-gold/25 bg-noir/60 text-foreground/70 transition-transform duration-300",
               open
                 ? "rotate-180 border-transparent bg-gradient-to-br from-gold to-ember text-primary-foreground"
                 : "group-hover:bg-noir",
             ].join(" ")}
           >
             <ChevronDown className="h-5 w-5" />
-          </span>
-        </button>
+          </button>
+        </div>
 
         {onCompare && (
           <button

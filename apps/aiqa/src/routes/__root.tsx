@@ -15,6 +15,7 @@ import { reportLovableError } from "../lib/lovable-error-reporting";
 import { ThemeProvider } from "../themes/ThemeContext";
 import { AppearanceProvider } from "../themes/AppearanceContext";
 import { EditProvider } from "../components/EditMode";
+import { TierMarksProvider } from "../lib/tier-marks";
 
 function NotFoundComponent() {
   return (
@@ -149,11 +150,13 @@ function RootComponent() {
     <QueryClientProvider client={queryClient}>
       <AppearanceProvider>
         <ThemeProvider>
-          <EditProvider>
-            <main className="min-w-0">
-              <Outlet />
-            </main>
-          </EditProvider>
+          <TierMarksProvider>
+            <EditProvider>
+              <main className="min-w-0">
+                <Outlet />
+              </main>
+            </EditProvider>
+          </TierMarksProvider>
         </ThemeProvider>
       </AppearanceProvider>
     </QueryClientProvider>
