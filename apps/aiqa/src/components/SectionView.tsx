@@ -28,6 +28,7 @@ import { QuestionCard } from "./QuestionCard";
 import { QuotesTicker } from "./QuotesTicker";
 import { ProgramComparisonDialog } from "./ProgramComparisonDialog";
 import { HighlightGuideDialog } from "./HighlightGuideDialog";
+import { EditToggle } from "./EditMode";
 
 const COMPARABLE_PROGRAM_CATEGORIES = new Set(["Java", "JScript", "Python", ".NET"]);
 
@@ -267,6 +268,7 @@ export function SectionView({ section }: { section: Section }) {
                     Click any card to expand
                   </span>
                   <HighlightGuideDialog />
+                  <EditToggle />
                 </div>
               </div>
               <div className="glass-strong hidden rounded-3xl p-4 md:block">

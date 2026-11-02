@@ -793,3 +793,13 @@
   background-clip: text, border-box;
   -webkit-text-fill-color: transparent;
 }
+
+/* Edit mode (dev only): make answer text read as selectable/editable. */
+.qa-editing [data-qa-item] {
+  outline: 1px dashed oklch(0.82 0.1 85 / 0.3);
+  outline-offset: 8px;
+  border-radius: 6px;
+}
+.qa-editing [data-qa-b] {
+  cursor: text;
+}

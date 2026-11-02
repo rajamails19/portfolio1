@@ -3,7 +3,7 @@ import { Fragment, type ReactNode } from "react";
 /**
  * Parse inline markers into React nodes.
  *   ==highlight==   → gold highlight background
- *   __underline__   → wavy gold underline
+ *   __underline__   → bold green underline
  *   **bold**        → bold + gold text
  *   ^^rose^^        → soft rose highlight
  *   `code`          → inline code chip
@@ -49,7 +49,7 @@ export function renderInline(input: string): ReactNode {
       parts.push(
         <span
           key={key}
-          className="underline decoration-ember decoration-wavy decoration-2 underline-offset-[6px]"
+          className="underline decoration-[oklch(0.76_0.16_160)] decoration-[3px] underline-offset-[5px]"
         >
           {token.slice(2, -2)}
         </span>,

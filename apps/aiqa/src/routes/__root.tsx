@@ -14,6 +14,7 @@ import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { ThemeProvider } from "../themes/ThemeContext";
 import { AppearanceProvider } from "../themes/AppearanceContext";
+import { EditProvider } from "../components/EditMode";
 
 function NotFoundComponent() {
   return (
@@ -83,23 +84,20 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { title: "AIML Q&A — Interview answers that stick" },
       {
         name: "description",
-        content:
-          "Crisp, memorable answers to AI and machine learning interview questions.",
+        content: "Crisp, memorable answers to AI and machine learning interview questions.",
       },
       { name: "author", content: "AIML Q&A" },
       { property: "og:title", content: "AIML Q&A — Interview answers that stick" },
       {
         property: "og:description",
-        content:
-          "Crisp, memorable answers to AI and machine learning interview questions.",
+        content: "Crisp, memorable answers to AI and machine learning interview questions.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: "AIML Q&A — Interview answers that stick" },
       {
         name: "twitter:description",
-        content:
-          "Crisp, memorable answers to AI and machine learning interview questions.",
+        content: "Crisp, memorable answers to AI and machine learning interview questions.",
       },
       {
         property: "og:image",
@@ -151,9 +149,11 @@ function RootComponent() {
     <QueryClientProvider client={queryClient}>
       <AppearanceProvider>
         <ThemeProvider>
-          <main className="min-w-0">
-            <Outlet />
-          </main>
+          <EditProvider>
+            <main className="min-w-0">
+              <Outlet />
+            </main>
+          </EditProvider>
         </ThemeProvider>
       </AppearanceProvider>
     </QueryClientProvider>

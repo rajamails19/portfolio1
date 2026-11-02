@@ -43,8 +43,8 @@ const ROWS: { code: string; name: string; sample: ReactNode; marker: string }[] 
     marker: 'callout, variant: "spotlight"',
   },
   {
-    code: "WU",
-    name: "Wavy Underline",
+    code: "BU",
+    name: "Bold Underline",
     sample: renderInline("__underlined phrase__"),
     marker: "__text__",
   },

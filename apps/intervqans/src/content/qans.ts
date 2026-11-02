@@ -39,7 +39,7 @@ export const qansSection: Section = {
           type: "list",
           items: [
             "==Explicit Rules vs. Learned Patterns:==",
-            "Generalization over Memorization:",
+            "**Generalization** over Memorization:",
             "^^Continuous Iteration (Data over Code):^^",
           ],
         },

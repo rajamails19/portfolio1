@@ -2,6 +2,7 @@ import { useState } from "react";
 import { ChevronDown, Columns3 } from "lucide-react";
 import type { QAItem } from "@/content/types";
 import { AnswerBlocks } from "./AnswerBlocks";
+import { useEditMode } from "./EditMode";
 
 // Solid background + fixed dark ink — same convention used for the
 // highlight mark and table headers, so these read correctly in both
@@ -22,6 +23,7 @@ export function QuestionCard({
   onCompare?: () => void;
 }) {
   const [open, setOpen] = useState(false);
+  const { answerFor } = useEditMode();
 
   return (
     <div
@@ -98,7 +100,7 @@ export function QuestionCard({
       >
         <div className="min-h-0 min-w-0">
           <div className="border-t border-gold/15 bg-noir/40 px-6 pb-6 pt-4">
-            <AnswerBlocks blocks={item.answer} />
+            <AnswerBlocks blocks={answerFor(item)} itemId={item.id} />
           </div>
         </div>
       </div>

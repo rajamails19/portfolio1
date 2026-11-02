@@ -71,20 +71,24 @@ function Callout({
   );
 }
 
-export function AnswerBlocks({ blocks }: { blocks: Block[] }) {
+export function AnswerBlocks({ blocks, itemId }: { blocks: Block[]; itemId?: string }) {
   return (
-    <div className="text-[15px] leading-relaxed text-foreground/85">
+    <div data-qa-item={itemId} className="text-[15px] leading-relaxed text-foreground/85">
       {blocks.map((b, i) => {
         switch (b.type) {
           case "heading":
             return (
-              <h4 key={i} className="qa-heading mt-6 mb-3 font-display text-lg font-semibold">
+              <h4
+                key={i}
+                data-qa-b={i}
+                className="qa-heading mt-6 mb-3 font-display text-lg font-semibold"
+              >
                 {b.content}
               </h4>
             );
           case "text":
             return (
-              <p key={i} className="my-3">
+              <p key={i} data-qa-b={i} className="my-3">
                 {renderInline(b.content)}
               </p>
             );
@@ -96,7 +100,9 @@ export function AnswerBlocks({ blocks }: { blocks: Block[] }) {
                 className={`my-3 space-y-1.5 pl-5 ${b.ordered ? "list-decimal" : "list-disc"} marker:text-gold-ink/80`}
               >
                 {b.items.map((it, k) => (
-                  <li key={k}>{renderInline(it)}</li>
+                  <li key={k} data-qa-b={i} data-qa-l={k}>
+                    {renderInline(it)}
+                  </li>
                 ))}
               </Tag>
             );
@@ -110,7 +116,7 @@ export function AnswerBlocks({ blocks }: { blocks: Block[] }) {
           case "callout":
             return (
               <Callout key={i} variant={b.variant}>
-                {renderInline(b.content)}
+                <span data-qa-b={i}>{renderInline(b.content)}</span>
               </Callout>
             );
           case "flow":

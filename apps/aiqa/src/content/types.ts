@@ -1,7 +1,7 @@
 /**
  * Rich text supports inline markers (works in "text", "list" items, "callout"):
  *   ==highlight==   → gold highlight background
- *   __underline__   → wavy gold underline
+ *   __underline__   → bold green underline
  *   **bold**        → bold + gold color
  *   ^^rose^^        → soft rose highlight
  *   `code`          → inline code chip
