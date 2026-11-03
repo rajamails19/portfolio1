@@ -262,38 +262,32 @@ export const qansSection: Section = {
     {
       id: "what-is-an-ai-agent",
       category: "2M",
-      question: "What is an AI Agent?",
+      question: "What is an AI Agent",
       tags: ["AI/ML", "LLM", "Agents"],
       difficulty: "Medium",
       answer: [
         {
           type: "text",
           content:
-            "An AI agent uses an LLM to ==decide actions==, call tools or APIs, observe the results, and keep going until a multi-step task is done.",
+            "“An AI agent is a software entity designed to perform tasks ==autonomously or semi-autonomously== by receiving input, processing information, and taking actions to ^^achieve specific goals^^.”",
         },
+        {
+          type: "callout",
+          variant: "spotlight",
+          content:
+            "An AI agent is **an LLM placed in a loop**. It basically uses an LLM / AI models for ==reasoning, planning, and decision-making==, interacts with ==external tools, APIs, and data sources==, and executes actions through ^^iterative workflows^^ to achieve predefined goals with __minimal human intervention__.",
+        },
+        { type: "heading", content: "Core Architecture" },
         {
           type: "flow",
-          title: "ReAct loop",
-          direction: "horizontal",
+          title: "Observe → Reason → Act → Repeat",
+          direction: "vertical",
           nodes: [
-            { label: "Reason", sub: "What's next?", tone: "gold" },
-            { label: "Act", sub: "Call a tool", tone: "ember" },
-            { label: "Observe", sub: "Read the result", tone: "sky" },
-            { label: "Repeat", sub: "Until done", tone: "mint" },
+            { label: "USER GOAL", tone: "sky" },
+            { label: "AI AGENT · ORCHESTRATION", tone: "gold" },
+            { label: "LLM · REASONING & PLANNING", tone: "mint" },
+            { label: "TOOLS · APIs · MEMORY", tone: "ember" },
           ],
-        },
-        { type: "heading", content: "Analogy" },
-        {
-          type: "callout",
-          variant: "tip",
-          content:
-            "A **personal assistant** who doesn't just answer questions — they also book the flight, send the email, and check it worked.",
-        },
-        {
-          type: "callout",
-          variant: "info",
-          content:
-            "Interview Tip: A chatbot only __talks__; an agent __acts__. Mention tools, memory, guardrails, and Human-in-the-Loop for risky actions.",
         },
       ],
     },
