@@ -30,7 +30,7 @@ import { QuestionCard } from "./QuestionCard";
 import { QuotesTicker } from "./QuotesTicker";
 import { ProgramComparisonDialog } from "./ProgramComparisonDialog";
 import { HighlightGuideDialog } from "./HighlightGuideDialog";
-import { EditToggle } from "./EditMode";
+import { EditToggle, useEditMode } from "./EditMode";
 import { useTierMarks } from "@/lib/tier-marks";
 
 const COMPARABLE_PROGRAM_CATEGORIES = new Set(["Java", "JScript", "Python", ".NET"]);
@@ -122,6 +122,9 @@ export function SectionView({ section }: { section: Section }) {
   const [comparisonKey, setComparisonKey] = useState<string | null>(null);
   const { theme, themeKey } = useTheme();
   const { marksFor } = useTierMarks();
+  const { editing, orderItems, moveItem } = useEditMode();
+  // Entries in the current order (staged → live → file).
+  const orderedItems = useMemo(() => orderItems(section.items), [orderItems, section.items]);
   const meta = theme.sections[section.slug];
   const mascot = meta.mascot;
   const topics =
@@ -161,11 +164,11 @@ export function SectionView({ section }: { section: Section }) {
   const activeTopicItems = useMemo(
     () =>
       showMarks
-        ? section.items.filter((it) => inTier(it, activeTier, marksFor))
+        ? orderedItems.filter((it) => inTier(it, activeTier, marksFor))
         : showCategoryFilter
-          ? section.items.filter((it) => it.category === activeCategory)
-          : section.items,
-    [activeCategory, activeTier, marksFor, section.items, showCategoryFilter, showMarks],
+          ? orderedItems.filter((it) => it.category === activeCategory)
+          : orderedItems,
+    [activeCategory, activeTier, marksFor, orderedItems, showCategoryFilter, showMarks],
   );
 
   const visibleItems = useMemo(
@@ -450,6 +453,16 @@ export function SectionView({ section }: { section: Section }) {
                     key={it.id}
                     item={it}
                     index={i}
+                    reorder={
+                      editing
+                        ? {
+                            position: i + 1,
+                            total: filtered.length,
+                            onDropFrom: (fromId) => moveItem(fromId, it.id),
+                            onMoveTo: (pos) => moveItem(it.id, filtered[pos - 1].id),
+                          }
+                        : undefined
+                    }
                     onCompare={canCompare ? () => setComparisonKey(itemComparisonKey) : undefined}
                   />
                 );

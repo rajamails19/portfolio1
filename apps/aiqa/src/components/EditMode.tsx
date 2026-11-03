@@ -12,10 +12,13 @@ import { Pencil, Redo2, Save, Undo2, X } from "lucide-react";
 import type { Block, QAItem } from "@/content/types";
 import { applyEdit, type EditOp } from "@/lib/rich-edit";
 import { hashAnswer } from "@/lib/answer-hash";
+import { applyOrder, moveId } from "@/lib/answer-order";
 import {
   fetchRemoteEdits,
+  fetchRemoteOrder,
   remoteConfigured,
   saveRemoteEdits,
+  saveRemoteOrder,
   type RemoteEdit,
 } from "@/lib/answer-edits";
 
@@ -40,6 +43,10 @@ interface EditCtx {
   editing: boolean;
   setEditing: (v: boolean) => void;
   answerFor: (item: QAItem) => Block[];
+  /** Items in the current (staged / live / file) order. */
+  orderItems: <T extends QAItem>(items: T[]) => T[];
+  /** Move a question to another question's slot; that one shifts along. */
+  moveItem: (movedId: string, targetId: string) => void;
 }
 
 const Ctx = createContext<EditCtx>({
@@ -47,6 +54,8 @@ const Ctx = createContext<EditCtx>({
   editing: false,
   setEditing: () => {},
   answerFor: (item) => item.answer,
+  orderItems: (items) => items,
+  moveItem: () => {},
 });
 
 export const useEditMode = () => useContext(Ctx);
@@ -91,19 +100,26 @@ function readSelection(): Selection_ | string {
 }
 
 type Overrides = Record<string, { base: Block[]; answer: Block[] }>;
+// One undo step: staged answer edits plus a staged question order (null = unchanged).
+type Snap = { answers: Overrides; order: string[] | null };
+const EMPTY: Snap = { answers: {}, order: null };
 const MAX_HISTORY = 100;
 
 export function EditProvider({ children }: { children: ReactNode }) {
   const [editing, setEditingState] = useState(false);
   // Edits are staged in memory (with undo/redo) and only written on Save.
-  const [hist, setHist] = useState<{ stack: Overrides[]; i: number }>({ stack: [{}], i: 0 });
+  const [hist, setHist] = useState<{ stack: Snap[]; i: number }>({ stack: [EMPTY], i: 0 });
   const [message, setMessage] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
   const [remote, setRemote] = useState<Record<string, RemoteEdit>>({});
   const enabled = DEV || remoteConfigured;
   const registry = useRef(new Map<string, Block[]>());
   const timer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
-  const overrides = hist.stack[hist.i];
+  const overrides = hist.stack[hist.i].answers;
+  const stagedOrder = hist.stack[hist.i].order;
+  const [remoteOrder, setRemoteOrder] = useState<string[] | null>(null);
+  const baselineIds = useRef<string[]>([]);
+  const currentIds = useRef<string[]>([]);
 
   // Only edits made against the answer currently in qans.ts count; if the file
   // changed underneath (HMR), those stale edits drop out automatically.
@@ -111,13 +127,17 @@ export function EditProvider({ children }: { children: ReactNode }) {
     () => Object.entries(overrides).filter(([id, o]) => registry.current.get(id) === o.base),
     [overrides],
   );
-  const dirty = pending.length;
+  const orderDirty = !!stagedOrder && stagedOrder.join("|") !== baselineIds.current.join("|");
+  const dirty = pending.length + (orderDirty ? 1 : 0);
 
   // Everyone (not just editors) loads the live edits so the deployed site shows them.
   useEffect(() => {
     let cancelled = false;
     fetchRemoteEdits()
       .then((r) => !cancelled && setRemote(r))
+      .catch((e) => console.error(e));
+    fetchRemoteOrder()
+      .then((o) => !cancelled && setRemoteOrder(o))
       .catch((e) => console.error(e));
     return () => {
       cancelled = true;
@@ -130,7 +150,7 @@ export function EditProvider({ children }: { children: ReactNode }) {
     timer.current = setTimeout(() => setMessage(null), 2600);
   }, []);
 
-  const reset = useCallback(() => setHist({ stack: [{}], i: 0 }), []);
+  const reset = useCallback(() => setHist({ stack: [EMPTY], i: 0 }), []);
 
   const setEditing = useCallback(
     (v: boolean) => {
@@ -188,13 +208,37 @@ export function EditProvider({ children }: { children: ReactNode }) {
       if ("error" in result) return flash(result.error);
       window.getSelection()?.removeAllRanges();
       setHist(({ stack, i }) => {
-        const next = { ...stack[i], [sel.itemId]: { base, answer: result.answer } };
+        const next: Snap = {
+          answers: { ...stack[i].answers, [sel.itemId]: { base, answer: result.answer } },
+          order: stack[i].order,
+        };
         const trimmed = [...stack.slice(0, i + 1), next].slice(-MAX_HISTORY);
         return { stack: trimmed, i: trimmed.length - 1 };
       });
     },
     [effective, flash],
   );
+
+  const orderItems = useCallback(
+    <T extends QAItem>(items: T[]): T[] => {
+      const base = remoteOrder ? applyOrder(items, remoteOrder) : items;
+      baselineIds.current = base.map((i) => i.id);
+      const out = stagedOrder ? applyOrder(items, stagedOrder) : base;
+      currentIds.current = out.map((i) => i.id);
+      return out;
+    },
+    [remoteOrder, stagedOrder],
+  );
+
+  const moveItem = useCallback((movedId: string, targetId: string) => {
+    const next = moveId(currentIds.current, movedId, targetId);
+    if (!next) return;
+    setHist(({ stack, i }) => {
+      const snap: Snap = { answers: stack[i].answers, order: next };
+      const trimmed = [...stack.slice(0, i + 1), snap].slice(-MAX_HISTORY);
+      return { stack: trimmed, i: trimmed.length - 1 };
+    });
+  }, []);
 
   const undo = useCallback(() => setHist((h) => ({ ...h, i: Math.max(0, h.i - 1) })), []);
   const redo = useCallback(
@@ -217,7 +261,10 @@ export function EditProvider({ children }: { children: ReactNode }) {
         const res = await fetch("/__qa-edit", {
           method: "POST",
           headers: { "content-type": "application/json" },
-          body: JSON.stringify({ edits: pending.map(([id, o]) => ({ id, answer: o.answer })) }),
+          body: JSON.stringify({
+            edits: pending.map(([id, o]) => ({ id, answer: o.answer })),
+            order: orderDirty ? stagedOrder : undefined,
+          }),
         });
         if (!res.ok) throw new Error((await res.json()).error ?? "Save failed");
       }
@@ -225,14 +272,20 @@ export function EditProvider({ children }: { children: ReactNode }) {
       for (const [id, o] of pending) live[id] = { baseHash: hashOf(o.base), answer: o.answer };
       let liveOk = true;
       try {
-        await saveRemoteEdits(live);
-        setRemote((r) => ({ ...r, ...live }));
+        if (pending.length) {
+          await saveRemoteEdits(live);
+          setRemote((r) => ({ ...r, ...live }));
+        }
+        if (orderDirty && stagedOrder) {
+          await saveRemoteOrder(stagedOrder);
+          setRemoteOrder(stagedOrder);
+        }
       } catch (e) {
         liveOk = false;
         if (!DEV) throw e;
       }
       reset();
-      const n = `${dirty} answer${dirty > 1 ? "s" : ""}`;
+      const n = `${dirty} change${dirty > 1 ? "s" : ""}`;
       flash(
         DEV
           ? liveOk
@@ -245,7 +298,7 @@ export function EditProvider({ children }: { children: ReactNode }) {
     } finally {
       setSaving(false);
     }
-  }, [dirty, saving, pending, reset, flash]);
+  }, [dirty, saving, pending, orderDirty, stagedOrder, reset, flash]);
 
   // Ctrl/Cmd+Z, Shift+Z (or Y), Ctrl/Cmd+S while editing.
   useEffect(() => {
@@ -272,8 +325,8 @@ export function EditProvider({ children }: { children: ReactNode }) {
   }, [editing, undo, redo, save]);
 
   const value = useMemo(
-    () => ({ enabled, editing, setEditing, answerFor }),
-    [enabled, editing, setEditing, answerFor],
+    () => ({ enabled, editing, setEditing, answerFor, orderItems, moveItem }),
+    [enabled, editing, setEditing, answerFor, orderItems, moveItem],
   );
 
   return (

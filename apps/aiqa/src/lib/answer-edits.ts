@@ -83,3 +83,28 @@ export async function saveMarkRow(id: string, marks: MarkRow): Promise<void> {
   });
   if (!res.ok) throw new Error(`Couldn't save mark (${res.status})`);
 }
+
+// ── Question order, one row: "aiqa-order" → { ids: [...] } ─────────────────
+const ORDER_ROW = "aiqa-order";
+
+export async function fetchRemoteOrder(): Promise<string[] | null> {
+  if (!remoteConfigured) return null;
+  const res = await fetch(
+    `${URL}/rest/v1/${TABLE}?select=edits&pathname=eq.${encodeURIComponent(ORDER_ROW)}`,
+    { headers: headers() },
+  );
+  if (!res.ok) throw new Error(`Couldn't load order (${res.status})`);
+  const rows = (await res.json()) as { edits: { ids?: unknown } }[];
+  const ids = rows[0]?.edits?.ids;
+  return Array.isArray(ids) && ids.every((x) => typeof x === "string") ? (ids as string[]) : null;
+}
+
+export async function saveRemoteOrder(ids: string[]): Promise<void> {
+  if (!remoteConfigured) throw new Error("Live saving isn't configured");
+  const res = await fetch(`${URL}/rest/v1/${TABLE}?on_conflict=pathname`, {
+    method: "POST",
+    headers: { ...headers(), Prefer: "resolution=merge-duplicates,return=minimal" },
+    body: JSON.stringify([{ pathname: ORDER_ROW, edits: { ids } }]),
+  });
+  if (!res.ok) throw new Error(`Couldn't save order (${res.status})`);
+}

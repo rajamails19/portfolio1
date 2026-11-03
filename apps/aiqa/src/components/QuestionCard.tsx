@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { ChevronDown, Columns3, Heart, Plus } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { ChevronDown, Columns3, GripVertical, Heart, Plus } from "lucide-react";
 import type { QAItem } from "@/content/types";
 import { AnswerBlocks } from "./AnswerBlocks";
 import { useEditMode } from "./EditMode";
@@ -18,20 +18,61 @@ export function QuestionCard({
   item,
   index,
   onCompare,
+  reorder,
 }: {
   item: QAItem;
   index: number;
   onCompare?: () => void;
+  /** Present in edit mode: drag the grip, or type a position, to move this question. */
+  reorder?: {
+    position: number;
+    total: number;
+    onDropFrom: (fromId: string) => void;
+    onMoveTo: (position: number) => void;
+  };
 }) {
   const [open, setOpen] = useState(false);
+  const [dragOver, setDragOver] = useState(false);
+  const [posText, setPosText] = useState("");
+  const cardRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    setPosText(String(reorder?.position ?? ""));
+  }, [reorder?.position]);
+  const commitPosition = () => {
+    if (!reorder) return;
+    const n = Math.round(Number(posText));
+    if (!Number.isFinite(n) || n === reorder.position) return setPosText(String(reorder.position));
+    reorder.onMoveTo(Math.min(Math.max(n, 1), reorder.total));
+  };
   const { answerFor } = useEditMode();
   const { marksFor, toggle } = useTierMarks();
   const marks = marksFor(item);
 
   return (
     <div
+      ref={cardRef}
+      onDragOver={
+        reorder
+          ? (e) => {
+              e.preventDefault();
+              setDragOver(true);
+            }
+          : undefined
+      }
+      onDragLeave={reorder ? () => setDragOver(false) : undefined}
+      onDrop={
+        reorder
+          ? (e) => {
+              e.preventDefault();
+              setDragOver(false);
+              const fromId = e.dataTransfer.getData("text/plain");
+              if (fromId) reorder.onDropFrom(fromId);
+            }
+          : undefined
+      }
       className={[
         "glass-strong animate-pop-in group overflow-hidden rounded-3xl transition-all duration-300",
+        dragOver ? "ring-2 ring-gold/60" : "",
         open ? "shadow-glow" : "hover:-translate-y-0.5 hover:shadow-[var(--shadow-soft)]",
       ].join(" ")}
       style={{ animationDelay: `${index * 60}ms` }}
@@ -71,6 +112,39 @@ export function QuestionCard({
         </button>
 
         <div className="mt-1 flex shrink-0 items-center gap-1.5">
+          {reorder && (
+            <>
+              <input
+                type="number"
+                min={1}
+                max={reorder.total}
+                value={posText}
+                onChange={(e) => setPosText(e.target.value)}
+                onBlur={commitPosition}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") e.currentTarget.blur();
+                  if (e.key === "Escape") setPosText(String(reorder.position));
+                }}
+                aria-label="Move to position"
+                title="Type a position and press Enter — the question there moves down"
+                className="hidden h-8 w-14 rounded-full border border-gold/25 bg-noir/60 px-2 text-center text-base text-foreground/80 [appearance:textfield] focus:border-gold/60 focus:outline-none sm:block sm:text-xs [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+              />
+              <button
+                type="button"
+                draggable
+                onDragStart={(e) => {
+                  e.dataTransfer.setData("text/plain", item.id);
+                  e.dataTransfer.effectAllowed = "move";
+                  if (cardRef.current) e.dataTransfer.setDragImage(cardRef.current, 24, 24);
+                }}
+                aria-label="Drag to reorder"
+                title="Drag onto another question to move it there"
+                className="flex h-8 w-8 cursor-grab items-center justify-center rounded-full border border-gold/25 bg-noir/60 text-foreground/70 transition hover:border-gold/60 hover:text-foreground active:cursor-grabbing"
+              >
+                <GripVertical className="h-4 w-4" />
+              </button>
+            </>
+          )}
           {item.category === "2M" && (
             <>
               <button
