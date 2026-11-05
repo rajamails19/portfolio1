@@ -11,8 +11,11 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as CertificationsRouteImport } from './routes/certifications'
+import { Route as ConceptsRouteImport } from './routes/concepts'
 import { Route as FavoritesRouteImport } from './routes/favorites'
+import { Route as ImagesRouteImport } from './routes/images'
 import { Route as InputsRouteImport } from './routes/inputs'
+import { Route as LinksRouteImport } from './routes/links'
 import { Route as OthersRouteImport } from './routes/others'
 import { Route as ProgramsRouteImport } from './routes/programs'
 import { Route as ProjectsRouteImport } from './routes/projects'
@@ -32,14 +35,29 @@ const CertificationsRoute = CertificationsRouteImport.update({
   path: '/certifications',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ConceptsRoute = ConceptsRouteImport.update({
+  id: '/concepts',
+  path: '/concepts',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const FavoritesRoute = FavoritesRouteImport.update({
   id: '/favorites',
   path: '/favorites',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ImagesRoute = ImagesRouteImport.update({
+  id: '/images',
+  path: '/images',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const InputsRoute = InputsRouteImport.update({
   id: '/inputs',
   path: '/inputs',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LinksRoute = LinksRouteImport.update({
+  id: '/links',
+  path: '/links',
   getParentRoute: () => rootRouteImport,
 } as any)
 const OthersRoute = OthersRouteImport.update({
@@ -86,8 +104,11 @@ const TheoryRoute = TheoryRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/certifications': typeof CertificationsRoute
+  '/concepts': typeof ConceptsRoute
   '/favorites': typeof FavoritesRoute
+  '/images': typeof ImagesRoute
   '/inputs': typeof InputsRoute
+  '/links': typeof LinksRoute
   '/others': typeof OthersRoute
   '/programs': typeof ProgramsRoute
   '/projects': typeof ProjectsRoute
@@ -100,8 +121,11 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/certifications': typeof CertificationsRoute
+  '/concepts': typeof ConceptsRoute
   '/favorites': typeof FavoritesRoute
+  '/images': typeof ImagesRoute
   '/inputs': typeof InputsRoute
+  '/links': typeof LinksRoute
   '/others': typeof OthersRoute
   '/programs': typeof ProgramsRoute
   '/projects': typeof ProjectsRoute
@@ -115,8 +139,11 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/certifications': typeof CertificationsRoute
+  '/concepts': typeof ConceptsRoute
   '/favorites': typeof FavoritesRoute
+  '/images': typeof ImagesRoute
   '/inputs': typeof InputsRoute
+  '/links': typeof LinksRoute
   '/others': typeof OthersRoute
   '/programs': typeof ProgramsRoute
   '/projects': typeof ProjectsRoute
@@ -131,8 +158,11 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/certifications'
+    | '/concepts'
     | '/favorites'
+    | '/images'
     | '/inputs'
+    | '/links'
     | '/others'
     | '/programs'
     | '/projects'
@@ -145,8 +175,11 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/certifications'
+    | '/concepts'
     | '/favorites'
+    | '/images'
     | '/inputs'
+    | '/links'
     | '/others'
     | '/programs'
     | '/projects'
@@ -159,8 +192,11 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/certifications'
+    | '/concepts'
     | '/favorites'
+    | '/images'
     | '/inputs'
+    | '/links'
     | '/others'
     | '/programs'
     | '/projects'
@@ -174,8 +210,11 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   CertificationsRoute: typeof CertificationsRoute
+  ConceptsRoute: typeof ConceptsRoute
   FavoritesRoute: typeof FavoritesRoute
+  ImagesRoute: typeof ImagesRoute
   InputsRoute: typeof InputsRoute
+  LinksRoute: typeof LinksRoute
   OthersRoute: typeof OthersRoute
   ProgramsRoute: typeof ProgramsRoute
   ProjectsRoute: typeof ProjectsRoute
@@ -202,6 +241,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CertificationsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/concepts': {
+      id: '/concepts'
+      path: '/concepts'
+      fullPath: '/concepts'
+      preLoaderRoute: typeof ConceptsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/favorites': {
       id: '/favorites'
       path: '/favorites'
@@ -209,11 +255,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof FavoritesRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/images': {
+      id: '/images'
+      path: '/images'
+      fullPath: '/images'
+      preLoaderRoute: typeof ImagesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/inputs': {
       id: '/inputs'
       path: '/inputs'
       fullPath: '/inputs'
       preLoaderRoute: typeof InputsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/links': {
+      id: '/links'
+      path: '/links'
+      fullPath: '/links'
+      preLoaderRoute: typeof LinksRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/others': {
@@ -278,8 +338,11 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   CertificationsRoute: CertificationsRoute,
+  ConceptsRoute: ConceptsRoute,
   FavoritesRoute: FavoritesRoute,
+  ImagesRoute: ImagesRoute,
   InputsRoute: InputsRoute,
+  LinksRoute: LinksRoute,
   OthersRoute: OthersRoute,
   ProgramsRoute: ProgramsRoute,
   ProjectsRoute: ProjectsRoute,

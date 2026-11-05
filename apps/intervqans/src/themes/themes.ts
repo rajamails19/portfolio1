@@ -99,6 +99,39 @@ export const themes: Record<ThemeKey, ThemeDef> = {
           quote: "Before you build anything, understand what you're actually building on top of.",
         },
       },
+      concepts: {
+        title: "80-20 Concepts Rule",
+        tagline: "The few concepts that carry most of the weight.",
+        emoji: "🎯",
+        mascot: {
+          name: "The Strategist",
+          title: "Focus on what matters most",
+          image: coder,
+          quote: "Learn the vital few concepts first; the rest follows.",
+        },
+      },
+      links: {
+        title: "Handy Links-URLS",
+        tagline: "Trusted pages to jump back to.",
+        emoji: "🔗",
+        mascot: {
+          name: "The Pathfinder",
+          title: "Bookmarks that earn their place",
+          image: visionary,
+          quote: "A good link saves an hour of searching.",
+        },
+      },
+      images: {
+        title: "Quick-Images",
+        tagline: "Diagrams worth a thousand words.",
+        emoji: "🖼️",
+        mascot: {
+          name: "The Illustrator",
+          title: "See it once, remember it",
+          image: creative,
+          quote: "If you can picture it, you can recall it.",
+        },
+      },
       terms: {
         title: "Terms at a Glance",
         tagline: "Simple tech terms, explained clearly.",
@@ -112,13 +145,15 @@ export const themes: Record<ThemeKey, ThemeDef> = {
       },
       certifications: {
         title: "Certifications",
-        tagline: "Exam-mapped prep — your CSM, ECBA and CAPM targets, plus AWS, Azure, GCP, and Anthropic AI credentials.",
+        tagline:
+          "Exam-mapped prep — your CSM, ECBA and CAPM targets, plus AWS, Azure, GCP, and Anthropic AI credentials.",
         emoji: "🎓",
         mascot: {
           name: "The Examiner",
           title: "Keeps score against the real exam blueprint",
           image: mentor,
-          quote: "A certificate is just proof you can survive the questions no one else prepared for.",
+          quote:
+            "A certificate is just proof you can survive the questions no one else prepared for.",
         },
       },
       story: {

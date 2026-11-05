@@ -16,8 +16,14 @@ import {
   ChevronRight,
   NotebookPen,
   Award,
+  Target,
+  Link2,
+  Images,
 } from "lucide-react";
 import { termTiles } from "@/content/terms";
+import { conceptCount } from "@/content/concepts-8020";
+import { handyLinks } from "@/content/handy-links";
+import { quickImages } from "@/content/quick-images";
 import { useTheoryFavorites } from "@/hooks/use-theory-favorites";
 import { useRandomInputs } from "@/hooks/use-random-inputs";
 
@@ -118,6 +124,13 @@ const THEORY_CHAPTERS_BY_TOPIC: Record<string, Record<string, Chapter[]>> = {
   },
 };
 
+// Noir-only entries that sit above the main sections.
+const NOIR_EXTRA_NAV = [
+  { slug: "concepts", to: "/concepts", Icon: Target, count: conceptCount },
+  { slug: "links", to: "/links", Icon: Link2, count: handyLinks.length },
+  { slug: "images", to: "/images", Icon: Images, count: quickImages.length },
+] as const;
+
 export function SideNav() {
   const { location } = useRouterState();
   const { theme, themeKey } = useTheme();
@@ -129,9 +142,15 @@ export function SideNav() {
   const inputsActive = location.pathname.startsWith("/inputs");
   const { inputs } = useRandomInputs();
   const isTerms = location.pathname.startsWith("/terms") && themeKey === "noir";
+  const extraActive =
+    themeKey === "noir"
+      ? NOIR_EXTRA_NAV.find((x) => location.pathname.startsWith(x.to))?.slug
+      : undefined;
   const activeSlug = isTerms
     ? "terms"
-    : (sections.find((s) => location.pathname.startsWith(`/${s.slug}`))?.slug ?? "qans");
+    : (extraActive ??
+      sections.find((s) => location.pathname.startsWith(`/${s.slug}`))?.slug ??
+      "qans");
   const activeMeta = theme.sections[activeSlug];
   const isTheory = location.pathname.startsWith("/theory");
   const search = location.search as Record<string, unknown>;
@@ -189,6 +208,56 @@ export function SideNav() {
       </Link>
 
       <nav className="glass flex flex-col gap-1 rounded-3xl p-3">
+        {themeKey === "noir" &&
+          NOIR_EXTRA_NAV.map(({ slug, to, Icon, count }) => {
+            const active = extraActive === slug;
+            const meta = theme.sections[slug];
+            return (
+              <Link
+                key={slug}
+                to={to}
+                className={[
+                  "group relative flex items-center gap-3 rounded-2xl px-3 py-2.5 text-sm font-medium transition-all",
+                  active
+                    ? "bg-gradient-to-r from-gold/90 to-ember/80 text-primary-foreground shadow-glow"
+                    : "text-foreground/85 hover:bg-white/5 hover:text-foreground",
+                ].join(" ")}
+              >
+                <span className="relative h-9 w-9 shrink-0 overflow-hidden rounded-xl ring-1 ring-gold/30">
+                  <img
+                    src={meta.mascot.image}
+                    alt=""
+                    className="h-full w-full object-cover"
+                    loading="lazy"
+                  />
+                </span>
+                <span className="flex min-w-0 flex-1 flex-col leading-tight">
+                  <span className="flex items-center gap-1.5">
+                    <Icon className="h-3.5 w-3.5 shrink-0 opacity-80" />
+                    <span className="min-w-0 break-words">{meta.title}</span>
+                  </span>
+                  <span
+                    className={[
+                      "text-[10px] uppercase tracking-wider",
+                      active ? "text-primary-foreground/80" : "text-muted-foreground",
+                    ].join(" ")}
+                  >
+                    {meta.mascot.name}
+                  </span>
+                </span>
+                <span
+                  className={[
+                    "rounded-full px-2 py-0.5 text-[10px] font-semibold tabular-nums",
+                    active
+                      ? "bg-black/25 text-primary-foreground"
+                      : "bg-white/5 text-foreground/70",
+                  ].join(" ")}
+                >
+                  {count}
+                </span>
+              </Link>
+            );
+          })}
         {sections.map((s, index) => {
           const Icon = icons[s.slug] ?? Sparkles;
           const to = `/${s.slug}` as const;
