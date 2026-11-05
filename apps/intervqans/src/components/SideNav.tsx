@@ -19,11 +19,13 @@ import {
   Target,
   Link2,
   Images,
+  Gem,
 } from "lucide-react";
 import { termTiles } from "@/content/terms";
 import { conceptCount } from "@/content/concepts-8020";
 import { handyLinks } from "@/content/handy-links";
 import { quickImages } from "@/content/quick-images";
+import { handPicked } from "@/content/hand-picked";
 import { useTheoryFavorites } from "@/hooks/use-theory-favorites";
 import { useRandomInputs } from "@/hooks/use-random-inputs";
 
@@ -126,6 +128,7 @@ const THEORY_CHAPTERS_BY_TOPIC: Record<string, Record<string, Chapter[]>> = {
 
 // Noir-only entries that sit above the main sections.
 const NOIR_EXTRA_NAV = [
+  { slug: "picks", to: "/picks", Icon: Gem, count: handPicked.length },
   { slug: "concepts", to: "/concepts", Icon: Target, count: conceptCount },
   { slug: "links", to: "/links", Icon: Link2, count: handyLinks.length },
   { slug: "images", to: "/images", Icon: Images, count: quickImages.length },

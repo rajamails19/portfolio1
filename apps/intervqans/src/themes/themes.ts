@@ -110,6 +110,17 @@ export const themes: Record<ThemeKey, ThemeDef> = {
           quote: "Learn the vital few concepts first; the rest follows.",
         },
       },
+      picks: {
+        title: "Hand-Picked By Me",
+        tagline: "Notes, images and code worth keeping.",
+        emoji: "💎",
+        mascot: {
+          name: "The Curator",
+          title: "Collected from everywhere",
+          image: rocket,
+          quote: "Keep what made you stop and think.",
+        },
+      },
       links: {
         title: "Handy Links-URLS",
         tagline: "Trusted pages to jump back to.",

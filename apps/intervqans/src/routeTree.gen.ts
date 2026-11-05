@@ -17,6 +17,7 @@ import { Route as ImagesRouteImport } from './routes/images'
 import { Route as InputsRouteImport } from './routes/inputs'
 import { Route as LinksRouteImport } from './routes/links'
 import { Route as OthersRouteImport } from './routes/others'
+import { Route as PicksRouteImport } from './routes/picks'
 import { Route as ProgramsRouteImport } from './routes/programs'
 import { Route as ProjectsRouteImport } from './routes/projects'
 import { Route as QansRouteImport } from './routes/qans'
@@ -65,6 +66,11 @@ const OthersRoute = OthersRouteImport.update({
   path: '/others',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PicksRoute = PicksRouteImport.update({
+  id: '/picks',
+  path: '/picks',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ProgramsRoute = ProgramsRouteImport.update({
   id: '/programs',
   path: '/programs',
@@ -110,6 +116,7 @@ export interface FileRoutesByFullPath {
   '/inputs': typeof InputsRoute
   '/links': typeof LinksRoute
   '/others': typeof OthersRoute
+  '/picks': typeof PicksRoute
   '/programs': typeof ProgramsRoute
   '/projects': typeof ProjectsRoute
   '/qans': typeof QansRoute
@@ -127,6 +134,7 @@ export interface FileRoutesByTo {
   '/inputs': typeof InputsRoute
   '/links': typeof LinksRoute
   '/others': typeof OthersRoute
+  '/picks': typeof PicksRoute
   '/programs': typeof ProgramsRoute
   '/projects': typeof ProjectsRoute
   '/qans': typeof QansRoute
@@ -145,6 +153,7 @@ export interface FileRoutesById {
   '/inputs': typeof InputsRoute
   '/links': typeof LinksRoute
   '/others': typeof OthersRoute
+  '/picks': typeof PicksRoute
   '/programs': typeof ProgramsRoute
   '/projects': typeof ProjectsRoute
   '/qans': typeof QansRoute
@@ -164,6 +173,7 @@ export interface FileRouteTypes {
     | '/inputs'
     | '/links'
     | '/others'
+    | '/picks'
     | '/programs'
     | '/projects'
     | '/qans'
@@ -181,6 +191,7 @@ export interface FileRouteTypes {
     | '/inputs'
     | '/links'
     | '/others'
+    | '/picks'
     | '/programs'
     | '/projects'
     | '/qans'
@@ -198,6 +209,7 @@ export interface FileRouteTypes {
     | '/inputs'
     | '/links'
     | '/others'
+    | '/picks'
     | '/programs'
     | '/projects'
     | '/qans'
@@ -216,6 +228,7 @@ export interface RootRouteChildren {
   InputsRoute: typeof InputsRoute
   LinksRoute: typeof LinksRoute
   OthersRoute: typeof OthersRoute
+  PicksRoute: typeof PicksRoute
   ProgramsRoute: typeof ProgramsRoute
   ProjectsRoute: typeof ProjectsRoute
   QansRoute: typeof QansRoute
@@ -283,6 +296,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof OthersRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/picks': {
+      id: '/picks'
+      path: '/picks'
+      fullPath: '/picks'
+      preLoaderRoute: typeof PicksRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/programs': {
       id: '/programs'
       path: '/programs'
@@ -344,6 +364,7 @@ const rootRouteChildren: RootRouteChildren = {
   InputsRoute: InputsRoute,
   LinksRoute: LinksRoute,
   OthersRoute: OthersRoute,
+  PicksRoute: PicksRoute,
   ProgramsRoute: ProgramsRoute,
   ProjectsRoute: ProjectsRoute,
   QansRoute: QansRoute,
