@@ -18,13 +18,13 @@ export const qansSection: Section = {
         {
           type: "text",
           content:
-            "“Machine learning is a **way of building software** where, instead of **explicitly programming the rules**, we give the system ==examples==, and it ==learns a mapping from inputs to outputs== on its own.”",
+            "Machine learning is a **way of building software** where, instead of **explicitly programming the rules**, we give the system ==examples==",
         },
         {
           type: "callout",
           variant: "spotlight",
           content:
-            "“Machine learning (ML) is a way **to train software**, called a **model**, that ^^learn patterns from data^^ to make predictions or generate content using data.”",
+            "It is a way **to train software**, called a **model**,\nIt ^^learn patterns from data^^ to make predictions",
         },
         {
           type: "text",
@@ -149,67 +149,36 @@ export const qansSection: Section = {
             { label: "LLM", sub: "Answer from context", tone: "ember" },
           ],
         },
-        { type: "heading", content: "Analogy" },
-        {
-          type: "callout",
-          variant: "tip",
-          content:
-            "An **open-book exam** — the student looks up the right pages before answering instead of relying on memory.",
-        },
-        {
-          type: "callout",
-          variant: "info",
-          content:
-            "Interview Tip: Answer quality depends mostly on __retrieval quality__ — chunk size, top-k, hybrid search, and reranking matter more than the LLM choice.",
-        },
       ],
     },
     {
       id: "overfitting-vs-underfitting",
       category: "2M",
-      question: "What is Overfitting and What is Underfitting?",
+      question: "what is overfitting and underfitting ?",
       tags: ["AI/ML", "Generalization"],
       difficulty: "Medium",
       answer: [
-        { type: "heading", content: "Overfitting" },
         {
-          type: "text",
-          content:
-            "The model **memorizes** the training data instead of learning general patterns.",
+          type: "list",
+          items: [
+            "Overfitting occurs when a machine learning model ==learns the training data too closely==, including ^^noise, outliers, and irrelevant patterns^^",
+          ],
         },
         {
-          type: "callout",
-          variant: "warn",
-          content:
-            "A student memorizes every answer — the real exam changes the questions, and the student fails. That's overfitting.",
+          type: "list",
+          items: [
+            "It results in ==low training error but high generalization error==",
+            "Training accuracy high → Test accuracy low → ^^Big gap between them.^^",
+            "Underfitting occurs when a machine learning model ==fails to capture the underlying patterns== and relationships in the data",
+            "It is due to **insufficient model capacity** or **inadequate training** It results in ==high training error and high generalization error.==",
+            "Training accuracy low → Test accuracy low → ^^Both bad.^^",
+          ],
         },
         {
-          type: "text",
-          content:
-            "Formally: when a model learns the training data too closely, __including noise__, causing poor performance on unseen data.",
-        },
-        { type: "heading", content: "Underfitting" },
-        {
-          type: "text",
-          content: "The model **never learns enough**.",
-        },
-        {
-          type: "callout",
-          variant: "warn",
-          content: "A student hardly studies and fails the practice test too. That's underfitting.",
-        },
-        {
-          type: "text",
-          content:
-            "Formally: when a model is too simple to capture the underlying patterns in the data, leading to poor performance on __both training and test datasets__.",
-        },
-        {
-          type: "table",
-          headers: ["", "Overfitting", "Underfitting"],
-          rows: [
-            ["Cause", "Model too complex — memorizes noise", "Model too simple — misses patterns"],
-            ["Training performance", "Very good (misleadingly)", "Poor"],
-            ["Test performance", "Poor", "Poor"],
+          type: "list",
+          items: [
+            "Underfitting = **high bias** (too simple, misses the pattern)",
+            "Overfitting = **high variance** (too complex, memorizes the noise)",
           ],
         },
       ],
@@ -222,40 +191,58 @@ export const qansSection: Section = {
       difficulty: "Easy",
       answer: [
         {
-          type: "text",
-          content:
-            "Imagine teaching a kid to ==sort fruit==. The three styles differ in __what the kid is given__ to learn from.",
-        },
-        {
-          type: "table",
-          headers: ["", "Supervised", "Unsupervised", "Reinforcement"],
-          rows: [
-            [
-              "The fruit lesson",
-              "You show **labeled** fruit — 'this is an apple, this is a mango'",
-              "You dump **unlabeled** mixed fruit — 'group similar ones together'",
-              "The kid sorts, gets **candy for correct** sorts and nothing for wrong",
-            ],
-            ["Data has labels?", "==Yes==", "==No==", "No — only rewards"],
-            [
-              "Learns by",
-              "Copying known answers",
-              "Discovering categories on its own",
-              "Trial and reward",
-            ],
-            [
-              "Typical use",
-              "Spam detection, price prediction",
-              "Customer segmentation, anomaly detection",
-              "Game AI, robotics, recommendations",
-            ],
+          type: "list",
+          items: [
+            "**Supervised learning** is a machine learning approach in which a model is trained on ==labeled data==",
           ],
         },
         {
-          type: "callout",
-          variant: "info",
-          content:
-            "Most real business problems start as **supervised** — because someone already has a spreadsheet of __past outcomes__ to learn from.",
+          type: "list",
+          items: ["learns the ^^relationship between inputs and outputs^^ to make predictions"],
+        },
+        {
+          type: "list",
+          items: ["Input + Correct Answer → Model learns → ==Predicts new answers.=="],
+        },
+        {
+          type: "list",
+          items: [
+            "**Examples:** Spam detection, house price prediction, Classification, Regression",
+          ],
+        },
+        {
+          type: "list",
+          items: [
+            "**Unsupervised learning** is a machine learning approach in which a model analyzes ==unlabeled data== to discover ^^hidden patterns^^",
+            "identifies ==similarities, groups==",
+          ],
+        },
+        {
+          type: "list",
+          items: [
+            "Input without answers → Model discovers patterns → ==Groups or structures data.==",
+          ],
+        },
+        {
+          type: "list",
+          items: ["**Examples:** Customer segmentation, anomaly detection, Clustering,"],
+        },
+        {
+          type: "list",
+          items: [
+            "**Reinforcement learning** is a machine learning approach in which ==an agent learns through interactions==",
+            "by taking actions and receiving ^^rewards or penalties^^",
+          ],
+        },
+        {
+          type: "list",
+          items: ["Agent → Takes action → Receives reward/penalty → ==Improves decision-making.=="],
+        },
+        {
+          type: "list",
+          items: [
+            "**Examples:** Robotics, game-playing AI, autonomous navigation, Delayed, sparse scalar",
+          ],
         },
       ],
     },
@@ -324,6 +311,80 @@ export const qansSection: Section = {
           variant: "info",
           content:
             "Interview Tip: Embeddings are heavily used in **semantic search**, recommendation systems, RAG, and ==vector databases==.",
+        },
+      ],
+    },
+    {
+      id: "what-are-tokens-vectors-embeddings",
+      category: "2M",
+      question: "what is Tokens, vectors, embeddings ?",
+      tags: ["AI/ML", "LLM", "Embeddings"],
+      difficulty: "Easy",
+      answer: [
+        {
+          type: "list",
+          items: ["**Tokens** are the ==smallest units of text== processed by a language model"],
+        },
+        {
+          type: "list",
+          items: ["==tokenization algorithm== that splits text into words, characters"],
+        },
+        {
+          type: "list",
+          items: ["Tokens are converted into ^^numerical IDs^^"],
+        },
+        {
+          type: "list",
+          items: [
+            "Text → Tokenization → ==Token IDs== → Model Processing.",
+            '**Example:** The word "unbelievable" might be split into tokens like ==["un", "believ", "able"]==.',
+          ],
+        },
+        {
+          type: "list",
+          items: ["**Vectors** are ==ordered sequences of numerical values=="],
+        },
+        {
+          type: "list",
+          items: [
+            "represent data, features, or mathematical quantities in a ^^multidimensional space.^^",
+          ],
+        },
+        {
+          type: "list",
+          items: [
+            "vectors enable mathematical operations such as  ==similarity, distance, and relationships.==",
+          ],
+        },
+        {
+          type: "list",
+          items: ["**Embeddings** are ==learned dense numerical vector representations=="],
+        },
+        {
+          type: "list",
+          items: ["text, images, or audio, that capture ^^meaningful patterns & relations^^"],
+        },
+        {
+          type: "list",
+          items: [
+            "map data into a  ==semantically related items== are generally positioned closer together.",
+          ],
+        },
+        {
+          type: "list",
+          items: ["Text → Embedding Model → Embedding Vector → ^^Semantic Similarity Search.^^"],
+        },
+        {
+          type: "list",
+          items: [
+            '**Example:** "Car" and "Automobile" → Similar embeddings → ==High semantic similarity.==',
+          ],
+        },
+        {
+          type: "list",
+          items: [
+            "**Key Difference:** Every embedding is a vector, but ^^not every vector is an embedding.^^",
+          ],
         },
       ],
     },
@@ -410,46 +471,6 @@ export const qansSection: Section = {
           variant: "tip",
           content:
             "A student who **confidently invents an answer** instead of admitting they don't know.",
-        },
-      ],
-    },
-    {
-      id: "fine-tuning-vs-rag",
-      category: "2M",
-      question: "Fine-Tuning vs RAG — What's the difference?",
-      tags: ["AI/ML", "LLM", "RAG"],
-      difficulty: "Medium",
-      answer: [
-        {
-          type: "table",
-          headers: ["", "Fine-Tuning", "RAG"],
-          rows: [
-            [
-              "What it does",
-              "Trains the model further on domain data",
-              "Fetches information at query time",
-            ],
-            ["Changes weights?", "Yes", "No"],
-            [
-              "Best for",
-              "Style, tone, format, specialised behaviour",
-              "Fresh or private knowledge, facts",
-            ],
-            ["Updating knowledge", "Retrain", "Just update the documents"],
-          ],
-        },
-        { type: "heading", content: "Analogy" },
-        {
-          type: "callout",
-          variant: "tip",
-          content:
-            "**Fine-Tuning** = the student learns a new skill. **RAG** = the student consults a textbook.",
-        },
-        {
-          type: "callout",
-          variant: "info",
-          content:
-            "Interview Tip: Rule of thumb — ==RAG for knowledge, fine-tuning for behaviour==. They can be combined.",
         },
       ],
     },
@@ -664,151 +685,142 @@ export const qansSection: Section = {
     {
       id: "bias-variance-tradeoff",
       category: "2M",
-      question: "What is the Bias-Variance Tradeoff?",
+      question: "what is Bias-Variance Tradeoff",
       tags: ["AI/ML", "Generalization"],
       difficulty: "Medium",
       answer: [
         {
-          type: "text",
-          content:
-            "Picture a ==dartboard==. Where your darts land tells you __which problem you have__.",
-        },
-        {
-          type: "table",
-          headers: ["", "High Bias", "High Variance"],
-          rows: [
-            [
-              "Dartboard",
-              "Darts land **far from the bullseye**, but clustered together",
-              "Darts **scatter wildly** all over the board",
-            ],
-            ["Meaning", "Systematically wrong", "Overreacting to noise"],
-            ["Maps to", "==Underfitting==", "==Overfitting=="],
-            ["Model is", "Too simple", "Too complex"],
+          type: "list",
+          items: [
+            "==the balance== between a model's ability to capture underlying patterns **(bias)** and its sensitivity to variations in training data **(variance)**.",
           ],
         },
         {
-          type: "callout",
-          variant: "tip",
-          content:
-            "The sweet spot: darts land **close together AND near the bullseye**. Pushing one down usually pushes the other up — which is exactly why it is a __tradeoff__.",
-        },
-      ],
-    },
-    {
-      id: "train-validation-test-split",
-      category: "2M",
-      question: "Why split data into Train / Validation / Test?",
-      tags: ["AI/ML", "Data"],
-      difficulty: "Easy",
-      answer: [
-        {
-          type: "text",
-          content:
-            "Extending the ==student== idea — each split answers a different question, and mixing them up is how you __fool yourself__ into thinking a model is good.",
-        },
-        {
-          type: "flow",
-          title: "Three splits, used in order",
-          nodes: [
-            { label: "Training set", sub: "The textbook", tone: "gold" },
-            { label: "Validation set", sub: "Practice quizzes", tone: "ember" },
-            { label: "Test set", sub: "Final exam — once", tone: "mint" },
+          type: "list",
+          items: [
+            "how ==model complexity== affects underfitting, overfitting, and ^^generalization error^^.",
           ],
         },
         {
-          type: "table",
-          headers: ["Split", "Analogy", "What it is for"],
-          rows: [
-            ["**Training**", "The textbook they study from", "The model learns patterns here"],
-            [
-              "**Validation**",
-              "Practice quizzes",
-              "Tune how the model studies — catch mistakes ==early==",
-            ],
-            ["**Test**", "The final exam", "Touched ==only once==, at the very end"],
+          type: "list",
+          items: ["**Bias** is the error introduced by ==overly simplistic assumptions=="],
+        },
+        {
+          type: "list",
+          items: [
+            "**High Bias** → Model too simple → ^^Underfitting^^ → High training and test errors.",
           ],
         },
         {
-          type: "callout",
-          variant: "warn",
-          content:
-            "Never tune on the test set. The moment you peek and adjust, it stops being an honest exam — this is called **data leakage**.",
-        },
-      ],
-    },
-    {
-      id: "what-is-cross-validation",
-      category: "2M",
-      question: "What is Cross-Validation?",
-      tags: ["AI/ML", "Evaluation"],
-      difficulty: "Medium",
-      answer: [
-        {
-          type: "text",
-          content:
-            "Cross-Validation checks ==how well a model generalizes== by splitting the training data into folds, then repeatedly training on some folds and validating on the one left out.",
-        },
-        { type: "heading", content: "Example: 5-Fold" },
-        {
-          type: "code",
-          language: "text",
-          content:
-            "Round 1: [Val][Train][Train][Train][Train]\nRound 2: [Train][Val][Train][Train][Train]\n...\nRound 5: [Train][Train][Train][Train][Val]\n\nFinal score = average of the 5 validation scores",
+          type: "list",
+          items: ["**Variance** measures how much a model's ==predictions change== when trained"],
         },
         {
-          type: "callout",
-          variant: "info",
-          content:
-            "Interview Tip: Most useful when data is __small__ — one lucky split can mislead. For time-series data use **time-based splits**, never random folds, to avoid peeking at the future.",
+          type: "list",
+          items: [
+            "**High Variance** → Model too sensitive to training data → ^^Overfitting^^ → Low training error but high test error.",
+          ],
         },
-        { type: "heading", content: "Analogy" },
+        { type: "heading", content: "Tradeoff" },
         {
-          type: "callout",
-          variant: "tip",
-          content:
-            "A student takes **five different practice exams** instead of trusting a single score.",
+          type: "list",
+          items: [
+            "Increasing Model Complexity → ==Bias generally decreases== → Variance may increase.",
+            "Decreasing Model Complexity → Bias may increase → ==Variance generally decreases.==",
+          ],
+        },
+        {
+          type: "list",
+          items: [
+            "**Ultimate Goal:** The goal is never to minimize training error alone — it's to ==minimize generalization error== on unseen data.",
+            "(**Bias² + Variance + Noise**) is minimized.",
+          ],
         },
       ],
     },
     {
       id: "precision-recall-f1",
       category: "2M",
-      question: "Precision, Recall, and F1 — What's the difference?",
+      question: "what is precision, recall and F1",
       tags: ["AI/ML", "Metrics"],
       difficulty: "Medium",
       answer: [
         {
-          type: "text",
-          content:
-            "A village has a ==wolf alarm== system. Precision and recall ask __two different questions__ about how well that alarm works.",
+          type: "list",
+          items: ["All are ^^classification evaluation metric^^"],
         },
         {
-          type: "table",
-          headers: ["Metric", "The wolf question", "When it is low"],
-          rows: [
-            [
-              "**Precision**",
-              "Of all the times the alarm rang, how often was it a ==real wolf==?",
-              "'Boy who cried wolf' — __false alarms everywhere__",
-            ],
-            [
-              "**Recall**",
-              "Of all the actual wolf attacks, how many did the alarm ==catch==?",
-              "Wolves __sneak past undetected__",
-            ],
-            [
-              "**F1 Score**",
-              "The balanced compromise between the two",
-              "Neither side is good enough to trust",
-            ],
+          type: "list",
+          items: [
+            "**Precision** measures the ==proportion of correctly predicted positive instances==",
           ],
         },
         {
-          type: "callout",
-          variant: "warn",
-          content:
-            "You can get **100% recall** by ringing the alarm constantly, and **100% precision** by only ringing when absolutely certain. F1 exists because chasing __one at the other's expense__ is easy and useless.",
+          type: "list",
+          items: ["how ==reliable a model's positive predictions== are."],
+        },
+        {
+          type: "list",
+          items: ["**High Precision** → ^^Fewer False Positives^^"],
+        },
+        {
+          type: "list",
+          items: ["**Precision = TP / (TP + FP)**"],
+        },
+        {
+          type: "list",
+          items: [
+            "**Example:** Of 100 emails predicted as spam, 90 are actually spam → ^^Precision = 90%.^^",
+          ],
+        },
+        {
+          type: "list",
+          items: ["**Recall** measures the ==proportion of actual positive instances=="],
+        },
+        {
+          type: "list",
+          items: ["model how ==effectively identifies all actual positive cases.=="],
+        },
+        {
+          type: "list",
+          items: ["**High Recall** → ^^Fewer False Negatives^^"],
+        },
+        {
+          type: "list",
+          items: ["**Recall = TP / (TP + FN)**"],
+        },
+        {
+          type: "list",
+          items: [
+            "**Example:** Of 100 actual spam emails, the model correctly identifies 80 → ^^Recall = 80%.^^",
+          ],
+        },
+        {
+          type: "list",
+          items: [
+            "**Precision** = ==quality of positives== (avoid false alarms)",
+            "**Recall** = ==quantity of positives caught== (avoid missed cases)",
+          ],
+        },
+        {
+          type: "list",
+          items: ["**F1 Score** calculates the ==harmonic mean== of precision and recall"],
+        },
+        {
+          type: "list",
+          items: ["useful for evaluating classification models on ==imbalanced datasets=="],
+        },
+        {
+          type: "list",
+          items: ["**High F1 Score** → High Precision + High Recall → ^^Better balance^^"],
+        },
+        {
+          type: "list",
+          items: ["**F1 = 2 × (Precision × Recall) / (Precision + Recall)**"],
+        },
+        {
+          type: "list",
+          items: ["**Example:** Precision = 90%, Recall = 80% → ^^F1 Score = 84.7%.^^"],
         },
       ],
     },
@@ -1046,6 +1058,53 @@ export const qansSection: Section = {
           variant: "info",
           content:
             "Interview Tip: A neuron performs a **weighted calculation** followed by an activation function. Training adjusts those weights to ==reduce prediction error==.",
+        },
+      ],
+    },
+    {
+      id: "what-is-weights",
+      category: "2M",
+      question: "What is Weights ?",
+      tags: ["AI/ML", "Deep Learning"],
+      difficulty: "Easy",
+      answer: [
+        { type: "heading", content: "Weights in Machine Learning" },
+        {
+          type: "list",
+          items: [
+            "Weights are ==learnable numerical parameters== (especially neural networks)",
+            "It determines the **strength and direction of influence**",
+            "each input feature has on the model's output.",
+          ],
+        },
+        {
+          type: "list",
+          items: ["Weights are ^^automatically adjusted^^"],
+        },
+        {
+          type: "list",
+          items: [
+            "It happens during training through ==optimization algorithms==",
+            "such as **gradient descent**, to ^^minimize the loss function.^^",
+          ],
+        },
+        {
+          type: "text",
+          content: "**Example: House Price Prediction**",
+        },
+        {
+          type: "list",
+          items: [
+            "House Size → Weight = 0.8 House Age → Weight = -0.3 Location Score → Weight = 0.9",
+          ],
+        },
+        {
+          type: "list",
+          items: ["Weights = ==importance knobs=="],
+        },
+        {
+          type: "list",
+          items: ["Input × Weight + Bias → Activation → Output → Loss → Update weights → Repeat."],
         },
       ],
     },

@@ -42,7 +42,7 @@ function Callout({
   children: React.ReactNode;
 }) {
   if (variant === "spotlight") {
-    return <div className="callout-spotlight my-4 text-[15px] leading-relaxed">{children}</div>;
+    return <div className="callout-spotlight my-4 whitespace-pre-line text-[15px] leading-relaxed">{children}</div>;
   }
   const styles = {
     info: {
@@ -97,7 +97,7 @@ export function AnswerBlocks({ blocks, itemId }: { blocks: Block[]; itemId?: str
             return (
               <Tag
                 key={i}
-                className={`my-3 space-y-1.5 pl-5 ${b.ordered ? "list-decimal" : "list-disc"} marker:text-gold-ink/80`}
+                className={`my-5 space-y-1.5 pl-5 ${b.ordered ? "list-decimal" : "list-disc"} marker:text-gold-ink/80`}
               >
                 {b.items.map((it, k) => (
                   <li key={k} data-qa-b={i} data-qa-l={k}>
