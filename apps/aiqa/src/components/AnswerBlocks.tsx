@@ -42,7 +42,11 @@ function Callout({
   children: React.ReactNode;
 }) {
   if (variant === "spotlight") {
-    return <div className="callout-spotlight my-4 whitespace-pre-line text-[15px] leading-relaxed">{children}</div>;
+    return (
+      <div className="callout-spotlight my-4 whitespace-pre-line text-[15px] leading-relaxed">
+        {children}
+      </div>
+    );
   }
   const styles = {
     info: {
@@ -184,6 +188,14 @@ export function AnswerBlocks({ blocks, itemId }: { blocks: Block[]; itemId?: str
             return <AccordionBlock key={i} items={b.items} />;
           case "slideshow":
             return <SlideshowBlock key={i} slides={b.slides} />;
+          case "divider":
+            return (
+              <hr
+                key={i}
+                aria-hidden
+                className="my-10 h-px border-0 bg-gradient-to-r from-gold/50 via-gold/20 to-transparent"
+              />
+            );
           case "quiz":
             return <QuizBlock key={i} questions={b.questions} />;
           case "link":

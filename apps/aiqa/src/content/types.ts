@@ -10,6 +10,7 @@
 export type Block =
   | { type: "text"; content: string }
   | { type: "heading"; content: string }
+  | { type: "divider" }
   | { type: "list"; items: string[]; ordered?: boolean }
   | { type: "code"; language: string; content: string }
   | { type: "callout"; variant?: "info" | "warn" | "tip" | "spotlight"; content: string }

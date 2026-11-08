@@ -152,6 +152,516 @@ export const qansSection: Section = {
       ],
     },
     {
+      id: "what-is-a-loss-function",
+      category: "2M",
+      question: "What is a Loss Function?",
+      tags: ["AI/ML", "Training"],
+      difficulty: "Easy",
+      answer: [
+        {
+          type: "text",
+          content:
+            "A loss function measures the ==gap between prediction and reality==. The bigger the gap, the __louder the correction signal__ pushing the model to fix itself.",
+        },
+        {
+          type: "flow",
+          title: "The correction loop",
+          nodes: [
+            { label: "Predict", sub: "Model guesses", tone: "gold" },
+            { label: "Compare", sub: "Guess vs truth", tone: "ember" },
+            { label: "Loss", sub: "How wrong, as a number", tone: "sky" },
+            { label: "Adjust", sub: "Nudge the model", tone: "mint" },
+          ],
+        },
+        {
+          type: "callout",
+          variant: "tip",
+          content:
+            "Think of a **GPS** recalculating: 'you are this far off route.' Every wrong turn produces a bigger signal, and the model steers back toward the correct path.",
+        },
+      ],
+    },
+    {
+      id: "what-is-regularization",
+      category: "2M",
+      question: "What is Regularization (L1 / L2)?",
+      tags: ["AI/ML", "Regularization"],
+      difficulty: "Medium",
+      answer: [
+        {
+          type: "text",
+          content:
+            "Back to the ==overfitting student== — regularization is the __strict teacher__ who penalizes overly complicated, over-memorized answers, nudging them toward simpler reasoning that actually generalizes.",
+        },
+        {
+          type: "table",
+          headers: ["", "L1 (Lasso)", "L2 (Ridge)"],
+          rows: [
+            [
+              "Teacher says",
+              "'Just **drop** that irrelevant point completely.'",
+              "'**Tone down** all your points, do not rely too heavily on any one.'",
+            ],
+            [
+              "Effect on features",
+              "Can ==zero out== unimportant features entirely",
+              "Shrinks every feature, ==rarely to zero==",
+            ],
+            [
+              "Good for",
+              "Feature selection — a sparser, simpler model",
+              "Keeping all features but limiting their influence",
+            ],
+          ],
+        },
+        {
+          type: "callout",
+          variant: "tip",
+          content:
+            "Both fight **overfitting** by adding a penalty for complexity. L1 makes the model __shorter__; L2 makes it __calmer__.",
+        },
+      ],
+    },
+    {
+      id: "batch-size-epoch-learning-rate",
+      category: "2M",
+      question: "What are Batch Size, Epoch, Iteration, and Learning Rate?",
+      tags: ["AI/ML", "Training"],
+      difficulty: "Medium",
+      answer: [
+        {
+          type: "text",
+          content:
+            "These are important parameters controlling ==how a neural network learns== during training.",
+        },
+        {
+          type: "list",
+          items: [
+            "**Batch Size** → Number of training examples processed before one weight update.",
+            "**Epoch** → One complete pass through the entire training dataset.",
+            "**Iteration** → One weight update using one batch.",
+            "**Learning Rate** → Controls how large each weight update is.",
+          ],
+        },
+        { type: "heading", content: "Example" },
+        {
+          type: "code",
+          language: "text",
+          content:
+            "1,000 training samples ÷ Batch Size 100 = 10 batches per epoch\n\n1 Epoch = 10 iterations (10 weight updates)",
+        },
+        { type: "heading", content: "Analogy" },
+        { type: "text", content: "Imagine studying a 1,000-question book:" },
+        {
+          type: "list",
+          items: [
+            "**Batch Size** → Study 100 questions at a time.",
+            "**Epoch** → Finish all 1,000 questions once.",
+            "**Iteration** → One study session on a single chapter.",
+            "**Learning Rate** → How aggressively you change your understanding after discovering mistakes.",
+          ],
+        },
+        {
+          type: "callout",
+          variant: "warn",
+          content:
+            "Interview Tip: Learning rate __too high__ → may overshoot the optimum. Learning rate __too low__ → training becomes slow or can stall.",
+        },
+      ],
+    },
+    {
+      id: "what-is-a-model",
+      category: "2M",
+      question: "What is a Model?",
+      tags: ["AI/ML", "Fundamentals"],
+      difficulty: "Easy",
+      answer: [
+        {
+          type: "list",
+          items: [
+            "It is a **mathematical or computational representation** of ^^patterns and relationships^^",
+          ],
+        },
+        {
+          type: "list",
+          items: [
+            "It **learns from training data**, used to make ^^predictions or decisions^^",
+          ],
+        },
+        {
+          type: "list",
+          items: [
+            "A model consists of **learnable parameters** (such as ^^weights and biases^^)",
+          ],
+        },
+        {
+          type: "callout",
+          variant: "spotlight",
+          content:
+            "Training Data → Learning Algorithm →  Optimized Parameters → **Trained Model.**",
+        },
+        { type: "divider" },
+        { type: "text", content: "==Example: House Price Prediction==" },
+        {
+          type: "callout",
+          variant: "spotlight",
+          content:
+            "**Input Features** → House Size, Location, Age.\n**Model** → Learns relationships between these ^^features^^ and historical house prices.\n**Output** → Predicts the ^^price of a new house.^^",
+        },
+        { type: "divider" },
+        {
+          type: "callout",
+          variant: "spotlight",
+          content:
+            "**Inference** = Using a trained model to generate ^^predictions on new data.^^",
+        },
+      ],
+    },
+    {
+      id: "what-is-tokenization",
+      category: "2M",
+      question: "What is Tokenization?",
+      tags: ["AI/ML", "LLM", "Fundamentals"],
+      difficulty: "Easy",
+      answer: [
+        {
+          type: "text",
+          content:
+            "Tokenization breaks text into small units called ==tokens== (words, sub-words, or characters) that an LLM can process.",
+        },
+        {
+          type: "code",
+          language: "text",
+          content: '"unbelievable" → ["un", "believ", "able"]',
+        },
+        {
+          type: "callout",
+          variant: "info",
+          content:
+            "Interview Tip: The common method is **BPE (Byte Pair Encoding)**. Context limits and API cost are measured in __tokens__, not words.",
+        },
+        { type: "heading", content: "Analogy" },
+        {
+          type: "callout",
+          variant: "tip",
+          content: "Breaking a sentence into **LEGO pieces** before building meaning.",
+        },
+      ],
+    },
+    {
+      id: "what-is-temperature",
+      category: "2M",
+      question: "What is Temperature in LLMs?",
+      tags: ["AI/ML", "LLM", "Prompting"],
+      difficulty: "Easy",
+      answer: [
+        {
+          type: "text",
+          content:
+            "Temperature controls the ==randomness of token selection== when the model generates text.",
+        },
+        {
+          type: "list",
+          items: [
+            "**Low (e.g. 0.1)** — predictable, consistent. Good for facts, code, extraction.",
+            "**High (e.g. 0.9)** — varied, creative. Good for brainstorming, stories.",
+          ],
+        },
+        { type: "heading", content: "Analogy" },
+        {
+          type: "callout",
+          variant: "tip",
+          content:
+            "**Low** = the student sticks to the textbook. **High** = the student explores different answers.",
+        },
+      ],
+    },
+    {
+      id: "top-k-vs-top-p-sampling",
+      category: "2M",
+      question: "Top-K vs Top-P Sampling in LLMs",
+      tags: ["AI/ML", "LLM", "Prompting"],
+      difficulty: "Hard",
+      answer: [
+        {
+          type: "list",
+          items: [
+            "**Top-K** — pick the next token from the ==K most likely== tokens.",
+            "**Top-P (nucleus)** — pick from the ==smallest set of tokens whose probabilities add up to at least P==.",
+          ],
+        },
+        {
+          type: "callout",
+          variant: "info",
+          content:
+            "Interview Tip: Top-K has a fixed size; Top-P adapts — few tokens when the model is confident, more when it's unsure. Both work __with__ temperature, and are usually tuned one at a time.",
+        },
+        { type: "heading", content: "Analogy" },
+        {
+          type: "callout",
+          variant: "tip",
+          content:
+            "**Top-K** = choose from the 5 best students. **Top-P** = choose from the top students until together they cover 90% of the likelihood.",
+        },
+      ],
+    },
+    {
+      id: "self-attention-vs-multi-head",
+      category: "2M",
+      question: "Self-Attention vs Multi-Head Attention",
+      tags: ["AI/ML", "LLM", "Transformers"],
+      difficulty: "Hard",
+      answer: [
+        {
+          type: "text",
+          content:
+            "Attention lets a model give ==different importance to each token== based on its relevance to the current one.",
+        },
+        {
+          type: "list",
+          items: [
+            "**Self-Attention** — every token looks at every other token in the same sequence (using Q, K, V).",
+            "**Multi-Head Attention** — runs several attentions in parallel; each head can learn a different relationship (grammar, meaning, references).",
+          ],
+        },
+        { type: "heading", content: "Analogy" },
+        {
+          type: "callout",
+          variant: "tip",
+          content:
+            "A student **highlights key words** in a paragraph — multi-head is using several highlighter colours at once.",
+        },
+      ],
+    },
+    {
+      id: "encoder-vs-decoder-transformers",
+      category: "2M",
+      question: "Encoder vs Decoder Transformers (BERT, GPT, T5)",
+      tags: ["AI/ML", "LLM", "Transformers"],
+      difficulty: "Medium",
+      answer: [
+        {
+          type: "text",
+          content:
+            "A Transformer uses ==attention to understand relationships between tokens==. It comes in three flavours:",
+        },
+        {
+          type: "table",
+          headers: ["Type", "Example", "Best at"],
+          rows: [
+            ["Encoder-only", "BERT", "Understanding — classification, search"],
+            ["Decoder-only", "GPT", "Generating text"],
+            ["Encoder–Decoder", "T5", "Translation, summarisation"],
+          ],
+        },
+        { type: "heading", content: "Analogy" },
+        {
+          type: "callout",
+          variant: "tip",
+          content:
+            "A student understands a sentence by focusing on **how its words relate** to one another.",
+        },
+      ],
+    },
+    {
+      id: "what-is-a-confusion-matrix",
+      category: "2M",
+      question: "What is a Confusion Matrix?",
+      tags: ["AI/ML", "Metrics"],
+      difficulty: "Easy",
+      answer: [
+        {
+          type: "text",
+          content:
+            "A Confusion Matrix is a table used to evaluate a classification model by comparing ==predicted results== with __actual results__.",
+        },
+        {
+          type: "table",
+          headers: ["", "Predicted Positive", "Predicted Negative"],
+          rows: [
+            ["Actual Positive", "**TP**", "FN"],
+            ["Actual Negative", "FP", "**TN**"],
+          ],
+        },
+        {
+          type: "text",
+          content:
+            "From this, we calculate metrics such as **Accuracy, Precision, Recall, and F1-Score**.",
+        },
+        { type: "heading", content: "Analogy" },
+        {
+          type: "callout",
+          variant: "tip",
+          content: "Think of an **airport security scanner**:",
+        },
+        {
+          type: "table",
+          headers: ["Term", "Meaning"],
+          rows: [
+            ["**TP**", "Correctly detects a prohibited item"],
+            ["**TN**", "Correctly clears a safe bag"],
+            ["**FP**", "Alarms on a safe bag"],
+            ["**FN**", "Misses a prohibited item"],
+          ],
+        },
+        {
+          type: "callout",
+          variant: "info",
+          content:
+            'Interview Tip: The interviewer often follows this with: "When would you prefer ==Precision== over ==Recall==?"',
+        },
+      ],
+    },
+    {
+      id: "what-is-hyperparameter-tuning",
+      category: "2M",
+      question: "What is Hyperparameter Tuning?",
+      tags: ["AI/ML", "Training"],
+      difficulty: "Medium",
+      answer: [
+        {
+          type: "text",
+          content:
+            "Hyperparameter Tuning finds the ==best model settings== — such as learning rate, batch size, or number of layers — by comparing validation performance.",
+        },
+        {
+          type: "list",
+          items: [
+            "**Grid Search** — try every combination. Thorough but expensive.",
+            "**Random Search** — try random combinations. Often more efficient.",
+            "**Bayesian Optimization** — learns from past trials to pick the next one.",
+          ],
+        },
+        {
+          type: "callout",
+          variant: "warn",
+          content:
+            "Interview Tip: Tune on the __validation__ set, never the test set. Hyperparameters are set __before__ training; parameters (weights) are learned __during__ it.",
+        },
+        { type: "heading", content: "Analogy" },
+        {
+          type: "callout",
+          variant: "tip",
+          content: "A chef experiments with **temperature and timing** to find the best recipe.",
+        },
+      ],
+    },
+    {
+      id: "what-is-batch-normalization",
+      category: "2M",
+      question: "What is Batch Normalization?",
+      tags: ["AI/ML", "Deep Learning"],
+      difficulty: "Hard",
+      answer: [
+        {
+          type: "text",
+          content:
+            "Batch Normalization ==normalizes a layer's activations using the mini-batch's mean and variance==, then applies learnable scale and shift parameters.",
+        },
+        {
+          type: "callout",
+          variant: "info",
+          content:
+            "Benefit: more stable training, faster convergence, and often tolerates higher learning rates. At inference it uses __running averages__ from training. Transformers usually use **Layer Normalization** instead.",
+        },
+        { type: "heading", content: "Analogy" },
+        {
+          type: "callout",
+          variant: "tip",
+          content:
+            "A teacher **adjusts scores to a consistent scale** so students can be compared fairly.",
+        },
+      ],
+    },
+    {
+      id: "reranking-in-rag",
+      category: "2M",
+      question: "What is Reranking in RAG?",
+      tags: ["AI/ML", "LLM", "RAG"],
+      difficulty: "Medium",
+      answer: [
+        {
+          type: "text",
+          content:
+            "Reranking ==reorders the first-pass results== with a more accurate relevance model (such as a cross-encoder), so the best documents reach the LLM first.",
+        },
+        {
+          type: "flow",
+          title: "Two-stage retrieval",
+          nodes: [
+            { label: "Retrieve", sub: "Fast, top 50", tone: "gold" },
+            { label: "Rerank", sub: "Accurate, top 5", tone: "ember" },
+            { label: "LLM", sub: "Best context", tone: "mint" },
+          ],
+        },
+        { type: "heading", content: "Analogy" },
+        {
+          type: "callout",
+          variant: "tip",
+          content: "A librarian finds **10 books**, then picks the **3 most relevant**.",
+        },
+      ],
+    },
+    {
+      id: "llm-latency-vs-throughput",
+      category: "2M",
+      question: "LLM Latency vs Throughput",
+      tags: ["AI/ML", "LLM", "Optimization"],
+      difficulty: "Medium",
+      answer: [
+        {
+          type: "list",
+          items: [
+            "**Latency** — ==time to respond== to one request (often measured as time-to-first-token).",
+            "**Throughput** — ==how much work is done== per unit of time (requests or tokens per second).",
+          ],
+        },
+        { type: "heading", content: "Optimization" },
+        {
+          type: "list",
+          items: [
+            "**Batching** — raises throughput, but can add latency per request.",
+            "**Caching** (including semantic caching) — improves both.",
+            "**Model choice / quantization** — smaller models are faster and cheaper.",
+          ],
+        },
+        { type: "heading", content: "Analogy" },
+        {
+          type: "callout",
+          variant: "tip",
+          content:
+            "Restaurant: **latency** = time to serve one customer. **Throughput** = total customers served per hour.",
+        },
+      ],
+    },
+    {
+      id: "what-is-mixture-of-experts",
+      category: "2M",
+      question: "What is Mixture of Experts (MoE)?",
+      tags: ["AI/ML", "LLM", "Architecture"],
+      difficulty: "Hard",
+      answer: [
+        {
+          type: "text",
+          content:
+            "MoE uses a ==router to activate only a few expert networks== for each input, instead of the whole model.",
+        },
+        {
+          type: "callout",
+          variant: "info",
+          content:
+            "Benefit: much more capacity with less computation per token. Trade-off: all experts still have to be loaded in __memory__.",
+        },
+        { type: "heading", content: "Analogy" },
+        {
+          type: "callout",
+          variant: "tip",
+          content:
+            "A hospital **receptionist sends each patient to the right specialists** instead of consulting every doctor.",
+        },
+      ],
+    },
+    {
       id: "overfitting-vs-underfitting",
       category: "2M",
       question: "what is overfitting and underfitting ?",
@@ -161,25 +671,37 @@ export const qansSection: Section = {
         {
           type: "list",
           items: [
-            "Overfitting occurs when a machine learning model ==learns the training data too closely==, including ^^noise, outliers, and irrelevant patterns^^",
+            "==Overfitting== occurs when a machine learning model **learns the training data too closely**, including ^^noise, outliers, and irrelevant patterns^^",
           ],
         },
         {
           type: "list",
-          items: [
-            "It results in ==low training error but high generalization error==",
-            "Training accuracy high → Test accuracy low → ^^Big gap between them.^^",
-            "Underfitting occurs when a machine learning model ==fails to capture the underlying patterns== and relationships in the data",
-            "It is due to **insufficient model capacity** or **inadequate training** It results in ==high training error and high generalization error.==",
-            "Training accuracy low → Test accuracy low → ^^Both bad.^^",
-          ],
+          items: ["It results in **low training error but high generalization error**"],
         },
+        {
+          type: "callout",
+          variant: "spotlight",
+          content: "Training accuracy high → Test accuracy low → ^^Big gap between them.^^",
+        },
+        { type: "divider" },
         {
           type: "list",
           items: [
-            "Underfitting = **high bias** (too simple, misses the pattern)",
-            "Overfitting = **high variance** (too complex, memorizes the noise)",
+            "==Underfitting== occurs when a machine learning model **fails to capture the underlying patterns** and relationships in the data",
+            "It is due to **insufficient model capacity** or **inadequate training** It results in **high training error and high generalization error.**",
           ],
+        },
+        {
+          type: "callout",
+          variant: "spotlight",
+          content: "Training accuracy low → Test accuracy low → ^^Both bad.^^",
+        },
+        { type: "divider" },
+        {
+          type: "callout",
+          variant: "spotlight",
+          content:
+            "==Underfitting== = **high bias** (too simple, misses the pattern)\n==Overfitting== = **high variance** (too complex, memorizes the noise)",
         },
       ],
     },
@@ -193,7 +715,7 @@ export const qansSection: Section = {
         {
           type: "list",
           items: [
-            "**Supervised learning** is a machine learning approach in which a model is trained on ==labeled data==",
+            "==Supervised learning== is a machine learning approach in which a model is trained on **labeled data**",
           ],
         },
         {
@@ -201,8 +723,9 @@ export const qansSection: Section = {
           items: ["learns the ^^relationship between inputs and outputs^^ to make predictions"],
         },
         {
-          type: "list",
-          items: ["Input + Correct Answer → Model learns → ==Predicts new answers.=="],
+          type: "callout",
+          variant: "spotlight",
+          content: "Input + Correct Answer → Model learns → **Predicts new answers.**",
         },
         {
           type: "list",
@@ -210,33 +733,36 @@ export const qansSection: Section = {
             "**Examples:** Spam detection, house price prediction, Classification, Regression",
           ],
         },
+        { type: "divider" },
         {
           type: "list",
           items: [
-            "**Unsupervised learning** is a machine learning approach in which a model analyzes ==unlabeled data== to discover ^^hidden patterns^^",
-            "identifies ==similarities, groups==",
+            "==Unsupervised learning== is a machine learning approach in which a model analyzes **unlabeled data** to discover ^^hidden patterns^^",
+            "identifies **similarities, groups**",
           ],
         },
         {
-          type: "list",
-          items: [
-            "Input without answers → Model discovers patterns → ==Groups or structures data.==",
-          ],
+          type: "callout",
+          variant: "spotlight",
+          content:
+            "Input without answers → Model discovers patterns → **Groups or structures data.**",
         },
         {
           type: "list",
           items: ["**Examples:** Customer segmentation, anomaly detection, Clustering,"],
         },
+        { type: "divider" },
         {
           type: "list",
           items: [
-            "**Reinforcement learning** is a machine learning approach in which ==an agent learns through interactions==",
+            "==Reinforcement learning== is a machine learning approach in which **an agent learns through interactions**",
             "by taking actions and receiving ^^rewards or penalties^^",
           ],
         },
         {
-          type: "list",
-          items: ["Agent → Takes action → Receives reward/penalty → ==Improves decision-making.=="],
+          type: "callout",
+          variant: "spotlight",
+          content: "Agent → Takes action → Receives reward/penalty → **Improves decision-making.**",
         },
         {
           type: "list",
@@ -323,26 +849,31 @@ export const qansSection: Section = {
       answer: [
         {
           type: "list",
-          items: ["**Tokens** are the ==smallest units of text== processed by a language model"],
+          items: ["==Tokens== are the **smallest units of text** processed by a language model"],
         },
         {
           type: "list",
-          items: ["==tokenization algorithm== that splits text into words, characters"],
+          items: ["**tokenization algorithm** that splits text into words, characters"],
         },
         {
           type: "list",
           items: ["Tokens are converted into ^^numerical IDs^^"],
         },
         {
-          type: "list",
-          items: [
-            "Text → Tokenization → ==Token IDs== → Model Processing.",
-            '**Example:** The word "unbelievable" might be split into tokens like ==["un", "believ", "able"]==.',
-          ],
+          type: "callout",
+          variant: "spotlight",
+          content: "Text → Tokenization → **Token IDs** → Model Processing.",
         },
         {
           type: "list",
-          items: ["**Vectors** are ==ordered sequences of numerical values=="],
+          items: [
+            '**Example:** The word "unbelievable" might be split into tokens like ==["un", "believ", "able"]==.',
+          ],
+        },
+        { type: "divider" },
+        {
+          type: "list",
+          items: ["==Vectors== are **ordered sequences of numerical values**"],
         },
         {
           type: "list",
@@ -353,12 +884,13 @@ export const qansSection: Section = {
         {
           type: "list",
           items: [
-            "vectors enable mathematical operations such as  ==similarity, distance, and relationships.==",
+            "vectors enable mathematical operations such as  **similarity, distance, and relationships.**",
           ],
         },
+        { type: "divider" },
         {
           type: "list",
-          items: ["**Embeddings** are ==learned dense numerical vector representations=="],
+          items: ["==Embeddings== are **learned dense numerical vector representations**"],
         },
         {
           type: "list",
@@ -367,24 +899,26 @@ export const qansSection: Section = {
         {
           type: "list",
           items: [
-            "map data into a  ==semantically related items== are generally positioned closer together.",
+            "map data into a  **semantically related items** are generally positioned closer together.",
           ],
         },
         {
-          type: "list",
-          items: ["Text → Embedding Model → Embedding Vector → ^^Semantic Similarity Search.^^"],
+          type: "callout",
+          variant: "spotlight",
+          content: "Text → Embedding Model → Embedding Vector → **Semantic Similarity Search.**",
         },
         {
           type: "list",
           items: [
-            '**Example:** "Car" and "Automobile" → Similar embeddings → ==High semantic similarity.==',
+            '**Example:** "Car" and "Automobile" → Similar embeddings → ^^High semantic similarity.^^',
           ],
         },
+        { type: "divider" },
         {
-          type: "list",
-          items: [
+          type: "callout",
+          variant: "spotlight",
+          content:
             "**Key Difference:** Every embedding is a vector, but ^^not every vector is an embedding.^^",
-          ],
         },
       ],
     },
@@ -701,40 +1235,47 @@ export const qansSection: Section = {
             "how ==model complexity== affects underfitting, overfitting, and ^^generalization error^^.",
           ],
         },
+        { type: "divider" },
         {
           type: "list",
-          items: ["**Bias** is the error introduced by ==overly simplistic assumptions=="],
+          items: ["==Bias== is the error introduced by **overly simplistic assumptions**"],
         },
         {
-          type: "list",
-          items: [
+          type: "callout",
+          variant: "spotlight",
+          content:
             "**High Bias** → Model too simple → ^^Underfitting^^ → High training and test errors.",
-          ],
         },
+        { type: "divider" },
         {
           type: "list",
-          items: ["**Variance** measures how much a model's ==predictions change== when trained"],
+          items: ["==Variance== measures how much a model's **predictions change** when trained"],
         },
         {
-          type: "list",
-          items: [
+          type: "callout",
+          variant: "spotlight",
+          content:
             "**High Variance** → Model too sensitive to training data → ^^Overfitting^^ → Low training error but high test error.",
-          ],
         },
+        { type: "divider" },
         { type: "heading", content: "Tradeoff" },
         {
-          type: "list",
-          items: [
-            "Increasing Model Complexity → ==Bias generally decreases== → Variance may increase.",
-            "Decreasing Model Complexity → Bias may increase → ==Variance generally decreases.==",
-          ],
+          type: "callout",
+          variant: "spotlight",
+          content:
+            "Increasing Model Complexity → ==Bias generally decreases== → Variance may increase.\nDecreasing Model Complexity → Bias may increase → ==Variance generally decreases.==",
         },
+        { type: "divider" },
         {
           type: "list",
           items: [
             "**Ultimate Goal:** The goal is never to minimize training error alone — it's to ==minimize generalization error== on unseen data.",
-            "(**Bias² + Variance + Noise**) is minimized.",
           ],
+        },
+        {
+          type: "callout",
+          variant: "spotlight",
+          content: "(**Bias² + Variance + Noise**) is minimized.",
         },
       ],
     },
@@ -749,23 +1290,25 @@ export const qansSection: Section = {
           type: "list",
           items: ["All are ^^classification evaluation metric^^"],
         },
+        { type: "divider" },
         {
           type: "list",
           items: [
-            "**Precision** measures the ==proportion of correctly predicted positive instances==",
+            "==Precision== measures the **proportion of correctly predicted positive instances**",
           ],
         },
         {
           type: "list",
-          items: ["how ==reliable a model's positive predictions== are."],
+          items: ["how **reliable a model's positive predictions** are."],
         },
         {
           type: "list",
           items: ["**High Precision** → ^^Fewer False Positives^^"],
         },
         {
-          type: "list",
-          items: ["**Precision = TP / (TP + FP)**"],
+          type: "callout",
+          variant: "spotlight",
+          content: "**Precision = TP / (TP + FP)**",
         },
         {
           type: "list",
@@ -773,21 +1316,23 @@ export const qansSection: Section = {
             "**Example:** Of 100 emails predicted as spam, 90 are actually spam → ^^Precision = 90%.^^",
           ],
         },
+        { type: "divider" },
         {
           type: "list",
-          items: ["**Recall** measures the ==proportion of actual positive instances=="],
+          items: ["==Recall== measures the **proportion of actual positive instances**"],
         },
         {
           type: "list",
-          items: ["model how ==effectively identifies all actual positive cases.=="],
+          items: ["model how **effectively identifies all actual positive cases.**"],
         },
         {
           type: "list",
           items: ["**High Recall** → ^^Fewer False Negatives^^"],
         },
         {
-          type: "list",
-          items: ["**Recall = TP / (TP + FN)**"],
+          type: "callout",
+          variant: "spotlight",
+          content: "**Recall = TP / (TP + FN)**",
         },
         {
           type: "list",
@@ -796,27 +1341,28 @@ export const qansSection: Section = {
           ],
         },
         {
+          type: "callout",
+          variant: "spotlight",
+          content:
+            "**Precision** = quality of positives (avoid false alarms)\n**Recall** = quantity of positives caught (avoid missed cases)",
+        },
+        { type: "divider" },
+        {
           type: "list",
-          items: [
-            "**Precision** = ==quality of positives== (avoid false alarms)",
-            "**Recall** = ==quantity of positives caught== (avoid missed cases)",
-          ],
+          items: ["==F1 Score== calculates the **harmonic mean** of precision and recall"],
         },
         {
           type: "list",
-          items: ["**F1 Score** calculates the ==harmonic mean== of precision and recall"],
-        },
-        {
-          type: "list",
-          items: ["useful for evaluating classification models on ==imbalanced datasets=="],
+          items: ["useful for evaluating classification models on **imbalanced datasets**"],
         },
         {
           type: "list",
           items: ["**High F1 Score** → High Precision + High Recall → ^^Better balance^^"],
         },
         {
-          type: "list",
-          items: ["**F1 = 2 × (Precision × Recall) / (Precision + Recall)**"],
+          type: "callout",
+          variant: "spotlight",
+          content: "**F1 = 2 × (Precision × Recall) / (Precision + Recall)**",
         },
         {
           type: "list",
@@ -832,28 +1378,50 @@ export const qansSection: Section = {
       difficulty: "Medium",
       answer: [
         {
-          type: "text",
-          content:
-            "A vector database ==stores embeddings and quickly finds the most similar ones== using measures like cosine similarity — so you search by meaning, not exact words.",
+          type: "list",
+          items: [
+            "==VD== is a **specialized database** designed to store, index, and efficiently retrieve",
+          ],
+        },
+        {
+          type: "list",
+          items: ["with **high-dimensional vector embeddings**"],
+        },
+        {
+          type: "list",
+          items: ["enables ^^similarity search^^ by identifying vectors"],
+        },
+        {
+          type: "list",
+          items: ["mathematically closest to a query vector using **similarity metrics.**"],
         },
         {
           type: "list",
           items: [
-            "Uses **approximate nearest-neighbour (ANN)** indexes such as HNSW for speed at scale.",
-            "Examples: Pinecone, Chroma, FAISS, pgvector.",
+            "uses indexing algorithms such as **HNSW (Hierarchical Navigable Small World)** or **IVF (Inverted File Index)**",
           ],
         },
-        { type: "heading", content: "Analogy" },
         {
           type: "callout",
-          variant: "tip",
-          content: "A **library that finds books by meaning**, not just by matching title words.",
-        },
-        {
-          type: "callout",
-          variant: "info",
+          variant: "spotlight",
           content:
-            "Interview Tip: Embeddings are the __numbers__; the vector DB is where you __store and search__ them.",
+            "Data → Embedding Model → Vector Embeddings → **Vector Database** → Similarity Search → ^^Relevant Results.^^",
+        },
+        { type: "divider" },
+        { type: "text", content: "==Similarity Metrics:==" },
+        {
+          type: "list",
+          items: [
+            "**Cosine Similarity** → Measures similarity based on ^^vector direction.^^",
+            "**Euclidean Distance** → Measures ^^straight-line distance^^ between vectors.",
+            "**Dot Product** → Measures vector alignment, ^^influenced by magnitude.^^",
+          ],
+        },
+        { type: "divider" },
+        {
+          type: "callout",
+          variant: "spotlight",
+          content: "**Popular Vector Databases:** ^^Pinecone, Milvus, Weaviate, Chroma.^^",
         },
       ],
     },
@@ -1072,7 +1640,7 @@ export const qansSection: Section = {
         {
           type: "list",
           items: [
-            "Weights are ==learnable numerical parameters== (especially neural networks)",
+            "==Weights== are **learnable numerical parameters** (especially neural networks)",
             "It determines the **strength and direction of influence**",
             "each input feature has on the model's output.",
           ],
@@ -1088,23 +1656,27 @@ export const qansSection: Section = {
             "such as **gradient descent**, to ^^minimize the loss function.^^",
           ],
         },
+        { type: "divider" },
         {
           type: "text",
           content: "**Example: House Price Prediction**",
         },
         {
-          type: "list",
-          items: [
+          type: "callout",
+          variant: "spotlight",
+          content:
             "House Size → Weight = 0.8 House Age → Weight = -0.3 Location Score → Weight = 0.9",
-          ],
+        },
+        { type: "divider" },
+        {
+          type: "callout",
+          variant: "spotlight",
+          content: "**Weights** = ==importance knobs==",
         },
         {
-          type: "list",
-          items: ["Weights = ==importance knobs=="],
-        },
-        {
-          type: "list",
-          items: ["Input × Weight + Bias → Activation → Output → Loss → Update weights → Repeat."],
+          type: "callout",
+          variant: "spotlight",
+          content: "Input × Weight + Bias → Activation → Output → Loss → Update weights → Repeat.",
         },
       ],
     },
@@ -1116,31 +1688,43 @@ export const qansSection: Section = {
       difficulty: "Medium",
       answer: [
         {
-          type: "text",
-          content:
-            "You are on a ==foggy mountain at night==, trying to reach the valley (the lowest loss). You cannot see the whole landscape — but you can __feel which direction slopes downward__ under your feet, so you take small steps downhill, repeatedly, until you reach the bottom.",
+          type: "list",
+          items: ["==GD==  is an **iterative optimization algorithm**"],
         },
-        { type: "heading", content: "Learning rate — how big your steps are" },
         {
-          type: "table",
-          headers: ["Learning rate", "What happens on the mountain", "Result"],
-          rows: [
-            [
-              "**Too big**",
-              "You overshoot the valley and stumble around",
-              "Never settles — loss bounces",
-            ],
-            ["**Too small**", "You inch downhill forever", "Takes ==far too long== to train"],
-            ["**Just right**", "Steady steps toward the bottom", "Converges smoothly"],
+          type: "list",
+          items: [
+            "to **minimize a loss function** by repeatedly updating ^^model parameters (weights and biases)^^",
+          ],
+        },
+        {
+          type: "list",
+          items: [
+            "It calculates the **gradient (slope)** of the loss function and adjusts the model parameters using a ^^learning rate^^",
           ],
         },
         {
           type: "callout",
-          variant: "info",
+          variant: "spotlight",
           content:
-            "The slope you feel underfoot is the **gradient** — the direction of steepest increase. __Descent__ simply means stepping the opposite way.",
+            "Calculate Loss → Compute Gradients → Update Weights → Reduce Loss → ^^Repeat.^^",
         },
-        { type: "heading", content: "Types" },
+        { type: "divider" },
+        { type: "text", content: "==Example:==" },
+        {
+          type: "list",
+          items: [
+            "Imagine walking **downhill in fog** to reach the ^^lowest point of a valley.^^",
+          ],
+        },
+        {
+          type: "callout",
+          variant: "spotlight",
+          content:
+            "**Gradient** → Tells you which direction is ^^uphill.^^\n**Learning Rate** → Determines how big ^^each step^^ is.\n**Gradient Descent** → Takes steps downhill to ^^minimize loss.^^",
+        },
+        { type: "divider" },
+        { type: "text", content: "==Types==" },
         {
           type: "list",
           items: [
@@ -1159,31 +1743,109 @@ export const qansSection: Section = {
       difficulty: "Medium",
       answer: [
         {
-          type: "text",
-          content:
-            "Activation functions add ==non-linearity==, so a neural network can learn complex patterns — without them, many layers would collapse into one simple linear model.",
+          type: "list",
+          items: [
+            "==AF== are **mathematical functions** applied to the ^^weighted sum of inputs and bias^^",
+          ],
         },
         {
-          type: "table",
-          headers: ["Function", "Output", "Typically used for"],
-          rows: [
-            ["**ReLU**", "max(0, x)", "Hidden layers — fast, the default"],
-            ["**Sigmoid**", "Between 0 and 1", "Binary classification output"],
-            ["**Softmax**", "Probabilities that sum to 1", "Multi-class classification output"],
+          type: "list",
+          items: [
+            "To determine a **neuron's output** and introduce ^^non-linearity^^ into the model.",
+          ],
+        },
+        {
+          type: "list",
+          items: [
+            "They enable neural networks to learn **complex, non-linear patterns**",
           ],
         },
         {
           type: "callout",
-          variant: "info",
+          variant: "spotlight",
           content:
-            "Interview Tip: Sigmoid can cause **vanishing gradients** in deep networks, which is one reason ReLU became the default. Transformers commonly use GELU.",
+            "Inputs → Weighted Sum + Bias → **Activation Function** → ^^Neuron Output.^^",
         },
-        { type: "heading", content: "Analogy" },
+        { type: "divider" },
+        { type: "heading", content: "Common Activation Functions" },
+        { type: "text", content: "==1. ReLU (Rectified Linear Unit)==" },
+        {
+          type: "list",
+          items: [
+            "Returns ^^zero^^ for negative inputs and the **input itself** for positive values.",
+          ],
+        },
         {
           type: "callout",
-          variant: "tip",
+          variant: "spotlight",
           content:
-            "Different **judges apply different rules** to decide which signals are allowed to pass through.",
+            "**Range:** ^^[0, ∞)^^",
+        },
+        {
+          type: "list",
+          items: [
+            "Commonly used in **hidden layers** of deep neural networks.",
+          ],
+        },
+        { type: "divider" },
+        { type: "text", content: "==2. Sigmoid==" },
+        {
+          type: "list",
+          items: [
+            "Transforms input values into a continuous range between ^^0 and 1.^^",
+          ],
+        },
+        {
+          type: "callout",
+          variant: "spotlight",
+          content:
+            "**Range:** ^^(0, 1)^^",
+        },
+        {
+          type: "list",
+          items: [
+            "Commonly used in the **output layer** for **binary classification.**",
+          ],
+        },
+        { type: "divider" },
+        { type: "text", content: "==3. Tanh (Hyperbolic Tangent)==" },
+        {
+          type: "list",
+          items: [
+            "Transforms input values into a continuous range between ^^-1 and 1.^^",
+          ],
+        },
+        {
+          type: "callout",
+          variant: "spotlight",
+          content:
+            "**Range:** ^^(-1, 1)^^",
+        },
+        {
+          type: "list",
+          items: [
+            "Commonly used in certain **recurrent neural networks.**",
+          ],
+        },
+        { type: "divider" },
+        { type: "text", content: "==4. Softmax==" },
+        {
+          type: "list",
+          items: [
+            "Converts a **vector of numerical scores** into a ^^probability distribution^^ across multiple classes.",
+          ],
+        },
+        {
+          type: "callout",
+          variant: "spotlight",
+          content:
+            "Output → Class Probabilities → **Sum = 1.**",
+        },
+        {
+          type: "list",
+          items: [
+            "Commonly used in the **output layer** for **multiclass classification.**",
+          ],
         },
       ],
     },
@@ -1288,40 +1950,6 @@ export const qansSection: Section = {
       ],
     },
     {
-      id: "what-is-hyperparameter-tuning",
-      category: "2M",
-      question: "What is Hyperparameter Tuning?",
-      tags: ["AI/ML", "Training"],
-      difficulty: "Medium",
-      answer: [
-        {
-          type: "text",
-          content:
-            "Hyperparameter Tuning finds the ==best model settings== — such as learning rate, batch size, or number of layers — by comparing validation performance.",
-        },
-        {
-          type: "list",
-          items: [
-            "**Grid Search** — try every combination. Thorough but expensive.",
-            "**Random Search** — try random combinations. Often more efficient.",
-            "**Bayesian Optimization** — learns from past trials to pick the next one.",
-          ],
-        },
-        {
-          type: "callout",
-          variant: "warn",
-          content:
-            "Interview Tip: Tune on the __validation__ set, never the test set. Hyperparameters are set __before__ training; parameters (weights) are learned __during__ it.",
-        },
-        { type: "heading", content: "Analogy" },
-        {
-          type: "callout",
-          variant: "tip",
-          content: "A chef experiments with **temperature and timing** to find the best recipe.",
-        },
-      ],
-    },
-    {
       id: "what-is-a-cnn",
       category: "2M",
       question: "What is a CNN (Convolutional Neural Network)?",
@@ -1413,37 +2041,6 @@ export const qansSection: Section = {
           type: "callout",
           variant: "tip",
           content: "A teacher grades answers against an **answer key** and checks for mistakes.",
-        },
-      ],
-    },
-    {
-      id: "what-is-tokenization",
-      category: "2M",
-      question: "What is Tokenization?",
-      tags: ["AI/ML", "LLM", "Fundamentals"],
-      difficulty: "Easy",
-      answer: [
-        {
-          type: "text",
-          content:
-            "Tokenization breaks text into small units called ==tokens== (words, sub-words, or characters) that an LLM can process.",
-        },
-        {
-          type: "code",
-          language: "text",
-          content: '"unbelievable" → ["un", "believ", "able"]',
-        },
-        {
-          type: "callout",
-          variant: "info",
-          content:
-            "Interview Tip: The common method is **BPE (Byte Pair Encoding)**. Context limits and API cost are measured in __tokens__, not words.",
-        },
-        { type: "heading", content: "Analogy" },
-        {
-          type: "callout",
-          variant: "tip",
-          content: "Breaking a sentence into **LEGO pieces** before building meaning.",
         },
       ],
     },
@@ -1610,30 +2207,103 @@ export const qansSection: Section = {
       ],
     },
     {
-      id: "what-is-a-model",
+      id: "what-is-inference-and-related-terms",
       category: "2M",
-      question: "What is a Model?",
-      tags: ["AI/ML", "Fundamentals"],
-      difficulty: "Easy",
+      question: "What is Inference and related terms ?",
+      tags: ["AI/ML", "Inference", "LLM"],
+      difficulty: "Medium",
       answer: [
-        {
-          type: "text",
-          content: "A model is the thing that ==learns from data== and later makes predictions.",
-        },
-        { type: "heading", content: "Restaurant Analogy" },
         {
           type: "list",
           items: [
-            "The chef is the model.",
-            "The chef learns recipes.",
-            "Later the chef cooks food for new customers.",
+            "==Inference== is the process of **using a trained machine learning model** to generate ^^predictions or outputs^^",
+          ],
+        },
+        {
+          type: "list",
+          items: [
+            "During inference, the model applies **previously learned patterns, weights, and biases** to produce an ^^output.^^",
+          ],
+        },
+        {
+          type: "list",
+          items: [
+            "**Example:** A trained fraud detection model analyzes a new transaction and predicts whether it is ^^fraudulent.^^",
           ],
         },
         {
           type: "callout",
-          variant: "info",
+          variant: "spotlight",
           content:
-            "A model is a **mathematical function** that learns relationships from training data and uses that knowledge to make predictions on unseen data.",
+            "**Inference** = Using a trained model to ^^make predictions^^",
+        },
+        { type: "divider" },
+        { type: "text", content: "==Inference Optimization==" },
+        {
+          type: "list",
+          items: [
+            "is the process of **improving the computational efficiency** of a trained model",
+          ],
+        },
+        {
+          type: "list",
+          items: [
+            "to reduce ^^latency, memory consumption, and computational cost^^",
+          ],
+        },
+        {
+          type: "list",
+          items: [
+            "uses techniques such as **quantization, pruning, knowledge distillation, batching,**",
+          ],
+        },
+        {
+          type: "callout",
+          variant: "spotlight",
+          content:
+            "Trained Model → Optimization Techniques → **Faster, Smaller, More Efficient Model.**",
+        },
+        { type: "divider" },
+        { type: "text", content: "==Inference Latency==" },
+        {
+          type: "list",
+          items: [
+            "**elapsed time** required for a model to process an input and produce its output.",
+          ],
+        },
+        {
+          type: "callout",
+          variant: "spotlight",
+          content:
+            "Low Latency → Faster Response → **Better Real-Time Performance.**",
+        },
+        { type: "divider" },
+        { type: "text", content: "==Inference Throughput==" },
+        {
+          type: "list",
+          items: [
+            "**number of inference requests, predictions, or generated tokens** a model can process per unit of time",
+          ],
+        },
+        {
+          type: "callout",
+          variant: "spotlight",
+          content:
+            "Higher Throughput → More Requests Processed → **Better System Capacity.**",
+        },
+        { type: "divider" },
+        { type: "text", content: "==Inference Scaling==" },
+        {
+          type: "list",
+          items: [
+            "process of **increasing computational resources** to handle greater workloads",
+          ],
+        },
+        {
+          type: "list",
+          items: [
+            "involve **adding serving capacity, increasing parallelism**",
+          ],
         },
       ],
     },
@@ -1655,208 +2325,6 @@ export const qansSection: Section = {
               "Unseen data used to evaluate how well a trained model generalizes to new examples.",
             ],
           ],
-        },
-      ],
-    },
-    {
-      id: "what-is-a-loss-function",
-      category: "2M",
-      question: "What is a Loss Function?",
-      tags: ["AI/ML", "Training"],
-      difficulty: "Easy",
-      answer: [
-        {
-          type: "text",
-          content:
-            "A loss function measures the ==gap between prediction and reality==. The bigger the gap, the __louder the correction signal__ pushing the model to fix itself.",
-        },
-        {
-          type: "flow",
-          title: "The correction loop",
-          nodes: [
-            { label: "Predict", sub: "Model guesses", tone: "gold" },
-            { label: "Compare", sub: "Guess vs truth", tone: "ember" },
-            { label: "Loss", sub: "How wrong, as a number", tone: "sky" },
-            { label: "Adjust", sub: "Nudge the model", tone: "mint" },
-          ],
-        },
-        {
-          type: "callout",
-          variant: "tip",
-          content:
-            "Think of a **GPS** recalculating: 'you are this far off route.' Every wrong turn produces a bigger signal, and the model steers back toward the correct path.",
-        },
-      ],
-    },
-    {
-      id: "what-is-regularization",
-      category: "2M",
-      question: "What is Regularization (L1 / L2)?",
-      tags: ["AI/ML", "Regularization"],
-      difficulty: "Medium",
-      answer: [
-        {
-          type: "text",
-          content:
-            "Back to the ==overfitting student== — regularization is the __strict teacher__ who penalizes overly complicated, over-memorized answers, nudging them toward simpler reasoning that actually generalizes.",
-        },
-        {
-          type: "table",
-          headers: ["", "L1 (Lasso)", "L2 (Ridge)"],
-          rows: [
-            [
-              "Teacher says",
-              "'Just **drop** that irrelevant point completely.'",
-              "'**Tone down** all your points, do not rely too heavily on any one.'",
-            ],
-            [
-              "Effect on features",
-              "Can ==zero out== unimportant features entirely",
-              "Shrinks every feature, ==rarely to zero==",
-            ],
-            [
-              "Good for",
-              "Feature selection — a sparser, simpler model",
-              "Keeping all features but limiting their influence",
-            ],
-          ],
-        },
-        {
-          type: "callout",
-          variant: "tip",
-          content:
-            "Both fight **overfitting** by adding a penalty for complexity. L1 makes the model __shorter__; L2 makes it __calmer__.",
-        },
-      ],
-    },
-    {
-      id: "batch-size-epoch-learning-rate",
-      category: "2M",
-      question: "What are Batch Size, Epoch, Iteration, and Learning Rate?",
-      tags: ["AI/ML", "Training"],
-      difficulty: "Medium",
-      answer: [
-        {
-          type: "text",
-          content:
-            "These are important parameters controlling ==how a neural network learns== during training.",
-        },
-        {
-          type: "list",
-          items: [
-            "**Batch Size** → Number of training examples processed before one weight update.",
-            "**Epoch** → One complete pass through the entire training dataset.",
-            "**Iteration** → One weight update using one batch.",
-            "**Learning Rate** → Controls how large each weight update is.",
-          ],
-        },
-        { type: "heading", content: "Example" },
-        {
-          type: "code",
-          language: "text",
-          content:
-            "1,000 training samples ÷ Batch Size 100 = 10 batches per epoch\n\n1 Epoch = 10 iterations (10 weight updates)",
-        },
-        { type: "heading", content: "Analogy" },
-        { type: "text", content: "Imagine studying a 1,000-question book:" },
-        {
-          type: "list",
-          items: [
-            "**Batch Size** → Study 100 questions at a time.",
-            "**Epoch** → Finish all 1,000 questions once.",
-            "**Iteration** → One study session on a single chapter.",
-            "**Learning Rate** → How aggressively you change your understanding after discovering mistakes.",
-          ],
-        },
-        {
-          type: "callout",
-          variant: "warn",
-          content:
-            "Interview Tip: Learning rate __too high__ → may overshoot the optimum. Learning rate __too low__ → training becomes slow or can stall.",
-        },
-      ],
-    },
-    {
-      id: "what-is-batch-normalization",
-      category: "2M",
-      question: "What is Batch Normalization?",
-      tags: ["AI/ML", "Deep Learning"],
-      difficulty: "Hard",
-      answer: [
-        {
-          type: "text",
-          content:
-            "Batch Normalization ==normalizes a layer's activations using the mini-batch's mean and variance==, then applies learnable scale and shift parameters.",
-        },
-        {
-          type: "callout",
-          variant: "info",
-          content:
-            "Benefit: more stable training, faster convergence, and often tolerates higher learning rates. At inference it uses __running averages__ from training. Transformers usually use **Layer Normalization** instead.",
-        },
-        { type: "heading", content: "Analogy" },
-        {
-          type: "callout",
-          variant: "tip",
-          content:
-            "A teacher **adjusts scores to a consistent scale** so students can be compared fairly.",
-        },
-      ],
-    },
-    {
-      id: "what-is-temperature",
-      category: "2M",
-      question: "What is Temperature in LLMs?",
-      tags: ["AI/ML", "LLM", "Prompting"],
-      difficulty: "Easy",
-      answer: [
-        {
-          type: "text",
-          content:
-            "Temperature controls the ==randomness of token selection== when the model generates text.",
-        },
-        {
-          type: "list",
-          items: [
-            "**Low (e.g. 0.1)** — predictable, consistent. Good for facts, code, extraction.",
-            "**High (e.g. 0.9)** — varied, creative. Good for brainstorming, stories.",
-          ],
-        },
-        { type: "heading", content: "Analogy" },
-        {
-          type: "callout",
-          variant: "tip",
-          content:
-            "**Low** = the student sticks to the textbook. **High** = the student explores different answers.",
-        },
-      ],
-    },
-    {
-      id: "top-k-vs-top-p-sampling",
-      category: "2M",
-      question: "Top-K vs Top-P Sampling in LLMs",
-      tags: ["AI/ML", "LLM", "Prompting"],
-      difficulty: "Hard",
-      answer: [
-        {
-          type: "list",
-          items: [
-            "**Top-K** — pick the next token from the ==K most likely== tokens.",
-            "**Top-P (nucleus)** — pick from the ==smallest set of tokens whose probabilities add up to at least P==.",
-          ],
-        },
-        {
-          type: "callout",
-          variant: "info",
-          content:
-            "Interview Tip: Top-K has a fixed size; Top-P adapts — few tokens when the model is confident, more when it's unsure. Both work __with__ temperature, and are usually tuned one at a time.",
-        },
-        { type: "heading", content: "Analogy" },
-        {
-          type: "callout",
-          variant: "tip",
-          content:
-            "**Top-K** = choose from the 5 best students. **Top-P** = choose from the top students until together they cover 90% of the likelihood.",
         },
       ],
     },
@@ -1883,35 +2351,6 @@ export const qansSection: Section = {
           type: "callout",
           variant: "tip",
           content: "Searching a library by **both book title and subject**.",
-        },
-      ],
-    },
-    {
-      id: "reranking-in-rag",
-      category: "2M",
-      question: "What is Reranking in RAG?",
-      tags: ["AI/ML", "LLM", "RAG"],
-      difficulty: "Medium",
-      answer: [
-        {
-          type: "text",
-          content:
-            "Reranking ==reorders the first-pass results== with a more accurate relevance model (such as a cross-encoder), so the best documents reach the LLM first.",
-        },
-        {
-          type: "flow",
-          title: "Two-stage retrieval",
-          nodes: [
-            { label: "Retrieve", sub: "Fast, top 50", tone: "gold" },
-            { label: "Rerank", sub: "Accurate, top 5", tone: "ember" },
-            { label: "LLM", sub: "Best context", tone: "mint" },
-          ],
-        },
-        { type: "heading", content: "Analogy" },
-        {
-          type: "callout",
-          variant: "tip",
-          content: "A librarian finds **10 books**, then picks the **3 most relevant**.",
         },
       ],
     },
@@ -1984,38 +2423,6 @@ export const qansSection: Section = {
       ],
     },
     {
-      id: "llm-latency-vs-throughput",
-      category: "2M",
-      question: "LLM Latency vs Throughput",
-      tags: ["AI/ML", "LLM", "Optimization"],
-      difficulty: "Medium",
-      answer: [
-        {
-          type: "list",
-          items: [
-            "**Latency** — ==time to respond== to one request (often measured as time-to-first-token).",
-            "**Throughput** — ==how much work is done== per unit of time (requests or tokens per second).",
-          ],
-        },
-        { type: "heading", content: "Optimization" },
-        {
-          type: "list",
-          items: [
-            "**Batching** — raises throughput, but can add latency per request.",
-            "**Caching** (including semantic caching) — improves both.",
-            "**Model choice / quantization** — smaller models are faster and cheaper.",
-          ],
-        },
-        { type: "heading", content: "Analogy" },
-        {
-          type: "callout",
-          variant: "tip",
-          content:
-            "Restaurant: **latency** = time to serve one customer. **Throughput** = total customers served per hour.",
-        },
-      ],
-    },
-    {
       id: "what-is-lora",
       category: "2M",
       question: "What is LoRA (Low-Rank Adaptation)?",
@@ -2043,33 +2450,6 @@ export const qansSection: Section = {
       ],
     },
     {
-      id: "what-is-mixture-of-experts",
-      category: "2M",
-      question: "What is Mixture of Experts (MoE)?",
-      tags: ["AI/ML", "LLM", "Architecture"],
-      difficulty: "Hard",
-      answer: [
-        {
-          type: "text",
-          content:
-            "MoE uses a ==router to activate only a few expert networks== for each input, instead of the whole model.",
-        },
-        {
-          type: "callout",
-          variant: "info",
-          content:
-            "Benefit: much more capacity with less computation per token. Trade-off: all experts still have to be loaded in __memory__.",
-        },
-        { type: "heading", content: "Analogy" },
-        {
-          type: "callout",
-          variant: "tip",
-          content:
-            "A hospital **receptionist sends each patient to the right specialists** instead of consulting every doctor.",
-        },
-      ],
-    },
-    {
       id: "what-is-dpo",
       category: "2M",
       question: "What is DPO (Direct Preference Optimization)?",
@@ -2092,55 +2472,6 @@ export const qansSection: Section = {
           type: "callout",
           variant: "tip",
           content: "A student learns by **comparing a better answer with a worse one**.",
-        },
-      ],
-    },
-    {
-      id: "what-is-a-confusion-matrix",
-      category: "2M",
-      question: "What is a Confusion Matrix?",
-      tags: ["AI/ML", "Metrics"],
-      difficulty: "Easy",
-      answer: [
-        {
-          type: "text",
-          content:
-            "A Confusion Matrix is a table used to evaluate a classification model by comparing ==predicted results== with __actual results__.",
-        },
-        {
-          type: "table",
-          headers: ["", "Predicted Positive", "Predicted Negative"],
-          rows: [
-            ["Actual Positive", "**TP**", "FN"],
-            ["Actual Negative", "FP", "**TN**"],
-          ],
-        },
-        {
-          type: "text",
-          content:
-            "From this, we calculate metrics such as **Accuracy, Precision, Recall, and F1-Score**.",
-        },
-        { type: "heading", content: "Analogy" },
-        {
-          type: "callout",
-          variant: "tip",
-          content: "Think of an **airport security scanner**:",
-        },
-        {
-          type: "table",
-          headers: ["Term", "Meaning"],
-          rows: [
-            ["**TP**", "Correctly detects a prohibited item"],
-            ["**TN**", "Correctly clears a safe bag"],
-            ["**FP**", "Alarms on a safe bag"],
-            ["**FN**", "Misses a prohibited item"],
-          ],
-        },
-        {
-          type: "callout",
-          variant: "info",
-          content:
-            'Interview Tip: The interviewer often follows this with: "When would you prefer ==Precision== over ==Recall==?"',
         },
       ],
     },
@@ -2248,64 +2579,6 @@ export const qansSection: Section = {
           variant: "tip",
           content:
             "An experienced teacher **trains a junior** to do similar work more efficiently.",
-        },
-      ],
-    },
-    {
-      id: "encoder-vs-decoder-transformers",
-      category: "2M",
-      question: "Encoder vs Decoder Transformers (BERT, GPT, T5)",
-      tags: ["AI/ML", "LLM", "Transformers"],
-      difficulty: "Medium",
-      answer: [
-        {
-          type: "text",
-          content:
-            "A Transformer uses ==attention to understand relationships between tokens==. It comes in three flavours:",
-        },
-        {
-          type: "table",
-          headers: ["Type", "Example", "Best at"],
-          rows: [
-            ["Encoder-only", "BERT", "Understanding — classification, search"],
-            ["Decoder-only", "GPT", "Generating text"],
-            ["Encoder–Decoder", "T5", "Translation, summarisation"],
-          ],
-        },
-        { type: "heading", content: "Analogy" },
-        {
-          type: "callout",
-          variant: "tip",
-          content:
-            "A student understands a sentence by focusing on **how its words relate** to one another.",
-        },
-      ],
-    },
-    {
-      id: "self-attention-vs-multi-head",
-      category: "2M",
-      question: "Self-Attention vs Multi-Head Attention",
-      tags: ["AI/ML", "LLM", "Transformers"],
-      difficulty: "Hard",
-      answer: [
-        {
-          type: "text",
-          content:
-            "Attention lets a model give ==different importance to each token== based on its relevance to the current one.",
-        },
-        {
-          type: "list",
-          items: [
-            "**Self-Attention** — every token looks at every other token in the same sequence (using Q, K, V).",
-            "**Multi-Head Attention** — runs several attentions in parallel; each head can learn a different relationship (grammar, meaning, references).",
-          ],
-        },
-        { type: "heading", content: "Analogy" },
-        {
-          type: "callout",
-          variant: "tip",
-          content:
-            "A student **highlights key words** in a paragraph — multi-head is using several highlighter colours at once.",
         },
       ],
     },
