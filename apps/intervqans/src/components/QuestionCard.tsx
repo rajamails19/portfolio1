@@ -34,10 +34,10 @@ export function QuestionCard({
       ].join(" ")}
       style={{ animationDelay: `${index * 60}ms` }}
     >
-      <div className="flex items-start gap-2 px-4 py-5 sm:px-6">
+      <div className="flex flex-wrap items-start gap-x-2 gap-y-3 px-4 py-5 sm:flex-nowrap sm:px-6">
         <button
           onClick={() => setOpen((v) => !v)}
-          className="flex min-w-0 flex-1 items-start gap-3 text-left sm:gap-4"
+          className="flex min-w-0 basis-full items-start gap-3 text-left sm:flex-1 sm:basis-0 sm:gap-4"
           aria-expanded={open}
         >
           <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-gold to-ember font-display text-sm font-bold text-primary-foreground shadow-glow">
@@ -68,7 +68,7 @@ export function QuestionCard({
           </div>
         </button>
 
-        <div className="mt-1 flex shrink-0 items-center gap-1.5">
+        <div className="mt-1 ml-auto flex shrink-0 items-center gap-1.5 sm:ml-0">
           {item.category === "2M" && (
             <>
               <button

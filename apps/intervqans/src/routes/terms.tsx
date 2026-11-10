@@ -1,6 +1,6 @@
-import { createFileRoute, notFound } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { TermsView } from "@/components/TermsView";
-import { useTheme } from "@/themes/ThemeContext";
+import { useRequireNoir } from "@/themes/ThemeContext";
 
 export const Route = createFileRoute("/terms")({
   head: () => ({
@@ -20,8 +20,8 @@ export const Route = createFileRoute("/terms")({
     ],
   }),
   component: () => {
-    const { themeKey } = useTheme();
-    if (themeKey !== "noir") throw notFound();
+    const isNoir = useRequireNoir();
+    if (!isNoir) return null;
     return <TermsView />;
   },
 });

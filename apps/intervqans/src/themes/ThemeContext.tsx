@@ -51,3 +51,16 @@ export function useTheme() {
   if (!v) throw new Error("useTheme must be used inside ThemeProvider");
   return v;
 }
+
+/**
+ * For pages that only exist in the noir (AIML) theme. A deep link opened while
+ * another theme is saved switches to noir instead of showing a 404.
+ * Returns true once the theme is noir.
+ */
+export function useRequireNoir() {
+  const { themeKey, setThemeKey } = useTheme();
+  useEffect(() => {
+    if (themeKey !== "noir") setThemeKey("noir");
+  }, [themeKey, setThemeKey]);
+  return themeKey === "noir";
+}

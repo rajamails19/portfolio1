@@ -1,6 +1,6 @@
-import { createFileRoute, notFound } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { ImagesView } from "@/components/ImagesView";
-import { useTheme } from "@/themes/ThemeContext";
+import { useRequireNoir } from "@/themes/ThemeContext";
 
 export const Route = createFileRoute("/images")({
   head: () => ({
@@ -10,8 +10,8 @@ export const Route = createFileRoute("/images")({
     ],
   }),
   component: () => {
-    const { themeKey } = useTheme();
-    if (themeKey !== "noir") throw notFound();
+    const isNoir = useRequireNoir();
+    if (!isNoir) return null;
     return <ImagesView />;
   },
 });

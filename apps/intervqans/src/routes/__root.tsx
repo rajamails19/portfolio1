@@ -163,7 +163,7 @@ function RootComponent() {
               <div className="hidden lg:block">
                 <SideNav />
               </div>
-              <main className="flex-1 min-w-0">
+              <main className="min-w-0 flex-1 pt-14 lg:pt-0">
                 <div data-site-edit-surface="page">
                   <Outlet />
                 </div>
