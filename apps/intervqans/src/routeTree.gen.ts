@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as CertificationsRouteImport } from './routes/certifications'
 import { Route as ConceptsRouteImport } from './routes/concepts'
+import { Route as CopyConceptsRouteImport } from './routes/copy-concepts'
 import { Route as FavoritesRouteImport } from './routes/favorites'
 import { Route as ImagesRouteImport } from './routes/images'
 import { Route as InputsRouteImport } from './routes/inputs'
@@ -39,6 +40,11 @@ const CertificationsRoute = CertificationsRouteImport.update({
 const ConceptsRoute = ConceptsRouteImport.update({
   id: '/concepts',
   path: '/concepts',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CopyConceptsRoute = CopyConceptsRouteImport.update({
+  id: '/copy-concepts',
+  path: '/copy-concepts',
   getParentRoute: () => rootRouteImport,
 } as any)
 const FavoritesRoute = FavoritesRouteImport.update({
@@ -111,6 +117,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/certifications': typeof CertificationsRoute
   '/concepts': typeof ConceptsRoute
+  '/copy-concepts': typeof CopyConceptsRoute
   '/favorites': typeof FavoritesRoute
   '/images': typeof ImagesRoute
   '/inputs': typeof InputsRoute
@@ -129,6 +136,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/certifications': typeof CertificationsRoute
   '/concepts': typeof ConceptsRoute
+  '/copy-concepts': typeof CopyConceptsRoute
   '/favorites': typeof FavoritesRoute
   '/images': typeof ImagesRoute
   '/inputs': typeof InputsRoute
@@ -148,6 +156,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/certifications': typeof CertificationsRoute
   '/concepts': typeof ConceptsRoute
+  '/copy-concepts': typeof CopyConceptsRoute
   '/favorites': typeof FavoritesRoute
   '/images': typeof ImagesRoute
   '/inputs': typeof InputsRoute
@@ -168,6 +177,7 @@ export interface FileRouteTypes {
     | '/'
     | '/certifications'
     | '/concepts'
+    | '/copy-concepts'
     | '/favorites'
     | '/images'
     | '/inputs'
@@ -186,6 +196,7 @@ export interface FileRouteTypes {
     | '/'
     | '/certifications'
     | '/concepts'
+    | '/copy-concepts'
     | '/favorites'
     | '/images'
     | '/inputs'
@@ -204,6 +215,7 @@ export interface FileRouteTypes {
     | '/'
     | '/certifications'
     | '/concepts'
+    | '/copy-concepts'
     | '/favorites'
     | '/images'
     | '/inputs'
@@ -223,6 +235,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   CertificationsRoute: typeof CertificationsRoute
   ConceptsRoute: typeof ConceptsRoute
+  CopyConceptsRoute: typeof CopyConceptsRoute
   FavoritesRoute: typeof FavoritesRoute
   ImagesRoute: typeof ImagesRoute
   InputsRoute: typeof InputsRoute
@@ -259,6 +272,13 @@ declare module '@tanstack/react-router' {
       path: '/concepts'
       fullPath: '/concepts'
       preLoaderRoute: typeof ConceptsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/copy-concepts': {
+      id: '/copy-concepts'
+      path: '/copy-concepts'
+      fullPath: '/copy-concepts'
+      preLoaderRoute: typeof CopyConceptsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/favorites': {
@@ -359,6 +379,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   CertificationsRoute: CertificationsRoute,
   ConceptsRoute: ConceptsRoute,
+  CopyConceptsRoute: CopyConceptsRoute,
   FavoritesRoute: FavoritesRoute,
   ImagesRoute: ImagesRoute,
   InputsRoute: InputsRoute,

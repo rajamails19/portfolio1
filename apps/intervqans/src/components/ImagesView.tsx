@@ -22,7 +22,7 @@ export function ImagesView() {
   );
 
   return (
-    <div className="mx-auto w-full max-w-5xl px-6 pb-16 pt-8">
+    <div className="mx-auto w-full max-w-[var(--page-max)] px-6 pb-16 pt-8 transition-[max-width] duration-300 lg:px-8">
       <SimpleHero icon={Images} plain="Quick-" accent="Images" joined />
 
       <ul className="mt-10 grid gap-8 sm:grid-cols-2">

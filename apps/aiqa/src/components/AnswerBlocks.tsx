@@ -92,7 +92,7 @@ export function AnswerBlocks({ blocks, itemId }: { blocks: Block[]; itemId?: str
             );
           case "text":
             return (
-              <p key={i} data-qa-b={i} className="my-3">
+              <p key={i} data-qa-b={i} className="my-3 max-w-[90ch]">
                 {renderInline(b.content)}
               </p>
             );
@@ -101,7 +101,7 @@ export function AnswerBlocks({ blocks, itemId }: { blocks: Block[]; itemId?: str
             return (
               <Tag
                 key={i}
-                className={`my-5 space-y-1.5 pl-5 ${b.ordered ? "list-decimal" : "list-disc"} marker:text-gold-ink/80`}
+                className={`my-5 max-w-[90ch] space-y-1.5 pl-5 ${b.ordered ? "list-decimal" : "list-disc"} marker:text-gold-ink/80`}
               >
                 {b.items.map((it, k) => (
                   <li key={k} data-qa-b={i} data-qa-l={k}>

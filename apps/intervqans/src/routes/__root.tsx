@@ -8,7 +8,7 @@ import {
   Scripts,
   type ErrorComponentProps,
 } from "@tanstack/react-router";
-import { useEffect, type ReactNode } from "react";
+import { useEffect, useRef, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
@@ -149,7 +149,43 @@ function RootShell({ children }: { children: ReactNode }) {
   );
 }
 
+/**
+ * On wide screens the left menu scrolls away with the page. Once it is fully out of view its
+ * column would stay empty, so collapse it and let the page use the full width. Scrolling back
+ * near the top brings it back. Different thresholds avoid flicker when the layout re-flows.
+ */
+function useCollapseNavWhenScrolledPast(navRef: React.RefObject<HTMLDivElement | null>) {
+  useEffect(() => {
+    const root = document.documentElement;
+    const wide = window.matchMedia("(min-width: 1024px)");
+    let away = false;
+    const update = () => {
+      const navHeight = navRef.current?.firstElementChild?.getBoundingClientRect().height ?? 0;
+      const y = window.scrollY;
+      let next = away;
+      if (!wide.matches) next = false;
+      else if (!away && y > navHeight + 16) next = true;
+      else if (away && y < navHeight * 0.4) next = false;
+      if (next !== away) {
+        away = next;
+        if (away) root.setAttribute("data-nav", "away");
+        else root.removeAttribute("data-nav");
+      }
+    };
+    update();
+    window.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("resize", update);
+    return () => {
+      window.removeEventListener("scroll", update);
+      window.removeEventListener("resize", update);
+      root.removeAttribute("data-nav");
+    };
+  }, [navRef]);
+}
+
 function RootComponent() {
+  const navRef = useRef<HTMLDivElement>(null);
+  useCollapseNavWhenScrolledPast(navRef);
   const { queryClient } = Route.useRouteContext();
 
   return (
@@ -160,7 +196,7 @@ function RootComponent() {
             <ThemeSwitcher />
             <MobileNav />
             <div className="flex min-h-dvh">
-              <div className="hidden lg:block">
+              <div ref={navRef} className="shell-nav hidden lg:block">
                 <SideNav />
               </div>
               <main className="min-w-0 flex-1 pt-14 lg:pt-0">

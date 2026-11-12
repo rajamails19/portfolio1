@@ -110,6 +110,17 @@ export const themes: Record<ThemeKey, ThemeDef> = {
           quote: "Learn the vital few concepts first; the rest follows.",
         },
       },
+      "concepts-copy": {
+        title: "80-20 Concepts Rule (Copy)",
+        tagline: "The few concepts that carry most of the weight.",
+        emoji: "🎯",
+        mascot: {
+          name: "The Strategist",
+          title: "Focus on what matters most",
+          image: coder,
+          quote: "Learn the vital few concepts first; the rest follows.",
+        },
+      },
       picks: {
         title: "Hand-Picked By Me",
         tagline: "Notes, images and code worth keeping.",

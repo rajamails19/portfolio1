@@ -23,6 +23,7 @@ import {
 } from "lucide-react";
 import { termTiles } from "@/content/terms";
 import { conceptCount } from "@/content/concepts-8020";
+import { conceptCount as conceptCopyCount } from "@/content/concepts-8020-copy";
 import { handyLinks } from "@/content/handy-links";
 import { quickImages } from "@/content/quick-images";
 import { handPicked } from "@/content/hand-picked";
@@ -130,6 +131,7 @@ const THEORY_CHAPTERS_BY_TOPIC: Record<string, Record<string, Chapter[]>> = {
 const NOIR_EXTRA_NAV = [
   { slug: "picks", to: "/picks", Icon: Gem, count: handPicked.length },
   { slug: "concepts", to: "/concepts", Icon: Target, count: conceptCount },
+  { slug: "concepts-copy", to: "/copy-concepts", Icon: Target, count: conceptCopyCount },
   { slug: "links", to: "/links", Icon: Link2, count: handyLinks.length },
   { slug: "images", to: "/images", Icon: Images, count: quickImages.length },
 ] as const;

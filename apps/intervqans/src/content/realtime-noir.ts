@@ -4,7 +4,7 @@ import { realtimeSection } from "./realtime";
 const aiMlRealtime: QAItem[] = [
   {
     id: "kroger-weights-and-bias",
-    question: "Kroger wants to recommend products to customers. How do Weights & Bias help?",
+    question: "Kroger-or-Costco wants to recommend products to customers. How do Weights & Bias help?",
     tags: ["AI/ML", "Recommendations"],
     difficulty: "Medium",
     answer: [
@@ -12,7 +12,7 @@ const aiMlRealtime: QAItem[] = [
       {
         type: "text",
         content:
-          "Kroger wants to predict whether a customer will buy Greek Yogurt and show it under ==Recommended for You==.",
+          "Kroger-or-Costco wants to predict whether a customer will buy Greek Yogurt and show it under ==Recommended for You==.",
       },
       { type: "heading", content: "What are Weights?" },
       {
@@ -41,7 +41,7 @@ Usually shops on weekends       → LOW importance`,
       {
         type: "text",
         content:
-          "For example, before even looking at this customer's history, Kroger's data may show that customers have some __baseline likelihood__ of buying yogurt. The customer's behavior then moves the prediction up or down from that starting point.",
+          "For example, before even looking at this customer's history, Kroger-or-Costco's data may show that customers have some __baseline likelihood__ of buying yogurt. The customer's behavior then moves the prediction up or down from that starting point.",
       },
       {
         type: "code",
@@ -55,11 +55,11 @@ Shopping Pattern × Weight
         ↓
 Purchase Probability = 82%`,
       },
-      { type: "heading", content: "Easy Kroger Analogy 🛒" },
+      { type: "heading", content: "Easy Kroger-or-Costco Analogy 🛒" },
       {
         type: "text",
         content:
-          'Imagine a Kroger store manager deciding: "Should I stock extra ice cream this weekend?"',
+          'Imagine a Kroger-or-Costco store manager deciding: "Should I stock extra ice cream this weekend?"',
       },
       {
         type: "code",
@@ -81,7 +81,7 @@ Package color     → Not very important`,
         title: "From a customer's activity to a recommended product",
         nodes: [
           { label: "Customer", sub: "Shops the app", tone: "gold" },
-          { label: "Kroger App", sub: "Sends activity", tone: "ember" },
+          { label: "Kroger-or-Costco App", sub: "Sends activity", tone: "ember" },
           { label: "ML Model", sub: "Weights + Bias", tone: "sky" },
           { label: "82% Likely to Buy", sub: "Purchase probability", tone: "mint" },
           { label: "Recommended: Greek Yogurt", sub: "Shown to customer", tone: "gold" },
@@ -109,7 +109,7 @@ Package color     → Not very important`,
   },
   {
     id: "kroger-what-is-a-model",
-    question: "Kroger wants to predict what customers will buy. What is a Model?",
+    question: "Kroger-or-Costco wants to predict what customers will buy. What is a Model?",
     tags: ["AI/ML", "Fundamentals"],
     difficulty: "Easy",
     answer: [
@@ -117,11 +117,11 @@ Package color     → Not very important`,
       {
         type: "text",
         content:
-          'Kroger has years of customer shopping data and wants to predict: "What product is this customer likely to buy next?"',
+          'Kroger-or-Costco has years of customer shopping data and wants to predict: "What product is this customer likely to buy next?"',
       },
       { type: "heading", content: "What is a Model?" },
       { type: "text", content: "Think of a **Model = The trained decision-maker**." },
-      { type: "text", content: "Kroger gives the model historical examples:" },
+      { type: "text", content: "Kroger-or-Costco gives the model historical examples:" },
       {
         type: "code",
         language: "text",
@@ -134,10 +134,10 @@ Customer buys yogurt weekly → likely to buy it again`,
         content:
           "The model learns patterns from this historical data and uses those patterns to ==predict new customer behavior==.",
       },
-      { type: "heading", content: "Easy Kroger Analogy 🛒" },
+      { type: "heading", content: "Easy Kroger-or-Costco Analogy 🛒" },
       {
         type: "text",
-        content: "Imagine an experienced Kroger store manager. After working there for years, they notice:",
+        content: "Imagine an experienced Kroger-or-Costco store manager. After working there for years, they notice:",
       },
       {
         type: "callout",
@@ -154,7 +154,7 @@ Customer buys yogurt weekly → likely to buy it again`,
         type: "flow",
         title: "From historical data to a fresh recommendation",
         nodes: [
-          { label: "Historical Kroger Data", sub: "Years of purchases", tone: "gold" },
+          { label: "Historical Kroger-or-Costco Data", sub: "Years of purchases", tone: "gold" },
           { label: "Train Model", sub: "Learn the patterns", tone: "ember" },
           { label: "New Customer Activity", sub: "What they're doing now", tone: "sky" },
           { label: "Prediction", sub: '"Likely to buy Yogurt"', tone: "mint" },
@@ -1495,6 +1495,263 @@ Users → Correct status shown`,
         variant: "info",
         content:
           "**Interview Tip:** An agent is only as reliable as the tools it depends on. Every external tool call needs ==timeout, retry, error handling, idempotency and observability==.",
+      },
+    ],
+  },
+  {
+    id: "llm-bill-doubled-overnight",
+    question: "Your company's LLM bill suddenly doubles overnight. How do you find out why and fix it?",
+    tags: ["AI/ML", "Cost", "LLMOps"],
+    difficulty: "Medium",
+    answer: [
+      { type: "heading", content: "Scenario" },
+      {
+        type: "text",
+        content:
+          "Finance pings you: yesterday's LLM spend was ==2× the normal day==. No new feature was released. Nobody knows which app caused it.",
+      },
+      {
+        type: "flow",
+        direction: "vertical",
+        title: "Where the money actually goes",
+        nodes: [
+          { label: "User request", tone: "gold" },
+          { label: "Prompt (system + history + RAG chunks)", tone: "ember" },
+          { label: "LLM call", tone: "sky" },
+          { label: "Tokens in + tokens out = $$$", tone: "mint" },
+        ],
+      },
+      { type: "heading", content: "What could be wrong?" },
+      {
+        type: "list",
+        items: [
+          "**Prompt bloat** → Someone added 20 retrieved chunks instead of 5.",
+          "**Retry storm** → An error made the agent call the model again and again.",
+          "**Agent loop** → One user request triggered 40 model calls.",
+          "**Wrong model** → A premium model is answering simple FAQs.",
+          "**No caching** → The same question is paid for 10,000 times.",
+        ],
+      },
+      { type: "heading", content: "What would I actually do as the AI Engineer?" },
+      { type: "text", content: "First, find the source. Log tokens and cost per request, tagged by app, user and feature:" },
+      {
+        type: "code",
+        language: "python",
+        content: `log.info({
+    "app": "hr-bot",
+    "model": model,
+    "input_tokens": usage.prompt_tokens,
+    "output_tokens": usage.completion_tokens,
+    "cost_usd": cost,
+})`,
+      },
+      { type: "text", content: "Then fix what the data shows:" },
+      {
+        type: "list",
+        items: [
+          "**Cap** max tokens, retries and agent steps per request.",
+          "**Cache** repeated questions (semantic cache).",
+          "**Route** easy questions to a small model, hard ones to the big model.",
+          "**Trim** history and retrieved chunks to what is needed.",
+          "**Alert** when daily spend crosses a budget.",
+        ],
+      },
+      { type: "heading", content: "What happened in the real system?" },
+      { type: "text", content: "Before:" },
+      {
+        type: "code",
+        language: "text",
+        content: `Cost → Doubled, nobody knew why
+One buggy agent → 40 calls per request`,
+      },
+      { type: "text", content: "After:" },
+      {
+        type: "code",
+        language: "text",
+        content: `Cost per app → Visible on a dashboard
+Agent steps → Capped at 8
+Simple questions → Small model + cache
+Spend → Alerts at 80% of budget`,
+      },
+      {
+        type: "callout",
+        variant: "tip",
+        content:
+          "**Business Goal:** Keep AI useful *and* affordable — spend should grow with value, not with bugs.",
+      },
+      {
+        type: "callout",
+        variant: "info",
+        content:
+          "**Interview Tip:** You cannot cut cost you cannot see. Say ==measure first (tokens per request), then cap, cache and route==.",
+      },
+    ],
+  },
+  {
+    id: "rag-leaks-confidential-documents",
+    question: "Your company RAG chatbot shows a confidential HR document to the wrong employee. What went wrong?",
+    tags: ["AI/ML", "RAG", "Security"],
+    difficulty: "Hard",
+    answer: [
+      { type: "heading", content: "Scenario" },
+      {
+        type: "text",
+        content:
+          "An intern asks the internal chatbot: \"What is the salary band for senior managers?\" The bot answers from a ==confidential HR file== the intern should never see.",
+      },
+      {
+        type: "flow",
+        direction: "vertical",
+        title: "The leak: retrieval ignored who was asking",
+        nodes: [
+          { label: "Intern asks", tone: "gold" },
+          { label: "Vector search (all documents)", tone: "ember" },
+          { label: "HR file retrieved", tone: "sky" },
+          { label: "LLM answers → Leak ❌", tone: "mint" },
+        ],
+      },
+      { type: "heading", content: "What could be wrong?" },
+      {
+        type: "list",
+        items: [
+          "**No permission filter** → Every document sits in one shared index.",
+          "**Access checked too late** → Checked after the LLM already read it.",
+          "**Stale permissions** → Employee changed team, index still has the old access.",
+          "**Cached answer** → One user's answer served to another.",
+        ],
+      },
+      { type: "heading", content: "What would I actually do as the AI Engineer?" },
+      { type: "text", content: "Store access info with every chunk and filter __before__ the LLM sees anything:" },
+      {
+        type: "code",
+        language: "python",
+        content: `results = vector_db.search(
+    query_embedding,
+    filter={"allowed_groups": {"in": user.groups}},
+    top_k=5,
+)`,
+      },
+      { type: "text", content: "Also:" },
+      {
+        type: "list",
+        items: [
+          "**Sync** document permissions from the source system (SharePoint, Drive) regularly.",
+          "**Cache per user group**, never across groups.",
+          "**Audit log** who asked what and which documents were used.",
+          "**Test** with a \"can the intern see HR data?\" check before every release.",
+        ],
+      },
+      { type: "heading", content: "What happened in the real system?" },
+      { type: "text", content: "Before:" },
+      {
+        type: "code",
+        language: "text",
+        content: `All documents → One index
+Any user → Could retrieve anything`,
+      },
+      { type: "text", content: "After:" },
+      {
+        type: "code",
+        language: "text",
+        content: `Every chunk → Tagged with allowed groups
+Search → Filtered by user before retrieval
+Intern asks salary question → "I don't have access to that."`,
+      },
+      {
+        type: "callout",
+        variant: "tip",
+        content:
+          "**Business Goal:** Employees get helpful answers from company knowledge — without anyone seeing what they are not allowed to see.",
+      },
+      {
+        type: "callout",
+        variant: "info",
+        content:
+          "**Interview Tip:** The LLM cannot keep a secret it has already read. Enforce ==access control at retrieval time, not in the prompt==.",
+      },
+    ],
+  },
+  {
+    id: "ai-service-rate-limited-at-peak-traffic",
+    question: "On a peak sales day, your AI assistant starts failing with rate-limit errors. How do you keep it running?",
+    tags: ["AI/ML", "Scaling", "Reliability"],
+    difficulty: "Hard",
+    answer: [
+      { type: "heading", content: "Scenario" },
+      {
+        type: "text",
+        content:
+          "It's the biggest sales day of the year. Traffic to your AI shopping assistant jumps ==10×==. Customers start seeing errors:",
+      },
+      { type: "code", language: "text", content: "429 Too Many Requests ❌" },
+      {
+        type: "flow",
+        direction: "vertical",
+        title: "Everyone hits the model at the same time",
+        nodes: [
+          { label: "10× users", tone: "gold" },
+          { label: "AI Assistant", tone: "ember" },
+          { label: "LLM provider (fixed rate limit)", tone: "sky" },
+          { label: "429 errors", tone: "mint" },
+        ],
+      },
+      { type: "heading", content: "What could be wrong?" },
+      {
+        type: "list",
+        items: [
+          "**Provider rate limit** → Tokens/requests per minute exceeded.",
+          "**No queue** → Every request goes straight to the model.",
+          "**Retry storm** → Failed calls retry at once and make it worse.",
+          "**Single model, single region** → Nowhere else to send traffic.",
+        ],
+      },
+      { type: "heading", content: "What would I actually do as the AI Engineer?" },
+      {
+        type: "list",
+        items: [
+          "**Cache** common questions (\"return policy?\") so they never reach the model.",
+          "**Queue** requests and smooth the spikes.",
+          "**Backoff + jitter** on retries instead of retrying instantly.",
+          "**Fallback** to a second model or region when the first is limited.",
+          "**Degrade gracefully** → shorter answers, or plain search results, instead of an error.",
+        ],
+      },
+      {
+        type: "code",
+        language: "python",
+        content: `try:
+    answer = call_primary_model(prompt)
+except RateLimitError:
+    answer = cache.get(prompt) or call_backup_model(prompt)`,
+      },
+      { type: "heading", content: "What happened in the real system?" },
+      { type: "text", content: "Before:" },
+      {
+        type: "code",
+        language: "text",
+        content: `Traffic spike → 429 errors
+Customers → "Something went wrong"`,
+      },
+      { type: "text", content: "After:" },
+      {
+        type: "code",
+        language: "text",
+        content: `Common questions → Served from cache
+Spikes → Queued and smoothed
+Rate limit hit → Backup model answers
+Worst case → Simple fallback, never a blank error`,
+      },
+      {
+        type: "callout",
+        variant: "tip",
+        content:
+          "**Business Goal:** The assistant stays up on the day it matters most — revenue is not lost to errors.",
+      },
+      {
+        type: "callout",
+        variant: "info",
+        content:
+          "**Interview Tip:** Plan for the provider saying \"no\". Mention ==cache, queue, backoff with jitter, fallback model and graceful degradation==.",
       },
     ],
   },

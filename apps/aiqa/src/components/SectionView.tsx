@@ -203,7 +203,7 @@ export function SectionView({ section }: { section: Section }) {
   }, [q, visibleItems]);
 
   return (
-    <div className="mx-auto w-full max-w-5xl px-6 pb-16 pt-8">
+    <div className="mx-auto w-full max-w-[90rem] px-6 pb-16 pt-8 lg:px-8">
       {showMarks && (
         <div className="mb-4 mt-12 flex items-center gap-1.5 overflow-x-auto sm:hidden">
           {marks.map(({ name, Icon }) => {

@@ -9,7 +9,9 @@ import type { Block } from "./types";
 export type Pick =
   | { kind: "note"; title?: string; blocks: Block[] }
   | { kind: "image"; src: string; alt: string; title?: string }
-  | { kind: "code"; title?: string; language: string; code: string };
+  | { kind: "code"; title?: string; language: string; code: string }
+  /** Shown like an 80-20 card (name + one line), looked up by name from the 80-20 data. */
+  | { kind: "concept"; name: string };
 
 export const handPicked: Pick[] = [
   {
@@ -298,4 +300,12 @@ export const handPicked: Pick[] = [
       },
     ],
   },
+  { kind: "concept", name: "Regression vs Classification" },
+  { kind: "concept", name: "Features, Labels, Predictions" },
+  { kind: "concept", name: "Model Parameters vs Hyperparameters" },
+  { kind: "concept", name: "Gradient Descent" },
+  { kind: "concept", name: "Learning Rate" },
+  { kind: "concept", name: "Epochs, Batches, Iterations" },
+  { kind: "concept", name: "Bias-Variance Tradeoff" },
+  { kind: "concept", name: "Regularization — L1 and L2" },
 ];

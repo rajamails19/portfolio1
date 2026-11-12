@@ -1,6 +1,8 @@
 import { useMemo, useState } from "react";
 import { Code2, Gem, Image as ImageIcon, Lightbulb, StickyNote, ZoomIn } from "lucide-react";
 import { handPicked, type Pick } from "@/content/hand-picked";
+import { conceptGroups } from "@/content/concepts-8020";
+import { ConceptCard } from "@/components/ConceptCard";
 import type { Block } from "@/content/types";
 import { renderInline } from "@/lib/rich-text";
 import { AnswerBlocks } from "@/components/AnswerBlocks";
@@ -139,7 +141,7 @@ function PickCard({
   index,
   onOpenImage,
 }: {
-  pick: Pick;
+  pick: Exclude<Pick, { kind: "concept" }>;
   index: number;
   onOpenImage: () => void;
 }) {
@@ -186,9 +188,32 @@ function PickCard({
   );
 }
 
+function findConcept(name: string) {
+  for (const g of conceptGroups) {
+    const concept = g.concepts.find((c) => c.name === name);
+    if (concept) return { concept, icon: g.icon };
+  }
+  return null;
+}
+
+// Concept picks get the full page width (like the 80-20 cards); everything else keeps the
+// two-column scrapbook layout. Consecutive picks of the same kind share one block.
+function toSegments(picks: Pick[]) {
+  const out: { concepts: boolean; start: number; items: Pick[] }[] = [];
+  picks.forEach((p, i) => {
+    const concepts = p.kind === "concept";
+    const last = out[out.length - 1];
+    if (last && last.concepts === concepts) last.items.push(p);
+    else out.push({ concepts, start: i, items: [p] });
+  });
+  return out;
+}
+
 export function PicksView() {
   const [open, setOpen] = useState(false);
   const [index, setIndex] = useState(0);
+
+  const segments = useMemo(() => toSegments(handPicked), []);
 
   const photos = useMemo<LightboxPhoto[]>(
     () =>
@@ -199,25 +224,50 @@ export function PicksView() {
   );
 
   return (
-    <div className="mx-auto w-full max-w-5xl px-6 pb-16 pt-8">
+    <div className="mx-auto w-full max-w-[var(--page-max)] px-6 pb-16 pt-8 transition-[max-width] duration-300 lg:px-8">
       <SimpleHero icon={Gem} plain="Hand-Picked" accent="By Me" />
 
-      <div className="@container mt-10">
-        <ul className="columns-1 gap-6 @3xl:columns-2">
-          {handPicked.map((pick, i) => (
-            <li key={i} className="mb-6 min-w-0 break-inside-avoid">
-              <PickCard
-                pick={pick}
-                index={i}
-                onOpenImage={() => {
-                  setIndex(photos.findIndex((ph) => pick.kind === "image" && ph.id === pick.src));
-                  setOpen(true);
-                }}
-              />
-            </li>
-          ))}
-        </ul>
-      </div>
+      {segments.map((seg, si) =>
+        seg.concepts ? (
+          <ul key={si} className="mt-10 flex flex-col gap-8 sm:gap-10">
+            {seg.items.map((pick, i) => {
+              const found = findConcept(pick.kind === "concept" ? pick.name : "");
+              if (!found) return null;
+              return (
+                <ConceptCard
+                  key={pick.kind === "concept" ? pick.name : i}
+                  id={`pick-concept-${si}-${i}`}
+                  concept={found.concept}
+                  index={i}
+                  fallbackIcon={found.icon}
+                />
+              );
+            })}
+          </ul>
+        ) : (
+          <div key={si} className="@container mt-10">
+            <ul className="columns-1 gap-6 @3xl:columns-2 @6xl:columns-3">
+              {seg.items.map((pick, i) => {
+                if (pick.kind === "concept") return null;
+                return (
+                  <li key={i} className="mb-6 min-w-0 break-inside-avoid">
+                    <PickCard
+                      pick={pick}
+                      index={seg.start + i}
+                      onOpenImage={() => {
+                        setIndex(
+                          photos.findIndex((ph) => pick.kind === "image" && ph.id === pick.src),
+                        );
+                        setOpen(true);
+                      }}
+                    />
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        ),
+      )}
 
       <PhotoLightbox
         photos={photos}

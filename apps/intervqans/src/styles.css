@@ -793,3 +793,25 @@
   background-clip: text, border-box;
   -webkit-text-fill-color: transparent;
 }
+
+/* Page width. Grows when the left menu has scrolled out of view (see __root.tsx). */
+:root {
+  --page-max: 80rem;
+}
+html[data-nav="away"] {
+  --page-max: 100rem;
+}
+.shell-nav {
+  width: 18rem;
+  overflow: hidden;
+  flex-shrink: 0;
+  transition: width 0.25s ease;
+}
+html[data-nav="away"] .shell-nav {
+  width: 0;
+}
+@media (prefers-reduced-motion: reduce) {
+  .shell-nav {
+    transition: none;
+  }
+}

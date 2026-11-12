@@ -32,7 +32,7 @@ function Home() {
   const heroMascot = theme.sections.qans.mascot;
 
   return (
-    <div className="mx-auto w-full max-w-5xl px-6 pb-16 pt-8">
+    <div className="mx-auto w-full max-w-[var(--page-max)] px-6 pb-16 pt-8 transition-[max-width] duration-300 lg:px-8">
       <section className="relative overflow-hidden rounded-4xl shadow-glow ring-1 ring-gold/20">
         <img
           src={hero.image}

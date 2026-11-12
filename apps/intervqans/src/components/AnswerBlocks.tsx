@@ -85,7 +85,7 @@ export function AnswerBlocks({ blocks }: { blocks: Block[] }) {
             );
           case "text":
             return (
-              <p key={i} className="my-3">
+              <p key={i} className="my-3 max-w-[90ch]">
                 {renderInline(b.content)}
               </p>
             );
@@ -94,7 +94,7 @@ export function AnswerBlocks({ blocks }: { blocks: Block[] }) {
             return (
               <Tag
                 key={i}
-                className={`my-3 space-y-1.5 pl-5 ${b.ordered ? "list-decimal" : "list-disc"} marker:text-gold-ink/80`}
+                className={`my-3 max-w-[90ch] space-y-1.5 pl-5 ${b.ordered ? "list-decimal" : "list-disc"} marker:text-gold-ink/80`}
               >
                 {b.items.map((it, k) => (
                   <li key={k}>{renderInline(it)}</li>
