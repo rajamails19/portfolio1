@@ -308,4 +308,13 @@ export const handPicked: Pick[] = [
   { kind: "concept", name: "Epochs, Batches, Iterations" },
   { kind: "concept", name: "Bias-Variance Tradeoff" },
   { kind: "concept", name: "Regularization — L1 and L2" },
+  { kind: "concept", name: "Attention Mechanism" },
+  { kind: "concept", name: "Transformer Architecture" },
+  { kind: "concept", name: "Generative AI vs Predictive AI" },
+  { kind: "concept", name: "Large Language Models (LLMs)" },
+  { kind: "concept", name: "Tokenization" },
+  { kind: "concept", name: "Positional Encoding / RoPE" },
+  { kind: "concept", name: "Transformer Encoder vs Decoder" },
+  { kind: "concept", name: "Zero-Shot and Few-Shot Prompting" },
+  { kind: "concept", name: "Temperature, Top-p, Max Tokens" },
 ];
