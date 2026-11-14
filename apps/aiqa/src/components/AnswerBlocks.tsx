@@ -75,174 +75,231 @@ function Callout({
   );
 }
 
+function renderBlock(b: Block, i: number): React.ReactNode {
+  switch (b.type) {
+    case "heading":
+      return (
+        <h4
+          key={i}
+          data-qa-b={i}
+          className="qa-heading mt-6 mb-3 font-display text-lg font-semibold"
+        >
+          {b.content}
+        </h4>
+      );
+    case "text":
+      return (
+        <p key={i} data-qa-b={i} className="my-3 max-w-[90ch]">
+          {renderInline(b.content)}
+        </p>
+      );
+    case "list": {
+      const Tag = b.ordered ? "ol" : "ul";
+      return (
+        <Tag
+          key={i}
+          className={`my-5 max-w-[90ch] space-y-1.5 pl-5 ${b.ordered ? "list-decimal" : "list-disc"} marker:text-gold-ink/80`}
+        >
+          {b.items.map((it, k) => (
+            <li key={k} data-qa-b={i} data-qa-l={k}>
+              {renderInline(it)}
+            </li>
+          ))}
+        </Tag>
+      );
+    }
+    case "code":
+      return (
+        <Expandable key={i} label={`${b.language} code`}>
+          <CodeBlock language={b.language} code={b.content} />
+        </Expandable>
+      );
+    case "callout":
+      return (
+        <Callout key={i} variant={b.variant}>
+          <span data-qa-b={i}>{renderInline(b.content)}</span>
+        </Callout>
+      );
+    case "flow":
+      return (
+        <Expandable key={i} label={b.title ?? "Diagram"}>
+          <FlowDiagram block={b} />
+        </Expandable>
+      );
+    case "image":
+      return (
+        <Expandable key={i} label={b.alt}>
+          <div className="my-4 overflow-hidden rounded-2xl border border-gold/20">
+            <img src={b.src} alt={b.alt} className="w-full" />
+          </div>
+        </Expandable>
+      );
+    case "table":
+      return (
+        <div key={i} className="my-4 overflow-hidden rounded-2xl border border-gold/20">
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead style={{ backgroundColor: "oklch(0.16 0.02 85)" }}>
+                <tr>
+                  {b.headers.map((h, k) => (
+                    <th
+                      key={k}
+                      className="px-4 py-2.5 text-left font-bold"
+                      style={{
+                        color: h ? HEADER_COLORS[k % HEADER_COLORS.length] : "oklch(0.55 0.01 85)",
+                      }}
+                    >
+                      {h}
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {b.rows.map((row, r) => (
+                  <tr key={r} className="border-t border-gold/10 odd:bg-noir/40">
+                    {row.map((c, k) =>
+                      k === 0 ? (
+                        <td
+                          key={k}
+                          className="px-4 py-2.5 align-top font-bold"
+                          style={{ color: ROW_LABEL_COLORS[r % ROW_LABEL_COLORS.length] }}
+                        >
+                          {stripOuterBold(c) ?? renderInline(c)}
+                        </td>
+                      ) : (
+                        <td key={k} className="px-4 py-2.5 align-top text-foreground/85">
+                          {renderInline(c)}
+                        </td>
+                      ),
+                    )}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      );
+    case "accordion":
+      return <AccordionBlock key={i} items={b.items} />;
+    case "slideshow":
+      return <SlideshowBlock key={i} slides={b.slides} />;
+    case "divider":
+      return (
+        <hr
+          key={i}
+          aria-hidden
+          className="my-10 h-px border-0 bg-gradient-to-r from-gold/50 via-gold/20 to-transparent"
+        />
+      );
+    case "quiz":
+      return <QuizBlock key={i} questions={b.questions} />;
+    case "link":
+      return (
+        <a
+          key={i}
+          href={b.href}
+          target="_blank"
+          rel="noreferrer"
+          className="my-2 inline-flex items-center gap-1.5 rounded-full border border-gold/30 bg-gold/10 px-3 py-1.5 text-sm font-medium text-gold-ink hover:bg-gold/20"
+        >
+          {b.label} <ExternalLink className="h-3.5 w-3.5" />
+        </a>
+      );
+    case "links":
+      return (
+        <div key={i} className="my-4 grid gap-2 sm:grid-cols-2">
+          {b.items.map((l, k) => (
+            <a
+              key={k}
+              href={l.href}
+              target="_blank"
+              rel="noreferrer"
+              className="group flex items-start gap-3 rounded-2xl border border-gold/20 bg-noir/50 p-3 transition hover:border-gold/50 hover:bg-noir/80"
+            >
+              <span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-xl border border-gold/30 bg-gold/10 text-gold-ink">
+                <Link2 className="h-4 w-4" />
+              </span>
+              <span className="min-w-0 flex-1">
+                <span className="block truncate font-medium text-foreground group-hover:text-gold-ink">
+                  {l.label}
+                </span>
+                {l.description && (
+                  <span className="mt-0.5 block text-xs text-muted-foreground">
+                    {l.description}
+                  </span>
+                )}
+                <span className="mt-0.5 block truncate text-[11px] text-gold-ink/60">{l.href}</span>
+              </span>
+              <ExternalLink className="mt-1 h-3.5 w-3.5 shrink-0 text-gold-ink/60 transition group-hover:text-gold-ink" />
+            </a>
+          ))}
+        </div>
+      );
+    default:
+      return null;
+  }
+}
+
+// Plain reading blocks (heading + text + lists) can sit side by side on a wide card; everything
+// else (callouts, diagrams, tables, code…) keeps the full width.
+const FLOWING = new Set<Block["type"]>(["heading", "text", "list", "link"]);
+
+type Segment =
+  | { kind: "columns"; groups: { block: Block; index: number }[][] }
+  | { kind: "wide"; block: Block; index: number };
+
+// Each heading starts a new group; a run of groups becomes one multi-column segment.
+function toSegments(blocks: Block[]): Segment[] {
+  const out: Segment[] = [];
+  blocks.forEach((block, index) => {
+    if (!FLOWING.has(block.type)) {
+      out.push({ kind: "wide", block, index });
+      return;
+    }
+    let seg = out[out.length - 1];
+    if (!seg || seg.kind !== "columns") {
+      seg = { kind: "columns", groups: [] };
+      out.push(seg);
+    }
+    if (block.type === "heading" || seg.groups.length === 0) seg.groups.push([]);
+    seg.groups[seg.groups.length - 1].push({ block, index });
+  });
+  return out;
+}
+
 export function AnswerBlocks({ blocks, itemId }: { blocks: Block[]; itemId?: string }) {
+  const segments = toSegments(blocks);
   return (
-    <div data-qa-item={itemId} className="text-[15px] leading-relaxed text-foreground/85">
-      {blocks.map((b, i) => {
-        switch (b.type) {
-          case "heading":
-            return (
-              <h4
-                key={i}
-                data-qa-b={i}
-                className="qa-heading mt-6 mb-3 font-display text-lg font-semibold"
+    <div
+      data-qa-item={itemId}
+      className="@container text-[15px] leading-relaxed text-foreground/85"
+    >
+      {segments.map((seg, si) => {
+        if (seg.kind === "wide") return renderBlock(seg.block, seg.index);
+        const n = seg.groups.length;
+        // One section: keep a readable width and centre it. Two or more: spread them across the
+        // card (2 columns, 3 on very wide cards) with a thin divider, so no side stays empty.
+        const layout =
+          n === 1
+            ? "mx-auto max-w-[100ch]"
+            : n === 2
+              ? "@3xl:columns-2"
+              : "@3xl:columns-2 @6xl:columns-3";
+        return (
+          <div
+            key={`columns-${si}`}
+            className={`pt-4 ${layout} @3xl:gap-x-12 @3xl:[column-rule:1px_solid_oklch(0.8_0.14_88/0.18)]`}
+          >
+            {seg.groups.map((group, gi) => (
+              <div
+                key={gi}
+                className="min-w-0 break-inside-avoid pb-4 [&>:first-child]:mt-0 [&>:last-child]:mb-0"
               >
-                {b.content}
-              </h4>
-            );
-          case "text":
-            return (
-              <p key={i} data-qa-b={i} className="my-3 max-w-[90ch]">
-                {renderInline(b.content)}
-              </p>
-            );
-          case "list": {
-            const Tag = b.ordered ? "ol" : "ul";
-            return (
-              <Tag
-                key={i}
-                className={`my-5 max-w-[90ch] space-y-1.5 pl-5 ${b.ordered ? "list-decimal" : "list-disc"} marker:text-gold-ink/80`}
-              >
-                {b.items.map((it, k) => (
-                  <li key={k} data-qa-b={i} data-qa-l={k}>
-                    {renderInline(it)}
-                  </li>
-                ))}
-              </Tag>
-            );
-          }
-          case "code":
-            return (
-              <Expandable key={i} label={`${b.language} code`}>
-                <CodeBlock language={b.language} code={b.content} />
-              </Expandable>
-            );
-          case "callout":
-            return (
-              <Callout key={i} variant={b.variant}>
-                <span data-qa-b={i}>{renderInline(b.content)}</span>
-              </Callout>
-            );
-          case "flow":
-            return (
-              <Expandable key={i} label={b.title ?? "Diagram"}>
-                <FlowDiagram block={b} />
-              </Expandable>
-            );
-          case "image":
-            return (
-              <Expandable key={i} label={b.alt}>
-                <div className="my-4 overflow-hidden rounded-2xl border border-gold/20">
-                  <img src={b.src} alt={b.alt} className="w-full" />
-                </div>
-              </Expandable>
-            );
-          case "table":
-            return (
-              <div key={i} className="my-4 overflow-hidden rounded-2xl border border-gold/20">
-                <div className="overflow-x-auto">
-                  <table className="w-full text-sm">
-                    <thead style={{ backgroundColor: "oklch(0.16 0.02 85)" }}>
-                      <tr>
-                        {b.headers.map((h, k) => (
-                          <th
-                            key={k}
-                            className="px-4 py-2.5 text-left font-bold"
-                            style={{
-                              color: h
-                                ? HEADER_COLORS[k % HEADER_COLORS.length]
-                                : "oklch(0.55 0.01 85)",
-                            }}
-                          >
-                            {h}
-                          </th>
-                        ))}
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {b.rows.map((row, r) => (
-                        <tr key={r} className="border-t border-gold/10 odd:bg-noir/40">
-                          {row.map((c, k) =>
-                            k === 0 ? (
-                              <td
-                                key={k}
-                                className="px-4 py-2.5 align-top font-bold"
-                                style={{ color: ROW_LABEL_COLORS[r % ROW_LABEL_COLORS.length] }}
-                              >
-                                {stripOuterBold(c) ?? renderInline(c)}
-                              </td>
-                            ) : (
-                              <td key={k} className="px-4 py-2.5 align-top text-foreground/85">
-                                {renderInline(c)}
-                              </td>
-                            ),
-                          )}
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
+                {group.map(({ block, index }) => renderBlock(block, index))}
               </div>
-            );
-          case "accordion":
-            return <AccordionBlock key={i} items={b.items} />;
-          case "slideshow":
-            return <SlideshowBlock key={i} slides={b.slides} />;
-          case "divider":
-            return (
-              <hr
-                key={i}
-                aria-hidden
-                className="my-10 h-px border-0 bg-gradient-to-r from-gold/50 via-gold/20 to-transparent"
-              />
-            );
-          case "quiz":
-            return <QuizBlock key={i} questions={b.questions} />;
-          case "link":
-            return (
-              <a
-                key={i}
-                href={b.href}
-                target="_blank"
-                rel="noreferrer"
-                className="my-2 inline-flex items-center gap-1.5 rounded-full border border-gold/30 bg-gold/10 px-3 py-1.5 text-sm font-medium text-gold-ink hover:bg-gold/20"
-              >
-                {b.label} <ExternalLink className="h-3.5 w-3.5" />
-              </a>
-            );
-          case "links":
-            return (
-              <div key={i} className="my-4 grid gap-2 sm:grid-cols-2">
-                {b.items.map((l, k) => (
-                  <a
-                    key={k}
-                    href={l.href}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="group flex items-start gap-3 rounded-2xl border border-gold/20 bg-noir/50 p-3 transition hover:border-gold/50 hover:bg-noir/80"
-                  >
-                    <span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-xl border border-gold/30 bg-gold/10 text-gold-ink">
-                      <Link2 className="h-4 w-4" />
-                    </span>
-                    <span className="min-w-0 flex-1">
-                      <span className="block truncate font-medium text-foreground group-hover:text-gold-ink">
-                        {l.label}
-                      </span>
-                      {l.description && (
-                        <span className="mt-0.5 block text-xs text-muted-foreground">
-                          {l.description}
-                        </span>
-                      )}
-                      <span className="mt-0.5 block truncate text-[11px] text-gold-ink/60">
-                        {l.href}
-                      </span>
-                    </span>
-                    <ExternalLink className="mt-1 h-3.5 w-3.5 shrink-0 text-gold-ink/60 transition group-hover:text-gold-ink" />
-                  </a>
-                ))}
-              </div>
-            );
-        }
+            ))}
+          </div>
+        );
       })}
     </div>
   );

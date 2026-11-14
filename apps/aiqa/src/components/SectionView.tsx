@@ -26,6 +26,7 @@ import {
 } from "lucide-react";
 import type { QAItem, Section } from "@/content/types";
 import { useTheme } from "@/themes/ThemeContext";
+import { useScrolledPast } from "@/lib/use-scrolled-past";
 import { QuestionCard } from "./QuestionCard";
 import { QuotesTicker } from "./QuotesTicker";
 import { ProgramComparisonDialog } from "./ProgramComparisonDialog";
@@ -121,6 +122,8 @@ export function SectionView({ section }: { section: Section }) {
   const [q, setQ] = useState("");
   const [comparisonKey, setComparisonKey] = useState<string | null>(null);
   const { theme, themeKey } = useTheme();
+  // The left marks rail scrolls away with the page; once it is out of view, give its width back.
+  const [marksRef, marksAway] = useScrolledPast<HTMLDivElement>(640);
   const { marksFor } = useTierMarks();
   const { editing, orderItems, moveItem } = useEditMode();
   // Entries in the current order (staged → live → file).
@@ -231,42 +234,51 @@ export function SectionView({ section }: { section: Section }) {
         </div>
       )}
 
-      <div className="flex items-start gap-5">
+      <div className="flex items-start">
         {showMarks && (
-          <nav aria-label="Marks" className="hidden w-16 shrink-0 flex-col gap-2 sm:flex">
-            {marks.map(({ name, tier, Icon }) => {
-              const active = activeMark === name;
-              const count = section.items.filter((it) => inTier(it, tier, marksFor)).length;
-              return (
-                <button
-                  key={name}
-                  type="button"
-                  onClick={() => {
-                    setActiveMark(name);
-                    setQ("");
-                  }}
-                  aria-current={active ? "true" : undefined}
-                  className={[
-                    "relative grid h-14 w-14 place-items-center rounded-full border text-[10px] font-bold transition-all",
-                    active
-                      ? "border-gold/40 bg-gradient-to-br from-gold to-ember text-primary-foreground shadow-glow"
-                      : "border-gold/15 bg-noir/50 text-foreground/65 hover:bg-noir/70 hover:text-foreground",
-                  ].join(" ")}
-                >
-                  <Icon className="h-3.5 w-3.5" />
-                  <span className="mt-0.5">{name}</span>
-                  <span
+          <div
+            ref={marksRef}
+            inert={marksAway}
+            className={[
+              "hidden shrink-0 transition-[width,margin,opacity] duration-300 sm:block",
+              marksAway ? "mr-0 w-0 overflow-hidden opacity-0" : "mr-5 w-16",
+            ].join(" ")}
+          >
+            <nav aria-label="Marks" className="flex w-16 flex-col gap-2">
+              {marks.map(({ name, tier, Icon }) => {
+                const active = activeMark === name;
+                const count = section.items.filter((it) => inTier(it, tier, marksFor)).length;
+                return (
+                  <button
+                    key={name}
+                    type="button"
+                    onClick={() => {
+                      setActiveMark(name);
+                      setQ("");
+                    }}
+                    aria-current={active ? "true" : undefined}
                     className={[
-                      "absolute -right-1 -top-1 grid h-4 min-w-4 place-items-center rounded-full px-1 text-[9px] tabular-nums",
-                      active ? "bg-noir text-gold-ink" : "bg-white/10 text-foreground/70",
+                      "relative grid h-14 w-14 place-items-center rounded-full border text-[10px] font-bold transition-all",
+                      active
+                        ? "border-gold/40 bg-gradient-to-br from-gold to-ember text-primary-foreground shadow-glow"
+                        : "border-gold/15 bg-noir/50 text-foreground/65 hover:bg-noir/70 hover:text-foreground",
                     ].join(" ")}
                   >
-                    {count}
-                  </span>
-                </button>
-              );
-            })}
-          </nav>
+                    <Icon className="h-3.5 w-3.5" />
+                    <span className="mt-0.5">{name}</span>
+                    <span
+                      className={[
+                        "absolute -right-1 -top-1 grid h-4 min-w-4 place-items-center rounded-full px-1 text-[9px] tabular-nums",
+                        active ? "bg-noir text-gold-ink" : "bg-white/10 text-foreground/70",
+                      ].join(" ")}
+                    >
+                      {count}
+                    </span>
+                  </button>
+                );
+              })}
+            </nav>
+          </div>
         )}
 
         <div className="min-w-0 flex-1">
