@@ -300,6 +300,81 @@ export const handPicked: Pick[] = [
       },
     ],
   },
+  {
+    kind: "note",
+    title: "E2E: Self-checkout camera flags a suspicious scan",
+    blocks: [
+      {
+        type: "flow",
+        direction: "vertical",
+        title: "AI flags it, a human decides",
+        nodes: [
+          { label: "Shopper scans an item", tone: "gold" },
+          { label: "Camera model compares item vs barcode", tone: "ember" },
+          { label: "Mismatch score above limit", tone: "sky" },
+          { label: "Attendant tablet alert", tone: "mint" },
+          { label: "Attendant approves or corrects", tone: "gold" },
+          { label: "Event logged", tone: "ember" },
+        ],
+      },
+      { type: "heading", content: "Verify at each step" },
+      {
+        type: "list",
+        items: [
+          "Cheap item scanned as an expensive one → alert; correct scan → **no alert**.",
+          "Shopper is **never accused by the AI** — only a calm message to wait.",
+          "Attendant decision is saved and later used to improve the model.",
+          "Alert arrives on the tablet within **2 seconds**.",
+        ],
+      },
+      { type: "heading", content: "What can break" },
+      {
+        type: "list",
+        items: [
+          "Too many false alerts → long queues.",
+          "Bagged produce hides the item from the camera.",
+          "Store network drops → attendant tablet shows nothing.",
+        ],
+      },
+    ],
+  },
+  {
+    kind: "note",
+    title: "Jira: Keep the chatbot useful when the LLM provider is down",
+    blocks: [
+      { type: "heading", content: "Story" },
+      {
+        type: "text",
+        content:
+          "As the on-call engineer, when the LLM provider goes down, shoppers see a **helpful fallback — not an error page**.",
+      },
+      { type: "heading", content: "Acceptance criteria" },
+      {
+        type: "list",
+        items: [
+          "Calls time out after **8 seconds**, retry once, then switch.",
+          "Fallback order: second provider → keyword FAQ search → link to the help page.",
+          "The shopper sees a plain message, never a stack trace.",
+          "Alert fires when errors stay above **5% for 5 minutes**.",
+        ],
+      },
+      { type: "heading", content: "Sub-tasks" },
+      {
+        type: "list",
+        items: [
+          "Timeout + retry wrapper around the model call.",
+          "Second provider set up and answer quality checked.",
+          "Keyword FAQ search as the last fallback.",
+          "Game day: switch the provider off in staging and watch.",
+        ],
+      },
+      {
+        type: "callout",
+        variant: "info",
+        content: "A fallback that was **never tested** is not a fallback.",
+      },
+    ],
+  },
   { kind: "concept", name: "Regression vs Classification" },
   { kind: "concept", name: "Features, Labels, Predictions" },
   { kind: "concept", name: "Model Parameters vs Hyperparameters" },
